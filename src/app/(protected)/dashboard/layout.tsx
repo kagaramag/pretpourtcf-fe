@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import MainLayout from "@/layouts/main";
+import DashboardLayout from "@/layouts/dashboard";
 
 export default function ProtectedLayout({
   children,
@@ -11,7 +11,7 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -30,5 +30,12 @@ export default function ProtectedLayout({
     }
   }, [router, refreshUser]);
 
-  return <MainLayout>{children}</MainLayout>;
+  // Redirect clients to account page
+  useEffect(() => {
+    if (user && user.role === "client") {
+      router.push("/account");
+    }
+  }, [user, router]);
+
+  return <DashboardLayout>{children}</DashboardLayout>;
 }

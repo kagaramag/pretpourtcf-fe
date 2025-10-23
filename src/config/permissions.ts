@@ -63,15 +63,10 @@ export const ROLE_PERMISSIONS = {
     CUSTOM_PERMISSIONS.DASHBOARD_READ,
     CUSTOM_PERMISSIONS.PROFILE_READ,
   ],
-  agent: [
-    // Followups
-    PERMISSIONS.FOLLOWUPS_READ,
-    PERMISSIONS.FOLLOWUPS_CREATE,
-    PERMISSIONS.FOLLOWUPS_UPDATE,
-    // Practices (read-only for agents)
+  client: [
+    // Practices (read-only for clients)
     PERMISSIONS.PRACTICES_READ,
-    // Dashboard & Profile
-    CUSTOM_PERMISSIONS.DASHBOARD_READ,
+    // Profile
     CUSTOM_PERMISSIONS.PROFILE_READ,
   ],
 } as const;

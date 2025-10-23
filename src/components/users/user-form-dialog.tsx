@@ -48,7 +48,7 @@ export function UserFormDialog({
     last_name: "",
     email: "",
     phone: "",
-    role: "agent" as "admin" | "agent",
+    role: "client" as "admin" | "client",
   });
   const [tempPassword, setTempPassword] = useState("");
   const [copied, setCopied] = useState(false);
@@ -68,7 +68,7 @@ export function UserFormDialog({
         role:
           user.role === "super_admin"
             ? "admin"
-            : (user.role as "admin" | "agent"),
+            : (user.role as "admin" | "client"),
       });
     } else if (!open) {
       // Reset form when dialog closes
@@ -77,7 +77,7 @@ export function UserFormDialog({
         last_name: "",
         email: "",
         phone: "",
-        role: "agent",
+        role: "client",
       });
       setTempPassword("");
       setCopied(false);
@@ -127,8 +127,7 @@ export function UserFormDialog({
     if (
       !formData.first_name ||
       !formData.last_name ||
-      !formData.email ||
-      !formData.phone
+      !formData.email
     ) {
       toast.error("Please fill in all required fields");
       return;
@@ -297,10 +296,10 @@ export function UserFormDialog({
                 </Label>
                 <Select
                   value={formData.role}
-                  onValueChange={(value: "admin" | "agent") =>
+                  onValueChange={(value: "admin" | "client") =>
                     setFormData({ ...formData, role: value })
                   }
-                  disabled={isCurrentUserAdmin} // Admins can only create agents
+                  disabled={isCurrentUserAdmin} // Admins can only create clients
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
@@ -309,12 +308,12 @@ export function UserFormDialog({
                     {!isCurrentUserAdmin && (
                       <SelectItem value="admin">Admin</SelectItem>
                     )}
-                    <SelectItem value="agent">Agent</SelectItem>
+                    <SelectItem value="client">Client</SelectItem>
                   </SelectContent>
                 </Select>
                 {isCurrentUserAdmin && (
                   <p className="text-xs text-muted-foreground">
-                    Admins can only create agents in their quartier
+                    Admins can only create clients
                   </p>
                 )}
               </div>
@@ -322,14 +321,14 @@ export function UserFormDialog({
 
             <div className="space-y-2">
               <Label htmlFor="phone">
-                Phone <span className="text-red-500">*</span>
+                Phone
               </Label>
               <PhoneNumberInput
                 value={formData.phone}
                 onChange={(value) =>
                   setFormData({ ...formData, phone: value || "" })
                 }
-                placeholder="+243 123 456 789"
+                placeholder="+243 123 456 789 (optional)"
               />
             </div>
           </div>

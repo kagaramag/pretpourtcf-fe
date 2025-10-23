@@ -27,9 +27,9 @@ export default function UserDetailsScreen() {
     switch (role) {
       case "admin":
         return "bg-purple-100 text-purple-800";
-      case "agent":
+      case "client":
         return "bg-blue-100 text-blue-800";
-      case "manager":
+      case "super_admin":
         return "bg-green-100 text-green-800";
       default:
         return "";
@@ -40,10 +40,10 @@ export default function UserDetailsScreen() {
     switch (role) {
       case "admin":
         return "Administrateur";
-      case "agent":
-        return "Agent";
-      case "manager":
-        return "Manager";
+      case "client":
+        return "Client";
+      case "super_admin":
+        return "Super Admin";
       default:
         return role;
     }
@@ -165,137 +165,12 @@ export default function UserDetailsScreen() {
                 </div>
               </div>
 
-              {/* Agent Location (Quartier) */}
-              {user.role === "agent" && user.assigned_location?.quartier && (
-                <div className="col-span-2 md:col-span-4 pt-4 border-t">
-                  <p className="text-sm text-muted-foreground mb-1">
-                    Zone assignée (Quartier)
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <p className="font-medium">
-                      {user.assigned_location.quartier.name} -{" "}
-                      <span className="text-muted-foreground">
-                        {user.assigned_location.quartier.commune}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              )}
+              {/* Client location info removed - not applicable */}
             </div>
           </CardContent>
         </Card>
 
-        {/* Assigned Locations (for agents) */}
-        {user.role === "agent" && user.assigned_location && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
-                Zones assignées
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Quartier Assignment */}
-                {user.assigned_location.quartier && (
-                  <div className="border rounded-lg p-4">
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">
-                      Quartier
-                    </p>
-                    <div className="space-y-2">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Nom</p>
-                        <p className="font-medium">
-                          {user.assigned_location.quartier.name}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Code</p>
-                        <p className="font-mono text-sm font-medium">
-                          {user.assigned_location.quartier.code}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Commune</p>
-                        <p className="font-medium">
-                          {user.assigned_location.quartier.commune}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          Assigné le
-                        </p>
-                        <p className="text-sm">
-                          {format(
-                            new Date(
-                              user.assigned_location.quartier.assignedAt
-                            ),
-                            "dd MMM yyyy"
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Avenue Assignment */}
-                {user.assigned_location.avenue && (
-                  <div className="border rounded-lg p-4">
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">
-                      Avenue
-                    </p>
-                    <div className="space-y-2">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Nom</p>
-                        <p className="font-medium">
-                          {user.assigned_location.avenue.name}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          Référence
-                        </p>
-                        <p className="font-mono text-sm font-medium">
-                          {user.assigned_location.avenue.ref}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          Quartier
-                        </p>
-                        <p className="font-medium">
-                          {user.assigned_location.avenue.quartier.name}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          Assigné le
-                        </p>
-                        <p className="text-sm">
-                          {format(
-                            new Date(user.assigned_location.avenue.assignedAt),
-                            "dd MMM yyyy"
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* No assignments message */}
-                {!user.assigned_location.quartier &&
-                  !user.assigned_location.avenue && (
-                    <div className="col-span-2 text-center py-8">
-                      <p className="text-gray-500">
-                        Aucune zone assignée à cet agent
-                      </p>
-                    </div>
-                  )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {/* Assigned Locations removed - not applicable for client users */}
 
         {/* Payment History */}
         <Card>

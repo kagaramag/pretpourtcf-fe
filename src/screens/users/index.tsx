@@ -93,7 +93,7 @@ function UsersScreenContent() {
       ? roleFilter
       : activeTab === "admins"
       ? "admin"
-      : "agent";
+      : "client";
 
   // Deactivate user mutation
   const deactivateMutation = useMutation({
@@ -215,9 +215,9 @@ function UsersScreenContent() {
     const colors = {
       super_admin: "bg-red-100 text-red-800",
       admin: "bg-purple-100 text-purple-800",
-      agent: "bg-blue-100 text-blue-800",
+      client: "bg-blue-100 text-blue-800",
     };
-    return colors[role as keyof typeof colors] || colors.agent;
+    return colors[role as keyof typeof colors] || colors.client;
   };
 
   const renderUsersTable = () => (
@@ -367,10 +367,7 @@ function UsersScreenContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage system users, agents, and administrators
-          </p>
+          <h1 className="text-2xl font-bold">Users</h1>
         </div>
         <Button
           className="gap-2"
@@ -395,9 +392,9 @@ function UsersScreenContent() {
             <Shield className="h-4 w-4" />
             Admins
           </TabsTrigger>
-          <TabsTrigger value="agents" className="gap-2">
+          <TabsTrigger value="clients" className="gap-2">
             <UserCog className="h-4 w-4" />
-            Agents
+            Clients
           </TabsTrigger>
         </TabsList>
 
@@ -431,7 +428,7 @@ function UsersScreenContent() {
                     <SelectContent>
                       <SelectItem value="super_admin">Super Admin</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="agent">Agent</SelectItem>
+                      <SelectItem value="client">Client</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -517,17 +514,17 @@ function UsersScreenContent() {
           </Card>
         </TabsContent>
 
-        {/* Agents Tab */}
-        <TabsContent value="agents" className="space-y-4">
+        {/* Clients Tab */}
+        <TabsContent value="clients" className="space-y-4">
           <Card>
             <CardHeader>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle>Agents</CardTitle>
+                  <CardTitle>Clients</CardTitle>
                   <div className="relative w-64">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search agents..."
+                      placeholder="Search clients..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"

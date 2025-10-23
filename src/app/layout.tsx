@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Fredoka } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/providers/query";
@@ -10,6 +10,10 @@ import "@/styles/globals.css";
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+});
+const fredoka = Fredoka({
+  subsets: ["latin"],
+  variable: "--font-fredoka",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geist.variable} antialiased`}>
+      <body className={`${fredoka.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

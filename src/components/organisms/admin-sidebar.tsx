@@ -25,12 +25,6 @@ const menuItems: MenuItem[] = [
     permission: CUSTOM_PERMISSIONS.DASHBOARD_READ,
   },
   {
-    name: "Users",
-    icon: <UserCog className="h-5 w-5" />,
-    href: "/dashboard/users",
-    permission: PERMISSIONS.USERS_READ,
-  },
-  {
     name: "Practices",
     icon: <BookOpen className="h-5 w-5" />,
     href: "/dashboard/practices",
@@ -41,6 +35,12 @@ const menuItems: MenuItem[] = [
     icon: <ClipboardList className="h-5 w-5" />,
     href: "/dashboard/subscriptions",
     permission: PERMISSIONS.FOLLOWUPS_READ,
+  },
+  {
+    name: "Users",
+    icon: <UserCog className="h-5 w-5" />,
+    href: "/dashboard/users",
+    permission: PERMISSIONS.USERS_READ,
   },
 ];
 
@@ -106,12 +106,10 @@ export default function Sidebar() {
         <ul className="space-y-1 px-2">
           {visibleMenuItems.map((item) => {
             const href = Array.isArray(item.href) ? item.href[0] : item.href;
-            const isActive =
-              href === "/"
-                ? pathname === "/"
-                : Array.isArray(item.href)
-                  ? item.href.some((h) => pathname.startsWith(h))
-                  : pathname.startsWith(href + "/") || pathname === href;
+            const isActive = Array.isArray(item.href)
+              ? item.href.some((h) => pathname.startsWith(h))
+              : pathname === href ||
+                (pathname.startsWith(href + "/") && href !== "/dashboard");
 
             return (
               <li key={item.name}>

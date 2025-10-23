@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,41 +16,64 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { useAuth } from "@/contexts/auth-context";
-import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
+import { Loader2, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { authService } from "@/services/auth";
+import { toast } from "sonner";
 
-export function LoginForm() {
+const signupSchema = z.object({
+  first_name: z.string().min(2, "First name must be at least 2 characters"),
+  last_name: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
+
+export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState<string>("");
+  const [signupError, setSignupError] = useState<string>("");
   const router = useRouter();
-  const { login } = useAuth();
   const [isPending, setIsPending] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: SignupFormValues) => {
     try {
       setIsPending(true);
-      setLoginError("");
-      await login(data);
+      setSignupError("");
+
+      const response = await authService.register({
+        ...data,
+      });
+
+      if (response.data) {
+        toast.success("Account created successfully!");
+        // Tokens are already stored by authService.register
+        // Redirect to account page
+        setTimeout(() => {
+          router.push("/account");
+          router.refresh();
+        }, 100);
+      }
     } catch (error: any) {
       const errorMessage =
         error?.response?.data?.message ||
         error?.message ||
-        "Invalid email or password";
-      setLoginError(errorMessage);
+        "Failed to create account";
+      setSignupError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsPending(false);
     }
@@ -58,9 +82,10 @@ export function LoginForm() {
   return (
     <Card className="">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Bon retour!</CardTitle>
+        <CardTitle className="text-2xl">Créer un compte</CardTitle>
         <CardDescription>
-          Entrez vos identifiants pour accéder à votre compte.
+          Inscrivez-vous pour accéder aux tests d’entraînement
+          <br /> et suivre votre progression.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -69,7 +94,51 @@ export function LoginForm() {
           className="space-y-4"
           noValidate
         >
-          <p className="text-red-400 text-sm">{loginError}</p>
+          {signupError && <p className="text-red-400 text-sm">{signupError}</p>}
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="first_name" className="text-foreground">
+                Nom
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="first_name"
+                  type="text"
+                  placeholder="John"
+                  {...register("first_name")}
+                  className="pl-10 bg-card border-border text-foreground"
+                />
+              </div>
+              {errors.first_name && (
+                <p className="text-sm text-red-500">
+                  {errors.first_name.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="last_name" className="text-foreground">
+                Prenom
+              </Label>
+              <div className="relative">
+                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="last_name"
+                  type="text"
+                  placeholder="Doe"
+                  {...register("last_name")}
+                  className="pl-10 bg-card border-border text-foreground"
+                />
+              </div>
+              {errors.last_name && (
+                <p className="text-sm text-red-500">
+                  {errors.last_name.message}
+                </p>
+              )}
+            </div>
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-foreground">
@@ -80,7 +149,7 @@ export function LoginForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@pretpourtcf.ca"
+                placeholder="john.doe@example.com"
                 {...register("email")}
                 className="pl-10 bg-card border-border text-foreground"
               />
@@ -119,15 +188,6 @@ export function LoginForm() {
             )}
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <Link
-              href="/forgot-password"
-              className="text-primary hover:underline"
-            >
-              Mot de passe oublié?
-            </Link>
-          </div>
-
           <Button
             type="submit"
             className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
@@ -139,14 +199,14 @@ export function LoginForm() {
                 En cours...
               </>
             ) : (
-              "Se connecter"
+              "S’inscrire"
             )}
           </Button>
 
-          <p className="text-center text-sm text-muted-foreground mt-4">
-            Vous n’avez pas de compte?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
-              Inscrivez-vous
+          <p className="text-center text-sm text-muted-foreground">
+            Vous avez déjà un compte?{" "}
+            <Link href="/login" className="text-primary hover:underline">
+              Connectez-vous
             </Link>
           </p>
         </form>

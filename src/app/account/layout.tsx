@@ -3,15 +3,15 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import MainLayout from "@/layouts/main";
+import AccountLayoutComponent from "@/layouts/account";
 
-export default function DashboardLayout({
+export default function AccountLayoutWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { refreshUser, isAuthenticated } = useAuth();
+  const { user, refreshUser } = useAuth();
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -28,8 +28,14 @@ export default function DashboardLayout({
         console.error("Failed to fetch user profile:", error);
       });
     }
-  }, [router]);
+  }, [router, refreshUser]);
 
-  return <MainLayout>{children}</MainLayout>;
+  // Redirect admins and super_admins to dashboard
+  useEffect(() => {
+    if (user && (user.role === "admin" || user.role === "super_admin")) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
+  return <AccountLayoutComponent>{children}</AccountLayoutComponent>;
 }
-

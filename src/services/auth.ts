@@ -19,7 +19,34 @@ export interface ChangePasswordData {
   new_password: string;
 }
 
+export interface RegisterData {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  phone?: string;
+}
+
 export const authService = {
+  register: async (
+    data: RegisterData
+  ): Promise<BackendApiResponse<LoginResponse>> => {
+    const response = await apiClient.post<BackendApiResponse<LoginResponse>>(
+      API_ENDPOINTS.REGISTER,
+      data
+    );
+
+    if (response.data) {
+      localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
+      localStorage.setItem("user_data", JSON.stringify(response.data.user));
+
+      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
+    }
+
+    return response;
+  },
+
   login: async (
     credentials: LoginCredentials
   ): Promise<BackendApiResponse<LoginResponse>> => {

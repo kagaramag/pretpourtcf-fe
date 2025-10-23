@@ -209,10 +209,7 @@ function PracticesScreenContent() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Practice Management</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage TCF practice exams and questions
-          </p>
+          <h1 className="text-2xl font-bold">Practices</h1>
         </div>
         {canCreate && (
           <Button

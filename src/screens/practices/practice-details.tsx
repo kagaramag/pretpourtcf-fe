@@ -203,7 +203,7 @@ function PracticeDetailsContent() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Button
@@ -237,7 +237,7 @@ function PracticeDetailsContent() {
           <CardTitle>Practice Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Type</p>
               <Badge className={getTypeColor(practice.type)}>
@@ -281,12 +281,6 @@ function PracticeDetailsContent() {
               >
                 {practice.isActive ? "Active" : "Inactive"}
               </Badge>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Created</p>
-              <span className="text-sm font-medium">
-                {formatDate(practice.createdAt)}
-              </span>
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Actual Questions</p>

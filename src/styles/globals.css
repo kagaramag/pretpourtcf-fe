@@ -10,13 +10,13 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #E24242;
+  --primary: #4E56C0;
   --primary-foreground: oklch(1 0 0);
-  --secondary: #1c352d;
+  --secondary: #9B5DE0;
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent: #D78FEE;
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
@@ -121,6 +121,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: var(--font-fredoka), sans-serif;
   }
 }
 

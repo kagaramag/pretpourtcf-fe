@@ -98,20 +98,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (response.data) {
           const loggedInUser = response.data.user;
 
-          // Only allow super_admin and admin to access backoffice
-          if (
-            loggedInUser.role !== "super_admin" &&
-            loggedInUser.role !== "admin"
-          ) {
-            await authService.logout();
-            throw new Error(
-              "Access denied. Only administrators can access the backoffice."
-            );
-          }
-
           setUser(loggedInUser);
+
+          // Redirect based on role
           setTimeout(() => {
-            router.push("/dashboard");
+            if (loggedInUser.role === "client") {
+              router.push("/account");
+            } else if (loggedInUser.role === "super_admin" || loggedInUser.role === "admin") {
+              router.push("/dashboard");
+            }
             router.refresh();
           }, 100);
         }

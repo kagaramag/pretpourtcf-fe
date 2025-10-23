@@ -15,6 +15,11 @@ export const API_ENDPOINTS = {
   PROFILE: "/auth/profile",
   CHANGE_PASSWORD: "/auth/change-password",
 
+  // Auth
+  REGISTER: "/auth/register",
+  FORGOT_PASSWORD: "/auth/forgot-password",
+  RESET_PASSWORD: "/auth/reset-password",
+
   // Analytics
   ANALYTICS_OVERVIEW: "/analytics/overview",
   ANALYTICS_BY_AGENT: "/analytics/by-agent",

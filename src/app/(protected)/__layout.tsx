@@ -11,7 +11,7 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const hasFetched = useRef(false);
 
   useEffect(() => {
@@ -29,6 +29,13 @@ export default function ProtectedLayout({
       });
     }
   }, [router, refreshUser]);
+
+  // Redirect clients to account page
+  useEffect(() => {
+    if (user && user.role === "client") {
+      router.push("/account");
+    }
+  }, [user, router]);
 
   return <MainLayout>{children}</MainLayout>;
 }

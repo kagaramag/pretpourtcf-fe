@@ -7,7 +7,7 @@ export interface CreateUserData {
   last_name: string;
   email: string;
   phone?: string;
-  role: "admin" | "agent";
+  role: "admin" | "client";
 }
 
 export interface UpdateUserData {
@@ -15,7 +15,7 @@ export interface UpdateUserData {
   last_name?: string;
   email?: string;
   phone?: string;
-  role?: "admin" | "agent";
+  role?: "admin" | "client";
   status?: "active" | "inactive";
 }
 
