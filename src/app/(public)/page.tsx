@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Hero from "@/assets/images/hero-bg.svg";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Pret Pour TCF",
@@ -10,6 +12,16 @@ export default function IndexPage() {
   return (
     <>
       <div className="relative isolate px-6 pt-14 lg:px-8">
+        <div className="w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10">
+          <Image
+            src={Hero}
+            width={1200}
+            height={514}
+            priority
+            alt="logo"
+            className="w-[1200px] mx-auto"
+          />
+        </div>
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"

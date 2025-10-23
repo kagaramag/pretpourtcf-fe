@@ -1,7 +1,5 @@
 import { LoginForm } from "@/screens/auth/login";
 import type { Metadata } from "next";
-import Logo from "@/assets/images/logo.svg";
-import Image from "next/image";
 import AuthLayout from "@/layouts/auth";
 
 export const metadata: Metadata = {
