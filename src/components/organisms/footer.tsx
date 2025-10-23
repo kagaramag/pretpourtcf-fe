@@ -27,7 +27,7 @@ export default function Footer() {
           ))}
         </nav>
         <p className="mt-10 text-center text-sm/6 text-gray-600">
-          &copy; 2025 PretPourTCF LTd,Tous les droits sont réservés.
+          &copy; 2025 PretPourTCF LTD, Tous les droits sont réservés.
         </p>
       </div>
     </footer>

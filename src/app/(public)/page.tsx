@@ -7,6 +7,23 @@ export const metadata: Metadata = {
   title: "Pret Pour TCF",
   description: "Bienvenue à l'application Pret Pour TCF",
 };
+const features = [
+  {
+    name: "Créez un compte",
+    description:
+      "Inscrivez-vous en quelques clics pour accéder à votre espace personnel et sauvegarder vos progrès.",
+  },
+  {
+    name: "Choisissez un plan",
+    description:
+      "Sélectionnez l’abonnement qui correspond à votre objectif — que ce soit pour quelques jours de révision ou une préparation complète.",
+  },
+  {
+    name: "Commencez à vous entraîner",
+    description:
+      "Accédez immédiatement à vos tests et exercices. Pratiquez quand vous voulez, où que vous soyez.",
+  },
+];
 
 export default function IndexPage() {
   return (
@@ -74,13 +91,41 @@ export default function IndexPage() {
           />
         </div>
       </div>
-      <div className="bg-primary">
+      <div className="bg-linear-to-tr from-[#4E56C0] to-[#9089fc] py-24 sm:py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:mx-0">
+            <h2 className="text-4xl font-semibold tracking-tighter leading-14 text-pretty text-white sm:text-7xl">
+              Trois étapes simples <br /> pour commencer
+            </h2>
+            <p className="mt-6 text-lg/8 text-white leading-tight">
+              Préparer le TCF n’a jamais été aussi facile. En quelques minutes,
+              créez votre compte, choisissez un plan adapté à vos besoins et
+              commencez à progresser à votre rythme.
+            </p>
+          </div>
+          <div className="mx-auto mt-8 max-w-2xl sm:mt-20 lg:mt-6 lg:max-w-none">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+              {features.map((feature) => (
+                <div key={feature.name} className="flex flex-col bg-accent-foreground/70 p-6">
+                  <dt className="text-xl text-white">
+                    {feature.name}
+                  </dt>
+                  <dd className="mt-1 flex flex-auto flex-col text-base/7 text-white/80 leading-snug">
+                    <p className="flex-auto">{feature.description}</p>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div className="bg-accent-foreground">
         <div className="px-6 py-24 sm:py-32 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-4xl font-semibold tracking-tight text-balance text-white sm:text-6xl">
+          <div className="mx-auto max-w-5xl text-center">
+            <h2 className="text-4xl font-semibold tracking-tighter leading-14 text-balance text-white sm:text-7xl">
               Prêt à améliorer votre français?
             </h2>
-            <p className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-indigo-200">
+            <p className="mx-auto mt-6 max-w-xl text-lg/8 text-pretty text-white/80">
               Préparez-vous où que vous soyez, quand vous voulez.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
