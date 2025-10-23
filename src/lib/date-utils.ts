@@ -5,7 +5,7 @@ import moment from "moment";
  */
 export function formatDate(date: string | Date | undefined): string {
   if (!date) return "N/A";
-  return moment(date).format("Do MMM YYYY");
+  return moment(date).format("MMM DD, YYYY");
 }
 
 /**

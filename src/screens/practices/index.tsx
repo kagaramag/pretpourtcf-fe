@@ -51,6 +51,7 @@ import { PracticeFormDialog } from "@/components/practices/practice-form-dialog"
 import { formatDate } from "@/lib/date-utils";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS } from "@/config/permissions";
+import Link from "next/link";
 
 function PracticesScreenContent() {
   const router = useRouter();
@@ -309,13 +310,12 @@ function PracticesScreenContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Title</TableHead>
+                <TableHead className=" max-w-[200px]">Title</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Level</TableHead>
                 <TableHead>Duration</TableHead>
                 <TableHead>Questions</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -341,10 +341,12 @@ function PracticesScreenContent() {
               ) : (
                 practices.map((practice) => (
                   <TableRow key={practice._id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
+                    <TableCell className="max-w-[200px]">
+                      <div className="gap-2 truncate">
+                        <Link href={`/dashboard/practices/${practice._id}`} className="flex items-center gap-2">
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">{practice.title}</span>
+                        <span className="font-medium ">{practice.title}</span>
+                        </Link>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -387,7 +389,6 @@ function PracticesScreenContent() {
                         {practice.isActive ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>
-                    <TableCell>{formatDate(practice.createdAt)}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

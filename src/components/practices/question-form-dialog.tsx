@@ -137,7 +137,7 @@ export function QuestionFormDialog({
       });
 
       if (response.data) {
-        setFormData({ ...formData, audioUrl: response.data.url });
+        setFormData({ ...formData, audioUrl: response.data.filename });
         toast.success("Audio uploaded successfully");
       }
     } catch (error: any) {
@@ -176,7 +176,7 @@ export function QuestionFormDialog({
       });
 
       if (response.data) {
-        setFormData({ ...formData, imageUrl: response.data.url });
+        setFormData({ ...formData, imageUrl: response.data.filename });
         toast.success("Image uploaded successfully");
       }
     } catch (error: any) {
@@ -340,7 +340,7 @@ export function QuestionFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {mode === "create" ? "Create New Question" : "Edit Question"}

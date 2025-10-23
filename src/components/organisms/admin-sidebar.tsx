@@ -4,16 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Logo from "@/assets/images/logo.svg";
+import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import {
-  Home,
-  UserCog,
-  ClipboardList,
-  Menu,
-  X,
-  BookOpen,
-} from "lucide-react";
+import { Home, UserCog, ClipboardList, Menu, X, BookOpen } from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -81,16 +76,15 @@ export default function Sidebar() {
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {!isCollapsed && (
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">
-                A
-              </span>
-            </div>
-            <div>
-              <h1 className="text-sm font-bold text-foreground">Pret Pour TCF</h1>
-              <p className="text-xs text-muted-foreground">Backoffice</p>
-            </div>
+          <div className="mb-5 my-3 w-[280px] mx-auto hidden lg:block">
+            <Image
+              src={Logo}
+              width={280}
+              height={140}
+              priority
+              alt="logo"
+              className="w-[280px] mx-auto"
+            />
           </div>
         )}
         <button
@@ -116,8 +110,8 @@ export default function Sidebar() {
               href === "/"
                 ? pathname === "/"
                 : Array.isArray(item.href)
-                ? item.href.some((h) => pathname.startsWith(h))
-                : pathname.startsWith(href + "/") || pathname === href;
+                  ? item.href.some((h) => pathname.startsWith(h))
+                  : pathname.startsWith(href + "/") || pathname === href;
 
             return (
               <li key={item.name}>

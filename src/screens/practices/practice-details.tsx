@@ -23,13 +23,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   ArrowLeft,
   Plus,
   MoreVertical,
   Edit,
   Loader2,
   Trash2,
-  BookOpen,
   Clock,
   FileQuestion,
   Volume2,
@@ -43,6 +48,8 @@ import { QuestionFormDialog } from "@/components/practices/question-form-dialog"
 import { formatDate } from "@/lib/date-utils";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS } from "@/config/permissions";
+import { config } from "@/config";
+import AudioPlayer from "@/components/organisms/player";
 
 function PracticeDetailsContent() {
   const router = useRouter();
@@ -64,6 +71,9 @@ function PracticeDetailsContent() {
   const [questionFormDialog, setQuestionFormDialog] = useState(false);
   const [formMode, setFormMode] = useState<"create" | "edit">("create");
   const [selectedQuestion, setSelectedQuestion] =
+    useState<PracticeQuestion | null>(null);
+  const [previewDialog, setPreviewDialog] = useState(false);
+  const [previewQuestion, setPreviewQuestion] =
     useState<PracticeQuestion | null>(null);
 
   const [pagination, setPagination] = useState({
@@ -129,9 +139,7 @@ function PracticeDetailsContent() {
       fetchQuestions();
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Failed to delete question"
-      );
+      toast.error(error.response?.data?.message || "Failed to delete question");
     },
   });
 
@@ -207,9 +215,6 @@ function PracticeDetailsContent() {
         </Button>
         <div className="flex-1">
           <h1 className="text-3xl font-bold">{practice.title}</h1>
-          <p className="text-muted-foreground mt-1">
-            Practice exam details and questions
-          </p>
         </div>
         {canCreate && (
           <Button
@@ -236,8 +241,7 @@ function PracticeDetailsContent() {
             <div>
               <p className="text-sm text-muted-foreground">Type</p>
               <Badge className={getTypeColor(practice.type)}>
-                {practice.type.charAt(0).toUpperCase() +
-                  practice.type.slice(1)}
+                {practice.type.charAt(0).toUpperCase() + practice.type.slice(1)}
               </Badge>
             </div>
             <div>
@@ -254,7 +258,9 @@ function PracticeDetailsContent() {
               <p className="text-sm text-muted-foreground">Duration</p>
               <div className="flex items-center gap-1">
                 <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">{practice.durationMinutes} min</span>
+                <span className="font-medium">
+                  {practice.durationMinutes} min
+                </span>
               </div>
             </div>
             <div>
@@ -283,9 +289,7 @@ function PracticeDetailsContent() {
               </span>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">
-                Actual Questions
-              </p>
+              <p className="text-sm text-muted-foreground">Actual Questions</p>
               <span className="text-sm font-medium">{pagination.total}</span>
             </div>
           </div>
@@ -347,15 +351,13 @@ function PracticeDetailsContent() {
               ) : (
                 questions.map((question) => (
                   <TableRow key={question._id}>
-                    <TableCell className="font-medium">
-                      {question.number}
-                    </TableCell>
+                    <TableCell>{question.number}</TableCell>
                     <TableCell>
                       <Badge variant="outline">
                         {getQuestionTypeLabel(question.type)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="max-w-md">
+                    <TableCell className="max-w-[220px]">
                       <p className="truncate">{question.text}</p>
                       {question.tags && question.tags.length > 0 && (
                         <div className="flex gap-1 mt-1">
@@ -402,7 +404,7 @@ function PracticeDetailsContent() {
                           <div className="flex items-center gap-1">
                             <ImageIcon className="h-4 w-4 text-green-600" />
                             <a
-                              href={question.media.image}
+                              href={`${config.cloudFlarePublicUrl}${question.media.image}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-xs text-green-600 hover:underline"
@@ -413,47 +415,62 @@ function PracticeDetailsContent() {
                           </div>
                         )}
                         {!question.media?.audio && !question.media?.image && (
-                          <span className="text-muted-foreground text-sm">-</span>
+                          <span className="text-muted-foreground text-sm">
+                            -
+                          </span>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
+                    <TableCell>
+                      <div className="text-right flex items-center justify-end gap-2">
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            onClick={() => {
+                              setPreviewQuestion(question);
+                              setPreviewDialog(true);
+                            }}
+                          >
+                            Preview
                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          {canUpdate && (
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setSelectedQuestion(question);
-                                setFormMode("edit");
-                                setQuestionFormDialog(true);
-                              }}
-                            >
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Question
-                            </DropdownMenuItem>
-                          )}
-                          {canDelete && (
-                            <>
-                              <DropdownMenuSeparator />
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {canUpdate && (
                               <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={() => handleDeleteQuestion(question)}
-                                disabled={deleteQuestionMutation.isPending}
+                                onClick={() => {
+                                  setSelectedQuestion(question);
+                                  setFormMode("edit");
+                                  setQuestionFormDialog(true);
+                                }}
                               >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Delete Question
+                                <Edit className="mr-2 h-4 w-4" />
+                                Edit Question
                               </DropdownMenuItem>
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                            )}
+                            {canDelete && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="text-red-600"
+                                  onClick={() => handleDeleteQuestion(question)}
+                                  disabled={deleteQuestionMutation.isPending}
+                                >
+                                  <Trash2 className="mr-2 h-4 w-4" />
+                                  Delete Question
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))
@@ -506,6 +523,143 @@ function PracticeDetailsContent() {
         practice={practice}
         onSuccess={fetchQuestions}
       />
+
+      {/* Question Preview Dialog */}
+      <Dialog open={previewDialog} onOpenChange={setPreviewDialog}>
+        <DialogContent className="max-w-[700px] max-h-[600px] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Question Preview</DialogTitle>
+          </DialogHeader>
+          {previewQuestion && (
+            <div className="space-y-4">
+              {/* Question Number and Type */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">#{previewQuestion.number}</Badge>
+                  <Badge variant="outline">
+                    {getQuestionTypeLabel(previewQuestion.type)}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Score: {previewQuestion.score} pts
+                  </span>
+                </div>
+                {previewQuestion.difficulty && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      <span className="text-sm text-muted-foreground mb-1">
+                        Difficulty
+                      </span>{" "}
+                      <Badge
+                        className={getLevelColor(previewQuestion.difficulty)}
+                      >
+                        {previewQuestion.difficulty}
+                      </Badge>
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Question Text */}
+              <div>
+                <p className="text-sm text-muted-foreground">Question</p>
+                <p className="text-base">{previewQuestion.text}</p>
+              </div>
+
+              {/* Media */}
+              {(previewQuestion.media?.audio ||
+                previewQuestion.media?.image) && (
+                <div>
+                  <div className="space-y-2">
+                    {previewQuestion.media.image && (
+                      <div>
+                        <img
+                          src={`${config.cloudFlarePublicUrl}practices/images/${previewQuestion.media.image}`}
+                          alt="Question media"
+                          className="w-full rounded-md"
+                        />
+                      </div>
+                    )}
+                    {previewQuestion.media.audio && (
+                      <div className="flex items-center">
+                        <AudioPlayer
+                          src={`${config.cloudFlarePublicUrl}practices/audio/${previewQuestion.media.audio}`}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Options (for MCQ) */}
+              {previewQuestion.type === "mcq" &&
+                previewQuestion.options &&
+                previewQuestion.options.length > 0 && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Options</p>
+                    <div className="space-y-2">
+                      {previewQuestion.options.map((option, index) => (
+                        <div
+                          key={index}
+                          className={`p-3 border rounded-md ${
+                            previewQuestion.correct === index
+                              ? "bg-green-50 border-green-300"
+                              : ""
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-sm">
+                              {String.fromCharCode(65 + index)}.
+                            </span>
+                            <span>{option}</span>
+                            {previewQuestion.correct === index && (
+                              <Badge className="ml-auto bg-green-600">
+                                Correct Answer
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              {/* Tags */}
+              {previewQuestion.tags && previewQuestion.tags.length > 0 && (
+                <div>
+                  <p className="text-sm text-muted-foreground mb-2">Tags</p>
+                  <div className="flex flex-wrap gap-2">
+                    {previewQuestion.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Metadata */}
+              <div className="pt-4 border-t">
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="text-muted-foreground">Created</p>
+                    <p className="font-medium">
+                      {formatDate(previewQuestion.createdAt)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Last Updated</p>
+                    <p className="font-medium">
+                      {formatDate(previewQuestion.updatedAt)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

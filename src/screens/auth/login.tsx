@@ -56,7 +56,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="border-border shadow-lg">
+    <Card className="">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl text-center">Admin Sign in</CardTitle>
         <CardDescription className="text-center">
