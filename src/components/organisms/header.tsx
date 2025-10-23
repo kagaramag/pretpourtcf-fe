@@ -15,10 +15,10 @@ import Logo from "@/assets/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 const navigation = [
-  { name: "Accueil", href: "#" },
-  { name: "Formations", href: "#" },
-  { name: "Plans & Tarifs", href: "#" },
-  { name: "Contact-nous", href: "#" },
+  { name: "Accueil", href: "/" },
+  { name: "Formations", href: "/" },
+  { name: "Plans & Tarifs", href: "/" },
+  { name: "Contact-nous", href: "/" },
 ];
 
 export default function Header() {
@@ -52,13 +52,13 @@ export default function Header() {
         </div>
         <div className="hidden lg:flex lg:gap-x-3">
           {navigation.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="text-sm/6 text-gray-900"
             >
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="flex items-center justify-end h-16 px-6 gap-4">
