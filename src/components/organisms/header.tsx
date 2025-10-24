@@ -33,17 +33,17 @@ export default function Header() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center gap-6 py-2">
+      <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-2 px-4 sm:px-6">
         <div className="flex-1">
           <Link href="/">
-            <div className="w-[220px]">
+            <div className="w-[140px] sm:w-[180px] lg:w-[220px]">
               <Image
                 src={Logo}
                 width={220}
                 height={120}
                 priority
                 alt="logo"
-                className="w-[220px] mx-auto"
+                className="w-full mx-auto"
               />
             </div>
           </Link>
@@ -59,13 +59,13 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        <div className="flex items-center justify-end h-16 px-6 gap-4">
+        <div className="flex items-center justify-end h-16 px-2 sm:px-6 gap-2 sm:gap-4">
           {!isLoading && isAuthenticated && (
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger className="relative">
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                    <Bell className="h-5 w-5 text-gray-600" />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                    <Bell className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
                     <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
                   </div>
                 </DropdownMenuTrigger>
@@ -80,10 +80,10 @@ export default function Header() {
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="flex items-center gap-2 bg-gray-100 rounded-full pl-4 pr-1 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
-                    <span className="text-sm text-gray-600">{fullName}</span>
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      <User className="h-4 w-4 text-primary" />
+                  <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full pl-2 sm:pl-4 pr-1 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
+                    <span className="text-xs sm:text-sm text-gray-600 hidden sm:inline">{fullName}</span>
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </div>
                   </div>
                 </DropdownMenuTrigger>
@@ -128,16 +128,16 @@ export default function Header() {
             </>
           )}
           {!isLoading && !isAuthenticated && (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
               <Link
                 href="/login"
-                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-2.5 font-semibold text-sm text-white"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
                 Connexion
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-white px-6 py-2 font-semibold text-sm text-primary border-2 border-primary"
+                className="rounded-md bg-white px-3 sm:px-6 py-2 font-semibold text-xs sm:text-sm text-primary border-2 border-primary"
               >
                 Inscription
               </Link>

@@ -49,6 +49,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { hasPermission } = usePermissions();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     const sidebarCollapsed = localStorage.getItem("sidebar_collapsed");
@@ -63,32 +64,56 @@ export default function Sidebar() {
     localStorage.setItem("sidebar_collapsed", String(newState));
   };
 
+  const toggleMobileSidebar = () => {
+    setIsMobileOpen(!isMobileOpen);
+  };
+
   // Filter menu items based on permissions
   const visibleMenuItems = menuItems.filter((item) =>
     hasPermission(item.permission)
   );
 
   return (
-    <div
-      className={cn(
-        "flex flex-col h-screen bg-white border-r border-gray-200 transition-all duration-300",
-        isCollapsed ? "w-16" : "w-64"
+    <>
+      {/* Mobile menu button */}
+      <button
+        onClick={toggleMobileSidebar}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-gray-200"
+      >
+        {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+
+      {/* Mobile overlay */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={toggleMobileSidebar}
+        />
       )}
-    >
+
+      {/* Sidebar */}
+      <div
+        className={cn(
+          "flex flex-col h-screen bg-white border-r border-gray-200 transition-all duration-300",
+          "fixed lg:relative z-40 lg:z-0",
+          isCollapsed ? "w-16" : "w-64",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
+      >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         {!isCollapsed ? (
-          <div className="mb-5 my-3 w-[280px] mx-auto hidden lg:block">
+          <div className="mb-5 my-3 w-[200px] sm:w-[280px] mx-auto">
             <Image
               src={Logo}
               width={280}
               height={140}
               priority
               alt="logo"
-              className="w-[280px] mx-auto"
+              className="w-full mx-auto"
             />
           </div>
         ) : (
-          <div className="mb-5 my-3 w-[64px] mx-auto hidden lg:block">
+          <div className="mb-5 my-3 w-[64px] mx-auto">
             <Image
               src={Icon}
               width={64}
@@ -136,7 +161,7 @@ export default function Sidebar() {
         <button
           onClick={toggleSidebar}
           className={cn(
-            "p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors absolute bottom-2 right-3 cursor-pointer",
+            "p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors absolute bottom-2 right-3 cursor-pointer hidden lg:block",
             isCollapsed && "mx-auto"
           )}
         >
@@ -148,5 +173,6 @@ export default function Sidebar() {
         </button>
       </nav>
     </div>
+    </>
   );
 }

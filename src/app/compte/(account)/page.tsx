@@ -76,12 +76,12 @@ export default function AccountPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="rounded-lg border-2 border-dashed border-gray-300 p-12 text-center">
+              <div className="rounded-lg border-gray-300 text-center">
                 <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
                   Pratiques à venir
                 </h3>
-                <div className="max-w-4xl grid grid-cols-2 gap-4">
+                <div className="max-w-4xl grid lg:grid-cols-2 grid-cols-1 gap-4">
                   <Link
                     href="/compte/pratique/co"
                     className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
