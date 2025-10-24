@@ -9,7 +9,7 @@ import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import { Home, UserCog, ClipboardList, Menu, X, BookOpen } from "lucide-react";
+import { Home, User, ClipboardList, Menu, X, BookOpen, House, ReceiptText, BookA } from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -27,19 +27,19 @@ const menuItems: MenuItem[] = [
   },
   {
     name: "Practices",
-    icon: <BookOpen className="h-5 w-5" />,
+    icon: <BookA className="h-5 w-5" />,
     href: "/dashboard/practices",
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
     name: "Subscriptions",
-    icon: <ClipboardList className="h-5 w-5" />,
+    icon: <ReceiptText className="h-5 w-5" />,
     href: "/dashboard/subscriptions",
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {
     name: "Users",
-    icon: <UserCog className="h-5 w-5" />,
+    icon: <User className="h-5 w-5" />,
     href: "/dashboard/users",
     permission: PERMISSIONS.USERS_READ,
   },

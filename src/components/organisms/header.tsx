@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Bell, User, LogOut } from "lucide-react";
+import { Bell, User, LogOut, House, ReceiptText, BookA } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Image from "next/image";
@@ -29,9 +29,7 @@ export default function Header() {
     await logout();
   };
 
-  const fullName = user
-    ? `${user.first_name} ${user.last_name}`.trim()
-    : "User";
+  const fullName = user ? `${user.first_name}`.trim() : "User";
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
@@ -99,10 +97,24 @@ export default function Header() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push("/profile")}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>My Profile</span>
-                  </DropdownMenuItem>
+                  {user?.role === "client" && (
+                    <>
+                      <DropdownMenuItem onClick={() => router.push("/profile")}>
+                        <BookA className="mr-2 h-4 w-4" />
+                        <span>Practices</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => router.push("/profile")}>
+                        <ReceiptText className="mr-2 h-4 w-4" />
+                        <span>Subscriptions</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {user?.role === "admin" && (
+                    <DropdownMenuItem onClick={() => router.push("/profile")}>
+                      <House className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
@@ -113,8 +125,18 @@ export default function Header() {
           )}
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-2">
-              <Link href="/login" className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-2.5 font-semibold text-sm text-white">Connexion</Link>
-              <Link href="/signup" className="rounded-md bg-white px-6 py-2 font-semibold text-sm text-primary border-2 border-primary">Inscription</Link>
+              <Link
+                href="/login"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-2.5 font-semibold text-sm text-white"
+              >
+                Connexion
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-md bg-white px-6 py-2 font-semibold text-sm text-primary border-2 border-primary"
+              >
+                Inscription
+              </Link>
             </div>
           )}
         </div>
