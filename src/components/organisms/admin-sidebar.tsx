@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/images/logo.svg";
+import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
@@ -75,7 +76,7 @@ export default function Sidebar() {
       )}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        {!isCollapsed && (
+        {!isCollapsed ? (
           <div className="mb-5 my-3 w-[280px] mx-auto hidden lg:block">
             <Image
               src={Logo}
@@ -86,23 +87,21 @@ export default function Sidebar() {
               className="w-[280px] mx-auto"
             />
           </div>
+        ) : (
+          <div className="mb-5 my-3 w-[64px] mx-auto hidden lg:block">
+            <Image
+              src={Icon}
+              width={64}
+              height={64}
+              priority
+              alt="logo"
+              className="w-[64px] mx-auto"
+            />
+          </div>
         )}
-        <button
-          onClick={toggleSidebar}
-          className={cn(
-            "p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors",
-            isCollapsed && "mx-auto"
-          )}
-        >
-          {isCollapsed ? (
-            <Menu className="h-5 w-5" />
-          ) : (
-            <X className="h-5 w-5" />
-          )}
-        </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-4">
+      <nav className="flex-1 overflow-y-auto py-4 border relative">
         <ul className="space-y-1 px-2">
           {visibleMenuItems.map((item) => {
             const href = Array.isArray(item.href) ? item.href[0] : item.href;
@@ -133,6 +132,20 @@ export default function Sidebar() {
             );
           })}
         </ul>
+
+        <button
+          onClick={toggleSidebar}
+          className={cn(
+            "p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors absolute bottom-2 right-3 cursor-pointer",
+            isCollapsed && "mx-auto"
+          )}
+        >
+          {isCollapsed ? (
+            <Menu className="h-5 w-5" />
+          ) : (
+            <X className="h-5 w-5" />
+          )}
+        </button>
       </nav>
     </div>
   );

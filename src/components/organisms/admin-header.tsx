@@ -9,8 +9,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { Globe } from "lucide-react";
 import { Bell, User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
 export default function Header() {
   const router = useRouter();
@@ -26,7 +29,13 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-10 bg-white border-b border-gray-200">
-      <div className="flex items-center justify-end h-16 px-6 gap-4">
+      <div className="flex items-center justify-end h-16 px-6 gap-3">
+        <Link
+          href="/"
+          className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+        >
+          <Globe className="h-5 w-5 text-gray-600" />
+        </Link>
         <DropdownMenu>
           <DropdownMenuTrigger className="relative">
             <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">

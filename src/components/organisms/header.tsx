@@ -35,7 +35,7 @@ export default function Header() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center gap-6">
+      <div className="max-w-6xl mx-auto flex items-center gap-6 py-2">
         <div className="flex-1">
           <Link href="/">
             <div className="w-[220px]">
@@ -113,8 +113,8 @@ export default function Header() {
           )}
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-2">
-              <Link href="/login" className="rounded-md bg-primary px-4 py-2 font-semibold text-sm text-white border-2 border-primary">Connexion</Link>
-              <Link href="/signup" className="rounded-md bg-white px-4 py-2 font-semibold text-sm text-primary border-2 border-primary">Inscription</Link>
+              <Link href="/login" className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-2.5 font-semibold text-sm text-white">Connexion</Link>
+              <Link href="/signup" className="rounded-md bg-white px-6 py-2 font-semibold text-sm text-primary border-2 border-primary">Inscription</Link>
             </div>
           )}
         </div>

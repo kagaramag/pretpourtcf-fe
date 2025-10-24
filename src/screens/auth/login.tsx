@@ -130,7 +130,7 @@ export function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full bg-linear-to-tr from-[#4E56C0] to-[#9089fc] hover:bg-primary/90 text-primary-foreground"
             disabled={isPending}
           >
             {isPending ? (
@@ -139,7 +139,7 @@ export function LoginForm() {
                 En cours...
               </>
             ) : (
-              "Se connecter"
+              "Se connecters"
             )}
           </Button>
 

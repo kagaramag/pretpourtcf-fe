@@ -65,13 +65,13 @@ export default function IndexPage() {
             <div className="mt-1 flex items-center justify-center gap-x-2">
               <Link
                 href="/login"
-                className="rounded-md bg-primary px-4 py-2 font-semibold text-sm text-white border-2 border-primary"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
               >
                 Commencer maintenant
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-white px-4 py-2 font-semibold text-sm text-primary border-2 border-primary"
+                className="rounded-md bg-white px-6 py-3 font-semibold text-sm text-primary border-2 border-primary"
               >
                 Découvrir nos plans
               </Link>
@@ -131,7 +131,7 @@ export default function IndexPage() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/login"
-                className="rounded-md bg-white px-8 py-3 font-semibold text-secondary border-2 border-secondary"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-8 py-3 font-bold text-white"
               >
                 Inscrivez-vous maintenant
               </Link>
