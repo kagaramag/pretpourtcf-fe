@@ -79,7 +79,7 @@ export function DashboardOverview() {
                       2 hours ago
                     </p>
                   </div>
-                  <div className="ml-auto font-medium">+$1,999.00</div>
+                  <div className="ml-auto font-medium">+$6</div>
                 </div>
               ))}
             </div>

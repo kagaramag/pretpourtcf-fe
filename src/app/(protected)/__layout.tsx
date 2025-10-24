@@ -33,7 +33,7 @@ export default function ProtectedLayout({
   // Redirect clients to account page
   useEffect(() => {
     if (user && user.role === "client") {
-      router.push("/account");
+      router.push("/compte");
     }
   }, [user, router]);
 

@@ -11,16 +11,16 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">My Account</h1>
+        <h1 className="text-3xl font-bold">Mon compte</h1>
         <p className="text-muted-foreground">
-          Manage your profile and view your practice tests
+          Gérez votre profil et consultez vos tests d’entraînement
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="w-full">
         <Card>
           <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
+            <CardTitle>Informations du profil</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-3">
@@ -56,23 +56,6 @@ export default function AccountPage() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Button className="w-full" variant="outline">
-              View Practice Tests
-            </Button>
-            <Button className="w-full" variant="outline">
-              Update Profile
-            </Button>
-            <Button className="w-full" variant="outline">
-              Change Password
-            </Button>
           </CardContent>
         </Card>
       </div>

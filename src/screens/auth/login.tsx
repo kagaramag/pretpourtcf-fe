@@ -139,7 +139,7 @@ export function LoginForm() {
                 En cours...
               </>
             ) : (
-              "Se connecters"
+              "Se connecter"
             )}
           </Button>
 

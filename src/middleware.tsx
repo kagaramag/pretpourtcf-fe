@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   const isAuthOnlyRoute = authOnlyRoutes.some((route) => pathname === route);
 
   // Protected routes that require authentication
-  const protectedRoutes = ["/dashboard", "/account"];
+  const protectedRoutes = ["/dashboard", "/compte"];
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname === route || pathname.startsWith(route + "/")
   );

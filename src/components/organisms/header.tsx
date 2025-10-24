@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 const navigation = [
   { name: "Accueil", href: "/" },
-  { name: "Formations", href: "/" },
+  // { name: "Formations", href: "/" },
   { name: "Plans & Tarifs", href: "/" },
   { name: "Contact-nous", href: "/" },
 ];
@@ -99,18 +99,18 @@ export default function Header() {
                   <DropdownMenuSeparator />
                   {user?.role === "client" && (
                     <>
-                      <DropdownMenuItem onClick={() => router.push("/profile")}>
+                      <DropdownMenuItem onClick={() => router.push("/compte/practice")}>
                         <BookA className="mr-2 h-4 w-4" />
-                        <span>Practices</span>
+                        <span>Pratique</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => router.push("/profile")}>
+                      <DropdownMenuItem onClick={() => router.push("/compte/abonnements")}>
                         <ReceiptText className="mr-2 h-4 w-4" />
-                        <span>Subscriptions</span>
+                        <span>Abonnements</span>
                       </DropdownMenuItem>
                     </>
                   )}
                   {user?.role === "admin" && (
-                    <DropdownMenuItem onClick={() => router.push("/profile")}>
+                    <DropdownMenuItem onClick={() => router.push("/dashboard")}>
                       <House className="mr-2 h-4 w-4" />
                       <span>Dashboard</span>
                     </DropdownMenuItem>

@@ -1,8 +1,8 @@
 "use client";
 
 import { ReactNode } from "react";
-import Sidebar from "@/components/organisms/admin-sidebar";
 import Header from "@/components/organisms/header";
+import Footer from "@/components/organisms/footer";
 
 interface AccountLayoutProps {
   children: ReactNode;
@@ -10,9 +10,10 @@ interface AccountLayoutProps {
 
 export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
-    <div className="flex">
+    <div>
       <Header />
-      <main className="max-w-5xl w-full mx-auto py-16">{children}</main>
+      <main className="max-w-5xl w-full min-h-screen mx-auto py-16">{children}</main>
+      <Footer />
     </div>
   );
 }

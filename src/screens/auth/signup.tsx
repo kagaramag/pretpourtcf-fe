@@ -63,7 +63,7 @@ export function SignupForm() {
         // Tokens are already stored by authService.register
         // Redirect to account page
         setTimeout(() => {
-          router.push("/account");
+          router.push("/compte");
           router.refresh();
         }, 100);
       }
