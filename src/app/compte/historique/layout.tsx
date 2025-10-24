@@ -37,5 +37,5 @@ export default function AccountLayoutWrapper({
     }
   }, [user, router]);
 
-  return <div>{children}</div>;
+  return <AccountLayoutComponent>{children}</AccountLayoutComponent>;
 }

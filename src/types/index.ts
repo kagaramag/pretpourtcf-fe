@@ -1,3 +1,31 @@
+export type PlanType = "trial" | "premium";
+export type SubscriptionStatus = "active" | "expired" | "cancelled";
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  type: PlanType;
+  duration_days: number;
+  price: number;
+  description?: string;
+  features: string[];
+}
+
+export interface Subscription {
+  id: string;
+  plan: {
+    id: string;
+    name: string;
+    type: PlanType;
+    duration_days: number;
+    price: number;
+  };
+  status: SubscriptionStatus;
+  start_date: Date;
+  end_date: Date;
+  days_remaining: number;
+}
+
 export interface User {
   id: string;
   first_name: string;
@@ -8,6 +36,7 @@ export interface User {
   avatar?: string;
   status: "active" | "inactive";
   createdAt?: string;
+  subscription?: Subscription | null;
 }
 
 export interface BackendApiResponse<T> {
@@ -111,4 +140,80 @@ export interface PracticeQuestionsPaginatedResponse {
     hasNextPage: boolean;
     hasPrevPage: boolean;
   };
+}
+
+// Practice Session Types
+export type SessionStatus = "in_progress" | "completed" | "expired";
+export type SessionGrade = "excellent" | "good" | "needs_improvement";
+
+export interface SessionAnswer {
+  questionId: string;
+  questionNumber: number;
+  selectedAnswer: number;
+  isCorrect: boolean;
+  pointsEarned: number;
+  answeredAt: Date;
+}
+
+export interface PracticeSession {
+  _id: string;
+  userId: string;
+  practiceId: string | Practice;
+  startedAt: Date;
+  completedAt?: Date;
+  answers: SessionAnswer[];
+  totalScore: number;
+  maxPossibleScore: number;
+  percentageScore: number;
+  status: SessionStatus;
+  timeElapsedSeconds: number;
+  durationMinutes: number;
+  grade?: SessionGrade;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PracticeSessionsPaginatedResponse {
+  sessions: PracticeSession[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+export interface SessionResult {
+  _id: string;
+  totalScore: number;
+  maxPossibleScore: number;
+  percentageScore: number;
+  status: SessionStatus;
+  timeElapsedSeconds: number;
+  grade: SessionGrade;
+  message: string;
+  color: string;
+  completedAt: Date;
+}
+
+export interface SubmitAnswerResponse {
+  answer: {
+    questionNumber: number;
+    isCorrect: boolean;
+    pointsEarned: number;
+  };
+  currentScore: number;
+  answeredQuestions: number;
+  totalQuestions: number;
+  progressPercent: number;
+}
+
+export interface SessionStatistics {
+  totalSessions: number;
+  averageScore: number;
+  highestScore: number;
+  lowestScore: number;
+  totalTimeSeconds: number;
 }

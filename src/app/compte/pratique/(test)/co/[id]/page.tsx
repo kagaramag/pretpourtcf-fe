@@ -1,0 +1,820 @@
+"use client";
+
+import { useEffect, useState, useCallback, useRef } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import {
+  AlertCircle,
+  CheckCircle2,
+  Clock,
+  Headphones,
+  Trophy,
+  XCircle,
+  RotateCcw,
+  ChevronLeft,
+  Eye,
+} from "lucide-react";
+import { practiceService } from "@/services/practice";
+import { questionService } from "@/services/question";
+import { practiceSessionService } from "@/services/practice-session";
+import {
+  Practice,
+  PracticeQuestion,
+  PracticeSession,
+  SessionResult,
+} from "@/types";
+import { toast } from "sonner";
+import { config } from "@/config";
+import PracticeLayout from "@/layouts/practice";
+import Header from "@/components/organisms/header-practice";
+
+export default function PracticeSessionPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const params = useParams();
+  const practiceId = params.id as string;
+
+  const [practice, setPractice] = useState<Practice | null>(null);
+  const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
+  const [session, setSession] = useState<PracticeSession | null>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [sessionResult, setSessionResult] = useState<SessionResult | null>(
+    null
+  );
+  const [progressPercent, setProgressPercent] = useState(0);
+  const [retaking, setRetaking] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [questionsWithAnswers, setQuestionsWithAnswers] = useState<
+    Array<{
+      question: PracticeQuestion;
+      userAnswer: number | null;
+      correctAnswer: number;
+      isCorrect: boolean;
+    }>
+  >([]);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+
+  // Initialize practice session
+  useEffect(() => {
+    initializePractice();
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [practiceId]);
+
+  // Timer effect
+  useEffect(() => {
+    if (session && !sessionResult && practice) {
+      startTimeRef.current = Date.now();
+      const totalSeconds = practice.durationMinutes * 60;
+      setTimeRemaining(totalSeconds);
+
+      timerRef.current = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        setTimeElapsed(elapsed);
+        const remaining = totalSeconds - elapsed;
+        setTimeRemaining(remaining);
+
+        if (remaining <= 0) {
+          handleTimeExpired();
+        }
+      }, 1000);
+
+      return () => {
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+      };
+    }
+  }, [session, sessionResult, practice]);
+
+  const initializePractice = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch practice details
+      const practiceResponse =
+        await practiceService.getPracticeById(practiceId);
+      const practiceData = practiceResponse.data.practice;
+      setPractice(practiceData);
+
+      // Fetch questions
+      const questionsResponse = await questionService.getAllQuestions({
+        examId: practiceId,
+        sort: "number",
+        limit: 1000,
+      });
+      const questionsData = questionsResponse.data.questions;
+      setQuestions(questionsData);
+
+      // Check if there are no questions - don't start a session
+      if (questionsData.length === 0) {
+        toast.error("Aucune question disponible pour cet exercice");
+        setLoading(false);
+        return;
+      }
+
+      // Start or resume session
+      const sessionResponse = await practiceSessionService.startSession({
+        practiceId,
+      });
+      const sessionData = sessionResponse.data.session;
+      setSession(sessionData);
+
+      // If resuming with answers, cancel it and start fresh
+      // (Since we now store answers locally, we can't resume mid-session)
+      if (sessionData.answers.length > 0) {
+        try {
+          await practiceSessionService.cancelSession(sessionData._id);
+          toast.info("Session précédente annulée. Rechargement...");
+          // Reload to start fresh
+          window.location.reload();
+          return;
+        } catch (error) {
+          console.error("Error cancelling session:", error);
+          toast.error("Erreur lors de l'annulation de la session");
+          router.push("/compte/pratique/co");
+          return;
+        }
+      }
+    } catch (error: any) {
+      console.error("Error initializing practice:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors de l'initialisation"
+      );
+      router.push("/compte/pratique/co");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTimeExpired = async () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    toast.error("Temps écoulé! L'exercice va se terminer automatiquement.");
+
+    // Submit all answers that were completed and finish the session
+    await submitAllAnswersAndComplete();
+  };
+
+  const handleAnswerSelect = (optionIndex: number) => {
+    setSelectedAnswer(optionIndex);
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      const prevIndex = currentQuestionIndex - 1;
+      setCurrentQuestionIndex(prevIndex);
+
+      // Restore the previously selected answer for this question
+      const prevQuestion = questions[prevIndex];
+      const prevAnswer = userAnswers[prevQuestion.number];
+      setSelectedAnswer(prevAnswer !== undefined ? prevAnswer : null);
+    }
+  };
+
+  const handleSubmitAnswer = async () => {
+    if (selectedAnswer === null) {
+      toast.error("Veuillez sélectionner une réponse");
+      return;
+    }
+
+    if (!session || !questions[currentQuestionIndex]) return;
+
+    const currentQuestion = questions[currentQuestionIndex];
+
+    // Store answer locally
+    setUserAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.number]: selectedAnswer,
+    }));
+
+    // Update progress
+    const answeredCount = Object.keys(userAnswers).length + 1;
+    const newProgress = Math.round((answeredCount / questions.length) * 100);
+    setProgressPercent(newProgress);
+
+    // Move to next question or complete
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+    } else {
+      // All questions answered, submit to backend and complete session
+      await submitAllAnswersAndComplete();
+    }
+  };
+
+  const submitAllAnswersAndComplete = async () => {
+    if (!session) return;
+
+    try {
+      setSubmitting(true);
+
+      // Submit all answers in sequence
+      const allAnswers = { ...userAnswers };
+      // Add the last answer if it's not already in the state
+      if (selectedAnswer !== null) {
+        const currentQuestion = questions[currentQuestionIndex];
+        allAnswers[currentQuestion.number] = selectedAnswer;
+      }
+
+      // Submit each answer to backend
+      for (const question of questions) {
+        const answer = allAnswers[question.number];
+        if (answer !== undefined) {
+          await practiceSessionService.submitAnswer({
+            sessionId: session._id,
+            questionId: question._id,
+            questionNumber: question.number,
+            selectedAnswer: answer,
+          });
+        }
+      }
+
+      // Complete the session
+      await completeSession();
+    } catch (error: any) {
+      console.error("Error submitting answers:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la soumission"
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const completeSession = async () => {
+    if (!session) return;
+
+    try {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+      const response = await practiceSessionService.completeSession({
+        sessionId: session._id,
+        timeElapsedSeconds: timeElapsed,
+      });
+
+      const completedSession = response.data.session;
+      setSessionResult(completedSession);
+
+      // Prepare review data - combine questions with user answers and correct answers
+      const reviewData = questions.map((question) => {
+        const userAnswer = userAnswers[question.number];
+        const correctAnswer = question.correct ?? 0;
+        const isCorrect = userAnswer === correctAnswer;
+
+        return {
+          question,
+          userAnswer: userAnswer !== undefined ? userAnswer : null,
+          correctAnswer,
+          isCorrect,
+        };
+      });
+
+      setQuestionsWithAnswers(reviewData);
+    } catch (error: any) {
+      console.error("Error completing session:", error);
+      toast.error(
+        error.response?.data?.message ||
+          "Erreur lors de la finalisation de la session"
+      );
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(Math.abs(seconds) / 60);
+    const secs = Math.abs(seconds) % 60;
+    const sign = seconds < 0 ? "-" : "";
+    return `${sign}${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  const getResultColor = (grade: string) => {
+    switch (grade) {
+      case "excellent":
+        return "text-green-600 bg-green-50 border-green-200";
+      case "good":
+        return "text-orange-600 bg-orange-50 border-orange-200";
+      default:
+        return "text-red-600 bg-red-50 border-red-200";
+    }
+  };
+
+  const getResultIcon = (grade: string) => {
+    switch (grade) {
+      case "excellent":
+        return <Trophy className="h-16 w-16 text-green-600" />;
+      case "good":
+        return <CheckCircle2 className="h-16 w-16 text-orange-600" />;
+      default:
+        return <AlertCircle className="h-16 w-16 text-red-600" />;
+    }
+  };
+
+  const handleRetakeTest = () => {
+    try {
+      setRetaking(true);
+
+      // Clear timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+      toast.success("Rechargement de l'exercice...");
+
+      // Reload the page to start a fresh session
+      // When the page reloads, initializePractice() will call startSession()
+      // Since the current session is completed (not in-progress), the backend
+      // will automatically create a new session and the timer will restart
+      window.location.reload();
+    } catch (error: any) {
+      console.error("Error retaking test:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors du rechargement"
+      );
+      setRetaking(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <PracticeLayout>
+        <div className="container mx-auto p-6">
+          <div className="flex justify-center items-center py-12">
+            <p className="text-muted-foreground">
+              Chargement de l&apos;exercice...
+            </p>
+          </div>
+        </div>
+      </PracticeLayout>
+    );
+  }
+
+  if (!practice || !session) {
+    return (
+      <PracticeLayout>
+        <div className="container mx-auto p-6">
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <XCircle className="h-16 w-16 text-red-500 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">
+                Exercice introuvable
+              </h3>
+              <Button onClick={() => router.push("/compte/pratique/co")}>
+                Retour aux exercices
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </PracticeLayout>
+    );
+  }
+
+  // Show results
+  if (sessionResult) {
+    // Show review mode
+    if (showReview) {
+      return (
+        <PracticeLayout>
+          <div className="container mx-auto p-6 max-w-4xl">
+            <div className="mb-6">
+              <Button
+                onClick={() => setShowReview(false)}
+                variant="outline"
+                className="gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Retour au résumé
+              </Button>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Revue des réponses</CardTitle>
+                <CardDescription>
+                  Analysez vos réponses pour mieux comprendre vos erreurs
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {questionsWithAnswers.map((item, index) => (
+                  <Card
+                    key={item.question._id}
+                    className={`border-2 ${
+                      item.isCorrect
+                        ? "border-green-200 bg-green-50/50"
+                        : "border-red-200 bg-red-50/50"
+                    }`}
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg flex items-center gap-2">
+                            Question {item.question.number}
+                            {item.isCorrect ? (
+                              <CheckCircle2 className="h-5 w-5 text-green-600" />
+                            ) : (
+                              <XCircle className="h-5 w-5 text-red-600" />
+                            )}
+                          </CardTitle>
+                        </div>
+                        <div className="text-sm font-semibold">
+                          {item.isCorrect ? (
+                            <span className="text-green-600">Correct</span>
+                          ) : (
+                            <span className="text-red-600">Incorrect</span>
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {/* Question media */}
+                      {item.question.media?.image && (
+                        <div className="flex justify-center">
+                          <img
+                            src={`${config.cloudFlarePublicUrl}practices/images/${item.question.media.image}`}
+                            alt="Question"
+                            className="max-w-full h-auto rounded-lg"
+                          />
+                        </div>
+                      )}
+                      {item.question.media?.audio && (
+                        <audio
+                          controls
+                          className="w-full"
+                          src={`${config.cloudFlarePublicUrl}practices/audio/${item.question.media.audio}`}
+                        >
+                          Votre navigateur ne supporte pas l&apos;élément audio.
+                        </audio>
+                      )}
+
+                      {/* Question text */}
+                      <p className="text-sm font-medium">
+                        {item.question.text}
+                      </p>
+
+                      {/* Options */}
+                      <div className="space-y-2">
+                        {item.question.options?.map((option, optIndex) => {
+                          const isUserAnswer = item.userAnswer === optIndex;
+                          const isCorrectAnswer =
+                            item.correctAnswer === optIndex;
+
+                          return (
+                            <div
+                              key={optIndex}
+                              className={`p-3 rounded-lg border-2 ${
+                                isCorrectAnswer
+                                  ? "border-green-500 bg-green-50"
+                                  : isUserAnswer
+                                    ? "border-red-500 bg-red-50"
+                                    : "border-gray-200 bg-white"
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                    isCorrectAnswer
+                                      ? "border-green-600 bg-green-600"
+                                      : isUserAnswer
+                                        ? "border-red-600 bg-red-600"
+                                        : "border-gray-300"
+                                  }`}
+                                >
+                                  {(isCorrectAnswer || isUserAnswer) && (
+                                    <div className="w-3 h-3 rounded-full bg-white" />
+                                  )}
+                                </div>
+                                <span className="flex-1">{option}</span>
+                                {isCorrectAnswer && (
+                                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                                )}
+                                {isUserAnswer && !isCorrectAnswer && (
+                                  <XCircle className="h-5 w-5 text-red-600" />
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Explanation */}
+                      {!item.isCorrect && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                          <p className="text-sm text-blue-900">
+                            <strong>Bonne réponse:</strong>{" "}
+                            {item.question.options?.[item.correctAnswer]}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </PracticeLayout>
+      );
+    }
+
+    // Show summary
+    return (
+      <PracticeLayout>
+        <div className="container mx-auto p-6 max-w-4xl">
+          <Card className={`border-2 ${getResultColor(sessionResult.grade)}`}>
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                {getResultIcon(sessionResult.grade)}
+              </div>
+              <CardTitle className="text-3xl mb-2">
+                {sessionResult.message}
+              </CardTitle>
+              <CardDescription className="text-lg">
+                Exercice terminé
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">Score</p>
+                    <p className="text-3xl font-bold">
+                      {sessionResult.totalScore}/
+                      {sessionResult.maxPossibleScore}
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Pourcentage
+                    </p>
+                    <p className="text-3xl font-bold">
+                      {sessionResult.percentageScore}%
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">Temps</p>
+                    <p className="text-3xl font-bold">
+                      {formatTime(sessionResult.timeElapsedSeconds)}
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <Button
+                  onClick={() => setShowReview(true)}
+                  variant="default"
+                  size="lg"
+                  className="gap-2"
+                >
+                  <Eye className="h-4 w-4" />
+                  Voir les réponses
+                </Button>
+                <Button
+                  onClick={handleRetakeTest}
+                  disabled={retaking}
+                  variant="outline"
+                  size="lg"
+                  className="gap-2"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  {retaking ? "Rechargement..." : "Refaire l'exercice"}
+                </Button>
+                <Button
+                  onClick={() => router.push("/compte/pratique/co")}
+                  variant="outline"
+                  size="lg"
+                >
+                  Retour aux exercices
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </PracticeLayout>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+
+  if (!currentQuestion) {
+    return (
+      <PracticeLayout>
+        <div className="container mx-auto p-6">
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <AlertCircle className="h-16 w-16 text-yellow-500 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">
+                Aucune question disponible
+              </h3>
+              <Button onClick={() => router.push("/compte/pratique/co")}>
+                Retour aux exercices
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </PracticeLayout>
+    );
+  }
+
+  const onClose = async () => {
+    if (!session) {
+      router.push("/compte/pratique/co");
+      return;
+    }
+
+    try {
+      // Clear the timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+      // Cancel the session on the backend
+      await practiceSessionService.cancelSession(session._id);
+
+      // Reset all state
+      setSession(null);
+      setQuestions([]);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setUserAnswers({});
+      setTimeRemaining(0);
+      setTimeElapsed(0);
+      setSessionResult(null);
+      setProgressPercent(0);
+
+      toast.info("Session annulée");
+
+      // Navigate to the practice list page
+      router.push("/compte/pratique/co");
+    } catch (error: any) {
+      console.error("Error closing session:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la fermeture"
+      );
+      // Still navigate even if there's an error
+      router.push("/compte/pratique/co");
+    }
+  };
+
+  return (
+    <PracticeLayout>
+      <Header title={practice.title} onClose={onClose} />
+      <div className="container mx-auto p-6 max-w-3xl">
+        {/* Header with timer and progress */}
+        <div className="mb-6 flex  gap-6">
+          <div className="space-y-2 flex-1">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>
+                Question {currentQuestionIndex + 1} sur {questions.length}
+              </span>
+              <span>{progressPercent}% complété</span>
+            </div>
+            <Progress value={progressPercent} className="h-2" />
+          </div>
+          <div
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${
+              timeRemaining < 60
+                ? "bg-red-100 text-red-700"
+                : "bg-blue-100 text-blue-700"
+            }`}
+          >
+            <Clock className="h-4 w-4" />
+            <span className="font-mono font-bold">
+              {formatTime(timeRemaining)}
+            </span>
+          </div>
+        </div>
+
+        {/* Question Card */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-xl">
+              Question {currentQuestion.number}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Image if exists */}
+            {currentQuestion.media?.image && (
+              <div className="flex justify-center">
+                <img
+                  src={`${config.cloudFlarePublicUrl}practices/images/${currentQuestion.media.image}`}
+                  alt="Question"
+                  className="max-w-full h-auto rounded-lg"
+                />
+              </div>
+            )}
+            {/* Audio player if exists */}
+            {currentQuestion.media?.audio && (
+              <div>
+                <audio
+                  controls
+                  className="w-full"
+                  src={`${config.cloudFlarePublicUrl}practices/audio/${currentQuestion.media.audio}`}
+                >
+                  Votre navigateur ne supporte pas l&apos;élément audio.
+                </audio>
+              </div>
+            )}
+
+            {/* Question text */}
+            <div className="text-sm">{currentQuestion.text}</div>
+            {/* Answer options */}
+            {currentQuestion.options && currentQuestion.options.length > 0 && (
+              <div className="space-y-1">
+                {currentQuestion.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswerSelect(index)}
+                    disabled={submitting}
+                    className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
+                      selectedAnswer === index
+                        ? "border-primary bg-primary/10 shadow-md"
+                        : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
+                    } ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          selectedAnswer === index
+                            ? "border-primary bg-primary"
+                            : "border-gray-300"
+                        }`}
+                      >
+                        {selectedAnswer === index && (
+                          <div className="w-3 h-3 rounded-full bg-white" />
+                        )}
+                      </div>
+                      <span className="flex-1">{option}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+            {/* Navigation buttons */}
+            <div className="flex justify-between items-center gap-4">
+              <Button
+                onClick={handlePreviousQuestion}
+                disabled={currentQuestionIndex === 0 || submitting}
+                variant="outline"
+                size="lg"
+                className="gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Précédent
+              </Button>
+              <Button
+                onClick={handleSubmitAnswer}
+                disabled={selectedAnswer === null || submitting}
+                size="lg"
+                className="min-w-[200px]"
+              >
+                {submitting
+                  ? "Envoi en cours..."
+                  : currentQuestionIndex === questions.length - 1
+                    ? "Terminer l'exercice"
+                    : "Question suivante"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Info message */}
+        <div className="border-blue-200 bg-blue-100 px-4 py-3 rounded-lg text-sm text-blue-800 flex items-center gap-2 mt-4">
+          <AlertCircle className="h-4 w-4 flex-shrink-0" />
+          <span>
+            Vous pouvez revenir aux questions précédentes pour modifier vos
+            réponses avant de terminer l&apos;exercice.
+          </span>
+        </div>
+      </div>
+    </PracticeLayout>
+  );
+}

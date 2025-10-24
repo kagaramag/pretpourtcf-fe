@@ -99,6 +99,10 @@ export default function Header() {
                   <DropdownMenuSeparator />
                   {user?.role === "client" && (
                     <>
+                      <DropdownMenuItem onClick={() => router.push("/compte")}>
+                        <House className="mr-2 h-4 w-4" />
+                        <span>Mon compte</span>
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => router.push("/compte/practice")}>
                         <BookA className="mr-2 h-4 w-4" />
                         <span>Pratique</span>

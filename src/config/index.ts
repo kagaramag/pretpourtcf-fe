@@ -49,9 +49,23 @@ export const API_ENDPOINTS = {
   // Practices
   PRACTICES: "/practices",
   PRACTICE_DETAILS: "/practices/:id",
+  PRACTICE_QUESTIONS: "/practices/questions/all",
+
+  // Practice Sessions
+  PRACTICE_SESSIONS: "/practice-sessions",
+  START_SESSION: "/practice-sessions/start",
+  SUBMIT_ANSWER: "/practice-sessions/answer",
+  COMPLETE_SESSION: "/practice-sessions/complete",
+  SESSION_STATS: "/practice-sessions/stats/summary",
 
   // Upload
   UPLOAD_QUESTION_MEDIA: "/upload/question-media",
+
+  // Subscriptions
+  SUBSCRIPTION_PLANS: "/subscriptions/plans",
+  MY_SUBSCRIPTION: "/subscriptions/my-subscription",
+  SUBSCRIBE: "/subscriptions/subscribe",
+  CANCEL_SUBSCRIPTION: "/subscriptions/cancel",
 
   // Locations
   LOCATIONS: "/locations",
