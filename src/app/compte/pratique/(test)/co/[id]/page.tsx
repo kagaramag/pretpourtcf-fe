@@ -21,6 +21,7 @@ import {
   XCircle,
   RotateCcw,
   ChevronLeft,
+  ChevronRight,
   Eye,
 } from "lucide-react";
 import { practiceService } from "@/services/practice";
@@ -794,19 +795,20 @@ export default function PracticeSessionPage() {
                 className="gap-2"
               >
                 <ChevronLeft className="h-4 w-4" />
-                Précédent
+                Précédente
               </Button>
               <Button
                 onClick={handleSubmitAnswer}
                 disabled={selectedAnswer === null || submitting}
                 size="lg"
-                className="min-w-[200px]"
+                className="lg:min-w-[200px]"
               >
                 {submitting
                   ? "Envoi en cours..."
                   : currentQuestionIndex === questions.length - 1
                     ? "Terminer l'exercice"
-                    : "Question suivante"}
+                    : "Suivante"}
+                <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
