@@ -126,7 +126,7 @@ export default function Sidebar() {
         )}
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-4 border relative">
+      <nav className="flex-1 overflow-y-auto py-4 relative">
         <ul className="space-y-1 px-2">
           {visibleMenuItems.map((item) => {
             const href = Array.isArray(item.href) ? item.href[0] : item.href;
