@@ -12,7 +12,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
     <div>
       <Header />
-      <main className="max-w-5xl w-full min-h-screen mx-auto py-12 sm:py-16 px-4 sm:px-6 lg:px-8">{children}</main>
+      <main className="max-w-5xl w-full min-h-screen mx-auto py-12 sm:py-16 px-0 sm:px-6 lg:px-8">{children}</main>
       <Footer />
     </div>
   );

@@ -80,9 +80,9 @@ export function LoginForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@pretpourtcf.ca"
+                placeholder="Type your email..."
                 {...register("email")}
-                className="pl-10 bg-card border-border text-foreground"
+                className="pl-8 bg-card border-border text-foreground"
               />
             </div>
             {errors.email && (
@@ -98,9 +98,10 @@ export function LoginForm() {
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
+                placeholder="Type your password..."
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="pl-10 pr-10 bg-card border-border text-foreground"
+                className="pl-8 pr-10 bg-card border-border text-foreground"
               />
               <button
                 type="button"

@@ -39,26 +39,30 @@ export default function AccountPage() {
         {/* Subscription Status Banner */}
         <Card className="mb-6 border-blue-200 bg-blue-50">
           <CardContent>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">
-                  Abonnement actif
-                </p>
-                <p className="text-lg font-semibold">
-                  {user.subscription.plan.name}
-                </p>
+            <div className="flex items-center justify-between flex-col gap-4">
+              <div className="w-full flex-1 flex">
+                <div className="flex-1">
+                  <p className="text-sm text-muted-foreground">
+                    Abonnement actif
+                  </p>
+                  <p className="text-lg font-semibold">
+                    {user.subscription.plan.name}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">Expire dans</p>
+                  <p className="text-lg font-semibold text-blue-700">
+                    {user.subscription.days_remaining} jour(s)
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground">Expire dans</p>
-                <p className="text-lg font-semibold text-blue-700">
-                  {user.subscription.days_remaining} jour(s)
-                </p>
+              <div className="w-full">
+                <Link href="/compte/plans">
+                  <Button variant="outline" size="sm">
+                    Voir détails
+                  </Button>
+                </Link>
               </div>
-              <Link href="/compte/plans">
-                <Button variant="outline" size="sm">
-                  Voir détails
-                </Button>
-              </Link>
             </div>
           </CardContent>
         </Card>

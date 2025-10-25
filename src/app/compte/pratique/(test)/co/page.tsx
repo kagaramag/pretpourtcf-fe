@@ -79,8 +79,8 @@ export default function ListeningPracticePage() {
       <div className="container mx-auto p-6 max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <Headphones className="h-8 w-8 text-primary" />
-            <h1 className="text-3xl font-bold">Compréhension Orale (CO)</h1>
+            <Headphones className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />
+            <h1 className="lg:text-3xl text-xl font-bold">Compréhension Orale (CO)</h1>
           </div>
           <p className="text-muted-foreground">
             Choisissez un exercice d&apos;écoute pour pratiquer votre
