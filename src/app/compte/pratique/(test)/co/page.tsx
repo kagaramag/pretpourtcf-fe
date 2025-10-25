@@ -102,7 +102,7 @@ export default function ListeningPracticePage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {practices.map((practice) => (
               <Card
                 key={practice._id}
@@ -111,7 +111,7 @@ export default function ListeningPracticePage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                      <CardTitle className="group-hover:text-primary transition-colors">
                         {practice.title}
                       </CardTitle>
                       {practice.level && (
@@ -125,7 +125,7 @@ export default function ListeningPracticePage() {
                       )}
                     </div>
                   </div>
-                  <CardDescription className="flex items-center gap-2 text-sm mt-1">
+                  <CardDescription className="flex items-center gap-2 text-xs mt-1">
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
                       <span>{practice.durationMinutes} min</span>
@@ -138,7 +138,7 @@ export default function ListeningPracticePage() {
                 </CardHeader>
                 <CardContent>
                   <Link href={`/compte/pratique/co/${practice._id}`}>
-                    <Button className="w-full group-hover:bg-primary/90">
+                    <Button className="w-full group-hover:bg-primary/90" size="sm">
                       <Play className="h-4 w-4 mr-2" />
                       Commencer l&apos;exercice
                     </Button>
