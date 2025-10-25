@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Hero from "@/assets/images/hero-bg.svg";
 import Image from "next/image";
+import { NavigationLink } from "@/components/ui/navigation-link";
 
 export const metadata: Metadata = {
   title: "Pret Pour TCF",
@@ -63,18 +63,18 @@ export default function IndexPage() {
               votre test du premier coup
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-x-2 px-4">
-              <Link
+              <NavigationLink
                 href="/login"
                 className="w-full sm:w-auto rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-3.5 font-semibold text-sm text-white text-center"
               >
                 Commencer maintenant
-              </Link>
-              <Link
+              </NavigationLink>
+              <NavigationLink
                 href="/signup"
                 className="w-full sm:w-auto rounded-md bg-white px-6 py-3 font-semibold text-sm text-primary border-2 border-primary text-center"
               >
                 Découvrir nos plans
-              </Link>
+              </NavigationLink>
             </div>
           </div>
         </div>
@@ -129,12 +129,12 @@ export default function IndexPage() {
               Préparez-vous où que vous soyez, quand vous voulez.
             </p>
             <div className="mt-8 sm:mt-10 flex items-center justify-center gap-x-6 px-4">
-              <Link
+              <NavigationLink
                 href="/login"
                 className="w-full sm:w-auto rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 sm:px-8 py-3 font-bold text-sm sm:text-base text-white text-center"
               >
                 Inscrivez-vous maintenant
-              </Link>
+              </NavigationLink>
             </div>
           </div>
         </div>

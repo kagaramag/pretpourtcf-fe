@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NavigationLink } from "@/components/ui/navigation-link";
 import { Bell, User, LogOut, House, ReceiptText, BookA } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
@@ -81,7 +82,9 @@ export default function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full pl-2 sm:pl-4 pr-1 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
-                    <span className="text-xs sm:text-sm text-gray-600 hidden sm:inline">{fullName}</span>
+                    <span className="text-xs sm:text-sm text-gray-600 hidden sm:inline">
+                      {fullName}
+                    </span>
                     <div className="w-7 h-7 sm:w-8 sm:h-8 bg-primary/10 rounded-full flex items-center justify-center">
                       <User className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </div>
@@ -103,11 +106,15 @@ export default function Header() {
                         <House className="mr-2 h-4 w-4" />
                         <span>Mon compte</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => router.push("/compte/practice")}>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/compte/practice")}
+                      >
                         <BookA className="mr-2 h-4 w-4" />
                         <span>Pratique</span>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => router.push("/compte/abonnements")}>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/compte/abonnements")}
+                      >
                         <ReceiptText className="mr-2 h-4 w-4" />
                         <span>Abonnements</span>
                       </DropdownMenuItem>
@@ -129,18 +136,24 @@ export default function Header() {
           )}
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-1 sm:gap-2">
-              <Link
+              {/* <Link
                 href="/login"
                 className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
                 Connexion
-              </Link>
-              <Link
+              </Link> */}
+              <NavigationLink
+                href="/login"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
+              >
+                Connexion
+              </NavigationLink>
+              <NavigationLink
                 href="/signup"
-                className="rounded-md bg-white px-3 sm:px-6 py-2 font-semibold text-xs sm:text-sm text-primary border-2 border-primary"
+                className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
                 Inscription
-              </Link>
+              </NavigationLink>
             </div>
           )}
         </div>

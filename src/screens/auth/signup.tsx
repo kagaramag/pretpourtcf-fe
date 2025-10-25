@@ -106,7 +106,6 @@ export function SignupForm() {
                 <Input
                   id="first_name"
                   type="text"
-                  placeholder="John"
                   {...register("first_name")}
                   className="pl-10 bg-card border-border text-foreground"
                 />
@@ -127,7 +126,6 @@ export function SignupForm() {
                 <Input
                   id="last_name"
                   type="text"
-                  placeholder="Doe"
                   {...register("last_name")}
                   className="pl-10 bg-card border-border text-foreground"
                 />
@@ -149,7 +147,6 @@ export function SignupForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="john.doe@example.com"
                 {...register("email")}
                 className="pl-10 bg-card border-border text-foreground"
               />

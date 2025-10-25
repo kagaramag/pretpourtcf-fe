@@ -252,7 +252,6 @@ export function UserFormDialog({
                   onChange={(e) =>
                     setFormData({ ...formData, first_name: e.target.value })
                   }
-                  placeholder="John"
                   required
                 />
               </div>
@@ -267,7 +266,6 @@ export function UserFormDialog({
                   onChange={(e) =>
                     setFormData({ ...formData, last_name: e.target.value })
                   }
-                  placeholder="Doe"
                   required
                 />
               </div>
@@ -285,7 +283,6 @@ export function UserFormDialog({
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  placeholder="john.doe@example.com"
                   required
                 />
               </div>

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
-import Link from "next/link";
+import { NavigationLink } from "@/components/ui/navigation-link";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -137,12 +137,12 @@ export default function ListeningPracticePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Link href={`/compte/pratique/co/${practice._id}`}>
+                  <NavigationLink href={`/compte/pratique/co/${practice._id}`}>
                     <Button className="w-full group-hover:bg-primary/90" size="sm">
                       <Play className="h-4 w-4 mr-2" />
                       Commencer l&apos;exercice
                     </Button>
-                  </Link>
+                  </NavigationLink>
                 </CardContent>
               </Card>
             ))}
