@@ -88,7 +88,7 @@ function PracticesScreenContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 10,
+    limit: 40,
     total: 0,
     totalPages: 0,
     hasNextPage: false,
