@@ -107,6 +107,48 @@ export default function PracticeSessionPage() {
     }
   }, [session, sessionResult, practice]);
 
+
+  const onClose = async () => {
+    if (!session) {
+      router.push("/compte/pratique/co");
+      return;
+    }
+
+    try {
+      // Clear the timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+      // Cancel the session on the backend
+      await practiceSessionService.cancelSession(session._id);
+
+      // Reset all state
+      setSession(null);
+      setQuestions([]);
+      setCurrentQuestionIndex(0);
+      setSelectedAnswer(null);
+      setUserAnswers({});
+      setTimeRemaining(0);
+      setTimeElapsed(0);
+      setSessionResult(null);
+      setProgressPercent(0);
+
+      toast.info("Session annulée");
+
+      // Navigate to the practice list page
+      router.push("/compte/pratique/co");
+    } catch (error: any) {
+      console.error("Error closing session:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la fermeture"
+      );
+      // Still navigate even if there's an error
+      router.push("/compte/pratique/co");
+    }
+  };
+
+
   const initializePractice = async () => {
     try {
       setLoading(true);
@@ -363,6 +405,7 @@ export default function PracticeSessionPage() {
   if (loading) {
     return (
       <PracticeLayout>
+        <Header title="Chargement en cours, veuillez patienter" onClose={onClose} />
         <div className="container mx-auto p-6">
           <div className="flex justify-center items-center py-12">
             <p className="text-muted-foreground">
@@ -377,6 +420,7 @@ export default function PracticeSessionPage() {
   if (!practice || !session) {
     return (
       <PracticeLayout>
+        <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
@@ -543,6 +587,7 @@ export default function PracticeSessionPage() {
     // Show summary
     return (
       <PracticeLayout>
+        <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6 max-w-4xl">
           <Card className={`border-2 ${getResultColor(sessionResult.grade)}`}>
             <CardHeader className="text-center">
@@ -627,6 +672,7 @@ export default function PracticeSessionPage() {
   if (!currentQuestion) {
     return (
       <PracticeLayout>
+        <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
@@ -643,46 +689,6 @@ export default function PracticeSessionPage() {
       </PracticeLayout>
     );
   }
-
-  const onClose = async () => {
-    if (!session) {
-      router.push("/compte/pratique/co");
-      return;
-    }
-
-    try {
-      // Clear the timer
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-
-      // Cancel the session on the backend
-      await practiceSessionService.cancelSession(session._id);
-
-      // Reset all state
-      setSession(null);
-      setQuestions([]);
-      setCurrentQuestionIndex(0);
-      setSelectedAnswer(null);
-      setUserAnswers({});
-      setTimeRemaining(0);
-      setTimeElapsed(0);
-      setSessionResult(null);
-      setProgressPercent(0);
-
-      toast.info("Session annulée");
-
-      // Navigate to the practice list page
-      router.push("/compte/pratique/co");
-    } catch (error: any) {
-      console.error("Error closing session:", error);
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la fermeture"
-      );
-      // Still navigate even if there's an error
-      router.push("/compte/pratique/co");
-    }
-  };
 
   return (
     <PracticeLayout>
