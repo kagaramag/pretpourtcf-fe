@@ -1,33 +1,78 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DollarSign, Users, TrendingUp, Activity } from "lucide-react"
+import { BookOpen, FileQuestion, Users, CreditCard, Activity, CheckCircle2, Clock } from "lucide-react"
+import { useDashboardStats } from "@/hooks/useDashboard"
+import { Skeleton } from "@/components/ui/skeleton"
+import { formatDistanceToNow } from "date-fns"
 
 export function DashboardOverview() {
-  const stats = [
+  const { data: stats, isLoading, error } = useDashboardStats()
+
+  if (isLoading) {
+    return <DashboardSkeleton />
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <p className="text-center text-destructive">
+              Failed to load dashboard data. Please try again.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (!stats) {
+    return null
+  }
+
+  const mainStats = [
     {
-      title: "Total Revenue",
-      value: "$45,231",
-      change: "+20.1% from last month",
-      icon: DollarSign,
+      title: "Total Questions",
+      value: stats.totalQuestions.toLocaleString(),
+      change: "Across all practices",
+      icon: FileQuestion,
     },
     {
-      title: "Active Clients",
-      value: "2,350",
-      change: "+180 this month",
+      title: "Total Practices",
+      value: stats.totalPractices.toLocaleString(),
+      change: "Available for students",
+      icon: BookOpen,
+    },
+    {
+      title: "Active Subscriptions",
+      value: `${stats.subscriptions.active} / ${stats.subscriptions.total}`,
+      change: `${stats.subscriptions.total - stats.subscriptions.active} inactive`,
+      icon: CreditCard,
+    },
+    {
+      title: "Total Users",
+      value: stats.totalUsers.toLocaleString(),
+      change: "Registered users",
       icon: Users,
     },
+  ]
+
+  const sessionStats = [
     {
-      title: "Pending Payments",
-      value: "$12,234",
-      change: "15 payments pending",
+      label: "Total Sessions",
+      value: stats.practiceSessionInsights.total,
       icon: Activity,
     },
     {
-      title: "Follow-ups",
-      value: "24",
-      change: "8 high priority",
-      icon: TrendingUp,
+      label: "Completed",
+      value: stats.practiceSessionInsights.completed,
+      icon: CheckCircle2,
+    },
+    {
+      label: "In Progress",
+      value: stats.practiceSessionInsights.inProgress,
+      icon: Clock,
     },
   ]
 
@@ -36,12 +81,13 @@ export function DashboardOverview() {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <p className="text-muted-foreground">
-          Overview of your business performance
+          Overview of your platform performance
         </p>
       </div>
 
+      {/* Main Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => {
+        {mainStats.map((stat) => {
           const Icon = stat.icon
           return (
             <Card key={stat.title}>
@@ -63,23 +109,112 @@ export function DashboardOverview() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Recent Users Card */}
         <Card className="col-span-4">
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle>Recent Registered Users</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[1, 2, 3, 4, 5].map((item) => (
-                <div key={item} className="flex items-center">
-                  <div className="ml-4 space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      Payment received from Client #{item}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      2 hours ago
-                    </p>
+              {stats.recentUsers.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No users registered yet
+                </p>
+              ) : (
+                stats.recentUsers.map((user) => (
+                  <div key={user._id} className="flex items-center">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
+                      <Users className="h-4 w-4" />
+                    </div>
+                    <div className="ml-4 space-y-1 flex-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.first_name} {user.last_name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(user.createdAt), { addSuffix: true })}
+                    </div>
                   </div>
-                  <div className="ml-auto font-medium">+$6</div>
+                ))
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Practice Session Insights Card */}
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Practice Session Insights</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {sessionStats.map((stat) => {
+              const Icon = stat.icon
+              return (
+                <div key={stat.label} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">{stat.label}</span>
+                  </div>
+                  <span className="text-2xl font-bold">{stat.value}</span>
+                </div>
+              )
+            })}
+            <div className="pt-4 border-t">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Average Score</span>
+                <span className="text-2xl font-bold text-primary">
+                  {stats.practiceSessionInsights.averageScore}%
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <Skeleton className="h-9 w-48" />
+        <Skeleton className="h-5 w-64 mt-2" />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <Card key={i}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-4 rounded" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-4 w-32 mt-1" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
+          <CardHeader>
+            <Skeleton className="h-6 w-48" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="flex items-center">
+                  <Skeleton className="h-9 w-9 rounded-full" />
+                  <div className="ml-4 space-y-2 flex-1">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-3 w-48" />
+                  </div>
+                  <Skeleton className="h-3 w-16" />
                 </div>
               ))}
             </div>
@@ -88,21 +223,17 @@ export function DashboardOverview() {
 
         <Card className="col-span-3">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <Skeleton className="h-6 w-48" />
           </CardHeader>
-          <CardContent className="space-y-2">
-            <button className="w-full text-left px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
-              <p className="font-medium">Add New Client</p>
-              <p className="text-sm text-muted-foreground">Create a new client profile</p>
-            </button>
-            <button className="w-full text-left px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
-              <p className="font-medium">Record Payment</p>
-              <p className="text-sm text-muted-foreground">Log a new payment</p>
-            </button>
-            <button className="w-full text-left px-4 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors">
-              <p className="font-medium">Schedule Follow-up</p>
-              <p className="text-sm text-muted-foreground">Create a follow-up task</p>
-            </button>
+          <CardContent>
+            <div className="space-y-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-12" />
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
