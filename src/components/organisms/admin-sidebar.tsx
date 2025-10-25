@@ -9,7 +9,7 @@ import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import { Home, User, ClipboardList, Menu, X, BookOpen, House, ReceiptText, BookA } from "lucide-react";
+import { Home, User, ArrowLeftToLine, ArrowRightToLine, Menu, X, ReceiptText, BookA } from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -166,9 +166,9 @@ export default function Sidebar() {
           )}
         >
           {isCollapsed ? (
-            <Menu className="h-5 w-5" />
+            <ArrowRightToLine className="h-5 w-5" />
           ) : (
-            <X className="h-5 w-5" />
+            <ArrowLeftToLine className="h-5 w-5" />
           )}
         </button>
       </nav>

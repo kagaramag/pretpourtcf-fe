@@ -13,7 +13,6 @@ import Link from "next/link";
 import { Globe } from "lucide-react";
 import { Bell, User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 
 export default function Header() {
   const router = useRouter();
