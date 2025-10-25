@@ -94,7 +94,7 @@ export function DashboardOverview() {
       </div>
 
       {/* Main Stats Cards */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
         <div className="flex-1 flex gap-3 flex-col">
           <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-2">
             {mainStats.map((stat) => {
@@ -153,7 +153,7 @@ export function DashboardOverview() {
             </Card>
           </div>
         </div>
-        <div className="w-[420px]">
+        <div className="w-full  md:max-w-[350px] lg:max-w-[420px]">
           <Card className="col-span-4">
             <CardHeader>
               <CardTitle>Recent users</CardTitle>
