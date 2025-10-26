@@ -17,6 +17,7 @@ import {
   ChangePasswordData,
 } from "@/services/auth";
 import { toast } from "sonner";
+import { socketService } from "@/lib/socket";
 
 interface AuthContextType {
   user: User | null;
@@ -64,6 +65,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     initAuth();
   }, []);
+
+  // Initialize socket connection when user is authenticated
+  useEffect(() => {
+    if (user) {
+      const token = authService.getToken();
+      if (token) {
+        console.log("[AUTH] Initializing socket connection for user:", user.id);
+        socketService.connect(token);
+      }
+    } else {
+      // Disconnect socket when user logs out
+      console.log("[AUTH] Disconnecting socket");
+      socketService.disconnect();
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (!user) {
+        socketService.disconnect();
+      }
+    };
+  }, [user]);
 
   const logout = useCallback(async () => {
     try {
