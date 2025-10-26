@@ -8,12 +8,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { CheckoutDialog } from "@/components/subscription/checkout-dialog";
 
 export default function PlansPage() {
   const { user, refreshUser } = useAuth();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
-  const [subscribing, setSubscribing] = useState<string | null>(null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
 
   useEffect(() => {
     loadPlans();
@@ -34,21 +36,13 @@ export default function PlansPage() {
     }
   };
 
-  const handleSubscribe = async (planId: string) => {
-    try {
-      setSubscribing(planId);
-      await subscriptionService.subscribeToPlan({ plan_id: planId });
-      toast.success("Abonnement activé avec succès!");
-      await refreshUser();
-    } catch (error: any) {
-      console.error("Failed to subscribe:", error);
-      toast.error(
-        error?.response?.data?.message ||
-          "Impossible de souscrire à ce plan. Veuillez réessayer."
-      );
-    } finally {
-      setSubscribing(null);
-    }
+  const handleSelectPlan = (plan: SubscriptionPlan) => {
+    setSelectedPlan(plan);
+    setCheckoutOpen(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    await refreshUser();
   };
 
   // If user has an active subscription, show subscription details
@@ -86,7 +80,11 @@ export default function PlansPage() {
                   <p className="text-lg font-semibold">
                     {subscription.plan.price === 0
                       ? "Gratuit"
-                      : `${subscription.plan.price}$`}
+                      : `${new Intl.NumberFormat("fr-RW", {
+                          style: "currency",
+                          currency: "RWF",
+                          minimumFractionDigits: 0,
+                        }).format(subscription.plan.price)}`}
                   </p>
                 </div>
                 <div>
@@ -185,7 +183,13 @@ export default function PlansPage() {
               <CardContent>
                 <div className="mb-6">
                   <span className="text-4xl font-bold">
-                    {plan.price === 0 ? "Gratuit" : `${plan.price}$`}
+                    {plan.price === 0
+                      ? "Gratuit"
+                      : new Intl.NumberFormat("fr-RW", {
+                          style: "currency",
+                          currency: "RWF",
+                          minimumFractionDigits: 0,
+                        }).format(plan.price)}
                   </span>
                   <span className="text-muted-foreground ml-2">
                     / {plan.duration_days} jours
@@ -202,25 +206,25 @@ export default function PlansPage() {
               </CardContent>
               <CardFooter>
                 <Button
-                  onClick={() => handleSubscribe(plan.id)}
-                  disabled={subscribing !== null}
+                  onClick={() => handleSelectPlan(plan)}
                   className="w-full"
                   variant={plan.type === "premium" ? "default" : "outline"}
                 >
-                  {subscribing === plan.id ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Activation...
-                    </>
-                  ) : (
-                    "S'abonner"
-                  )}
+                  Choisir ce plan
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
       )}
+
+      {/* Checkout Dialog */}
+      <CheckoutDialog
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        plan={selectedPlan}
+        onSuccess={handlePaymentSuccess}
+      />
     </div>
   );
 }
