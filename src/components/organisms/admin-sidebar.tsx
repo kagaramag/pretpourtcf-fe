@@ -38,6 +38,12 @@ const menuItems: MenuItem[] = [
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {
+    name: "Transactions",
+    icon: <ReceiptText className="h-5 w-5" />,
+    href: "/dashboard/transactions",
+    permission: PERMISSIONS.TRANSACTION_READ,
+  },
+  {
     name: "Users",
     icon: <User className="h-5 w-5" />,
     href: "/dashboard/users",

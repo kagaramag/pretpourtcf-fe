@@ -7,6 +7,7 @@ enum Features {
   FOLLOWUPS = "Followups",
   ANALYTICS = "Analytics",
   PRACTICES = "Practices",
+  TRANSACTIONS = "Transactions",
 }
 
 type PermissionsMap = {
@@ -57,6 +58,8 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.PRACTICES_CREATE,
     PERMISSIONS.PRACTICES_UPDATE,
     PERMISSIONS.PRACTICES_DELETE,
+    // Practices management
+    PERMISSIONS.TRANSACTION_READ,
     // Analytics
     PERMISSIONS.ANALYTICS_READ,
     // Dashboard & Profile

@@ -22,6 +22,7 @@ export interface InitiatePaymentResponse {
 export interface Transaction {
   id: string;
   refid: string;
+  kpay_tid?: string;
   amount: number;
   currency: string;
   status: string;
@@ -33,6 +34,13 @@ export interface Transaction {
     type: string;
     duration_days: number;
     price: number;
+  };
+  user?: {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone?: string;
   };
   created_at: string;
 }
@@ -76,6 +84,19 @@ class PaymentService {
       {
         params: { page, limit },
       }
+    );
+    return response.data!;
+  }
+
+  async getAllTransactions(params: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+  }): Promise<TransactionsResponse> {
+    const response = await apiClient.get<BackendApiResponse<TransactionsResponse>>(
+      "/payments/transactions/all/admin",
+      { params }
     );
     return response.data!;
   }
