@@ -1,4 +1,5 @@
-import api from "./api";
+import { apiClient } from "@/lib/api-client";
+import { BackendApiResponse } from "@/types";
 
 export interface InitiatePaymentRequest {
   plan_id: string;
@@ -52,23 +53,31 @@ class PaymentService {
   async initiatePayment(
     data: InitiatePaymentRequest
   ): Promise<InitiatePaymentResponse> {
-    const response = await api.post("/payments/initiate", data);
-    return response.data.data;
+    const response = await apiClient.post<BackendApiResponse<InitiatePaymentResponse>>(
+      "/payments/initiate",
+      data
+    );
+    return response.data!;
   }
 
   async checkTransactionStatus(transactionId: string): Promise<Transaction> {
-    const response = await api.get(`/payments/transactions/${transactionId}`);
-    return response.data.data.transaction;
+    const response = await apiClient.get<BackendApiResponse<{ transaction: Transaction }>>(
+      `/payments/transactions/${transactionId}`
+    );
+    return response.data!.transaction;
   }
 
   async getMyTransactions(
     page: number = 1,
     limit: number = 10
   ): Promise<TransactionsResponse> {
-    const response = await api.get("/payments/transactions", {
-      params: { page, limit },
-    });
-    return response.data.data;
+    const response = await apiClient.get<BackendApiResponse<TransactionsResponse>>(
+      "/payments/transactions",
+      {
+        params: { page, limit },
+      }
+    );
+    return response.data!;
   }
 }
 
