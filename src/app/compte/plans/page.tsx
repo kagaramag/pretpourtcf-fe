@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { paymentService } from "@/services/payment";
@@ -12,17 +12,12 @@ import { toast } from "sonner";
 import { CheckoutDialog } from "@/components/subscription/checkout-dialog";
 import { useSearchParams } from "next/navigation";
 
-export default function PlansPage() {
-  const { user, refreshUser } = useAuth();
+// Separate component for handling search params
+function PaymentCallbackHandler({ onPaymentCheck }: { onPaymentCheck: (checking: boolean) => void }) {
   const searchParams = useSearchParams();
-  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
-  const [checkingPayment, setCheckingPayment] = useState(false);
+  const { refreshUser } = useAuth();
 
   useEffect(() => {
-    loadPlans();
     handlePaymentCallback();
   }, []);
 
@@ -31,7 +26,7 @@ export default function PlansPage() {
     const transactionId = searchParams.get("transaction_id");
 
     if (paymentStatus === "success") {
-      setCheckingPayment(true);
+      onPaymentCheck(true);
       toast.loading("Vérification du paiement...");
 
       try {
@@ -75,7 +70,7 @@ export default function PlansPage() {
         toast.dismiss();
         toast.warning("Impossible de vérifier le statut du paiement. Veuillez rafraîchir la page.");
       } finally {
-        setCheckingPayment(false);
+        onPaymentCheck(false);
       }
     }
   };
@@ -111,6 +106,21 @@ export default function PlansPage() {
       }
     }, 10000); // Poll every 10 seconds
   };
+
+  return null;
+}
+
+function PlansPageContent() {
+  const { user, refreshUser } = useAuth();
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
+  const [checkingPayment, setCheckingPayment] = useState(false);
+
+  useEffect(() => {
+    loadPlans();
+  }, []);
 
   const loadPlans = async () => {
     try {
@@ -319,6 +329,24 @@ export default function PlansPage() {
         plan={selectedPlan}
         onSuccess={handlePaymentSuccess}
       />
+
+      {/* Payment callback handler wrapped in Suspense */}
+      <Suspense fallback={null}>
+        <PaymentCallbackHandler onPaymentCheck={setCheckingPayment} />
+      </Suspense>
     </div>
+  );
+}
+
+// Main page component wrapper
+export default function PlansPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <PlansPageContent />
+    </Suspense>
   );
 }
