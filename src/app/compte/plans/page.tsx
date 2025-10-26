@@ -3,23 +3,114 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
+import { paymentService } from "@/services/payment";
 import { SubscriptionPlan } from "@/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CheckoutDialog } from "@/components/subscription/checkout-dialog";
+import { useSearchParams } from "next/navigation";
 
 export default function PlansPage() {
   const { user, refreshUser } = useAuth();
+  const searchParams = useSearchParams();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
+  const [checkingPayment, setCheckingPayment] = useState(false);
 
   useEffect(() => {
     loadPlans();
+    handlePaymentCallback();
   }, []);
+
+  const handlePaymentCallback = async () => {
+    const paymentStatus = searchParams.get("payment");
+    const transactionId = searchParams.get("transaction_id");
+
+    if (paymentStatus === "success") {
+      setCheckingPayment(true);
+      toast.loading("Vérification du paiement...");
+
+      try {
+        // Get user's recent transactions to find the pending one
+        const transactionsData = await paymentService.getMyTransactions(1, 5);
+
+        // Find the most recent pending or successful transaction
+        const recentTransaction = transactionsData.transactions.find(
+          (t) => t.status === "pending" || t.status === "successful"
+        );
+
+        if (recentTransaction) {
+          // Check the transaction status
+          const transaction = await paymentService.checkTransactionStatus(recentTransaction.id);
+
+          if (transaction.status === "successful") {
+            toast.dismiss();
+            toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
+            await refreshUser();
+            // Remove query params from URL
+            window.history.replaceState({}, "", "/compte/plans");
+          } else if (transaction.status === "failed") {
+            toast.dismiss();
+            toast.error("Le paiement a échoué. Veuillez réessayer.");
+            window.history.replaceState({}, "", "/compte/plans");
+          } else {
+            // Still pending - poll for status
+            toast.dismiss();
+            toast.info("Paiement en cours de traitement...");
+            pollForPaymentStatus(recentTransaction.id);
+          }
+        } else {
+          toast.dismiss();
+          toast.info("Vérification du paiement. Veuillez patienter...");
+          // Refresh user to check if subscription was created
+          await refreshUser();
+          window.history.replaceState({}, "", "/compte/plans");
+        }
+      } catch (error) {
+        console.error("Error checking payment:", error);
+        toast.dismiss();
+        toast.warning("Impossible de vérifier le statut du paiement. Veuillez rafraîchir la page.");
+      } finally {
+        setCheckingPayment(false);
+      }
+    }
+  };
+
+  const pollForPaymentStatus = async (transactionId: string, attempts = 0) => {
+    const maxAttempts = 20; // Poll for ~3 minutes (20 * 10 seconds)
+
+    if (attempts >= maxAttempts) {
+      toast.warning("Le paiement prend plus de temps que prévu. Veuillez vérifier votre historique des transactions.");
+      window.history.replaceState({}, "", "/compte/plans");
+      return;
+    }
+
+    setTimeout(async () => {
+      try {
+        const transaction = await paymentService.checkTransactionStatus(transactionId);
+
+        if (transaction.status === "successful") {
+          toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
+          await refreshUser();
+          window.history.replaceState({}, "", "/compte/plans");
+        } else if (transaction.status === "failed") {
+          toast.error("Le paiement a échoué. Veuillez réessayer.");
+          window.history.replaceState({}, "", "/compte/plans");
+        } else {
+          // Still pending, continue polling
+          pollForPaymentStatus(transactionId, attempts + 1);
+        }
+      } catch (error) {
+        console.error("Error polling payment status:", error);
+        // Stop polling on error
+        window.history.replaceState({}, "", "/compte/plans");
+      }
+    }, 10000); // Poll every 10 seconds
+  };
 
   const loadPlans = async () => {
     try {
@@ -153,9 +244,12 @@ export default function PlansPage() {
         </p>
       </div>
 
-      {loading ? (
+      {loading || checkingPayment ? (
         <div className="flex justify-center items-center py-12">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          {checkingPayment && (
+            <p className="ml-3 text-muted-foreground">Vérification du paiement...</p>
+          )}
         </div>
       ) : plans.length === 0 ? (
         <div className="text-center py-12">
