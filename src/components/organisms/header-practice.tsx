@@ -1,20 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/icon.svg";
 import Image from "next/image";
-import Link from "next/link";
 const navigation = [
   { name: "Accueil", href: "/" },
   // { name: "Formations", href: "/" },

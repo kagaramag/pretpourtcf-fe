@@ -56,6 +56,7 @@ export const API_ENDPOINTS = {
   START_SESSION: "/practice-sessions/start",
   SUBMIT_ANSWER: "/practice-sessions/answer",
   COMPLETE_SESSION: "/practice-sessions/complete",
+  BULK_SUBMIT_COMPLETE: "/practice-sessions/bulk-submit-complete",
   SESSION_STATS: "/practice-sessions/stats/summary",
 
   // Upload

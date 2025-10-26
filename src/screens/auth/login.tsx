@@ -80,7 +80,6 @@ export function LoginForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="Type your email..."
                 {...register("email")}
                 className="pl-8 bg-card border-border text-foreground"
               />
@@ -98,7 +97,6 @@ export function LoginForm() {
               <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
-                placeholder="Type your password..."
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 className="pl-8 pr-10 bg-card border-border text-foreground"
@@ -130,6 +128,7 @@ export function LoginForm() {
           </div>
 
           <Button
+            size={"lg"}
             type="submit"
             className="w-full bg-linear-to-tr from-[#4E56C0] to-[#9089fc] hover:bg-primary/90 text-primary-foreground"
             disabled={isPending}

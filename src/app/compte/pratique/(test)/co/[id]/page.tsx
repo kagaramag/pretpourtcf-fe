@@ -108,7 +108,6 @@ export default function PracticeSessionPage() {
     }
   }, [session, sessionResult, practice]);
 
-
   const onClose = async () => {
     if (!session) {
       router.push("/compte/pratique/co");
@@ -143,7 +142,6 @@ export default function PracticeSessionPage() {
       router.push("/compte/pratique/co");
     }
   };
-
 
   const initializePractice = async () => {
     try {
@@ -269,7 +267,7 @@ export default function PracticeSessionPage() {
     try {
       setSubmitting(true);
 
-      // Submit all answers in sequence
+      // Collect all answers
       const allAnswers = { ...userAnswers };
       // Add the last answer if it's not already in the state
       if (selectedAnswer !== null) {
@@ -277,42 +275,25 @@ export default function PracticeSessionPage() {
         allAnswers[currentQuestion.number] = selectedAnswer;
       }
 
-      // Submit each answer to backend
-      for (const question of questions) {
-        const answer = allAnswers[question.number];
-        if (answer !== undefined) {
-          await practiceSessionService.submitAnswer({
-            sessionId: session._id,
-            questionId: question._id,
-            questionNumber: question.number,
-            selectedAnswer: answer,
-          });
-        }
-      }
+      // Prepare bulk submission data
+      const answersToSubmit = questions
+        .filter((question) => allAnswers[question.number] !== undefined)
+        .map((question) => ({
+          questionId: question._id,
+          questionNumber: question.number,
+          selectedAnswer: allAnswers[question.number],
+        }));
 
-      // Complete the session
-      await completeSession();
-    } catch (error: any) {
-      console.error("Error submitting answers:", error);
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la soumission"
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const completeSession = async () => {
-    if (!session) return;
-
-    try {
+      // Clear timer before submission
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
 
-      const response = await practiceSessionService.completeSession({
+      // Bulk submit all answers and complete session in one call
+      const response = await practiceSessionService.bulkSubmitAndComplete({
         sessionId: session._id,
         timeElapsedSeconds: timeElapsed,
+        answers: answersToSubmit,
       });
 
       const completedSession = response.data.session;
@@ -320,7 +301,7 @@ export default function PracticeSessionPage() {
 
       // Prepare review data - combine questions with user answers and correct answers
       const reviewData = questions.map((question) => {
-        const userAnswer = userAnswers[question.number];
+        const userAnswer = allAnswers[question.number];
         const correctAnswer = question.correct ?? 0;
         const isCorrect = userAnswer === correctAnswer;
 
@@ -334,11 +315,12 @@ export default function PracticeSessionPage() {
 
       setQuestionsWithAnswers(reviewData);
     } catch (error: any) {
-      console.error("Error completing session:", error);
+      console.error("Error submitting answers:", error);
       toast.error(
-        error.response?.data?.message ||
-          "Erreur lors de la finalisation de la session"
+        error.response?.data?.message || "Erreur lors de la soumission"
       );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -401,7 +383,10 @@ export default function PracticeSessionPage() {
   if (loading) {
     return (
       <PracticeLayout>
-        <Header title="Chargement en cours, veuillez patienter" onClose={onClose} />
+        <Header
+          title="Chargement en cours, veuillez patienter"
+          onClose={onClose}
+        />
         <div className="container mx-auto p-6">
           <div className="flex justify-center items-center py-12">
             <p className="text-muted-foreground">
@@ -689,11 +674,11 @@ export default function PracticeSessionPage() {
   return (
     <PracticeLayout>
       <Header title={practice.title} onClose={onClose} />
-      <div className="container mx-auto p-6 max-w-3xl">
+      <div className="container mx-auto lg:p-6 p-4 max-w-3xl">
         {/* Header with timer and progress */}
         <div className="mb-6 flex gap-6">
           <div className="space-y-2 flex-1">
-            <div className="flex justify-between text-sm text-muted-foreground">
+            <div className="flex justify-between text-sm text-muted-foreground gap-2">
               <span>
                 Question {currentQuestionIndex + 1} sur {questions.length}
               </span>
@@ -702,27 +687,23 @@ export default function PracticeSessionPage() {
             <Progress value={progressPercent} className="h-2" />
           </div>
           <div
-            className={`flex items-center gap-2 px-3 py-0 rounded-full ${
+            className={`flex items-center text-sm gap-2 px-3 py-0 rounded-full ${
               timeRemaining < 60
                 ? "bg-red-100 text-red-700"
-                : "bg-blue-100 text-blue-700"
+                : "bg-primary/10 text-primary"
             }`}
           >
             <Clock className="h-3 w-3" />
-            <span className="font-mono">
-              {formatTime(timeRemaining)}
-            </span>
+            <span className="font-mono">{formatTime(timeRemaining)}</span>
           </div>
         </div>
 
         {/* Question Card */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="text-xl">
-              Question {currentQuestion.number}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <div className="lg:p-5 lg:border border-gray-200 rounded-2xl">
+          <div className="lg:mb-6 mb-3">
+            <div className="text-xl">Question {currentQuestion.number}</div>
+          </div>
+          <div className="space-y-3">
             {/* Image if exists */}
             {currentQuestion.media?.image && (
               <div className="flex justify-center">
@@ -756,7 +737,7 @@ export default function PracticeSessionPage() {
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
                     disabled={submitting}
-                    className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
+                    className={`w-full text-left p-3 rounded-lg border transition-all ${
                       selectedAnswer === index
                         ? "border-primary bg-primary/10 shadow-md"
                         : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
@@ -806,8 +787,8 @@ export default function PracticeSessionPage() {
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Info message */}
         <div className="border-blue-200 bg-blue-100 px-4 py-3 rounded-lg text-sm text-blue-800 flex items-center gap-2 mt-4">

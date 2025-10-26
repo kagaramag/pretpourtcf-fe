@@ -26,6 +26,16 @@ export interface CompleteSessionData {
   timeElapsedSeconds: number;
 }
 
+export interface BulkSubmitAndCompleteData {
+  sessionId: string;
+  timeElapsedSeconds: number;
+  answers: {
+    questionId: string;
+    questionNumber: number;
+    selectedAnswer: number;
+  }[];
+}
+
 export interface SessionQueryParams {
   page?: number;
   limit?: number;
@@ -77,6 +87,18 @@ export const practiceSessionService = {
   ): Promise<BackendApiResponse<{ session: SessionResult }>> => {
     return await apiClient.post<BackendApiResponse<{ session: SessionResult }>>(
       API_ENDPOINTS.COMPLETE_SESSION,
+      data
+    );
+  },
+
+  /**
+   * Bulk submit answers and complete session (optimized)
+   */
+  bulkSubmitAndComplete: async (
+    data: BulkSubmitAndCompleteData
+  ): Promise<BackendApiResponse<{ session: SessionResult }>> => {
+    return await apiClient.post<BackendApiResponse<{ session: SessionResult }>>(
+      API_ENDPOINTS.BULK_SUBMIT_COMPLETE,
       data
     );
   },

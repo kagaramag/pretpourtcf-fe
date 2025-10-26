@@ -13,6 +13,7 @@ import { NavigationLink } from "@/components/ui/navigation-link";
 import { Bell, User, LogOut, House, ReceiptText, BookA } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
+import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 const navigation = [
@@ -37,11 +38,21 @@ export default function Header() {
       <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-2 px-4 sm:px-6">
         <div className="flex-1">
           <Link href="/">
-            <div className="w-[140px] sm:w-[180px] lg:w-[220px]">
+            <div className="w-[140px] sm:w-[180px] lg:w-[220px] hidden lg:block">
               <Image
                 src={Logo}
                 width={220}
                 height={120}
+                priority
+                alt="logo"
+                className="w-full mx-auto"
+              />
+            </div>
+            <div className="w-[64px] sm:w-[64px] lg:w-[64px] lg:hidden">
+              <Image
+                src={Icon}
+                width={64}
+                height={64}
                 priority
                 alt="logo"
                 className="w-full mx-auto"
