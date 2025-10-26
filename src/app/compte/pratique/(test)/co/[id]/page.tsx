@@ -116,34 +116,29 @@ export default function PracticeSessionPage() {
     }
 
     try {
-      // Clear the timer
+      // OPTIMIZATION: Stop the timer IMMEDIATELY before any async operations
       if (timerRef.current) {
         clearInterval(timerRef.current);
+        timerRef.current = null;
       }
 
-      // Cancel the session on the backend
-      await practiceSessionService.cancelSession(session._id);
-
-      // Reset all state
-      setSession(null);
-      setQuestions([]);
-      setCurrentQuestionIndex(0);
-      setSelectedAnswer(null);
-      setUserAnswers({});
+      // OPTIMIZATION: Freeze the countdown display immediately
       setTimeRemaining(0);
-      setTimeElapsed(0);
-      setSessionResult(null);
-      setProgressPercent(0);
 
-      toast.info("Session annulée");
+      // Show immediate feedback to the user
+      toast.info("Annulation en cours...");
 
-      // Navigate to the practice list page
+      // OPTIMIZATION: Cancel session and navigate in parallel (don't wait for backend)
+      // Fire and forget the backend call - don't await it
+      practiceSessionService.cancelSession(session._id).catch((error) => {
+        console.error("Error cancelling session on backend:", error);
+        // Log but don't show error to user since they're already navigating away
+      });
+
+      // Navigate immediately without waiting for backend response
       router.push("/compte/pratique/co");
     } catch (error: any) {
       console.error("Error closing session:", error);
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la fermeture"
-      );
       // Still navigate even if there's an error
       router.push("/compte/pratique/co");
     }
@@ -696,7 +691,7 @@ export default function PracticeSessionPage() {
       <Header title={practice.title} onClose={onClose} />
       <div className="container mx-auto p-6 max-w-3xl">
         {/* Header with timer and progress */}
-        <div className="mb-6 flex  gap-6">
+        <div className="mb-6 flex gap-6">
           <div className="space-y-2 flex-1">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>
@@ -707,14 +702,14 @@ export default function PracticeSessionPage() {
             <Progress value={progressPercent} className="h-2" />
           </div>
           <div
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${
+            className={`flex items-center gap-2 px-3 py-0 rounded-full ${
               timeRemaining < 60
                 ? "bg-red-100 text-red-700"
                 : "bg-blue-100 text-blue-700"
             }`}
           >
-            <Clock className="h-4 w-4" />
-            <span className="font-mono font-bold">
+            <Clock className="h-3 w-3" />
+            <span className="font-mono">
               {formatTime(timeRemaining)}
             </span>
           </div>

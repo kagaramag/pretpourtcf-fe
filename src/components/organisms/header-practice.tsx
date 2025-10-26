@@ -51,7 +51,7 @@ export default function Header({ title, onClose }: HeaderPracticeProps) {
           />
         </div>
         <div className="flex-1">
-          <h1 className="lg:text-2xl text-xl lg:font-bold text-center">{title}</h1>
+          <h1 className="lg:text-2xl text-xl lg:font-bold text-center leading-none">{title}</h1>
         </div>
         <div
           className="w-[56px]"
