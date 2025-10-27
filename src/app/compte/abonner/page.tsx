@@ -297,26 +297,26 @@ function AbonnerPageContent() {
         return;
       }
 
-      // For mobile money, only set processing state AFTER we get confirmation the payment was initiated
-      // Check the initial status first to see if KPay accepted the payment request
-      if (response.transaction.status === "pending") {
-        console.log("[PAYMENT] Mobile money payment initiated successfully, starting listener & polling");
+      // For mobile money, if payment was initiated successfully (not failed), show waiting screen
+      // The transaction will be in "pending" status when retcode = 0 (being processed)
+      if (response.transaction.status !== "failed") {
+        console.log(`[PAYMENT] Mobile money payment initiated (status: ${response.transaction.status})`);
+        console.log("[PAYMENT] Showing waiting screen and starting WebSocket listener + polling");
+
+        // Show the waiting screen immediately
         setPageStatus("processing");
         toast.success(
           "Paiement initié! Veuillez vérifier votre téléphone pour approuver le paiement."
         );
 
-        // Start polling for transaction status (mobile money needs longer polling)
+        // Start polling for transaction status as backup to WebSocket
+        // WebSocket should deliver updates faster, but polling ensures we don't miss anything
         pollTransactionStatus(response.transaction.id, 10000, 60); // 10 seconds interval, 10 minutes max
-      } else if (response.transaction.status === "failed") {
+      } else {
+        // Payment initiation failed
         console.log("[PAYMENT] Payment initiation failed");
         toast.error("Échec de l'initiation du paiement. Veuillez réessayer.");
         setPageStatus("form");
-      } else {
-        // Unexpected status
-        console.log(`[PAYMENT] Unexpected status: ${response.transaction.status}`);
-        setPageStatus("processing");
-        pollTransactionStatus(response.transaction.id, 10000, 60);
       }
     } catch (error: any) {
       console.error("Payment error:", error);
@@ -482,21 +482,42 @@ function AbonnerPageContent() {
               <Clock className="h-10 w-10 text-yellow-600 animate-pulse" />
             </div>
             <CardTitle className="text-2xl text-yellow-700">
-              {isCardPayment ? "Vérification du paiement..." : "Paiement en cours..."}
+              {isCardPayment ? "Vérification du paiement..." : "En attente de confirmation..."}
             </CardTitle>
             <CardDescription>
               {isCardPayment
                 ? "Nous vérifions votre paiement"
-                : "Votre paiement est en cours de traitement"}
+                : "Veuillez approuver le paiement sur votre téléphone"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="text-sm text-yellow-900 text-center">
-                {isMobileMoney && "Veuillez vérifier votre téléphone et approuver la transaction Mobile Money."}
-                {isCardPayment && "Votre paiement par carte a été traité. Nous vérifions maintenant son statut..."}
-                {!isMobileMoney && !isCardPayment && "Veuillez patienter pendant que nous vérifions votre paiement."}
-              </p>
+              {isMobileMoney ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-yellow-900 text-center font-medium">
+                    Une demande de paiement a été envoyée à votre téléphone
+                  </p>
+                  <div className="space-y-2">
+                    <p className="text-xs text-yellow-800 text-center">
+                      📱 Vérifiez votre téléphone Mobile Money
+                    </p>
+                    <p className="text-xs text-yellow-800 text-center">
+                      ✓ Approuvez la transaction
+                    </p>
+                    <p className="text-xs text-yellow-800 text-center">
+                      ⏱️ Cette page se mettra à jour automatiquement
+                    </p>
+                  </div>
+                </div>
+              ) : isCardPayment ? (
+                <p className="text-sm text-yellow-900 text-center">
+                  Votre paiement par carte a été traité. Nous vérifions maintenant son statut...
+                </p>
+              ) : (
+                <p className="text-sm text-yellow-900 text-center">
+                  Veuillez patienter pendant que nous vérifions votre paiement.
+                </p>
+              )}
             </div>
 
             <div className="flex justify-center">
@@ -505,14 +526,24 @@ function AbonnerPageContent() {
 
             <p className="text-xs text-center text-muted-foreground">
               {isMobileMoney
-                ? "Cette page se mettra à jour automatiquement dès que vous approuverez le paiement."
-                : "Cette page se mettra à jour automatiquement dans quelques instants."}
+                ? "Nous écoutons les mises à jour en temps réel de Mobile Money..."
+                : "Vérification en cours..."}
             </p>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-2">
+            <p className="text-xs text-center text-muted-foreground w-full">
+              Ne fermez pas cette page pendant le traitement
+            </p>
             <Button
               variant="outline"
-              onClick={() => router.push("/compte/plans")}
+              onClick={() => {
+                // Clean up polling when user leaves
+                if (pollingIntervalRef.current) {
+                  clearInterval(pollingIntervalRef.current);
+                  pollingIntervalRef.current = null;
+                }
+                router.push("/compte/plans");
+              }}
               className="w-full"
             >
               Retour aux plans
