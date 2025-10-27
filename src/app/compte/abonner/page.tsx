@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
@@ -37,7 +37,7 @@ type PaymentStatus = "form" | "processing" | "success" | "failed" | "pending";
 function AbonnerPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user, refreshUser } = useAuth();
+  const { refreshUser } = useAuth();
 
   const [plan, setPlan] = useState<SubscriptionPlan | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">(
@@ -46,18 +46,47 @@ function AbonnerPageContent() {
   const [msisdn, setMsisdn] = useState("");
   const [loading, setLoading] = useState(false);
   const [pageStatus, setPageStatus] = useState<PaymentStatus>("form");
-  const [transactionId, setTransactionId] = useState<string | null>(null);
+  const [currentTransactionId, setCurrentTransactionId] = useState<string | null>(null);
+  const [currentPaymentMethod, setCurrentPaymentMethod] = useState<string | null>(null);
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Listen for real-time payment status updates
+  // Listen for real-time payment status updates via WebSocket
   usePaymentStatus({
-    onSuccess: () => {
-      setPageStatus("success");
+    onSuccess: async (data) => {
+      // Only handle if it's for the current transaction
+      if (currentTransactionId && data.transactionId === currentTransactionId) {
+        console.log("[WEBSOCKET] Payment success received for current transaction");
+
+        // Stop polling since we got the result via WebSocket
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
+
+        setPageStatus("success");
+        await refreshUser();
+        toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
+      }
     },
-    onFailed: () => {
-      setPageStatus("failed");
+    onFailed: (data) => {
+      if (currentTransactionId && data.transactionId === currentTransactionId) {
+        console.log("[WEBSOCKET] Payment failed received for current transaction");
+
+        // Stop polling since we got the result via WebSocket
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
+
+        setPageStatus("failed");
+        toast.error(data.message || "Le paiement a échoué. Veuillez réessayer.");
+      }
     },
-    onPending: () => {
-      setPageStatus("pending");
+    onPending: (data) => {
+      if (currentTransactionId && data.transactionId === currentTransactionId) {
+        console.log("[WEBSOCKET] Payment pending received for current transaction");
+        setPageStatus("pending");
+      }
     },
     showToast: false, // We'll handle toasts manually
   });
@@ -65,6 +94,14 @@ function AbonnerPageContent() {
   useEffect(() => {
     loadPlan();
     checkCallbackStatus();
+
+    // Cleanup function to clear polling interval on unmount
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
   }, []);
 
   const loadPlan = async () => {
@@ -96,28 +133,107 @@ function AbonnerPageContent() {
     // Check if this is a callback from Kpay
     const status = searchParams.get("status");
     const txnId = searchParams.get("transaction_id");
+    const method = searchParams.get("method"); // Get payment method from URL
 
-    if (status && txnId) {
-      setTransactionId(txnId);
+    if (status === "callback" && txnId) {
+      setCurrentTransactionId(txnId);
+      setCurrentPaymentMethod(method);
       setPageStatus("processing");
 
-      try {
-        // Check the transaction status
-        const transaction = await paymentService.checkTransactionStatus(txnId);
-
-        if (transaction.status === "successful") {
-          setPageStatus("success");
-          await refreshUser();
-        } else if (transaction.status === "failed") {
-          setPageStatus("failed");
-        } else {
-          setPageStatus("pending");
-        }
-      } catch (error) {
-        console.error("Error checking transaction status:", error);
-        setPageStatus("pending");
+      // For card/spenn payments, check status immediately since user is coming back from payment page
+      // The payment should already be processed
+      if (method === "cc" || method === "spenn") {
+        console.log("[CALLBACK] Card/SPENN payment - checking status immediately");
+        await checkImmediateStatus(txnId);
+      } else {
+        // For mobile money, start polling since payment might still be processing
+        console.log("[CALLBACK] Mobile money payment - starting polling");
+        pollTransactionStatus(txnId);
       }
     }
+  };
+
+  const checkImmediateStatus = async (txnId: string) => {
+    try {
+      const transaction = await paymentService.checkTransactionStatus(txnId);
+
+      console.log(`[IMMEDIATE CHECK] Transaction status: ${transaction.status}`);
+
+      if (transaction.status === "successful") {
+        setPageStatus("success");
+        await refreshUser();
+        toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
+      } else if (transaction.status === "failed") {
+        setPageStatus("failed");
+        toast.error("Le paiement a échoué. Veuillez réessayer.");
+      } else {
+        // If still pending for card payment, poll a few times with shorter interval
+        console.log("[IMMEDIATE CHECK] Status still pending, will poll briefly");
+        pollTransactionStatus(txnId, 3000, 20); // Poll every 3 seconds for max 1 minute
+      }
+    } catch (error) {
+      console.error("Error checking transaction status:", error);
+      toast.error("Impossible de vérifier le statut du paiement.");
+      setPageStatus("failed");
+    }
+  };
+
+  const pollTransactionStatus = async (
+    txnId: string,
+    intervalMs: number = 10000, // Default: 10 seconds
+    maxAttempts: number = 60 // Default: 60 attempts (10 minutes at 10s interval)
+  ) => {
+    // Clear any existing polling interval
+    if (pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current);
+    }
+
+    let attempts = 0;
+
+    pollingIntervalRef.current = setInterval(async () => {
+      attempts++;
+
+      try {
+        const transaction = await paymentService.checkTransactionStatus(txnId);
+
+        console.log(`[POLLING] Attempt ${attempts}/${maxAttempts}: Transaction status = ${transaction.status}`);
+
+        if (transaction.status === "successful") {
+          if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+          }
+          setPageStatus("success");
+          await refreshUser();
+          toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
+        } else if (transaction.status === "failed") {
+          if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+          }
+          setPageStatus("failed");
+          toast.error("Le paiement a échoué. Veuillez réessayer.");
+        } else if (attempts >= maxAttempts) {
+          if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+          }
+          setPageStatus("failed");
+          toast.warning("Le délai d'attente du paiement est dépassé. Veuillez vérifier l'historique des transactions.");
+        }
+        // If still pending, continue polling
+      } catch (error) {
+        console.error("Error polling transaction status:", error);
+        if (attempts >= maxAttempts) {
+          if (pollingIntervalRef.current) {
+            clearInterval(pollingIntervalRef.current);
+            pollingIntervalRef.current = null;
+          }
+          setPageStatus("failed");
+          toast.error("Impossible de vérifier le statut du paiement. Veuillez contacter le support.");
+        }
+      }
+    }, intervalMs);
   };
 
   const handlePayment = async () => {
@@ -149,18 +265,24 @@ function AbonnerPageContent() {
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
       });
 
-      setTransactionId(response.transaction.id);
+      setCurrentTransactionId(response.transaction.id);
+      setCurrentPaymentMethod(paymentMethod);
 
-      // If there's a checkout URL (for card payments), redirect to it
+      // If there's a checkout URL (for card/spenn payments), redirect to it
       if (response.transaction.checkout_url) {
+        console.log(`[PAYMENT] Redirecting to ${paymentMethod} checkout page`);
         window.location.href = response.transaction.checkout_url;
         return;
       }
 
-      // For mobile money, show processing state
+      // For mobile money, show processing state and start polling
+      console.log("[PAYMENT] Mobile money payment initiated, starting listener & polling");
       toast.success(
         "Paiement initié! Veuillez vérifier votre téléphone pour approuver le paiement."
       );
+
+      // Start polling for transaction status (mobile money needs longer polling)
+      pollTransactionStatus(response.transaction.id, 10000, 60); // 10 seconds interval, 10 minutes max
     } catch (error: any) {
       console.error("Payment error:", error);
       toast.error(
@@ -228,10 +350,15 @@ function AbonnerPageContent() {
               </div>
             </div>
 
-            <p className="text-sm text-center text-muted-foreground">
-              Vous pouvez maintenant accéder à toutes les fonctionnalités de
-              votre abonnement.
-            </p>
+            <div className="text-center space-y-2">
+              <p className="text-sm text-muted-foreground">
+                Vous pouvez maintenant accéder à toutes les fonctionnalités de
+                votre abonnement.
+              </p>
+              <p className="text-xs text-green-600 font-medium">
+                ✓ Abonnement activé et enregistré
+              </p>
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-2">
             <Button onClick={() => router.push("/compte")} className="w-full">
@@ -288,7 +415,7 @@ function AbonnerPageContent() {
             <Button
               onClick={() => {
                 setPageStatus("form");
-                setTransactionId(null);
+                setCurrentTransactionId(null);
               }}
               className="w-full"
             >
@@ -309,6 +436,9 @@ function AbonnerPageContent() {
 
   // Pending/Processing State
   if (pageStatus === "pending" || pageStatus === "processing") {
+    const isMobileMoney = currentPaymentMethod === "momo";
+    const isCardPayment = currentPaymentMethod === "cc" || currentPaymentMethod === "spenn";
+
     return (
       <div className="container mx-auto p-6 max-w-2xl">
         <Card className="border-yellow-200">
@@ -317,18 +447,20 @@ function AbonnerPageContent() {
               <Clock className="h-10 w-10 text-yellow-600 animate-pulse" />
             </div>
             <CardTitle className="text-2xl text-yellow-700">
-              Paiement en cours...
+              {isCardPayment ? "Vérification du paiement..." : "Paiement en cours..."}
             </CardTitle>
             <CardDescription>
-              Votre paiement est en cours de traitement
+              {isCardPayment
+                ? "Nous vérifions votre paiement"
+                : "Votre paiement est en cours de traitement"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <p className="text-sm text-yellow-900 text-center">
-                {paymentMethod === "momo"
-                  ? "Veuillez vérifier votre téléphone et approuver la transaction."
-                  : "Veuillez patienter pendant que nous vérifions votre paiement."}
+                {isMobileMoney && "Veuillez vérifier votre téléphone et approuver la transaction Mobile Money."}
+                {isCardPayment && "Votre paiement par carte a été traité. Nous vérifions maintenant son statut..."}
+                {!isMobileMoney && !isCardPayment && "Veuillez patienter pendant que nous vérifions votre paiement."}
               </p>
             </div>
 
@@ -337,8 +469,9 @@ function AbonnerPageContent() {
             </div>
 
             <p className="text-xs text-center text-muted-foreground">
-              Vous recevrez une notification dès que le paiement sera confirmé.
-              Cette page se mettra à jour automatiquement.
+              {isMobileMoney
+                ? "Cette page se mettra à jour automatiquement dès que vous approuverez le paiement."
+                : "Cette page se mettra à jour automatiquement dans quelques instants."}
             </p>
           </CardContent>
           <CardFooter>
