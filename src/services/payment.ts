@@ -28,6 +28,7 @@ export interface Transaction {
   status: string;
   status_description?: string;
   payment_method: string;
+  subscription_id?: string;
   plan: {
     id: string;
     name: string;

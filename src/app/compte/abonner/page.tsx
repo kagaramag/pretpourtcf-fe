@@ -63,8 +63,11 @@ function AbonnerPageContent() {
           pollingIntervalRef.current = null;
         }
 
-        setPageStatus("success");
+        // Refresh user to get updated subscription
+        console.log("[WEBSOCKET] Refreshing user data to get updated subscription...");
         await refreshUser();
+
+        setPageStatus("success");
         toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
       }
     },
@@ -85,7 +88,10 @@ function AbonnerPageContent() {
     onPending: (data) => {
       if (currentTransactionId && data.transactionId === currentTransactionId) {
         console.log("[WEBSOCKET] Payment pending received for current transaction");
-        setPageStatus("pending");
+        // Only update to pending if not already in a final state
+        if (pageStatus !== "success" && pageStatus !== "failed") {
+          setPageStatus("pending");
+        }
       }
     },
     showToast: false, // We'll handle toasts manually
@@ -160,6 +166,13 @@ function AbonnerPageContent() {
       console.log(`[IMMEDIATE CHECK] Transaction status: ${transaction.status}`);
 
       if (transaction.status === "successful") {
+        // Ensure subscription was created
+        if (transaction.subscription_id) {
+          console.log(`[IMMEDIATE CHECK] Subscription found: ${transaction.subscription_id}`);
+        } else {
+          console.warn(`[IMMEDIATE CHECK] Transaction successful but no subscription_id found`);
+        }
+
         setPageStatus("success");
         await refreshUser();
         toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
@@ -167,8 +180,10 @@ function AbonnerPageContent() {
         setPageStatus("failed");
         toast.error("Le paiement a échoué. Veuillez réessayer.");
       } else {
-        // If still pending for card payment, poll a few times with shorter interval
+        // If still pending for card payment, poll with shorter interval and fewer attempts
+        // Card payments should be resolved quickly after redirect
         console.log("[IMMEDIATE CHECK] Status still pending, will poll briefly");
+        setPageStatus("processing");
         pollTransactionStatus(txnId, 3000, 20); // Poll every 3 seconds for max 1 minute
       }
     } catch (error) {
@@ -203,6 +218,14 @@ function AbonnerPageContent() {
             clearInterval(pollingIntervalRef.current);
             pollingIntervalRef.current = null;
           }
+
+          // Verify subscription was created
+          if (transaction.subscription_id) {
+            console.log(`[POLLING] Subscription verified: ${transaction.subscription_id}`);
+          } else {
+            console.warn(`[POLLING] Transaction successful but no subscription_id found, refreshing user anyway`);
+          }
+
           setPageStatus("success");
           await refreshUser();
           toast.success("Paiement réussi! Votre abonnement est maintenant actif.");
@@ -257,7 +280,6 @@ function AbonnerPageContent() {
       }
 
       setLoading(true);
-      setPageStatus("processing");
 
       const response = await paymentService.initiatePayment({
         plan_id: plan.id,
@@ -275,14 +297,27 @@ function AbonnerPageContent() {
         return;
       }
 
-      // For mobile money, show processing state and start polling
-      console.log("[PAYMENT] Mobile money payment initiated, starting listener & polling");
-      toast.success(
-        "Paiement initié! Veuillez vérifier votre téléphone pour approuver le paiement."
-      );
+      // For mobile money, only set processing state AFTER we get confirmation the payment was initiated
+      // Check the initial status first to see if KPay accepted the payment request
+      if (response.transaction.status === "pending") {
+        console.log("[PAYMENT] Mobile money payment initiated successfully, starting listener & polling");
+        setPageStatus("processing");
+        toast.success(
+          "Paiement initié! Veuillez vérifier votre téléphone pour approuver le paiement."
+        );
 
-      // Start polling for transaction status (mobile money needs longer polling)
-      pollTransactionStatus(response.transaction.id, 10000, 60); // 10 seconds interval, 10 minutes max
+        // Start polling for transaction status (mobile money needs longer polling)
+        pollTransactionStatus(response.transaction.id, 10000, 60); // 10 seconds interval, 10 minutes max
+      } else if (response.transaction.status === "failed") {
+        console.log("[PAYMENT] Payment initiation failed");
+        toast.error("Échec de l'initiation du paiement. Veuillez réessayer.");
+        setPageStatus("form");
+      } else {
+        // Unexpected status
+        console.log(`[PAYMENT] Unexpected status: ${response.transaction.status}`);
+        setPageStatus("processing");
+        pollTransactionStatus(response.transaction.id, 10000, 60);
+      }
     } catch (error: any) {
       console.error("Payment error:", error);
       toast.error(
