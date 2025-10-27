@@ -299,20 +299,30 @@ function AbonnerPageContent() {
       setCurrentTransactionId(response.transaction.id);
       setCurrentPaymentMethod(paymentMethod);
 
-      // If there's a checkout URL (for card/spenn payments), redirect to it
-      if (response.transaction.checkout_url) {
-        console.log(`[PAYMENT] Redirecting to ${paymentMethod} checkout page`);
-        window.location.href = response.transaction.checkout_url;
-        return;
+      // Check payment method to determine the flow
+      // Card/SPENN payments redirect to checkout page
+      // Mobile Money stays on waiting screen (even if KPay returns a checkout_url in test mode)
+      if (paymentMethod === "cc" || paymentMethod === "spenn") {
+        // Card/SPENN payment - redirect to checkout page if URL is provided
+        if (response.transaction.checkout_url) {
+          console.log(`[PAYMENT] Redirecting to ${paymentMethod} checkout page`);
+          window.location.href = response.transaction.checkout_url;
+          return;
+        } else {
+          console.error(`[PAYMENT] No checkout URL for ${paymentMethod} payment`);
+          toast.error("Erreur: URL de paiement manquante");
+          setPageStatus("form");
+          return;
+        }
       }
 
-      // For mobile money, if payment was initiated successfully (not failed), show waiting screen
-      // The transaction will be in "pending" status when retcode = 0 (being processed)
+      // Mobile Money flow - show waiting screen and listen for status updates
+      // Note: In test environment, KPay might return a checkout_url for MoMo but we ignore it
       console.log(`[PAYMENT] Checking transaction status: "${response.transaction.status}"`);
 
       if (response.transaction.status !== "failed") {
         console.log(`[PAYMENT] ✓ Mobile money payment initiated successfully`);
-        console.log("[PAYMENT] Setting page status to 'processing' and starting listeners...");
+        console.log("[PAYMENT] Showing waiting screen and starting WebSocket listener + polling");
 
         // Show the waiting screen immediately
         setPageStatus("processing");
