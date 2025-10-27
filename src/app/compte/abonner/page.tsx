@@ -281,10 +281,19 @@ function AbonnerPageContent() {
 
       setLoading(true);
 
+      console.log(`[PAYMENT] Initiating ${paymentMethod} payment for plan: ${plan.name}`);
+
       const response = await paymentService.initiatePayment({
         plan_id: plan.id,
         payment_method: paymentMethod,
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
+      });
+
+      console.log("[PAYMENT] Payment initiation response:", {
+        transactionId: response.transaction.id,
+        status: response.transaction.status,
+        paymentMethod: response.transaction.payment_method,
+        hasCheckoutUrl: !!response.transaction.checkout_url,
       });
 
       setCurrentTransactionId(response.transaction.id);
@@ -299,27 +308,37 @@ function AbonnerPageContent() {
 
       // For mobile money, if payment was initiated successfully (not failed), show waiting screen
       // The transaction will be in "pending" status when retcode = 0 (being processed)
+      console.log(`[PAYMENT] Checking transaction status: "${response.transaction.status}"`);
+
       if (response.transaction.status !== "failed") {
-        console.log(`[PAYMENT] Mobile money payment initiated (status: ${response.transaction.status})`);
-        console.log("[PAYMENT] Showing waiting screen and starting WebSocket listener + polling");
+        console.log(`[PAYMENT] ✓ Mobile money payment initiated successfully`);
+        console.log("[PAYMENT] Setting page status to 'processing' and starting listeners...");
 
         // Show the waiting screen immediately
         setPageStatus("processing");
+
         toast.success(
           "Paiement initié! Veuillez vérifier votre téléphone pour approuver le paiement."
         );
 
         // Start polling for transaction status as backup to WebSocket
         // WebSocket should deliver updates faster, but polling ensures we don't miss anything
+        console.log("[PAYMENT] Starting polling every 10 seconds for transaction:", response.transaction.id);
         pollTransactionStatus(response.transaction.id, 10000, 60); // 10 seconds interval, 10 minutes max
       } else {
         // Payment initiation failed
-        console.log("[PAYMENT] Payment initiation failed");
+        console.error("[PAYMENT] ✗ Payment initiation failed with status:", response.transaction.status);
         toast.error("Échec de l'initiation du paiement. Veuillez réessayer.");
         setPageStatus("form");
       }
     } catch (error: any) {
-      console.error("Payment error:", error);
+      console.error("[PAYMENT] ✗ Payment error:", error);
+      console.error("[PAYMENT] Error details:", {
+        message: error?.message,
+        response: error?.response?.data,
+        status: error?.response?.status,
+      });
+
       toast.error(
         error?.response?.data?.message ||
           "Échec de l'initiation du paiement. Veuillez réessayer."
