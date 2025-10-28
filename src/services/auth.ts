@@ -173,4 +173,31 @@ export const authService = {
     if (typeof window === "undefined") return null;
     return localStorage.getItem("access_token");
   },
+
+  verifyEmail: async (
+    token: string
+  ): Promise<BackendApiResponse<LoginResponse>> => {
+    const response = await apiClient.post<BackendApiResponse<LoginResponse>>(
+      "/auth/verify-email",
+      { token }
+    );
+
+    // Store tokens if verification returns them (auto-login)
+    if (response.data?.access_token) {
+      localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
+      localStorage.setItem("user_data", JSON.stringify(response.data.user));
+
+      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
+    }
+
+    return response;
+  },
+
+  resendVerificationEmail: async (email: string): Promise<void> => {
+    await apiClient.post<BackendApiResponse<any>>(
+      "/auth/resend-verification-email",
+      { email }
+    );
+  },
 };

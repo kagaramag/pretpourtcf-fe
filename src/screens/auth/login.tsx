@@ -22,6 +22,8 @@ import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string>("");
+  const [showResendButton, setShowResendButton] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
   const { login } = useAuth();
   const [isPending, setIsPending] = useState(false);
@@ -43,6 +45,8 @@ export function LoginForm() {
     try {
       setIsPending(true);
       setLoginError("");
+      setShowResendButton(false);
+      setUserEmail(data.email);
       await login(data);
     } catch (error: any) {
       const errorMessage =
@@ -50,8 +54,29 @@ export function LoginForm() {
         error?.message ||
         "Invalid email or password";
       setLoginError(errorMessage);
+
+      // Check if error is about email verification
+      if (
+        errorMessage.toLowerCase().includes("vérifier") ||
+        errorMessage.toLowerCase().includes("verify") ||
+        errorMessage.toLowerCase().includes("email")
+      ) {
+        setShowResendButton(true);
+      }
     } finally {
       setIsPending(false);
+    }
+  };
+
+  const handleResendEmail = async () => {
+    try {
+      const { authService } = await import("@/services/auth");
+      await authService.resendVerificationEmail(userEmail);
+      const { toast } = await import("sonner");
+      toast.success("Email de vérification renvoyé! Vérifiez votre boîte de réception.");
+    } catch (error: any) {
+      const { toast } = await import("sonner");
+      toast.error("Erreur lors de l'envoi de l'email");
     }
   };
 
@@ -69,7 +94,24 @@ export function LoginForm() {
           className="space-y-4"
           noValidate
         >
-          <p className="text-red-400 text-sm">{loginError}</p>
+          {loginError && (
+            <div className="space-y-2">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <p className="text-sm text-red-800">{loginError}</p>
+              </div>
+              {showResendButton && (
+                <Button
+                  type="button"
+                  onClick={handleResendEmail}
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                >
+                  Renvoyer l'email de vérification
+                </Button>
+              )}
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-foreground">

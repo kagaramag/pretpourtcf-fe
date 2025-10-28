@@ -32,6 +32,8 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [signupError, setSignupError] = useState<string>("");
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 
@@ -59,13 +61,19 @@ export function SignupForm() {
       });
 
       if (response.data) {
-        toast.success("Account created successfully!");
-        // Tokens are already stored by authService.register
-        // Redirect to account page
-        setTimeout(() => {
-          router.push("/compte");
-          router.refresh();
-        }, 100);
+        // Check if email verification is required
+        if (response.data.requiresEmailVerification) {
+          setUserEmail(response.data.user.email);
+          setShowVerificationMessage(true);
+          toast.success("Compte créé! Vérifiez votre email.");
+        } else {
+          // Old flow: direct login (for backward compatibility)
+          toast.success("Account created successfully!");
+          setTimeout(() => {
+            router.push("/compte");
+            router.refresh();
+          }, 100);
+        }
       }
     } catch (error: any) {
       const errorMessage =
@@ -79,12 +87,71 @@ export function SignupForm() {
     }
   };
 
+  const handleResendEmail = async () => {
+    try {
+      await authService.resendVerificationEmail(userEmail);
+      toast.success("Email de vérification renvoyé!");
+    } catch (error: any) {
+      toast.error("Erreur lors de l'envoi de l'email");
+    }
+  };
+
+  // Show verification message after successful signup
+  if (showVerificationMessage) {
+    return (
+      <Card className="">
+        <CardHeader className="space-y-1 text-center">
+          <div className="flex justify-center mb-4">
+            <div className="rounded-full bg-green-100 p-3">
+              <Mail className="h-12 w-12 text-green-600" />
+            </div>
+          </div>
+          <CardTitle className="text-2xl">Vérifiez votre email</CardTitle>
+          <CardDescription>
+            Un email de vérification a été envoyé à <strong>{userEmail}</strong>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
+            <p className="text-sm text-blue-800">
+              Veuillez vérifier votre boîte de réception et cliquer sur le lien
+              pour activer votre compte avant de vous connecter.
+            </p>
+            <p className="text-xs text-blue-600">
+              N'oubliez pas de vérifier vos spams si vous ne trouvez pas l'email.
+            </p>
+          </div>
+
+          <Button
+            onClick={() => router.push("/login")}
+            className="w-full bg-primary hover:bg-primary/90"
+          >
+            Aller à la page de connexion
+          </Button>
+
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-2">
+              Vous n'avez pas reçu l'email?
+            </p>
+            <Button
+              onClick={handleResendEmail}
+              variant="outline"
+              className="w-full"
+            >
+              Renvoyer l'email de vérification
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl">Créer un compte</CardTitle>
         <CardDescription>
-          Inscrivez-vous pour accéder aux tests d’entraînement
+          Inscrivez-vous pour accéder aux tests d'entraînement
           <br /> et suivre votre progression.
         </CardDescription>
       </CardHeader>
