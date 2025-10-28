@@ -16,7 +16,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Clock,
-  Headphones,
+  EyeClosed,
   Trophy,
   XCircle,
   RotateCcw,
@@ -68,6 +68,7 @@ export default function PracticeSessionPage() {
       isCorrect: boolean;
     }>
   >([]);
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -458,7 +459,6 @@ export default function PracticeSessionPage() {
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <CardTitle className="text-lg flex items-center gap-2">
-                            Question {item.question.number}
                             {item.isCorrect ? (
                               <CheckCircle2 className="h-5 w-5 text-green-600" />
                             ) : (
@@ -700,7 +700,7 @@ export default function PracticeSessionPage() {
 
         {/* Question Card */}
         <div className="lg:p-5 lg:border border-gray-200 rounded-2xl">
-          <div className="lg:mb-6 mb-3">
+          <div className="lg:mb-6 mb-3 flex justify-between items-center">
             <div className="text-xl">Question {currentQuestion.number}</div>
           </div>
           <div className="space-y-3">
@@ -728,37 +728,65 @@ export default function PracticeSessionPage() {
             )}
 
             {/* Question text */}
-            <div className="text-sm">{currentQuestion.text}</div>
+            <div className="flex">
+              <div className="text-sm flex-1">{currentQuestion.text}</div>
+              <Button
+                onClick={() => setShowCorrectAnswer(!showCorrectAnswer)}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                {showCorrectAnswer ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeClosed className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
             {/* Answer options */}
             {currentQuestion.options && currentQuestion.options.length > 0 && (
               <div className="space-y-1">
-                {currentQuestion.options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleAnswerSelect(index)}
-                    disabled={submitting}
-                    className={`w-full text-left p-3 rounded-lg border transition-all ${
-                      selectedAnswer === index
-                        ? "border-primary bg-primary/10 shadow-md"
-                        : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
-                    } ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                          selectedAnswer === index
-                            ? "border-primary bg-primary"
-                            : "border-gray-300"
-                        }`}
-                      >
-                        {selectedAnswer === index && (
-                          <div className="w-3 h-3 rounded-full bg-white" />
+                {currentQuestion.options.map((option, index) => {
+                  const isCorrectAnswer =
+                    showCorrectAnswer &&
+                    currentQuestion.correct !== undefined &&
+                    currentQuestion.correct === index;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswerSelect(index)}
+                      disabled={submitting}
+                      className={`w-full text-left p-3 rounded-lg border transition-all ${
+                        isCorrectAnswer
+                          ? "border-green-500 bg-green-50 shadow-md"
+                          : selectedAnswer === index
+                            ? "border-primary bg-primary/10 shadow-md"
+                            : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
+                      } ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                            isCorrectAnswer
+                              ? "border-green-600 bg-green-600"
+                              : selectedAnswer === index
+                                ? "border-primary bg-primary"
+                                : "border-gray-300"
+                          }`}
+                        >
+                          {(selectedAnswer === index || isCorrectAnswer) && (
+                            <div className="w-3 h-3 rounded-full bg-white" />
+                          )}
+                        </div>
+                        <span className="flex-1">{option}</span>
+                        {isCorrectAnswer && (
+                          <CheckCircle2 className="h-5 w-5 text-green-600" />
                         )}
                       </div>
-                      <span className="flex-1">{option}</span>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             )}
             {/* Navigation buttons */}
