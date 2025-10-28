@@ -37,6 +37,7 @@ import { toast } from "sonner";
 import { config } from "@/config";
 import PracticeLayout from "@/layouts/practice";
 import Header from "@/components/organisms/header-practice";
+import { AutoLinkToStreak } from "@/components/streak/auto-link-to-streak";
 
 export default function PracticeSessionPage() {
   const { user } = useAuth();
@@ -426,6 +427,7 @@ export default function PracticeSessionPage() {
     if (showReview) {
       return (
         <PracticeLayout>
+          <Header title="Exercice introuvable" onClose={onClose} />
           <div className="container mx-auto p-6 max-w-4xl">
             <div className="mb-6">
               <Button
@@ -612,6 +614,16 @@ export default function PracticeSessionPage() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Automatic Streak Linking - Triggers on mount if score >= 90% */}
+              {session && (
+                <div className="mt-6">
+                  <AutoLinkToStreak
+                    sessionId={session._id}
+                    percentageScore={sessionResult.percentageScore}
+                  />
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                 <Button

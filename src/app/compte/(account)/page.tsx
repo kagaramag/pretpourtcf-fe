@@ -11,8 +11,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, BarChart } from "lucide-react";
+import { BookOpen, Clock, BarChart, Flame } from "lucide-react";
 import Link from "next/link";
+import { StreakStatusWidget } from "@/components/streak/streak-status-widget";
 
 export default function AccountPage() {
   const { user } = useAuth();
@@ -34,6 +35,11 @@ export default function AccountPage() {
           <p className="text-muted-foreground">
             Accédez à vos exercices TCF et suivez votre progression
           </p>
+        </div>
+
+        {/* Active Streak Status Widget */}
+        <div className="mb-6">
+          <StreakStatusWidget />
         </div>
 
         {/* Subscription Status Banner */}
@@ -69,6 +75,37 @@ export default function AccountPage() {
 
         {/* Practices Placeholder */}
         <div className="grid gap-6">
+          {/* Premium Streak Feature */}
+          <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-red-50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Flame className="h-5 w-5 text-orange-500 animate-pulse" />
+                Séries Premium
+              </CardTitle>
+              <CardDescription>
+                Maintenez votre engagement et gagnez des récompenses!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Relevez le défi! Complétez 20 exercices en 7 jours avec au moins 90% de score.
+                  Gagnez une récompense unique tous les 3 exercices.
+                </p>
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock className="h-4 w-4 text-orange-500" />
+                  <span>12 heures pour chaque exercice</span>
+                </div>
+                <Link href="/compte/series">
+                  <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+                    <Flame className="mr-2 h-4 w-4" />
+                    Gérer mes séries
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
