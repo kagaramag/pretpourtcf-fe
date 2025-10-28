@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NavigationLink } from "@/components/ui/navigation-link";
-import { Bell, User, LogOut, House, ReceiptText, BookA } from "lucide-react";
+import { Bell, User, LogOut, House, ReceiptText, History, List } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
@@ -118,16 +118,22 @@ export default function Header() {
                         <span>Mon compte</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => router.push("/compte/practice")}
-                      >
-                        <BookA className="mr-2 h-4 w-4" />
-                        <span>Pratique</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => router.push("/compte/abonnements")}
+                        onClick={() => router.push("/compte/plans")}
                       >
                         <ReceiptText className="mr-2 h-4 w-4" />
                         <span>Abonnements</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/compte/historique")}
+                      >
+                        <History className="mr-2 h-4 w-4" />
+                        <span>Historique</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/compte/series")}
+                      >
+                        <List className="mr-2 h-4 w-4" />
+                        <span>Series</span>
                       </DropdownMenuItem>
                     </>
                   )}
