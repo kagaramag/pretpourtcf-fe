@@ -120,7 +120,6 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
             </div>
           </div>
         )}
-
         {/* Rewards Preview */}
         {streak.rewards.length > 0 && (
           <div className="pt-3 border-t">

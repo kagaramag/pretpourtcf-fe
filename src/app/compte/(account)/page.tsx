@@ -38,12 +38,12 @@ export default function AccountPage() {
         </div>
 
         {/* Active Streak Status Widget */}
-        <div className="mb-6">
+        <div className="mb-3">
           <StreakStatusWidget />
         </div>
 
         {/* Subscription Status Banner */}
-        <Card className="mb-6 border-blue-200 bg-blue-50">
+        <Card className="mb-3 border-blue-200 bg-blue-50">
           <CardContent>
             <div className="flex items-center justify-between flex-col gap-4">
               <div className="w-full flex-1 flex">

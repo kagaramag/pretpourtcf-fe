@@ -2,10 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Flame, Trophy, TrendingUp, AlertCircle, Plus, Crown } from "lucide-react";
+import {
+  Flame,
+  Trophy,
+  TrendingUp,
+  AlertCircle,
+  Plus,
+  Crown,
+} from "lucide-react";
 import { streakService, Streak, StreakEligibility } from "@/services/streak";
 import { StreakCard } from "@/components/streak/streak-card";
 import { CreateStreakDialog } from "@/components/streak/create-streak-dialog";
@@ -16,7 +29,9 @@ import Link from "next/link";
 export default function StreaksPage() {
   const [activeStreak, setActiveStreak] = useState<Streak | null>(null);
   const [streakHistory, setStreakHistory] = useState<Streak[]>([]);
-  const [eligibility, setEligibility] = useState<StreakEligibility | null>(null);
+  const [eligibility, setEligibility] = useState<StreakEligibility | null>(
+    null
+  );
   const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -28,12 +43,13 @@ export default function StreaksPage() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const [eligibilityRes, activeStreakRes, historyRes, statsRes] = await Promise.all([
-        streakService.checkEligibility(),
-        streakService.getActiveStreak(),
-        streakService.getStreakHistory({ page: historyPage, limit: 10 }),
-        streakService.getStreakStats(),
-      ]);
+      const [eligibilityRes, activeStreakRes, historyRes, statsRes] =
+        await Promise.all([
+          streakService.checkEligibility(),
+          streakService.getActiveStreak(),
+          streakService.getStreakHistory({ page: historyPage, limit: 10 }),
+          streakService.getStreakStats(),
+        ]);
 
       if (eligibilityRes.status === "success") {
         setEligibility(eligibilityRes.data);
@@ -137,6 +153,26 @@ export default function StreaksPage() {
               Maintenez votre engagement et gagnez des récompenses!
             </p>
           </div>
+          {activeStreak && activeStreak.rewards.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                <span className="text-2xl">
+                  {activeStreak.rewards[activeStreak.rewards.length - 1].icon}
+                </span>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">
+                    {activeStreak.rewards[activeStreak.rewards.length - 1].name}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {
+                      activeStreak.rewards[activeStreak.rewards.length - 1]
+                        .description
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {eligibility?.eligible && (
             <Button
               onClick={() => setCreateDialogOpen(true)}
@@ -151,7 +187,7 @@ export default function StreaksPage() {
 
       {/* Eligibility Alert */}
       {!eligibility?.eligible && (
-        <Alert className="mb-6">
+        <Alert className="mb-2">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{eligibility?.message}</AlertDescription>
         </Alert>
@@ -159,65 +195,50 @@ export default function StreaksPage() {
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid md:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total séries
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{stats.totalStreaks}</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Terminées
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-green-600">
-                {stats.completedStreaks}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
-                Taux de réussite
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+        <div className="grid md:grid-cols-4 gap-1 mb-2">
+          <div className="border border-gray-200 rounded-lg p-3">
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Total séries
+            </h4>
+            <p className="text-2xl font-bold">{stats.totalStreaks}</p>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-3">
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Terminées
+            </h4>
+            <p className="text-2xl font-bold text-green-600">
+              {stats.completedStreaks}
+            </p>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-3">
+            <h4 className="text-sm font-medium text-muted-foreground">
+              Taux de réussite
+            </h4>
+            <div>
               <p className="text-2xl font-bold text-blue-600">
                 {stats.completionRate}%
               </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-1">
+            </div>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-3">
+            <div className="">
+              <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                 <Trophy className="h-4 w-4 text-yellow-600" />
                 Récompenses
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-yellow-700">
-                {stats.byStatus?.reduce(
-                  (sum: number, s: any) => sum + s.totalRewards,
-                  0
-                ) || 0}
-              </p>
-            </CardContent>
-          </Card>
+              </h3>
+            </div>
+            <p className="text-2xl font-bold text-yellow-700">
+              {stats.byStatus?.reduce(
+                (sum: number, s: any) => sum + s.totalRewards,
+                0
+              ) || 0}
+            </p>
+          </div>
         </div>
       )}
 
       {/* Tabs */}
-      <Tabs defaultValue="active" className="space-y-4">
+      <Tabs defaultValue="active" className="space-y-2">
         <TabsList>
           <TabsTrigger value="active" className="flex items-center gap-2">
             <Flame className="h-4 w-4" />

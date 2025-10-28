@@ -41,7 +41,7 @@ export function StreakStatusWidget() {
 
   return (
     <Card className={`border-2 ${isUrgent ? "border-red-500 bg-red-50" : "border-orange-500 bg-orange-50"}`}>
-      <CardContent className="p-4">
+      <CardContent className="px-4 py-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Flame className={`h-6 w-6 ${isUrgent ? "text-red-500" : "text-orange-500"} animate-pulse`} />
