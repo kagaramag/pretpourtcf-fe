@@ -19,6 +19,9 @@ const fredoka = Fredoka({
 export const metadata: Metadata = {
   title: "Pret Pour TCF",
   description: "Analytics and Recovery Management System",
+  icons: {
+    icon: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({
