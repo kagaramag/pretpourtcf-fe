@@ -149,11 +149,11 @@ function PlansPage() {
   // If user doesn't have a subscription, show plans
   return (
     <div className="container mx-auto p-6">
-      <div className="mb-8 text-center">
+      <div className="mb-2 text-center">
         <h1 className="text-3xl font-bold mb-2">Plans & Tarifs</h1>
-        <p className="text-muted-foreground">
+        <h2 className="text-muted-foreground">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
-        </p>
+        </h2>
       </div>
 
       {loading ? (

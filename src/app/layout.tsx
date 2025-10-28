@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Fredoka } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/providers/query";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -29,12 +28,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fredoka.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
           <AuthProvider>
             <PermissionProvider>
               <QueryProvider>
@@ -43,7 +36,6 @@ export default function RootLayout({
               </QueryProvider>
             </PermissionProvider>
           </AuthProvider>
-        </ThemeProvider>
       </body>
     </html>
   );

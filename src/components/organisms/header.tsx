@@ -18,9 +18,9 @@ import Image from "next/image";
 import Link from "next/link";
 const navigation = [
   { name: "Accueil", href: "/" },
-  // { name: "Formations", href: "/" },
-  { name: "Plans & Tarifs", href: "/" },
-  { name: "Contact-nous", href: "/" },
+  { name: "Plans & Tarifs", href: "/#pricing" },
+  { name: "Comment ça marche", href: "/#how-it-works" },
+  { name: "FAQs", href: "/#faq" },
 ];
 
 export default function Header() {
