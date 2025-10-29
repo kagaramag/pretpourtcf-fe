@@ -148,8 +148,8 @@ function PlansPage() {
 
   // If user doesn't have a subscription, show plans
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-2 text-center">
+    <div className="container mx-auto">
+      <div className="mb-2 text-center mt-6">
         <h1 className="text-3xl font-bold mb-2">Plans & Tarifs</h1>
         <h2 className="text-muted-foreground">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
@@ -166,7 +166,7 @@ function PlansPage() {
           <p className="text-sm text-muted-foreground mt-2">Veuillez contacter l'administrateur.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto mt-4">
           {plans.map((plan) => (
             <Card
               key={plan.id}
@@ -188,9 +188,9 @@ function PlansPage() {
                   <span className="text-4xl font-bold">
                     {plan.price === 0
                       ? "Gratuit"
-                      : new Intl.NumberFormat("fr-RW", {
+                      : new Intl.NumberFormat("en-US", {
                           style: "currency",
-                          currency: "RWF",
+                          currency: "USD",
                           minimumFractionDigits: 0,
                         }).format(plan.price)}
                   </span>
