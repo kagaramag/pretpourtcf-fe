@@ -73,7 +73,9 @@ export function LoginForm() {
       const { authService } = await import("@/services/auth");
       await authService.resendVerificationEmail(userEmail);
       const { toast } = await import("sonner");
-      toast.success("Email de vérification renvoyé! Vérifiez votre boîte de réception.");
+      toast.success(
+        "Email de vérification renvoyé! Vérifiez votre boîte de réception."
+      );
     } catch (error: any) {
       const { toast } = await import("sonner");
       toast.error("Erreur lors de l'envoi de l'email");
@@ -81,14 +83,10 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Bon retour!</CardTitle>
-        <CardDescription>
-          Entrez vos identifiants pour accéder à votre compte.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+      <h3 className="text-2xl">Bon retour!</h3>
+      <div className="text-sm text-gray-400 mb-4">Entrez vos identifiants pour accéder à votre compte.</div>
+      <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-4"
@@ -192,7 +190,7 @@ export function LoginForm() {
             </Link>
           </p>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

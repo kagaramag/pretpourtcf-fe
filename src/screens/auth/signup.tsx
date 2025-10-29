@@ -118,7 +118,8 @@ export function SignupForm() {
               pour activer votre compte avant de vous connecter.
             </p>
             <p className="text-xs text-blue-600">
-              N'oubliez pas de vérifier vos spams si vous ne trouvez pas l'email.
+              N'oubliez pas de vérifier vos spams si vous ne trouvez pas
+              l'email.
             </p>
           </div>
 
@@ -147,15 +148,13 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Créer un compte</CardTitle>
-        <CardDescription>
-          Inscrivez-vous pour accéder aux tests d'entraînement
-          <br /> et suivre votre progression.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+      <h3 className="text-2xl">Créer un compte</h3>
+      <div className="text-sm text-gray-400 mb-4">
+        Inscrivez-vous pour accéder aux tests d'entraînement
+        <br /> et suivre votre progression.
+      </div>
+      <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-4"
@@ -163,7 +162,7 @@ export function SignupForm() {
         >
           {signupError && <p className="text-red-400 text-sm">{signupError}</p>}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col lg:flex-row gap-2">
             <div className="space-y-2">
               <Label htmlFor="first_name" className="text-foreground">
                 Nom
@@ -274,7 +273,7 @@ export function SignupForm() {
             </Link>
           </p>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
