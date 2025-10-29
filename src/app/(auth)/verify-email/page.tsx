@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { authService } from "@/services/auth";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import { Loader2, CheckCircle2, XCircle, Mail } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
@@ -141,5 +141,32 @@ export default function VerifyEmailPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">Vérification de l'email</CardTitle>
+              <CardDescription>Vérification en cours...</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center space-y-6">
+              <div className="flex justify-center">
+                <Loader2 className="h-16 w-16 animate-spin text-primary" />
+              </div>
+              <p className="text-center text-muted-foreground">
+                Veuillez patienter pendant que nous vérifions votre email...
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
