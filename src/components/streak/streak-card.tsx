@@ -1,12 +1,58 @@
 "use client";
 
-import { Streak } from "@/services/streak";
+import { Streak, Reward } from "@/services/streak";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Trophy, Clock, Zap } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+
+// All possible streak rewards in order
+const ALL_REWARDS: Omit<Reward, "earnedAt">[] = [
+  {
+    type: "badge",
+    name: "Étincelle",
+    description: "Le début d'une belle aventure.",
+    icon: "🥉",
+  },
+  {
+    type: "theme",
+    name: "Flamme",
+    description: "La motivation prend feu.",
+    icon: "🌊",
+  },
+  {
+    type: "bonus_points",
+    name: "Lueur",
+    description: "Les progrès se font sentir.",
+    icon: "⭐",
+  },
+  {
+    type: "avatar",
+    name: "Lanterne",
+    description: "La constance éclaire ton chemin.",
+    icon: "🌟",
+  },
+  {
+    type: "badge",
+    name: "Phare",
+    description: "Ta lumière guide les autres.",
+    icon: "🥈",
+  },
+  {
+    type: "certificate",
+    name: "Soleil",
+    description: "Tu rayonnes de maîtrise.",
+    icon: "📜",
+  },
+  {
+    type: "feature_unlock",
+    name: "Étoile",
+    description: "L'excellence brille en toi.",
+    icon: "📊",
+  },
+];
 
 interface StreakCardProps {
   streak: Streak;
@@ -53,17 +99,22 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
 
   return (
     <Card
-      className={`relative overflow-hidden ${isActive ? "border-orange-500 border-2" : ""}`}
+      className={`relative overflow-hidden ${isActive ? "border-orange-500 border-4" : ""}`}
       onClick={onViewDetails}
     >
       {isActive && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 animate-pulse" />
+        <>
+          <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 animate-pulse" />
+          <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 animate-pulse" />
+        </>
       )}
 
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-xl">
-            <Flame className={`h-6 w-6 ${isActive ? "text-orange-500 animate-pulse" : "text-gray-400"}`} />
+            <Flame
+              className={`h-6 w-6 ${isActive ? "text-orange-500 animate-pulse" : "text-gray-400"}`}
+            />
             Série de 7 jours
           </CardTitle>
           <Badge className={getStatusColor(streak.status)}>
@@ -72,7 +123,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-2">
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
@@ -85,6 +136,42 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
           <p className="text-xs text-muted-foreground text-right">
             {progressPercentage}% complété
           </p>
+        </div>
+
+        {/* Rewards Preview */}
+        <div className="pt-3">
+          <div className="grid grid-cols-7 gap-2">
+            {ALL_REWARDS.map((reward, index) => {
+              const isEarned = streak.rewards.some(
+                (earnedReward) => earnedReward.name === reward.name
+              );
+
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col text-center items-center gap-2 p-2 rounded-lg border transition-all ${
+                    isEarned
+                      ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200"
+                      : "bg-gray-50 border-gray-200 grayscale opacity-50"
+                  }`}
+                >
+                  <span className="text-2xl">{reward.icon}</span>
+                  <div className="flex-1">
+                    <p
+                      className={`text-sm font-semibold ${isEarned ? "" : "text-gray-500"}`}
+                    >
+                      {reward.name}
+                    </p>
+                    <p
+                      className={`text-xs ${isEarned ? "text-muted-foreground" : "text-gray-400"}`}
+                    >
+                      {reward.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Stats Grid */}
@@ -108,36 +195,29 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
 
         {/* Burn Timer (only for active streaks) */}
         {isActive && (
-          <div className={`flex items-center gap-2 p-3 rounded-lg ${
-            hoursRemaining <= 6 ? "bg-red-50 border border-red-200" : "bg-orange-50 border border-orange-200"
-          }`}>
-            <Clock className={`h-5 w-5 ${hoursRemaining <= 6 ? "text-red-500" : "text-orange-500"}`} />
+          <div
+            className={`flex items-center gap-2 p-3 rounded-lg ${
+              hoursRemaining <= 6
+                ? "bg-red-50 border border-red-200"
+                : "bg-orange-50 border border-orange-200"
+            }`}
+          >
+            <Clock
+              className={`h-5 w-5 ${hoursRemaining <= 6 ? "text-red-500" : "text-orange-500"}`}
+            />
             <div className="flex-1">
               <p className="text-xs text-muted-foreground">Temps restant</p>
-              <p className={`text-sm font-bold ${hoursRemaining <= 6 ? "text-red-700" : "text-orange-700"}`}>
+              <p
+                className={`text-sm font-bold ${hoursRemaining <= 6 ? "text-red-700" : "text-orange-700"}`}
+              >
                 {hoursRemaining}h avant de brûler
               </p>
             </div>
           </div>
         )}
-        {/* Rewards Preview */}
-        {streak.rewards.length > 0 && (
-          <div className="pt-3 border-t">
-            <p className="text-xs text-muted-foreground mb-2">Dernière récompense</p>
-            <div className="flex items-center gap-2 p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-              <span className="text-2xl">{streak.rewards[streak.rewards.length - 1].icon}</span>
-              <div className="flex-1">
-                <p className="text-sm font-semibold">{streak.rewards[streak.rewards.length - 1].name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {streak.rewards[streak.rewards.length - 1].description}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Dates */}
-        <div className="text-xs text-muted-foreground pt-2 border-t">
+        <div className="text-xs text-muted-foreground">
           <div className="flex justify-between">
             <span>
               Début: {new Date(streak.startDate).toLocaleDateString("fr-FR")}

@@ -186,12 +186,12 @@ export default function StreaksPage() {
       </div>
 
       {/* Eligibility Alert */}
-      {!eligibility?.eligible && (
+      {/* {!eligibility?.eligible && (
         <Alert className="mb-2">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>{eligibility?.message}</AlertDescription>
         </Alert>
-      )}
+      )} */}
 
       {/* Stats Cards */}
       {stats && (
