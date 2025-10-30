@@ -3,7 +3,7 @@ import AccountLayout from "@/layouts/account";
 
 export const metadata: Metadata = {
   title: "Mes Séries | TCF",
-  description: "Gérez vos séries d'exercices et gagnez des récompenses",
+  description: "Gérez vos séries d'exercices et gagnez des emblème",
 };
 
 export default function SeriesLayout({

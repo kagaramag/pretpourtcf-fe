@@ -122,7 +122,7 @@ export function CreateStreakDialog({
             Démarrer une nouvelle série
           </DialogTitle>
           <DialogDescription>
-            Relevez le défi et gagnez des récompenses exclusives!
+            Relevez le défi et gagnez des emblème exclusives!
           </DialogDescription>
         </DialogHeader>
 
@@ -210,7 +210,7 @@ export function CreateStreakDialog({
               <Zap className="h-5 w-5 text-purple-500 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-sm">
-                  Récompenses exclusives
+                  Emblème exclusives
                 </h4>
                 <p className="text-xs text-muted-foreground">
                   Gagnez une récompense unique pour chaque 3 exercices

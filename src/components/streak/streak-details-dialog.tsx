@@ -104,7 +104,7 @@ export function StreakDetailsDialog({
               <div>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <Trophy className="h-5 w-5 text-yellow-500" />
-                  Récompenses gagnées ({streak.rewards.length})
+                  Emblème gagnées ({streak.rewards.length})
                 </h3>
                 <div className="grid gap-2">
                   {streak.rewards.map((reward, index) => (

@@ -83,7 +83,7 @@ export default function AccountPage() {
                 Séries Premium
               </CardTitle>
               <CardDescription>
-                Maintenez votre engagement et gagnez des récompenses!
+                Maintenez votre engagement et gagnez des emblème!
               </CardDescription>
             </CardHeader>
             <CardContent>

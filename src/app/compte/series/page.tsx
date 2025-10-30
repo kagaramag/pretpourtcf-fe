@@ -106,7 +106,7 @@ export default function StreaksPage() {
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Relevez le défi des séries de 7 jours! Complétez 20 exercices
-                avec au moins 90% de score et gagnez des récompenses exclusives.
+                avec au moins 90% de score et gagnez des emblème exclusives.
               </p>
               <Alert>
                 <Flame className="h-4 w-4 text-orange-500" />
@@ -150,29 +150,9 @@ export default function StreaksPage() {
               Mes Séries
             </h1>
             <p className="text-muted-foreground">
-              Maintenez votre engagement et gagnez des récompenses!
+              Maintenez votre engagement et gagnez des emblème!
             </p>
           </div>
-          {activeStreak && activeStreak.rewards.length > 0 && (
-            <div>
-              <div className="flex items-center gap-2 p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
-                <span className="text-2xl">
-                  {activeStreak.rewards[activeStreak.rewards.length - 1].icon}
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold">
-                    {activeStreak.rewards[activeStreak.rewards.length - 1].name}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {
-                      activeStreak.rewards[activeStreak.rewards.length - 1]
-                        .description
-                    }
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
           {eligibility?.eligible && (
             <Button
               onClick={() => setCreateDialogOpen(true)}
@@ -194,48 +174,52 @@ export default function StreaksPage() {
       )} */}
 
       {/* Stats Cards */}
-      {stats && (
-        <div className="grid md:grid-cols-4 gap-1 mb-2">
-          <div className="border border-gray-200 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-muted-foreground">
-              Total séries
-            </h4>
-            <p className="text-2xl font-bold">{stats.totalStreaks}</p>
+      <div className="grid md:grid-cols-4 gap-1 mb-2">
+        {activeStreak && activeStreak.rewards.length > 0 && (
+          <div className=" p-3 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg border-2 border-orange-200">
+            <div className="flex items-center gap-2 p-2">
+              <span className="text-2xl h-10 w-10 flex items-center justify-center rounded-lg bg-white p-6">
+                {activeStreak.rewards[activeStreak.rewards.length - 1].icon}
+              </span>
+              <div className="flex-1">
+                <p className="text-sm font-semibold">
+                  {activeStreak.rewards[activeStreak.rewards.length - 1].name}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {
+                    activeStreak.rewards[activeStreak.rewards.length - 1]
+                      .description
+                  }
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="border border-gray-200 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-muted-foreground">
-              Terminées
-            </h4>
-            <p className="text-2xl font-bold text-green-600">
-              {stats.completedStreaks}
-            </p>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-3">
-            <h4 className="text-sm font-medium text-muted-foreground">
-              Taux de réussite
-            </h4>
-            <div>
-              <p className="text-2xl font-bold text-blue-600">
-                {stats.completionRate}%
+        )}
+        {stats && (
+          <>
+            <div className="border-2 border-gray-200 rounded-lg p-3">
+              <h4 className="text-sm font-medium text-muted-foreground">
+                Total séries
+              </h4>
+              <p className="text-2xl font-bold">{stats.totalStreaks}</p>
+            </div>
+            <div className="border-2 border-gray-200 rounded-lg p-3">
+              <div className="">
+                <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
+                  <Trophy className="h-4 w-4 text-yellow-600" />
+                  Emblèmes gagnées
+                </h3>
+              </div>
+              <p className="text-2xl font-bold text-yellow-700">
+                {stats.byStatus?.reduce(
+                  (sum: number, s: any) => sum + s.totalRewards,
+                  0
+                ) || 0}
               </p>
             </div>
-          </div>
-          <div className="border border-gray-200 rounded-lg p-3">
-            <div className="">
-              <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
-                <Trophy className="h-4 w-4 text-yellow-600" />
-                Récompenses
-              </h3>
-            </div>
-            <p className="text-2xl font-bold text-yellow-700">
-              {stats.byStatus?.reduce(
-                (sum: number, s: any) => sum + s.totalRewards,
-                0
-              ) || 0}
-            </p>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
 
       {/* Tabs */}
       <Tabs defaultValue="active" className="space-y-2">
@@ -266,7 +250,7 @@ export default function StreaksPage() {
                     Aucune série active
                   </h3>
                   <p className="text-muted-foreground mb-4">
-                    Commencez une nouvelle série pour gagner des récompenses!
+                    Commencez une nouvelle série pour gagner des emblème!
                   </p>
                   {eligibility?.eligible && (
                     <Button
