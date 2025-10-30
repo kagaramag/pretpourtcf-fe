@@ -149,8 +149,8 @@ export function SignupForm() {
 
   return (
     <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
-      <h3 className="text-2xl">Créer un compte</h3>
-      <div className="text-sm text-gray-400 mb-4">
+      <h3 className="text-2xl font-semibold">Créer un compte</h3>
+      <div className="text-sm text-gray-500 mb-4">
         Inscrivez-vous pour accéder aux tests d'entraînement
         <br /> et suivre votre progression.
       </div>
@@ -168,12 +168,10 @@ export function SignupForm() {
                 Nom
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="first_name"
                   type="text"
                   {...register("first_name")}
-                  className="pl-10 bg-card border-border text-foreground"
                 />
               </div>
               {errors.first_name && (
@@ -188,12 +186,11 @@ export function SignupForm() {
                 Prenom
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="last_name"
                   type="text"
                   {...register("last_name")}
-                  className="pl-10 bg-card border-border text-foreground"
+                  className="pl-8"
                 />
               </div>
               {errors.last_name && (
@@ -209,13 +206,7 @@ export function SignupForm() {
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                className="pl-10 bg-card border-border text-foreground"
-              />
+              <Input id="email" type="email" {...register("email")} />
             </div>
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -227,12 +218,10 @@ export function SignupForm() {
               Mot de passe
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="pl-10 pr-10 bg-card border-border text-foreground"
               />
               <button
                 type="button"
@@ -252,8 +241,9 @@ export function SignupForm() {
           </div>
 
           <Button
+            size={"lg"}
             type="submit"
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="w-full"
             disabled={isPending}
           >
             {isPending ? (

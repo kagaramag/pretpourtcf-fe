@@ -360,9 +360,9 @@ function AbonnerPageContent() {
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fr-RW", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "RWF",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -680,36 +680,12 @@ function AbonnerPageContent() {
                   </div>
                 </Label>
               </div>
-
-              <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
-                <RadioGroupItem value="spenn" id="spenn" />
-                <Label
-                  htmlFor="spenn"
-                  className="flex items-center gap-2 cursor-pointer flex-1"
-                >
-                  <Wallet className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium">SPENN</div>
-                    <div className="text-xs text-muted-foreground">
-                      Paiement via SPENN
-                    </div>
-                  </div>
-                </Label>
-              </div>
             </RadioGroup>
           </div>
         </CardContent>
 
         <CardFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/compte/plans")}
-            disabled={loading}
-            className="flex-1"
-          >
-            Annuler
-          </Button>
-          <Button onClick={handlePayment} disabled={loading} className="flex-1">
+          <Button onClick={handlePayment} disabled={loading} className="flex-1" size={"lg"}>
             {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

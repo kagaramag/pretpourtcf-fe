@@ -110,9 +110,9 @@ export function CheckoutDialog({
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fr-RW", {
+    return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "RWF",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);

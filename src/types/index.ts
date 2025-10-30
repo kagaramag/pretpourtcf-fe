@@ -9,6 +9,16 @@ export interface SubscriptionPlan {
   price: number;
   description?: string;
   features: string[];
+  popular: boolean;
+  details?: {
+    co: number;
+    ce: number;
+    eo: number;
+    ee: number;
+    correction: boolean;
+    streak: boolean;
+    history: boolean;
+  };
 }
 
 export interface Subscription {
@@ -50,7 +60,6 @@ export interface LoginResponse {
   access_token: string;
   refresh_token: string;
 }
-
 
 // API Response Types
 export interface ApiResponse<T> {

@@ -5,7 +5,14 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -73,7 +80,9 @@ function PlansPage() {
                 </span>
               </CardTitle>
               <CardDescription>
-                {subscription.plan.type === "trial" ? "Plan découverte" : "Plan premium"}
+                {subscription.plan.type === "trial"
+                  ? "Plan découverte"
+                  : "Plan premium"}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -83,9 +92,9 @@ function PlansPage() {
                   <p className="text-lg font-semibold">
                     {subscription.plan.price === 0
                       ? "Gratuit"
-                      : `${new Intl.NumberFormat("fr-RW", {
+                      : `${new Intl.NumberFormat("en-US", {
                           style: "currency",
-                          currency: "RWF",
+                          currency: "USD",
                           minimumFractionDigits: 0,
                         }).format(subscription.plan.price)}`}
                   </p>
@@ -101,7 +110,9 @@ function PlansPage() {
               <div className="border-t pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Date de début</p>
+                    <p className="text-sm text-muted-foreground">
+                      Date de début
+                    </p>
                     <p className="font-medium">
                       {startDate.toLocaleDateString("fr-FR")}
                     </p>
@@ -146,6 +157,18 @@ function PlansPage() {
     );
   }
 
+  console.log("##$$", plans);
+
+  const getButtonType = (planType: string) => {
+    if (planType === "trial") {
+      return "outline";
+    }
+    if (planType === "advanced") {
+      return "secondary";
+    }
+    return "default";
+  };
+
   // If user doesn't have a subscription, show plans
   return (
     <div className="container mx-auto">
@@ -162,8 +185,12 @@ function PlansPage() {
         </div>
       ) : plans.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Aucun plan disponible pour le moment.</p>
-          <p className="text-sm text-muted-foreground mt-2">Veuillez contacter l'administrateur.</p>
+          <p className="text-muted-foreground">
+            Aucun plan disponible pour le moment.
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Veuillez contacter l'administrateur.
+          </p>
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto mt-4">
@@ -172,9 +199,9 @@ function PlansPage() {
               key={plan.id}
               className={`relative ${plan.type === "premium" ? "border-primary shadow-lg" : ""}`}
             >
-              {plan.type === "premium" && (
+              {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                  <span className="bg-secondary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
                     Recommandé
                   </span>
                 </div>
@@ -183,8 +210,17 @@ function PlansPage() {
                 <CardTitle className="text-2xl">{plan.name}</CardTitle>
                 <CardDescription>{plan.description}</CardDescription>
               </CardHeader>
+              <CardFooter>
+                <Button
+                  onClick={() => handleSelectPlan(plan)}
+                  className="w-full"
+                  variant={getButtonType(plan.type)}
+                >
+                  Choisir ce plan
+                </Button>
+              </CardFooter>
               <CardContent>
-                <div className="mb-6">
+                <div className="mb-2">
                   <span className="text-4xl font-bold">
                     {plan.price === 0
                       ? "Gratuit"
@@ -199,23 +235,46 @@ function PlansPage() {
                   </span>
                 </div>
                 <ul className="space-y-3">
-                  {plan.features.map((feature, index) => (
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">{plan?.duration_days} jours</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Compréhension Orale: {plan.details?.co} tests</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Compréhension Ecrite: {plan.details?.ce} tests</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Expression Orale: {plan.details?.eo} tests</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Expression Ecrite: {plan.details?.ee} tests</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Correction automatique et détaillée: {plan.details?.correction ? "OUI" : "NON"}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Historique: {plan.details?.streak ? "OUI" : "NON"}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm">Access au Série: {plan.details?.streak ? "OUI" : "NON"}</span>
+                  </li>
+                  {/* {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                       <span className="text-sm">{feature}</span>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </CardContent>
-              <CardFooter>
-                <Button
-                  onClick={() => handleSelectPlan(plan)}
-                  className="w-full"
-                  variant={plan.type === "premium" ? "default" : "outline"}
-                >
-                  Choisir ce plan
-                </Button>
-              </CardFooter>
             </Card>
           ))}
         </div>

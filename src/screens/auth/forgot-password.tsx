@@ -46,25 +46,24 @@ export default function ForgotPasswordScreen() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <Mail className="w-8 h-8 text-green-600" />
-              </div>
+      <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <Mail className="w-8 h-8 text-green-600" />
             </div>
-            <CardTitle className="text-2xl">Check your email</CardTitle>
-            <CardDescription>
-              We've sent password reset instructions to <strong>{email}</strong>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          </div>
+          <h3 className="text-2xl">Check your email</h3>
+          <div>
+            We've sent password reset instructions to <strong>{email}</strong>
+          </div>
+          <div>
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground text-center">
                 Didn't receive the email? Check your spam folder or try again.
               </p>
               <Button
+                size={"lg"}
                 variant="outline"
                 className="w-full"
                 onClick={() => setIsSubmitted(false)}
@@ -78,30 +77,28 @@ export default function ForgotPasswordScreen() {
                 </Button>
               </Link>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">Forgot password?</CardTitle>
-          <CardDescription>
-            Enter your email address and we'll send you instructions to reset
-            your password
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+      <div className="w-full max-w-md">
+        <h3 className="text-2xl font-semibold">Mot de passe oublié?</h3>
+        <div className="text-sm text-gray-500 mb-4">
+          Entrez votre adresse e-mail et nous vous enverrons les instructions
+          pour réinitialiser votre mot de passe.
+        </div>
+        <div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="vous@exemple.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
@@ -109,19 +106,24 @@ export default function ForgotPasswordScreen() {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Sending..." : "Send reset instructions"}
+            <Button
+              size={"lg"}
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Envoyer les instructions"}
             </Button>
 
             <Link href="/login">
               <Button variant="ghost" className="w-full">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
+                Retour à la connexion
               </Button>
             </Link>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

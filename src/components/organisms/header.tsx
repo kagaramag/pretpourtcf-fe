@@ -159,18 +159,18 @@ export default function Header() {
               >
                 Connexion
               </Link> */}
-              <NavigationLink
+              <Link
                 href="/login"
                 className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
                 Connexion
-              </NavigationLink>
-              <NavigationLink
+              </Link>
+              <Link
                 href="/signup"
                 className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
                 Inscription
-              </NavigationLink>
+              </Link>
             </div>
           )}
         </div>

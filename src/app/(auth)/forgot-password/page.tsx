@@ -1,5 +1,6 @@
 import ForgotPasswordScreen from "@/screens/auth/forgot-password";
 import type { Metadata } from "next";
+import AuthLayout from "@/layouts/auth";
 
 export const metadata: Metadata = {
   title: "Mot de passe oublié | Pret Pour TCF",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ForgotPasswordPage() {
-  return <ForgotPasswordScreen />;
+  return (
+    <AuthLayout>
+      <ForgotPasswordScreen />
+    </AuthLayout>
+  );
 }

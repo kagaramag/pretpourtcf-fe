@@ -58,7 +58,7 @@ export function NavigationLink({
     // Fallback to reset loading state if navigation doesn't complete
     setTimeout(() => {
       setIsNavigating(false);
-    }, 3000);
+    }, 1000);
   };
 
   const loading = isPending || isNavigating;

@@ -8,14 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Loader2, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
 
@@ -84,8 +77,10 @@ export function LoginForm() {
 
   return (
     <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
-      <h3 className="text-2xl">Bon retour!</h3>
-      <div className="text-sm text-gray-400 mb-4">Entrez vos identifiants pour accéder à votre compte.</div>
+      <h3 className="text-2xl font-semibold">Bon retour!</h3>
+      <div className="text-sm text-gray-500 mb-4">
+        Entrez vos identifiants pour accéder à votre compte.
+      </div>
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -116,13 +111,7 @@ export function LoginForm() {
               Email
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                className="pl-8 bg-card border-border text-foreground"
-              />
+              <Input id="email" type="email" {...register("email")} />
             </div>
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -134,12 +123,10 @@ export function LoginForm() {
               Mot de passe
             </Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className="pl-8 pr-10 bg-card border-border text-foreground"
               />
               <button
                 type="button"
@@ -170,7 +157,7 @@ export function LoginForm() {
           <Button
             size={"lg"}
             type="submit"
-            className="w-full bg-linear-to-tr from-[#4E56C0] to-[#9089fc] hover:bg-primary/90 text-primary-foreground"
+            className="w-full"
             disabled={isPending}
           >
             {isPending ? (

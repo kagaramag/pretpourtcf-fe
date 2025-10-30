@@ -121,7 +121,7 @@ function TransactionsScreenContent() {
     const methods: Record<string, string> = {
       momo: "Mobile Money",
       cc: "Credit Card",
-      spenn: "Spenn",
+      // spenn: "Spenn",
     };
     return methods[method] || method.toUpperCase();
   };
