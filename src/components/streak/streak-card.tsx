@@ -140,7 +140,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
 
         {/* Rewards Preview */}
         <div className="pt-3">
-          <div className="grid grid-cols-7 gap-2">
+          <div className="flex flex-wrap justify-center gap-x-2 gap-y-2 w-full gap-2">
             {ALL_REWARDS.map((reward, index) => {
               const isEarned = streak.rewards.some(
                 (earnedReward) => earnedReward.name === reward.name
@@ -149,21 +149,21 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
               return (
                 <div
                   key={index}
-                  className={`flex flex-col text-center items-center gap-2 p-2 rounded-lg border transition-all ${
+                  className={`lg:w-[180px] w-[130px] flex flex-col text-center items-center gap-1 lg:gap-2 p-2 rounded-xl transition-all ${
                     isEarned
-                      ? "bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200"
-                      : "bg-gray-50 border-gray-200 grayscale opacity-50"
+                      ? "bg-gradient-to-br from-[#4E56C0] to-[#9089fc]"
+                      : "bg-gray-100 grayscale opacity-50"
                   }`}
                 >
-                  <span className="text-2xl">{reward.icon}</span>
+                  <span className="text-4xl mt-3 h-10 w-10 bg-white rounded-full flex items-center justify-center overflow-hidden">{reward.icon}</span>
                   <div className="flex-1">
                     <p
-                      className={`text-sm font-semibold ${isEarned ? "" : "text-gray-500"}`}
+                      className={`text-sm lg:font-semibold ${isEarned ? "text-white" : "text-gray-500"}`}
                     >
                       {reward.name}
                     </p>
                     <p
-                      className={`text-xs ${isEarned ? "text-muted-foreground" : "text-gray-400"}`}
+                      className={`text-xs hidden lg:block ${isEarned ? "text-white" : "text-gray-400"}`}
                     >
                       {reward.description}
                     </p>
