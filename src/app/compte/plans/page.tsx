@@ -197,7 +197,7 @@ function PlansPage() {
           {plans.map((plan) => (
             <Card
               key={plan.id}
-              className={`relative ${plan.type === "premium" ? "border-primary shadow-lg" : ""}`}
+              className={`relative ${plan.type === "premium" ? "border-primary" : ""}`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">

@@ -22,7 +22,12 @@ export interface StreakExercise {
 
 export interface Streak {
   _id: string;
-  userId: string;
+  userId: string | {
+    _id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
   startDate: string;
   endDate: string;
   status: StreakStatus;
@@ -122,5 +127,27 @@ export const streakService = {
    */
   async getStreakStats(): Promise<BackendApiResponse<{ stats: StreakStats }>> {
     return apiClient.get("/streaks/stats");
+  },
+
+  /**
+   * Get all streaks (admin only)
+   */
+  async getAllStreaks(params?: {
+    page?: number;
+    limit?: number;
+    status?: StreakStatus;
+    search?: string;
+  }): Promise<BackendApiResponse<{
+    streaks: Streak[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  }>> {
+    return apiClient.get("/streaks/all", { params });
   },
 };

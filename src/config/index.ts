@@ -75,4 +75,7 @@ export const API_ENDPOINTS = {
   REPORTS_AGENT: "/reports/agent",
   REPORTS_CLIENT: "/reports/client",
   REPORTS_PAYMENTS: "/reports/payments",
+
+  // Contact
+  CONTACT: "/contact",
 };

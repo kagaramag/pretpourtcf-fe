@@ -7,7 +7,7 @@ import LandingPricing from "./landing-pricing";
 import LandingTestimonials from "./landing-testimonials";
 import LandingFAQ from "./landing-faq";
 import LandingStats from "./landing-stats";
-
+import { Button } from "@/components/ui/button";
 
 const quickSteps = [
   {
@@ -58,7 +58,8 @@ export function IndexScreen() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tighter pb-2 text-balance bg-gradient-to-r from-[#4E56C0] via-[#9B5DE0] to-[#D78FEE] bg-clip-text text-transparent leading-tight">
               Préparez votre test TCF avec assurance.
               <br className="hidden sm:block" />
-              <span className="sm:inline"> </span>La réussite, c'est 0% magie, 100% préparation.
+              <span className="sm:inline"> </span>La réussite, c'est 0% magie,
+              100% préparation.
             </h1>
             <p className="mb-4 mt-4 text-base sm:text-lg md:text-xl font-light text-pretty text-gray-500 px-2">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
@@ -66,16 +67,10 @@ export function IndexScreen() {
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-x-2 px-4">
               <NavigationLink
-                href="/login"
-                className="w-full sm:w-auto rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-6 py-3.5 font-semibold text-sm text-white text-center"
-              >
-                Commencer maintenant
-              </NavigationLink>
-              <NavigationLink
                 href="/signup"
-                className="w-full sm:w-auto rounded-md bg-white px-6 py-3 font-semibold text-sm text-primary border-2 border-primary text-center"
+                className="w-full rounded-full sm:w-auto bg-secondary px-8 py-4 font-bold text-lg text-white text-center"
               >
-                Découvrir nos plans
+                Essayer gratuitement
               </NavigationLink>
             </div>
           </div>
@@ -93,11 +88,12 @@ export function IndexScreen() {
           />
         </div>
       </div>
-      <div className="bg-linear-to-tr from-[#4E56C0] to-[#9089fc] py-16 sm:py-20 md:py-24">
+      <div className="primary-gradient py-16 sm:py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-none text-pretty text-white">
-              Trois étapes simples <br className="hidden sm:block" /> pour commencer
+              Trois étapes simples <br className="hidden sm:block" /> pour
+              commencer
             </h2>
             <p className="mt-4 sm:mt-6 text-base sm:text-lg text-white leading-tight">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
@@ -108,7 +104,10 @@ export function IndexScreen() {
           <div className="mx-auto mt-8 sm:mt-12 lg:mt-16 max-w-2xl lg:max-w-none">
             <dl className="grid max-w-xl grid-cols-1 gap-4 sm:gap-6 md:gap-8 lg:max-w-none lg:grid-cols-3">
               {quickSteps.map((feature) => (
-                <div key={feature.name} className="flex flex-col bg-accent-foreground/70 p-4 sm:p-6 rounded-lg">
+                <div
+                  key={feature.name}
+                  className="flex flex-col bg-accent-foreground/70 p-4 sm:p-6 rounded-lg"
+                >
                   <h3 className="text-lg sm:text-xl font-semibold text-white">
                     {feature.name}
                   </h3>
@@ -132,11 +131,6 @@ export function IndexScreen() {
         <LandingHowItWorks />
       </div>
 
-      {/* Pricing Section */}
-      <div id="pricing">
-        <LandingPricing />
-      </div>
-
       {/* Testimonials Section */}
       <LandingTestimonials />
 
@@ -146,22 +140,21 @@ export function IndexScreen() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-accent-foreground">
+      <div className="bg-secondary">
         <div className="px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:px-8">
-          <div className="mx-auto max-w-5xl text-center">
+          <div className="mx-auto max-w-5xl text-center flex flex-col gap-3">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-tight text-balance text-white">
               Prêt à améliorer votre français?
             </h2>
-            <p className="mx-auto mt-4 sm:mt-6 max-w-xl text-base sm:text-lg text-pretty text-white/80 px-4">
+            <p className="mx-auto max-w-xl text-base sm:text-lg text-pretty text-white/80 px-4">
               Rejoignez des milliers d'apprenants qui préparent leur TCF avec
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
-            <div className="mt-8 sm:mt-10 flex items-center justify-center gap-x-6 px-4">
-              <NavigationLink
-                href="/signup"
-                className="w-full sm:w-auto rounded-md bg-white px-6 sm:px-8 py-3 font-bold text-sm sm:text-base text-primary text-center hover:bg-gray-100 transition-colors"
-              >
-                Inscrivez-vous maintenant
+            <div className="flex items-center justify-center gap-x-6 px-4">
+              <NavigationLink href="/signup">
+                <Button size={"lg"} variant={"outline"}>
+                  Essayer gratuitement
+                </Button>
               </NavigationLink>
             </div>
           </div>

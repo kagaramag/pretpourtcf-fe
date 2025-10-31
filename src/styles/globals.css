@@ -114,6 +114,13 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+.primary-gradient {
+  background: linear-gradient(to right, #4E56C0, #9089fc);
+}
+
+.secondary-gradient {
+  background: linear-gradient(to right bottom, #9B5DE0, #D78FEE);
+}
 
 @layer base {
   * {

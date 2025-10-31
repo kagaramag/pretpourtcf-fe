@@ -10,17 +10,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NavigationLink } from "@/components/ui/navigation-link";
-import { Bell, User, LogOut, House, ReceiptText, History, List } from "lucide-react";
+import {
+  Bell,
+  User,
+  LogOut,
+  House,
+  ReceiptText,
+  History,
+  List,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 const navigation = [
   { name: "Accueil", href: "/" },
-  { name: "Plans & Tarifs", href: "/#pricing" },
   { name: "Comment ça marche", href: "/#how-it-works" },
-  { name: "FAQs", href: "/#faq" },
+  { name: "Plans & Tarifs", href: "/tarifs" },
+  { name: "Contactez-nous", href: "/contactez-nous" },
 ];
 
 export default function Header() {
@@ -159,7 +169,7 @@ export default function Header() {
               >
                 Connexion
               </Link> */}
-              <Link
+              {/* <Link
                 href="/login"
                 className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
@@ -169,7 +179,17 @@ export default function Header() {
                 href="/signup"
                 className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc] px-3 sm:px-6 py-2 sm:py-2.5 font-semibold text-xs sm:text-sm text-white"
               >
-                Inscription
+                Commencer Gratuitement
+              </Link> */}
+              <NavigationLink href="/login">
+                <Button>
+                   Connexion
+                </Button>
+              </NavigationLink>
+              <Link href="/signup?next=/compte/essai-gratuit&package=trial">
+                <Button>
+                  Essai Gratuit
+                </Button>
               </Link>
             </div>
           )}

@@ -32,9 +32,21 @@ const menuItems: MenuItem[] = [
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
+    name: "Streaks",
+    icon: <ReceiptText className="h-5 w-5" />,
+    href: "/dashboard/streaks",
+    permission: PERMISSIONS.FOLLOWUPS_READ,
+  },
+  {
     name: "Subscriptions",
     icon: <ReceiptText className="h-5 w-5" />,
     href: "/dashboard/subscriptions",
+    permission: PERMISSIONS.FOLLOWUPS_READ,
+  },
+  {
+    name: "Plans",
+    icon: <ReceiptText className="h-5 w-5" />,
+    href: "/dashboard/plans",
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {

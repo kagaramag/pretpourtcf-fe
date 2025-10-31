@@ -1,4 +1,4 @@
-export type PlanType = "trial" | "premium";
+export type PlanType = "trial" | "basic" | "advanced" | "premium";
 export type SubscriptionStatus = "active" | "expired" | "cancelled";
 
 export interface SubscriptionPlan {
@@ -10,6 +10,7 @@ export interface SubscriptionPlan {
   description?: string;
   features: string[];
   popular: boolean;
+  is_active: boolean;
   details?: {
     co: number;
     ce: number;
