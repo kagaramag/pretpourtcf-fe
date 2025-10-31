@@ -4,10 +4,9 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
 const navigation = {
   main: [
     { name: "Accueil", href: "/" },
-    { name: "Plans & Tarifs", href: "/#pricing" },
     { name: "Comment ça marche", href: "/#how-it-works" },
-    { name: "FAQs", href: "/#faq" },
-    { name: "Contact", href: "#contact" },
+    { name: "Plans & Tarifs", href: "/tarifs" },
+    { name: "Contact", href: "/contactez-nous" },
   ],
   legal: [
     { name: "Politique de confidentialité", href: "#" },
@@ -50,10 +49,6 @@ export default function Footer() {
         <div className="mt-8 border-t border-gray-200 pt-8">
           <p className="text-center text-xs sm:text-sm text-gray-600 px-4">
             &copy; 2025 PRET POUR TCF LTD. Tous les droits sont réservés.
-          </p>
-          <p className="mt-2 text-center text-xs text-gray-500">
-            <Mail className="inline-block h-4 w-4 mr-1" />
-            contact@pretpourtcf.com
           </p>
         </div>
       </div>

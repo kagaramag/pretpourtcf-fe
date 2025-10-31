@@ -66,11 +66,10 @@ export function IndexScreen() {
               votre test du premier coup
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-x-2 px-4">
-              <NavigationLink
-                href="/signup"
-                className="w-full rounded-full sm:w-auto bg-secondary px-8 py-4 font-bold text-lg text-white text-center"
-              >
-                Essayer gratuitement
+              <NavigationLink href="/signup">
+                <Button size="xlg" variant={"secondary"}>
+                  Essayer gratuitement
+                </Button>
               </NavigationLink>
             </div>
           </div>
