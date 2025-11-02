@@ -66,7 +66,7 @@ export default function ListeningPracticePage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto">
         <div className="flex justify-center items-center py-12">
           <p className="text-muted-foreground">Chargement...</p>
         </div>
@@ -76,7 +76,7 @@ export default function ListeningPracticePage() {
 
   return (
     <AccountLayout>
-      <div className="container mx-auto p-6 max-w-6xl">
+      <div className="container mx-auto  max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Headphones className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />

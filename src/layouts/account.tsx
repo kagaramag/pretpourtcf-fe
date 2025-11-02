@@ -26,7 +26,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
         <Menu className="h-6 w-6" />
       </button>
 
-      <main className="flex-1 max-w-6xl w-full mx-auto mt-10 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 max-w-6xl w-full mx-auto mt-10 sm:py-16 px-4 sm:px-6 lg:px-0">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar - hidden on mobile, visible on desktop */}
           <aside className="hidden lg:block lg:w-[200px] mt-6 flex-shrink-0">

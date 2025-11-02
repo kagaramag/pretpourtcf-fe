@@ -169,8 +169,8 @@ function PlansPage() {
 
   // If user doesn't have a subscription, show plans
   return (
-    <div className="container mx-auto">
-      <div className="mb-2 text-center mt-6">
+    <div>
+      <div className="mb-10">
         <h1 className="text-3xl font-bold mb-2">Plans & Tarifs</h1>
         <h2 className="text-muted-foreground">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
@@ -191,7 +191,7 @@ function PlansPage() {
           </p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto mt-4">
+        <div className="grid md:grid-cols-3 gap-3 mt-4">
           {plans
             .filter((plan) => plan.type !== "trial")
             .map((plan) => (

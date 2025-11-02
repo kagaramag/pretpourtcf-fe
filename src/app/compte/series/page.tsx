@@ -146,7 +146,6 @@ export default function StreaksPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Flame className="h-8 w-8 text-orange-500" />
               Mes Séries
             </h1>
             <p className="text-muted-foreground">
