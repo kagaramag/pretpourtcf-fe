@@ -1,6 +1,7 @@
 import { SignupForm } from "@/screens/auth/signup";
 import type { Metadata } from "next";
 import AuthLayout from "@/layouts/auth";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Sign Up | Pret Pour TCF",
@@ -10,7 +11,9 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <AuthLayout>
-      <SignupForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SignupForm />
+      </Suspense>
     </AuthLayout>
   );
 }
