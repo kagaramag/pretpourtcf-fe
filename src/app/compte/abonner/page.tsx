@@ -27,6 +27,8 @@ import {
   XCircle,
   Clock,
   ArrowLeft,
+  Tag,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
@@ -43,7 +45,12 @@ function AbonnerPageContent() {
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">(
     "momo"
   );
+  const [currency, setCurrency] = useState<"RWF" | "USD">("RWF"); // Default to RWF
   const [msisdn, setMsisdn] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const [promoCodeApplied, setPromoCodeApplied] = useState(false);
+  const [discountPercentage, setDiscountPercentage] = useState(0);
+  const [validatingPromo, setValidatingPromo] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pageStatus, setPageStatus] = useState<PaymentStatus>("form");
   const [currentTransactionId, setCurrentTransactionId] = useState<string | null>(null);
@@ -259,34 +266,84 @@ function AbonnerPageContent() {
     }, intervalMs);
   };
 
+  const handleApplyPromoCode = async () => {
+    if (!promoCode.trim() || !plan) return;
+
+    try {
+      setValidatingPromo(true);
+      const validation = await paymentService.validatePromoCode(
+        promoCode.trim(),
+        plan.id
+      );
+
+      if (validation.valid && validation.discount_percentage !== undefined) {
+        setPromoCodeApplied(true);
+        setDiscountPercentage(validation.discount_percentage);
+        toast.success(
+          `Code promo appliqué! ${validation.discount_percentage}% de réduction`
+        );
+      }
+    } catch (error: any) {
+      toast.error(
+        error.response?.data?.message || "Code promo invalide"
+      );
+      setPromoCodeApplied(false);
+      setDiscountPercentage(0);
+    } finally {
+      setValidatingPromo(false);
+    }
+  };
+
+  const handleRemovePromoCode = () => {
+    setPromoCode("");
+    setPromoCodeApplied(false);
+    setDiscountPercentage(0);
+  };
+
+  const calculateFinalPrice = () => {
+    if (!plan) return 0;
+    const basePrice = currency === "USD" ? plan.price_usd : plan.price_rwf;
+    if (promoCodeApplied && discountPercentage > 0) {
+      return Math.max(0, basePrice - (basePrice * discountPercentage) / 100);
+    }
+    return basePrice;
+  };
+
   const handlePayment = async () => {
     if (!plan) return;
 
     try {
-      // Validate phone number for mobile money
-      if (paymentMethod === "momo" && !msisdn) {
-        toast.error("Veuillez entrer votre numéro de téléphone");
-        return;
-      }
+      const finalPrice = calculateFinalPrice();
 
-      if (
-        paymentMethod === "momo" &&
-        !/^(078|079|072|073)\d{7}$/.test(msisdn)
-      ) {
-        toast.error(
-          "Veuillez entrer un numéro de téléphone valide (ex: 0781234567)"
-        );
-        return;
+      // If final price is 0, skip payment validation
+      if (finalPrice > 0) {
+        // Validate phone number for mobile money
+        if (paymentMethod === "momo" && !msisdn) {
+          toast.error("Veuillez entrer votre numéro de téléphone");
+          return;
+        }
+
+        if (
+          paymentMethod === "momo" &&
+          !/^(078|079|072|073)\d{7}$/.test(msisdn)
+        ) {
+          toast.error(
+            "Veuillez entrer un numéro de téléphone valide (ex: 0781234567)"
+          );
+          return;
+        }
       }
 
       setLoading(true);
 
-      console.log(`[PAYMENT] Initiating ${paymentMethod} payment for plan: ${plan.name}`);
+      console.log(`[PAYMENT] Initiating ${finalPrice === 0 ? 'free' : paymentMethod} payment for plan: ${plan.name}`);
 
       const response = await paymentService.initiatePayment({
         plan_id: plan.id,
         payment_method: paymentMethod,
+        currency: currency,
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
+        promo_code: promoCodeApplied ? promoCode.trim() : undefined,
       });
 
       console.log("[PAYMENT] Payment initiation response:", {
@@ -298,6 +355,15 @@ function AbonnerPageContent() {
 
       setCurrentTransactionId(response.transaction.id);
       setCurrentPaymentMethod(paymentMethod);
+
+      // If the payment was immediately successful (e.g., 100% promo code), show success
+      if (response.transaction.status === "successful") {
+        console.log("[PAYMENT] Payment immediately successful (likely 100% discount)");
+        setPageStatus("success");
+        await refreshUser();
+        toast.success("Abonnement activé avec succès!");
+        return;
+      }
 
       // Check payment method to determine the flow
       // Card/SPENN payments redirect to checkout page
@@ -359,13 +425,28 @@ function AbonnerPageContent() {
     }
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatPrice = (price: number, curr: "RWF" | "USD") => {
+    return new Intl.NumberFormat(curr === "RWF" ? "rw-RW" : "en-US", {
       style: "currency",
-      currency: "USD",
+      currency: curr,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
+  };
+
+  // Get the price based on selected currency
+  const getPrice = () => {
+    if (!plan) return 0;
+    if (currency === "USD") {
+      return plan.price_usd;
+    }
+    return plan.price_rwf;
+  };
+
+  // Check if transaction has discount info (for showing in success screen)
+  const hasTransactionDiscount = () => {
+    // This would be populated from the transaction response
+    return promoCodeApplied && discountPercentage > 0;
   };
 
   if (!plan) {
@@ -379,7 +460,7 @@ function AbonnerPageContent() {
   // Success State
   if (pageStatus === "success") {
     return (
-      <div className="container mx-auto p-6 max-w-2xl">
+      <div className="container">
         <Card className="border-green-200">
           <CardHeader className="text-center pb-3">
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
@@ -402,7 +483,7 @@ function AbonnerPageContent() {
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">Montant</span>
                   <span className="font-semibold">
-                    {formatPrice(plan.price)}
+                    {formatPrice(getPrice(), currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -614,74 +695,181 @@ function AbonnerPageContent() {
               <span className="text-sm text-muted-foreground">Durée</span>
               <span className="font-semibold">{plan.duration_days} jours</span>
             </div>
+            {promoCodeApplied && discountPercentage > 0 && (
+              <>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-muted-foreground">Prix original</span>
+                  <span className="line-through text-muted-foreground">
+                    {formatPrice(getPrice(), currency)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-sm text-green-600">
+                  <span>Réduction ({discountPercentage}%)</span>
+                  <span>
+                    -{formatPrice(getPrice() * discountPercentage / 100, currency)}
+                  </span>
+                </div>
+              </>
+            )}
             <div className="flex justify-between items-center pt-2 border-t">
               <span className="text-sm text-muted-foreground">Total</span>
               <span className="text-xl font-bold text-primary">
-                {formatPrice(plan.price)}
+                {formatPrice(calculateFinalPrice(), currency)}
               </span>
             </div>
           </div>
 
-          {/* Payment Method Selection */}
-          <div className="space-y-3">
-            <Label className="text-base">Méthode de paiement</Label>
-            <RadioGroup
-              value={paymentMethod}
-              onValueChange={(value) => setPaymentMethod(value as any)}
-            >
-              <div className="">
-                <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
-                  <RadioGroupItem value="momo" id="momo" />
-                  <Label
-                    htmlFor="momo"
-                    className="flex items-center gap-2 cursor-pointer flex-1"
-                  >
-                    <Smartphone className="h-5 w-5" />
-                    <div>
-                      <div className="font-medium">Mobile Money</div>
-                      <div className="text-xs text-muted-foreground">
-                        MTN, Airtel
-                      </div>
-                    </div>
-                  </Label>
-                </div>
-                {/* Phone Number Input for Mobile Money */}
-                {paymentMethod === "momo" && (
-                  <div className="space-y-2 mt-2 px-4">
-                    <Label htmlFor="msisdn">Numéro de téléphone</Label>
-                    <Input
-                      id="msisdn"
-                      type="tel"
-                      placeholder="078XXXXXXX"
-                      value={msisdn}
-                      onChange={(e) => setMsisdn(e.target.value)}
-                      maxLength={10}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Entrez votre numéro Mobile Money pour recevoir la demande
-                      de paiement
+          {/* Promo Code Section */}
+          <div className="space-y-3 pt-2">
+            <h3 className="font-semibold flex items-center gap-2">
+              <Tag className="h-4 w-4" />
+              Code promo
+            </h3>
+            {!promoCodeApplied ? (
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Entrez votre code promo"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  disabled={validatingPromo}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && promoCode.trim()) {
+                      handleApplyPromoCode();
+                    }
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleApplyPromoCode}
+                  disabled={!promoCode.trim() || validatingPromo}
+                >
+                  {validatingPromo ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Validation...
+                    </>
+                  ) : (
+                    "Appliquer"
+                  )}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
+                <div className="flex items-center gap-2">
+                  <Tag className="h-4 w-4 text-green-600" />
+                  <div>
+                    <p className="font-medium text-green-900">{promoCode}</p>
+                    <p className="text-xs text-green-700">
+                      {discountPercentage}% de réduction appliquée
                     </p>
                   </div>
-                )}
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleRemovePromoCode}
+                  className="h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Currency Selection */}
+          <div className="space-y-3 hidden">
+            <Label className="text-base">Devise</Label>
+            <RadioGroup
+              value={currency}
+              onValueChange={(value) => setCurrency(value as "RWF" | "USD")}
+              className="grid grid-cols-2 gap-4"
+            >
+              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                <RadioGroupItem value="RWF" id="rwf" />
+                <Label htmlFor="rwf" className="cursor-pointer flex-1">
+                  {/* <div className="font-medium">RWF</div> */}
+                  <div className="text-sm text-muted-foreground">
+                    {formatPrice(plan.price_rwf || plan.price, "RWF")}
+                  </div>
+                </Label>
               </div>
 
-              <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
-                <RadioGroupItem value="cc" id="cc" />
-                <Label
-                  htmlFor="cc"
-                  className="flex items-center gap-2 cursor-pointer flex-1"
-                >
-                  <CreditCard className="h-5 w-5" />
-                  <div>
-                    <div className="font-medium">Carte bancaire</div>
-                    <div className="text-xs text-muted-foreground">
-                      Visa, Mastercard, Amex
-                    </div>
+              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                <RadioGroupItem value="USD" id="usd" />
+                <Label htmlFor="usd" className="cursor-pointer flex-1">
+                  {/* <div className="font-medium">USD</div> */}
+                  <div className="text-sm text-muted-foreground">
+                    {formatPrice(plan.price_usd || plan.price, "USD")}
                   </div>
                 </Label>
               </div>
             </RadioGroup>
           </div>
+
+          {/* Payment Method Selection - Only show if price > 0 */}
+          {calculateFinalPrice() > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-semibold">Méthode de paiement</h4>
+              <RadioGroup
+                value={paymentMethod}
+                onValueChange={(value) => setPaymentMethod(value as any)}
+              >
+                <div className="">
+                  <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                    <RadioGroupItem value="momo" id="momo" />
+                    <Label
+                      htmlFor="momo"
+                      className="flex items-center gap-2 cursor-pointer flex-1"
+                    >
+                      <Smartphone className="h-5 w-5" />
+                      <div>
+                        <div className="font-medium">Mobile Money</div>
+                        <div className="text-xs text-muted-foreground">
+                          MTN, Airtel
+                        </div>
+                      </div>
+                    </Label>
+                  </div>
+                  {/* Phone Number Input for Mobile Money */}
+                  {paymentMethod === "momo" && (
+                    <div className="space-y-2 mt-2 px-4">
+                      <Label htmlFor="msisdn">Numéro de téléphone</Label>
+                      <Input
+                        id="msisdn"
+                        type="tel"
+                        placeholder="07XXXXXXXX"
+                        value={msisdn}
+                        onChange={(e) => setMsisdn(e.target.value)}
+                        maxLength={10}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Entrez votre numéro Mobile Money pour recevoir la demande
+                        de paiement
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                  <RadioGroupItem value="cc" id="cc" />
+                  <Label
+                    htmlFor="cc"
+                    className="flex items-center gap-2 cursor-pointer flex-1"
+                  >
+                    <CreditCard className="h-5 w-5" />
+                    <div>
+                      <div className="font-medium">Carte bancaire</div>
+                      <div className="text-xs text-muted-foreground">
+                        Visa, Mastercard, Amex
+                      </div>
+                    </div>
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+          )}
         </CardContent>
 
         <CardFooter className="flex gap-2">
@@ -691,8 +879,10 @@ function AbonnerPageContent() {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Traitement...
               </>
+            ) : calculateFinalPrice() === 0 ? (
+              "Activer l'abonnement gratuitement"
             ) : (
-              `Payer ${formatPrice(plan.price)}`
+              `Payer ${formatPrice(calculateFinalPrice(), currency)}`
             )}
           </Button>
         </CardFooter>

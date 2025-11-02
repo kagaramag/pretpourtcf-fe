@@ -6,12 +6,14 @@ export interface SubscriptionPlan {
   name: string;
   type: PlanType;
   duration_days: number;
-  price: number;
+  price: number; // Legacy field - will be price_rwf
+  price_rwf: number; // Price in Rwandan Francs
+  price_usd: number; // Price in US Dollars
   description?: string;
   features: string[];
   popular: boolean;
   is_active: boolean;
-  details?: {
+  details: {
     co: number;
     ce: number;
     eo: number;

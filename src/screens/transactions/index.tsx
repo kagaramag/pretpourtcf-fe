@@ -31,6 +31,7 @@ import {
   CreditCard,
   DollarSign,
   Receipt,
+  Tag,
 } from "lucide-react";
 import { paymentService } from "@/services/payment";
 import { toast } from "sonner";
@@ -208,6 +209,7 @@ function TransactionsScreenContent() {
                 <TableHead>Client</TableHead>
                 <TableHead>Plan</TableHead>
                 <TableHead>Amount</TableHead>
+                <TableHead>Promo Code</TableHead>
                 <TableHead>Method</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Ref ID</TableHead>
@@ -218,7 +220,7 @@ function TransactionsScreenContent() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8">
+                  <TableCell colSpan={9} className="text-center py-8">
                     <Loader2 className="h-6 w-6 animate-spin mx-auto" />
                     <p className="mt-2 text-muted-foreground">
                       Loading transactions...
@@ -228,7 +230,7 @@ function TransactionsScreenContent() {
               ) : transactions.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={8}
+                    colSpan={9}
                     className="text-center py-8 text-muted-foreground"
                   >
                     No transactions found
@@ -272,13 +274,42 @@ function TransactionsScreenContent() {
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <DollarSign className="h-3 w-3 text-muted-foreground" />
-                        <span className="font-medium">
-                          {formatAmount(
-                            transaction.amount,
-                            transaction.currency
+                        <div>
+                          <div className="font-medium">
+                            {formatAmount(
+                              transaction.amount,
+                              transaction.currency
+                            )}
+                          </div>
+                          {transaction.promo_code && transaction.original_amount && (
+                            <div className="text-xs text-muted-foreground line-through">
+                              {formatAmount(
+                                transaction.original_amount,
+                                transaction.currency
+                              )}
+                            </div>
                           )}
-                        </span>
+                        </div>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      {transaction.promo_code ? (
+                        <div className="flex items-center gap-1">
+                          <Tag className="h-3 w-3 text-green-600" />
+                          <div>
+                            <div className="font-mono text-xs font-medium text-green-700">
+                              {transaction.promo_code}
+                            </div>
+                            {transaction.discount_percentage && (
+                              <div className="text-xs text-green-600">
+                                -{transaction.discount_percentage}%
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">—</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       {getPaymentMethodLabel(transaction.payment_method)}

@@ -48,7 +48,7 @@ export default function Footer() {
 
         <div className="mt-8 border-t border-gray-200 pt-8">
           <p className="text-center text-xs sm:text-sm text-gray-600 px-4">
-            &copy; 2025 PRET POUR TCF LTD. Tous les droits sont réservés.
+            &copy; 2025 PRET POUR TCF. Tous les droits sont réservés.
           </p>
         </div>
       </div>

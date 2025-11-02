@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,8 +16,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 import { authService } from "@/services/auth";
+import { referralService } from "@/services/referral";
 import { toast } from "sonner";
 
 const signupSchema = z.object({
@@ -35,7 +36,11 @@ export function SignupForm() {
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, setIsPending] = useState(false);
+  const [referralToken, setReferralToken] = useState<string | null>(null);
+  const [referrerName, setReferrerName] = useState<string | null>(null);
+  const [isValidatingReferral, setIsValidatingReferral] = useState(false);
 
   const {
     register,
@@ -51,6 +56,31 @@ export function SignupForm() {
     },
   });
 
+  // Check for referral token in URL
+  useEffect(() => {
+    const ref = searchParams.get("ref");
+    if (ref) {
+      setIsValidatingReferral(true);
+      referralService
+        .validateToken(ref)
+        .then((response) => {
+          if (response.success && response.data) {
+            setReferralToken(ref);
+            setReferrerName(
+              `${response.data.referrer.first_name} ${response.data.referrer.last_name}`
+            );
+          }
+        })
+        .catch(() => {
+          // Invalid or expired token
+          toast.error("Le lien d'invitation est invalide ou a expiré");
+        })
+        .finally(() => {
+          setIsValidatingReferral(false);
+        });
+    }
+  }, [searchParams]);
+
   const onSubmit = async (data: SignupFormValues) => {
     try {
       setIsPending(true);
@@ -58,6 +88,7 @@ export function SignupForm() {
 
       const response = await authService.register({
         ...data,
+        referralToken: referralToken || undefined,
       });
 
       if (response.data) {
@@ -154,6 +185,22 @@ export function SignupForm() {
         Inscrivez-vous pour accéder aux tests d'entraînement
         <br /> et suivre votre progression.
       </div>
+
+      {/* Referral indicator */}
+      {referrerName && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
+          <UserPlus className="h-5 w-5 text-blue-600 mt-0.5" />
+          <div>
+            <p className="text-sm text-blue-800 font-medium">
+              Invitation de {referrerName}
+            </p>
+            <p className="text-xs text-blue-600">
+              Vous créez un compte suite à une invitation
+            </p>
+          </div>
+        </div>
+      )}
+
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -190,7 +237,6 @@ export function SignupForm() {
                   id="last_name"
                   type="text"
                   {...register("last_name")}
-                  className="pl-8"
                 />
               </div>
               {errors.last_name && (

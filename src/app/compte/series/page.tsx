@@ -91,7 +91,7 @@ export default function StreaksPage() {
   // Not premium user
   if (!eligibility?.isPremium && !isLoading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="w-full">
         <div className="max-w-2xl mx-auto">
           <Card className="border-yellow-200 bg-yellow-50">
             <CardHeader>
@@ -131,7 +131,7 @@ export default function StreaksPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="w-full">
         <div className="flex justify-center items-center py-12">
           <p className="text-muted-foreground">Chargement...</p>
         </div>
@@ -140,7 +140,7 @@ export default function StreaksPage() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="w-full">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between">

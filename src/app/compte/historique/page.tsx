@@ -143,7 +143,7 @@ export default function PracticeHistoryPage() {
 
   if (loading && sessions.length === 0) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="w-full">
         <div className="flex justify-center items-center py-12">
           <p className="text-muted-foreground">Chargement...</p>
         </div>
@@ -152,7 +152,7 @@ export default function PracticeHistoryPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
+    <div className="w-full">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Historique des pratiques</h1>
         <p className="text-muted-foreground">

@@ -62,7 +62,7 @@ function PlansPage() {
     const endDate = new Date(subscription.end_date);
 
     return (
-      <div className="container mx-auto p-6">
+      <div className="w-full">
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Mon Abonnement</h1>
           <p className="text-muted-foreground">
@@ -92,9 +92,9 @@ function PlansPage() {
                   <p className="text-lg font-semibold">
                     {subscription.plan.price === 0
                       ? "Gratuit"
-                      : `${new Intl.NumberFormat("en-US", {
+                      : `${new Intl.NumberFormat("rw-RW", {
                           style: "currency",
-                          currency: "USD",
+                          currency: "RWF",
                           minimumFractionDigits: 0,
                         }).format(subscription.plan.price)}`}
                   </p>
@@ -157,16 +157,14 @@ function PlansPage() {
     );
   }
 
-  console.log("##$$", plans);
-
   const getButtonType = (planType: string) => {
-    if (planType === "trial") {
-      return "outline";
+    if (planType === "premium") {
+      return "default";
     }
     if (planType === "advanced") {
       return "secondary";
     }
-    return "default";
+    return "outline";
   };
 
   // If user doesn't have a subscription, show plans
@@ -194,89 +192,140 @@ function PlansPage() {
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-3 max-w-4xl mx-auto mt-4">
-          {plans.map((plan) => (
-            <Card
-              key={plan.id}
-              className={`relative ${plan.type === "premium" ? "border-primary" : ""}`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-secondary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                    Recommandé
-                  </span>
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                <CardDescription>{plan.description}</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button
-                  onClick={() => handleSelectPlan(plan)}
-                  className="w-full"
-                  variant={getButtonType(plan.type)}
-                >
-                  Choisir ce plan
-                </Button>
-              </CardFooter>
-              <CardContent>
-                <div className="mb-2">
-                  <span className="text-4xl font-bold">
-                    {plan.price === 0
-                      ? "Gratuit"
-                      : new Intl.NumberFormat("en-US", {
-                          style: "currency",
-                          currency: "USD",
-                          minimumFractionDigits: 0,
-                        }).format(plan.price)}
-                  </span>
-                  <span className="text-muted-foreground ml-2">
-                    / {plan.duration_days} jours
-                  </span>
-                </div>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">{plan?.duration_days} jours</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Compréhension Orale: {plan.details?.co} tests</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Compréhension Ecrite: {plan.details?.ce} tests</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Expression Orale: {plan.details?.eo} tests</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Expression Ecrite: {plan.details?.ee} tests</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Correction automatique et détaillée: {plan.details?.correction ? "OUI" : "NON"}</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Historique: {plan.details?.streak ? "OUI" : "NON"}</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm">Access au Série: {plan.details?.streak ? "OUI" : "NON"}</span>
-                  </li>
-                  {/* {plan.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2">
+          {plans
+            .filter((plan) => plan.type !== "trial")
+            .map((plan) => (
+              <Card
+                key={plan.id}
+                className={`relative ${plan.type === "premium" ? "border-primary" : ""}`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                      Recommandé
+                    </span>
+                  </div>
+                )}
+                <CardHeader>
+                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                  <CardDescription>{plan.description}</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                  <Button
+                    onClick={() => handleSelectPlan(plan)}
+                    className="w-full"
+                    variant={getButtonType(plan.type)}
+                  >
+                    Choisir ce plan
+                  </Button>
+                </CardFooter>
+                <CardContent>
+                  <div className="mb-2">
+                    <div className="space-y-1">
+                      <div>
+                        <span className="text-2xl font-bold tracking-tight">
+                          {plan.price_rwf === 0
+                            ? "Gratuit"
+                            : new Intl.NumberFormat("rw-RW", {
+                                style: "currency",
+                                currency: "RWF",
+                                minimumFractionDigits: 0,
+                              }).format(plan.price_rwf)}
+                        </span>
+                        <span className="text-muted-foreground ml-2 text-sm">
+                          / {plan.duration_days} jours
+                        </span>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {plan.price_usd === 0
+                          ? ""
+                          : `ou ${new Intl.NumberFormat("en-US", {
+                              style: "currency",
+                              currency: "USD",
+                              minimumFractionDigits: 0,
+                            }).format(plan.price_usd)}`}
+                      </div>
+                    </div>
+                  </div>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">{feature}</span>
+                      <span className="text-sm">
+                        {plan?.duration_days} jours
+                      </span>
                     </li>
-                  ))} */}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">
+                        Compréhension Orale: {plan.details?.co} tests
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">
+                        Compréhension Ecrite: {plan.details?.ce} tests
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">
+                        Expression Orale: {plan.details?.eo} tests
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">
+                        Expression Ecrite: {plan.details?.ee} tests
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm">
+                        Correction automatique et détaillée
+                      </span>
+                    </li>
+                    {plan.details.history ? (
+                      <li className="flex items-start gap-3">
+                        <Check
+                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
+                        />
+                        <span className={`text-sm`}>
+                          Historique des pratiques
+                        </span>
+                      </li>
+                    ) : (
+                      <li className="flex items-start gap-3 line-through opacity-50">
+                        <Check
+                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
+                        />
+                        <span className={`text-sm  text-gray-400`}>
+                          Historique des pratiques
+                        </span>
+                      </li>
+                    )}
+                    {plan.details.streak ? (
+                      <li className="flex items-start gap-3">
+                        <Check
+                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
+                        />
+                        <span className={`text-sm`}>
+                          Accès aux séries de tests
+                        </span>
+                      </li>
+                    ) : (
+                      <li className="flex items-start gap-3 line-through opacity-50">
+                        <Check
+                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
+                        />
+                        <span className={`text-sm  text-gray-400`}>
+                          Accès aux séries de tests
+                        </span>
+                      </li>
+                    )}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
         </div>
       )}
     </div>

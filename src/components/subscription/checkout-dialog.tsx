@@ -25,10 +25,19 @@ export function CheckoutDialog({
   onSuccess,
 }: CheckoutDialogProps) {
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">("momo");
+  const [currency, setCurrency] = useState<"RWF" | "USD">("RWF"); // Default to RWF
   const [msisdn, setMsisdn] = useState("");
   const [loading, setLoading] = useState(false);
 
   if (!plan) return null;
+
+  // Get the price based on selected currency
+  const getPrice = () => {
+    if (currency === "USD") {
+      return plan.price_usd || plan.price;
+    }
+    return plan.price_rwf || plan.price;
+  };
 
   const handlePayment = async () => {
     try {
@@ -48,6 +57,7 @@ export function CheckoutDialog({
       const response = await paymentService.initiatePayment({
         plan_id: plan.id,
         payment_method: paymentMethod,
+        currency: currency,
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
       });
 
@@ -109,10 +119,10 @@ export function CheckoutDialog({
     }, 10000); // Poll every 10 seconds
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatPrice = (price: number, curr: "RWF" | "USD") => {
+    return new Intl.NumberFormat(curr === "RWF" ? "rw-RW" : "en-US", {
       style: "currency",
-      currency: "USD",
+      currency: curr,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -142,14 +152,44 @@ export function CheckoutDialog({
             <div className="flex justify-between items-center pt-2 border-t">
               <span className="text-sm text-muted-foreground">Total</span>
               <span className="text-xl font-bold text-primary">
-                {formatPrice(plan.price)}
+                {formatPrice(getPrice(), currency)}
               </span>
             </div>
           </div>
 
+          {/* Currency Selection */}
+          <div className="space-y-3 hidden">
+            <Label className="text-base">Devise</Label>
+            <RadioGroup
+              value={currency}
+              onValueChange={(value) => setCurrency(value as "RWF" | "USD")}
+              className="flex gap-4"
+            >
+              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 flex-1">
+                <RadioGroupItem value="RWF" id="rwf" />
+                <Label htmlFor="rwf" className="cursor-pointer flex-1">
+                  <div className="font-medium">RWF</div>
+                  <div className="text-sm text-muted-foreground">
+                    {formatPrice(plan.price_rwf || plan.price, "RWF")}
+                  </div>
+                </Label>
+              </div>
+
+              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 flex-1">
+                <RadioGroupItem value="USD" id="usd" />
+                <Label htmlFor="usd" className="cursor-pointer flex-1">
+                  <div className="font-medium">USD</div>
+                  <div className="text-sm text-muted-foreground">
+                    {formatPrice(plan.price_usd || plan.price, "USD")}
+                  </div>
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+
           {/* Payment Method Selection */}
           <div className="space-y-3">
-            <Label className="text-base">Méthode de paiement</Label>
+            <h4 className="text-base">Méthode de paiement</h4>
             <RadioGroup
               value={paymentMethod}
               onValueChange={(value) => setPaymentMethod(value as any)}
@@ -224,7 +264,7 @@ export function CheckoutDialog({
                 Traitement...
               </>
             ) : (
-              `Payer ${formatPrice(plan.price)}`
+              `Payer ${formatPrice(getPrice(), currency)}`
             )}
           </Button>
         </DialogFooter>

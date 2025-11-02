@@ -4,7 +4,9 @@ import { BackendApiResponse } from "@/types";
 export interface InitiatePaymentRequest {
   plan_id: string;
   payment_method: "momo" | "cc" | "spenn";
+  currency: "RWF" | "USD"; // User-selected currency
   msisdn?: string;
+  promo_code?: string; // Optional promo code
 }
 
 export interface InitiatePaymentResponse {
@@ -12,6 +14,10 @@ export interface InitiatePaymentResponse {
     id: string;
     refid: string;
     amount: number;
+    original_amount?: number;
+    discount_amount?: number;
+    discount_percentage?: number;
+    promo_code?: string;
     currency: string;
     status: string;
     checkout_url?: string;
@@ -24,6 +30,10 @@ export interface Transaction {
   refid: string;
   kpay_tid?: string;
   amount: number;
+  original_amount?: number;
+  discount_amount?: number;
+  discount_percentage?: number;
+  promo_code?: string;
   currency: string;
   status: string;
   status_description?: string;
@@ -58,6 +68,17 @@ export interface TransactionsResponse {
   };
 }
 
+export interface PromoCodeValidationResponse {
+  valid: boolean;
+  message: string;
+  discount_percentage?: number;
+  promo_code?: {
+    code: string;
+    description?: string;
+    discount_percentage: number;
+  };
+}
+
 class PaymentService {
   async initiatePayment(
     data: InitiatePaymentRequest
@@ -65,6 +86,17 @@ class PaymentService {
     const response = await apiClient.post<BackendApiResponse<InitiatePaymentResponse>>(
       "/payments/initiate",
       data
+    );
+    return response.data!;
+  }
+
+  async validatePromoCode(
+    code: string,
+    planId: string
+  ): Promise<PromoCodeValidationResponse> {
+    const response = await apiClient.post<BackendApiResponse<PromoCodeValidationResponse>>(
+      "/promo-codes/validate",
+      { code, plan_id: planId }
     );
     return response.data!;
   }

@@ -153,10 +153,10 @@ export function DashboardOverview() {
       <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
         <div className="flex-1 flex gap-3 flex-col">
           {/* Grouped Stats Cards */}
-          <div className="flex gap-3 ">
+          <div className="flex lg:flex-row flex-col gap-3">
             {/* Practices Group */}
             {practiceStats.length > 0 && (
-              <div className="w-5/12 border border-blue-200 dark:border-blue-900 bg-white p-4 rounded-2xl">
+              <div className="w-full lg:w-5/12 border border-blue-200 dark:border-blue-900 bg-white p-4 rounded-2xl">
                 <h3 className="text-2xl font-semibold text-blue-600 dark:text-blue-400">
                   Practices
                 </h3>
@@ -186,7 +186,7 @@ export function DashboardOverview() {
 
             {/* Streaks Group */}
             {streakStatsDisplay.length > 0 && (
-              <div className="w-5/12 border border-orange-200 dark:border-orange-900  bg-white p-4 rounded-2xl">
+              <div className="w-full lg:w-5/12 border border-orange-200 dark:border-orange-900  bg-white p-4 rounded-2xl">
                 <h3 className="text-2xl font-semibold text-orange-600 dark:text-orange-400">
                   Streaks
                 </h3>
@@ -215,7 +215,7 @@ export function DashboardOverview() {
             )}
                       {/* Additional Stats - Total Users */}
           {additionalStats.length > 0 && (
-            <div className="w-2/12 grid gap-3 md:grid-cols-1 lg:grid-cols-3 border bg-white p-4 rounded-2xl">
+            <div className="w-full lg:w-2/12 grid gap-3 md:grid-cols-1 lg:grid-cols-3 border bg-white p-4 rounded-2xl">
               {additionalStats.map((stat) => {
                 const Icon = stat.icon;
                 return (
@@ -243,7 +243,7 @@ export function DashboardOverview() {
                 <h3 className="text-2xl font-semibold text-purple-600 dark:text-purple-400">
                   Subscriptions & Plans
                 </h3>
-                <div className="space-y-3 flex flex-row">
+                <div className="space-y-3 flex flex-col lg:flex-row">
                   {subscriptionStats.map((stat) => {
                     const Icon = stat.icon;
                     return (

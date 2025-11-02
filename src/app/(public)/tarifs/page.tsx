@@ -65,8 +65,6 @@ function TarifsPage() {
       return "secondary";
     }
     return "outline";
-
-    // return plan.type === "trial" ? "outline" : "secondary";
   };
 
   return (
@@ -151,13 +149,13 @@ function TarifsPage() {
                             plan.popular ? "text-white" : "text-gray-900"
                           }`}
                         >
-                          {plan.price === 0
+                          {plan.price_rwf === 0
                             ? "Gratuit"
-                            : new Intl.NumberFormat("en-US", {
+                            : new Intl.NumberFormat("rw-RW", {
                                 style: "currency",
-                                currency: "USD",
+                                currency: "RWF",
                                 minimumFractionDigits: 0,
-                              }).format(plan.price)}
+                              }).format(plan.price_rwf)}
                         </h4>
                         {plan.price > 0 && (
                           <span
@@ -170,6 +168,24 @@ function TarifsPage() {
                             / {plan.duration_days} jours
                           </span>
                         )}
+                      </div>
+                      <div
+                        className={`
+                        text-sm
+                              ${
+                                plan.popular
+                                  ? "text-white/80"
+                                  : "text-muted-foreground"
+                              }
+                            `}
+                      >
+                        {plan.price_usd === 0
+                          ? ""
+                          : `ou ${new Intl.NumberFormat("en-US", {
+                              style: "currency",
+                              currency: "USD",
+                              minimumFractionDigits: 0,
+                            }).format(plan.price_usd)}`}
                       </div>
                     </div>
 
@@ -375,7 +391,10 @@ function TarifsPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {reasons.map((reason: any) => (
-              <div className="text-center bg-gray-200/50 p-6 rounded-xl py-8" key={reason.title}>
+              <div
+                className="text-center bg-gray-200/50 p-6 rounded-xl py-8"
+                key={reason.title}
+              >
                 <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   {reason.icon}
                 </div>

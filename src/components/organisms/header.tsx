@@ -18,6 +18,7 @@ import {
   ReceiptText,
   History,
   List,
+  UserPlus,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
@@ -45,7 +46,7 @@ export default function Header() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-2 px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-2 px-0 sm:px-0">
         <div className="flex-1">
           <Link href="/">
             <div className="w-[140px] sm:w-[180px] lg:w-[220px] hidden lg:block">
@@ -81,25 +82,9 @@ export default function Header() {
             </Link>
           ))}
         </div>
-        <div className="flex items-center justify-end h-16 px-2 sm:px-6 gap-2 sm:gap-4">
+        <div className="flex items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
           {!isLoading && isAuthenticated && (
             <>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="relative">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                    <Bell className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600" />
-                    <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80">
-                  <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <div className="p-4 text-sm text-muted-foreground text-center">
-                    No new notifications
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full pl-2 sm:pl-4 pr-1 py-1 cursor-pointer hover:bg-gray-200 transition-colors">
@@ -145,6 +130,12 @@ export default function Header() {
                         <List className="mr-2 h-4 w-4" />
                         <span>Series</span>
                       </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/compte/parrainages")}
+                      >
+                        <UserPlus className="mr-2 h-4 w-4" />
+                        <span>Parrainages</span>
+                      </DropdownMenuItem>
                     </>
                   )}
                   {user?.role === "admin" && (
@@ -182,14 +173,10 @@ export default function Header() {
                 Commencer Gratuitement
               </Link> */}
               <NavigationLink href="/login">
-                <Button>
-                   Connexion
-                </Button>
+                <Button>Connexion</Button>
               </NavigationLink>
               <Link href="/signup?next=/compte/essai-gratuit&package=trial">
-                <Button>
-                  Essai Gratuit
-                </Button>
+                <Button>Essai Gratuit</Button>
               </Link>
             </div>
           )}

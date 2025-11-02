@@ -9,7 +9,7 @@ import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import { Home, User, ArrowLeftToLine, ArrowRightToLine, Menu, X, ReceiptText, BookA } from "lucide-react";
+import { Home, User, ArrowLeftToLine, ArrowRightToLine, Menu, X, ReceiptText, BookA, Tag, UserPlus } from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -54,6 +54,18 @@ const menuItems: MenuItem[] = [
     icon: <ReceiptText className="h-5 w-5" />,
     href: "/dashboard/transactions",
     permission: PERMISSIONS.TRANSACTION_READ,
+  },
+  {
+    name: "Promo Codes",
+    icon: <Tag className="h-5 w-5" />,
+    href: "/dashboard/promo-codes",
+    permission: PERMISSIONS.TRANSACTION_READ,
+  },
+  {
+    name: "Referrals",
+    icon: <UserPlus className="h-5 w-5" />,
+    href: "/dashboard/referrals",
+    permission: PERMISSIONS.USERS_READ,
   },
   {
     name: "Users",
