@@ -125,42 +125,47 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   {navigation.map((item) => {
                     const isActive = isActiveLink(item.href);
                     const hasSubmenu = item.submenu && item.submenu.length > 0;
-                    const isExpanded = expandedMenus[item.name] || isSubmenuActive(item.submenu);
+                    // Always show Pratiques submenu, toggle others
+                    const isExpanded =
+                      item.name === "Pratiques" ||
+                      expandedMenus[item.name] ||
+                      isSubmenuActive(item.submenu);
 
                     return (
                       <li key={item.name}>
                         {hasSubmenu ? (
-                          <div>
+                          <div className="mb-4">
                             <button
-                              onClick={() => toggleSubmenu(item.name)}
+                              onClick={() =>
+                                item.name !== "Pratiques" &&
+                                toggleSubmenu(item.name)
+                              }
                               className={classNames(
                                 isActive || isSubmenuActive(item.submenu)
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-gray-700 hover:bg-gray-50 hover:text-primary",
-                                "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold w-full"
+                                  ? "text-gray-400"
+                                  : "text-gray-400",
+                                "group flex gap-x-3 items-center rounded-full pt-2 pl-2 text-sm/6 w-full",
+                                item.name === "Pratiques" && "cursor-default"
                               )}
                             >
-                              <item.icon
-                                aria-hidden="true"
-                                className={classNames(
-                                  isActive || isSubmenuActive(item.submenu)
-                                    ? "text-primary"
-                                    : "text-gray-400 group-hover:text-primary",
-                                  "size-5 shrink-0"
-                                )}
-                              />
-                              <span className="flex-1 text-left">{item.name}</span>
-                              <ChevronDown
-                                className={classNames(
-                                  "size-4 transition-transform",
-                                  isExpanded ? "rotate-180" : ""
-                                )}
-                              />
+                              <span className="flex-1 text-left">
+                                {item.name}
+                              </span>
+                              {item.name !== "Pratiques" && (
+                                <ChevronDown
+                                  className={classNames(
+                                    "size-4 transition-transform",
+                                    isExpanded ? "rotate-180" : ""
+                                  )}
+                                />
+                              )}
                             </button>
                             {isExpanded && (
-                              <ul className="mt-1 ml-6 space-y-1">
+                              <ul className="mt-1 ml-0 space-y-1">
                                 {item.submenu?.map((subItem) => {
-                                  const isSubActive = isActiveLink(subItem.href);
+                                  const isSubActive = isActiveLink(
+                                    subItem.href
+                                  );
                                   return (
                                     <li key={subItem.name}>
                                       <Link
@@ -168,11 +173,20 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                         onClick={onClose}
                                         className={classNames(
                                           isSubActive
-                                            ? "bg-primary/10 text-primary"
+                                            ? "bg-accent text-white"
                                             : "text-gray-600 hover:bg-gray-50 hover:text-primary",
                                           "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6"
                                         )}
                                       >
+                                        <item.icon
+                                          aria-hidden="true"
+                                          className={classNames(
+                                            isActive
+                                              ? "text-primary hover:text-white"
+                                              : "text-gray-400 group-hover:text-white",
+                                            "size-5 shrink-0"
+                                          )}
+                                        />
                                         <span>{subItem.name}</span>
                                       </Link>
                                     </li>
@@ -187,16 +201,16 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                             onClick={onClose}
                             className={classNames(
                               isActive
-                                ? "bg-primary/10 text-primary"
+                                ? "bg-accent text-white"
                                 : "text-gray-700 hover:bg-gray-50 hover:text-primary",
-                              "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                              "group border border-accent/20 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
                             )}
                           >
                             <item.icon
                               aria-hidden="true"
                               className={classNames(
                                 isActive
-                                  ? "text-primary"
+                                  ? "text-white"
                                   : "text-gray-400 group-hover:text-primary",
                                 "size-5 shrink-0"
                               )}
