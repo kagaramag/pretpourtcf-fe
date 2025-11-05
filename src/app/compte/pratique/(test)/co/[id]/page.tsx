@@ -38,6 +38,7 @@ import { config } from "@/config";
 import PracticeLayout from "@/layouts/practice";
 import Header from "@/components/organisms/header-practice";
 import { AutoLinkToStreak } from "@/components/streak/auto-link-to-streak";
+import AudioPlayer from "@/components/organisms/player";
 
 export default function PracticeSessionPage() {
   const { user } = useAuth();
@@ -491,13 +492,11 @@ export default function PracticeSessionPage() {
                         </div>
                       )}
                       {item.question.media?.audio && (
-                        <audio
-                          controls
-                          className="w-full"
-                          src={`${config.cloudFlarePublicUrl}practices/audio/${item.question.media.audio}`}
-                        >
-                          Votre navigateur ne supporte pas l&apos;élément audio.
-                        </audio>
+                        <div className="flex items-center">
+                          <AudioPlayer
+                            src={`${config.cloudFlarePublicUrl}practices/audio/${item.question.media.audio}`}
+                          />
+                        </div>
                       )}
 
                       {/* Question text */}
@@ -730,14 +729,10 @@ export default function PracticeSessionPage() {
             )}
             {/* Audio player if exists */}
             {currentQuestion.media?.audio && (
-              <div>
-                <audio
-                  controls
-                  className="w-full"
+              <div className="flex items-center">
+                <AudioPlayer
                   src={`${config.cloudFlarePublicUrl}practices/audio/${currentQuestion.media.audio}`}
-                >
-                  Votre navigateur ne supporte pas l&apos;élément audio.
-                </audio>
+                />
               </div>
             )}
 

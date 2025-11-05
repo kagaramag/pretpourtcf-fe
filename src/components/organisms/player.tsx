@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useEffect, useRef } from "react";
 import Plyr from "plyr";
@@ -23,8 +23,10 @@ export default function AudioPlayer({ src }: any) {
   }, []);
 
   return (
-    <audio ref={audioRef} controls>
-      <source src={src} type="audio/mpeg" />
-    </audio>
+    <div className="w-full">
+      <audio className="w-full" ref={audioRef} controls controlsList="nodownload">
+        <source src={src} type="audio/mpeg" />
+      </audio>
+    </div>
   );
 }
