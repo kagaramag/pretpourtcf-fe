@@ -229,3 +229,54 @@ export interface SessionStatistics {
   lowestScore: number;
   totalTimeSeconds: number;
 }
+
+// Blog Types
+export type BlogStatus = "draft" | "published" | "archived";
+
+export interface BlogAuthor {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+export interface Blog {
+  _id: string;
+  title: string;
+  description: string;
+  body: string;
+  cover_image?: string;
+  written_by: BlogAuthor;
+  status: BlogStatus;
+  published_at?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BlogsPaginatedResponse {
+  blogs: Blog[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+export interface CreateBlogRequest {
+  title: string;
+  description: string;
+  body: string;
+  cover_image?: string;
+  status?: BlogStatus;
+}
+
+export interface UpdateBlogRequest {
+  title?: string;
+  description?: string;
+  body?: string;
+  cover_image?: string;
+  status?: BlogStatus;
+}

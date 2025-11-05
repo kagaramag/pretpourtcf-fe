@@ -4,8 +4,8 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
 const navigation = {
   main: [
     { name: "Accueil", href: "/" },
-    { name: "Comment ça marche", href: "/#how-it-works" },
-    { name: "Plans & Tarifs", href: "/tarifs" },
+    { name: "Blog", href: "/blog" },
+    { name: "Tarifs", href: "/tarifs" },
     { name: "Contact", href: "/contactez-nous" },
   ],
   legal: [

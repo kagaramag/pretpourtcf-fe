@@ -78,4 +78,12 @@ export const API_ENDPOINTS = {
 
   // Contact
   CONTACT: "/contact",
+
+  // Blogs (Admin)
+  BLOGS: "/blogs",
+  BLOG_DETAILS: "/blogs/:id",
+
+  // Public Blogs
+  PUBLIC_BLOGS: "/public/blogs",
+  PUBLIC_BLOG_DETAILS: "/public/blogs/:id",
 };

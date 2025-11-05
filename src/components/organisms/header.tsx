@@ -29,8 +29,8 @@ import { Button } from "@/components/ui/button";
 
 const navigation = [
   { name: "Accueil", href: "/" },
-  { name: "Comment ça marche", href: "/#how-it-works" },
-  { name: "Plans & Tarifs", href: "/tarifs" },
+  { name: "Tarifs", href: "/tarifs" },
+  { name: "Blog", href: "/blog" },
   { name: "Contactez-nous", href: "/contactez-nous" },
 ];
 
@@ -45,14 +45,14 @@ export default function Header() {
   const fullName = user ? `${user.first_name}`.trim() : "User";
 
   return (
-    <header className="absolute inset-x-0 top-0 z-50">
-      <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-2 px-0 sm:px-0">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="max-w-6xl bg-white/50 backdrop-blur-[2px] mx-auto flex items-center lg:mt-2 gap-2 sm:gap-6 py-1 px-6 sm:px-6 lg:rounded-full border border-gray-200">
         <div className="flex-1">
           <Link href="/">
-            <div className="w-[140px] sm:w-[180px] lg:w-[220px] hidden lg:block">
+            <div className="w-[140px] sm:w-[180px] lg:w-[210px] hidden lg:block">
               <Image
                 src={Logo}
-                width={220}
+                width={210}
                 height={120}
                 priority
                 alt="logo"

@@ -9,7 +9,7 @@ import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import { Home, User, ArrowLeftToLine, ArrowRightToLine, Menu, X, ReceiptText, BookA, Tag, UserPlus } from "lucide-react";
+import { Home, User, ArrowLeftToLine, ArrowRightToLine, Menu, X, ReceiptText, BookA, Tag, UserPlus, Newspaper } from "lucide-react";
 
 interface MenuItem {
   name: string;
@@ -66,6 +66,12 @@ const menuItems: MenuItem[] = [
     icon: <UserPlus className="h-5 w-5" />,
     href: "/dashboard/referrals",
     permission: PERMISSIONS.USERS_READ,
+  },
+  {
+    name: "Blog",
+    icon: <Newspaper className="h-5 w-5" />,
+    href: "/dashboard/blog",
+    permission: PERMISSIONS.PRACTICES_READ,
   },
   {
     name: "Users",
