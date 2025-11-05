@@ -640,7 +640,7 @@ export default function PracticeSessionPage() {
                 <Button
                   onClick={handleRetakeTest}
                   disabled={retaking}
-                  variant="outline"
+                  variant="accent"
                   size="lg"
                   className="gap-2"
                 >
@@ -649,7 +649,7 @@ export default function PracticeSessionPage() {
                 </Button>
                 <Button
                   onClick={() => router.push("/compte/pratique/co")}
-                  variant="secondary"
+                  variant="outline"
                   size="lg"
                 >
                   Retour aux exercices
