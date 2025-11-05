@@ -26,6 +26,7 @@ export interface RegisterData {
   password: string;
   phone?: string;
   referralToken?: string;
+  role?: "client" | "trainer";
 }
 
 export const authService = {

@@ -26,6 +26,9 @@ const signupSchema = z.object({
   last_name: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum(["client", "trainer"], {
+    required_error: "Please select your account type",
+  }),
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -46,6 +49,7 @@ export function SignupForm() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -53,6 +57,7 @@ export function SignupForm() {
       last_name: "",
       email: "",
       password: "",
+      role: "client",
     },
   });
 
@@ -100,8 +105,9 @@ export function SignupForm() {
         } else {
           // Old flow: direct login (for backward compatibility)
           toast.success("Account created successfully!");
+          const redirectPath = data.role === "trainer" ? "/trainer" : "/compte";
           setTimeout(() => {
-            router.push("/compte");
+            router.push(redirectPath);
             router.refresh();
           }, 100);
         }
@@ -245,6 +251,47 @@ export function SignupForm() {
                 </p>
               )}
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="role" className="text-foreground">
+              Type de compte
+            </Label>
+            <div className="grid grid-cols-2 gap-3">
+              <label
+                className={`flex items-center justify-center space-x-2 border-2 rounded-lg p-3 cursor-pointer transition-all ${
+                  watch("role") === "client"
+                    ? "border-primary bg-primary/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  value="client"
+                  {...register("role")}
+                  className="sr-only"
+                />
+                <span className="font-medium">Apprenant</span>
+              </label>
+              <label
+                className={`flex items-center justify-center space-x-2 border-2 rounded-lg p-3 cursor-pointer transition-all ${
+                  watch("role") === "trainer"
+                    ? "border-primary bg-primary/5"
+                    : "border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  value="trainer"
+                  {...register("role")}
+                  className="sr-only"
+                />
+                <span className="font-medium">Formateur</span>
+              </label>
+            </div>
+            {errors.role && (
+              <p className="text-sm text-red-500">{errors.role.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">

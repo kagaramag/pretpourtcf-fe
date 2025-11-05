@@ -122,11 +122,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const loggedInUser = response.data.user;
 
           setUser(loggedInUser);
+          console.log("loggedInUser", loggedInUser)
 
           // Redirect based on role
           setTimeout(() => {
             if (loggedInUser.role === "client") {
               router.push("/compte");
+            } else if (loggedInUser.role === "trainer") {
+              router.push("/trainer");
             } else if (loggedInUser.role === "super_admin" || loggedInUser.role === "admin") {
               router.push("/dashboard");
             }

@@ -424,7 +424,7 @@ export default function PracticeSessionPage() {
   // Show results
   if (sessionResult) {
     // Show review mode
-    if (showReview) {
+    if (!showReview) {
       return (
         <PracticeLayout>
           <Header title="Exercice introuvable" onClose={onClose} />
@@ -460,19 +460,21 @@ export default function PracticeSessionPage() {
                     <CardHeader>
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <CardTitle className="text-lg flex items-center gap-2">
-                            {item.isCorrect ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-600" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-red-600" />
-                            )}
-                          </CardTitle>
+                          <div className="text-xl">
+                            Question {item?.question?.number}
+                          </div>
                         </div>
                         <div className="text-sm font-semibold">
                           {item.isCorrect ? (
-                            <span className="text-green-600">Correct</span>
+                            <div className="flex items-center gap-1">
+                              <CheckCircle2 className="h-5 w-5 text-green-600" />
+                              <span className="text-green-600">Correct</span>
+                            </div>
                           ) : (
-                            <span className="text-red-600">Incorrect</span>
+                            <div className="flex items-center gap-1">
+                              <XCircle className="h-5 w-5 text-red-600" />
+                              <span className="text-red-600">Incorrect</span>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -647,7 +649,7 @@ export default function PracticeSessionPage() {
                 </Button>
                 <Button
                   onClick={() => router.push("/compte/pratique/co")}
-                  variant="outline"
+                  variant="secondary"
                   size="lg"
                 >
                   Retour aux exercices
@@ -828,15 +830,6 @@ export default function PracticeSessionPage() {
               </Button>
             </div>
           </div>
-        </div>
-
-        {/* Info message */}
-        <div className="border-blue-200 bg-blue-100 px-4 py-3 rounded-lg text-sm text-blue-800 flex items-center gap-2 mt-4">
-          <AlertCircle className="h-4 w-4 flex-shrink-0" />
-          <span>
-            Vous pouvez revenir aux questions précédentes pour modifier vos
-            réponses avant de terminer l&apos;exercice.
-          </span>
         </div>
       </div>
     </PracticeLayout>
