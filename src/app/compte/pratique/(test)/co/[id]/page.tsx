@@ -424,7 +424,7 @@ export default function PracticeSessionPage() {
   // Show results
   if (sessionResult) {
     // Show review mode
-    if (!showReview) {
+    if (showReview) {
       return (
         <PracticeLayout>
           <Header title="Exercice introuvable" onClose={onClose} />
