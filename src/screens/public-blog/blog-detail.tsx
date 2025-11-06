@@ -68,50 +68,105 @@ export default function PublicBlogDetailScreen({
     );
   }
 
+  // Generate JSON-LD structured data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    description: blog.description,
+    image: blog.cover_image
+      ? `${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`
+      : undefined,
+    datePublished: blog.published_at || blog.createdAt,
+    dateModified: blog.updatedAt,
+    author: {
+      "@type": "Organization",
+      name: "Pret Pour TCF",
+      url: process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Pret Pour TCF",
+      logo: {
+        "@type": "ImageObject",
+        url: `${config.cloudFlarePublicUrl}logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com"}/blog/${blogId}`,
+    },
+    keywords: [
+      "TCF",
+      "Test de Connaissance du Français",
+      "préparation TCF",
+      "examen français",
+    ].join(", "),
+    wordCount: blog.body.split(" ").length,
+    articleBody: blog.body,
+  };
+
   return (
-    <div className="min-h-screen bg-background mt-4">
-      {/* Cover Image */}
-      {blog.cover_image && (
-        <div className="w-full max-h-[540px] max-w-4xl overflow-hidden rounded-4xl mx-auto">
-          <img
-            src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
-            alt={blog.title}
-            className="w-full h-full object-fill"
-          />
-        </div>
-      )}
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* Content */}
-      <div className="container mx-auto px-4 pt-6">
-        <article className="max-w-4xl mx-auto">
-          {/* Title */}
-          <h1 className="text-2xl md:text-4xl font-semibold mb-4">
-            {blog.title}
-          </h1>
-
-          {/* Description */}
-          <p className="text-lg text-muted-foreground mb-2">
-            {blog.description}
-          </p>
-
-          {/* Metadata */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mb-4">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>
-                {blog.published_at
-                  ? formatDate(blog.published_at)
-                  : formatDate(blog.createdAt)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
-              <span>{Math.ceil(blog.body.split(" ").length / 200)} min de lecture</span>
-            </div>
+      <div className="min-h-screen bg-background mt-4">
+        {/* Cover Image */}
+        {blog.cover_image && (
+          <div className="w-full max-h-[540px] max-w-4xl overflow-hidden rounded-4xl mx-auto">
+            <img
+              src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
+              alt={blog.title}
+              className="w-full h-full object-fill"
+            />
           </div>
+        )}
+
+        {/* Content */}
+        <div className="container mx-auto px-4 pt-6">
+        <article className="max-w-4xl mx-auto" itemScope itemType="https://schema.org/BlogPosting">
+          {/* Title */}
+          <header>
+            <h1 className="text-2xl md:text-4xl font-semibold mb-4" itemProp="headline">
+              {blog.title}
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg text-muted-foreground mb-2" itemProp="description">
+              {blog.description}
+            </p>
+
+            {/* Metadata */}
+            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mb-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <time
+                  dateTime={blog.published_at || blog.createdAt}
+                  itemProp="datePublished"
+                >
+                  {blog.published_at
+                    ? formatDate(blog.published_at)
+                    : formatDate(blog.createdAt)}
+                </time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>{Math.ceil(blog.body.split(" ").length / 200)} min de lecture</span>
+              </div>
+            </div>
+            <meta itemProp="dateModified" content={blog.updatedAt} />
+            <meta itemProp="author" content="Pret Pour TCF" />
+          </header>
           <Separator className="mb-4" />
           {/* Article Content */}
-          <div className="prose leading-relaxed prose-lg prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg">
+          <div
+            className="prose leading-relaxed prose-lg prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg"
+            itemProp="articleBody"
+          >
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
               {blog.body}
             </ReactMarkdown>
@@ -131,7 +186,8 @@ export default function PublicBlogDetailScreen({
             </Button>
           </div>
         </article>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
