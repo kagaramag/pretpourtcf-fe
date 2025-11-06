@@ -59,7 +59,7 @@ function TarifsPage() {
 
   const getButtonVariant = (plan: SubscriptionPlan) => {
     if (plan.type === "premium") {
-      return "default";
+      return "secondary";
     }
     if (plan.type === "advanced") {
       return "secondary";
@@ -355,12 +355,6 @@ function TarifsPage() {
                       )}
                     </ul>
                   </div>
-
-                  {/* className={`w-full text-lg py-6 ${
-                    plan.type === "advanced"
-                      ? "bg-white text-primary hover:bg-gray-100"
-                      : ""
-                  }`} */}
                   <NavigationLink href="/signup">
                     <Button
                       className="w-full"
