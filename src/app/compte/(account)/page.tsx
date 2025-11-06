@@ -29,8 +29,8 @@ export default function AccountPage() {
   // If user has active subscription, show practices
   if (user?.subscription) {
     return (
-      <div className="container">
-        <div className="mb-6">
+      <div className="flex flex-col gap-2">
+        <div>
           <h1 className="text-3xl font-bold">Mes Pratiques</h1>
           <p className="text-muted-foreground">
             Accédez à vos exercices TCF et suivez votre progression
@@ -38,159 +38,75 @@ export default function AccountPage() {
         </div>
 
         {/* Active Streak Status Widget */}
-        <div className="mb-3">
+        <div>
           <StreakStatusWidget />
         </div>
 
         {/* Subscription Status Banner */}
-        <Card className="mb-3 border-blue-200 bg-blue-50">
-          <CardContent>
-            <div className="flex items-center justify-between flex-col gap-4">
-              <div className="w-full flex-1 flex">
-                <div className="flex-1">
-                  <p className="text-sm text-muted-foreground">
-                    Abonnement actif
-                  </p>
-                  <p className="text-lg font-semibold">
-                    {user.subscription.plan.name}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted-foreground">Expire dans</p>
-                  <p className="text-lg font-semibold text-blue-700">
-                    {user.subscription.days_remaining} jour(s)
-                  </p>
-                </div>
-              </div>
-              <div className="w-full">
-                <Link href="/compte/plans">
-                  <Button variant="outline" size="sm">
-                    Voir détails
-                  </Button>
-                </Link>
-              </div>
+        <div className="border-blue-200 bg-blue-50 py-4 px-6 border rounded-full flex items-center justify-between flex-row gap-4">
+          <div className="flex-1 flex flex-col">
+            <h3 className="text-lg font-semibold">
+              {user.subscription.plan.name}
+            </h3>
+            <div className="text-sm text-gray-500/80">
+              Abonnement actif: Expire dans {user.subscription.days_remaining}
+              jour(s)
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Practices Placeholder */}
-        <div className="grid gap-6">
-          {/* Premium Streak Feature */}
-          <Card className="border-orange-200 bg-gradient-to-br from-orange-50 to-red-50">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Flame className="h-5 w-5 text-orange-500 animate-pulse" />
-                Séries Premium
-              </CardTitle>
-              <CardDescription>
-                Maintenez votre engagement et gagnez des emblème!
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  Relevez le défi! Complétez 20 exercices en 7 jours avec au moins 90% de score.
-                  Gagnez une récompense unique tous les 3 exercices.
-                </p>
-                <div className="flex items-center gap-2 text-sm">
-                  <Clock className="h-4 w-4 text-orange-500" />
-                  <span>12 heures pour chaque exercice</span>
-                </div>
-                <Link href="/compte/series">
-                  <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-                    <Flame className="mr-2 h-4 w-4" />
-                    Gérer mes séries
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
-                Exercices TCF
-              </CardTitle>
-              <CardDescription>
-                Les exercices de pratique seront affichés ici
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border-gray-300 text-center">
-                <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  Pratiques à venir
-                </h3>
-                <div className="max-w-4xl grid lg:grid-cols-2 grid-cols-1 gap-4">
-                  <Link
-                    href="/compte/pratique/co"
-                    className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
-                  >
-                    Compréhension orale
-                  </Link>
-                  <Link
-                    href="/compte/pratique/ce"
-                    className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
-                  >
-                    Compréhension écrite
-                  </Link>
-                  <Link
-                    href="/compte/pratique/eo"
-                    className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
-                  >
-                    Expression orale
-                  </Link>
-                  <Link
-                    href="/compte/pratique/ee"
-                    className="rounded-md bg-linear-to-tr from-[#4E56C0] to-[#9089fc]  px-6 py-3.5 font-semibold text-sm text-white"
-                  >
-                    Expression écrite
-                  </Link>
-                </div>
-                {/* <p className="text-muted-foreground mb-4">
-                  Les exercices de compréhension orale, écrite, expression orale et écrite
-                  seront disponibles ici
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Cette fonctionnalité sera implémentée prochainement
-                </p> */}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
-                  Historique
-                </CardTitle>
-                <CardDescription>Vos pratiques récentes</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground text-center py-8">
-                  Aucune pratique effectuée pour le moment
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BarChart className="h-5 w-5" />
-                  Statistiques
-                </CardTitle>
-                <CardDescription>Votre progression</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground text-center py-8">
-                  Les statistiques seront disponibles après vos premières
-                  pratiques
-                </p>
-              </CardContent>
-            </Card>
           </div>
+          <div className="">
+            <Link href="/compte/plans">
+              <Button variant="outline" size="sm">
+                Voir détails
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Premium Streak Feature */}
+        <div className="py-4 px-6 border border-gray-200 rounded-3xl">
+          <h3 className="flex items-center gap-2">Séries Premium</h3>
+          <div>Maintenez votre engagement et gagnez des emblème!</div>
+          <div>
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Relevez le défi! Complétez 20 exercices en 7 jours avec au moins
+                90% de score. Gagnez une récompense unique tous les 3 exercices.
+              </p>
+              <div className="flex items-center gap-2 text-sm">
+                <Clock className="h-4 w-4 text-orange-500" />
+                <span>12 heures pour chaque exercice</span>
+              </div>
+              <Link href="/compte/series">
+                <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+                  <Flame className="mr-2 h-4 w-4" />
+                  Gérer mes séries
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 my-2">
+          <Link href="/compte/pratique/co">
+            <Button variant="secondary" block size="lg">
+              Compréhension orale
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/ce">
+            <Button variant="secondary" disabled block size="lg">
+              Compréhension écrite
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/eo">
+            <Button variant="secondary" disabled block size="lg">
+              Expression orale
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/ee">
+            <Button variant="secondary" disabled block size="lg">
+              Expression écrite
+            </Button>
+          </Link>
         </div>
       </div>
     );
