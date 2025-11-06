@@ -46,7 +46,7 @@ export default function ForgotPasswordScreen() {
 
   if (isSubmitted) {
     return (
-      <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+      <div>
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">

@@ -185,7 +185,7 @@ export function SignupForm() {
   }
 
   return (
-    <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+    <div>
       <h3 className="text-2xl font-semibold">Créer un compte</h3>
       <div className="text-sm text-gray-500 mb-4">
         Inscrivez-vous pour accéder aux tests d'entraînement

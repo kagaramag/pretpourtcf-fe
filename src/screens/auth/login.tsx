@@ -76,7 +76,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="lg:border border-gray-200 lg:rounded-lg lg:p-6">
+    <div>
       <h3 className="text-2xl font-semibold">Bon retour!</h3>
       <div className="text-sm text-gray-500 mb-4">
         Entrez vos identifiants pour accéder à votre compte.
