@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -162,16 +158,16 @@ export default function PracticeHistoryPage() {
       {statistics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card>
-                <BarChart className="h-4 w-4" />
-                Sessions totales
+            <BarChart className="h-4 w-4" />
+            Sessions totales
             <CardContent>
               <p className="text-3xl font-bold">{statistics.totalSessions}</p>
             </CardContent>
           </Card>
 
           <Card>
-                <Trophy className="h-4 w-4" />
-                Score moyen
+            <Trophy className="h-4 w-4" />
+            Score moyen
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.round(statistics.averageScore)}%
@@ -180,8 +176,8 @@ export default function PracticeHistoryPage() {
           </Card>
 
           <Card>
-                <TrendingUp className="h-4 w-4" />
-                Meilleur score
+            <TrendingUp className="h-4 w-4" />
+            Meilleur score
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.round(statistics.highestScore)}%
@@ -190,8 +186,8 @@ export default function PracticeHistoryPage() {
           </Card>
 
           <Card>
-                <Clock className="h-4 w-4" />
-                Temps total
+            <Clock className="h-4 w-4" />
+            Temps total
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.floor(statistics.totalTimeSeconds / 3600)}h{" "}
@@ -203,10 +199,10 @@ export default function PracticeHistoryPage() {
       )}
 
       {/* Sessions Table */}
-      <Card>
-          <CardTitle>Historique des sessions</CardTitle>
-            Toutes vos sessions de pratique passées
-        <CardContent>
+      <div>
+        <h3 className="text-lg font-semibold">Historique des sessions</h3>
+        <div>Toutes vos sessions de pratique passées</div>
+        <div className="my-4">
           {sessions.length === 0 ? (
             <div className="text-center py-12">
               <BarChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
@@ -254,7 +250,9 @@ export default function PracticeHistoryPage() {
                               )}
                             </div>
                           </TableCell>
-                          <TableCell>{getStatusBadge(session.status)}</TableCell>
+                          <TableCell>
+                            {getStatusBadge(session.status)}
+                          </TableCell>
                           <TableCell>
                             <div className="font-semibold">
                               {session.totalScore}/{session.maxPossibleScore}
@@ -307,8 +305,8 @@ export default function PracticeHistoryPage() {
               )}
             </>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

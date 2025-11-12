@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useAuth } from "@/contexts/auth-context";
 import {
   User,
   ReceiptText,
@@ -9,39 +11,13 @@ import {
   Flame,
   ChevronDown,
   X,
+  Crown,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
 
 // Mon compte, Pratiques, abonnements, Historique, Series, Parrainages,
 
-const navigation = [
-  { name: "Mon compte", href: "/compte", icon: User },
-  {
-    name: "Pratiques",
-    href: "/compte/pratiques",
-    icon: ReceiptText,
-    submenu: [
-      { name: "Compréhension orale", href: "/compte/pratique/co" },
-      { name: "Compréhension écrite", href: "/compte/pratique/ce" },
-      { name: "Expression orale", href: "/compte/pratique/eo" },
-      { name: "Expression écrite", href: "/compte/pratique/ee" },
-    ],
-  },
-  { name: "Abonnements", href: "/compte/plans", icon: List },
-  {
-    name: "Historique",
-    href: "/compte/historique",
-    icon: History,
-  },
-  { name: "Séries", href: "/compte/series", icon: Flame },
-  {
-    name: "Parrainages",
-    href: "/compte/parrainages",
-    icon: UserPlus,
-  },
-];
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
@@ -52,10 +28,44 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
   const pathname = usePathname();
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(
     {}
   );
+
+  const navigation = [
+    { name: "Mon compte", href: "/compte", icon: User },
+    {
+      name: "Pratiques",
+      href: "/compte/pratiques",
+      icon: ReceiptText,
+      show: !isLoading && user?.subscription !== null,
+      submenu: [
+        { name: "Compréhension orale", href: "/compte/pratique/co" },
+        { name: "Compréhension écrite", href: "/compte/pratique/ce" },
+        { name: "Expression orale", href: "/compte/pratique/eo" },
+        { name: "Expression écrite", href: "/compte/pratique/ee" },
+      ],
+    },
+    { name: "Abonnements", href: "/compte/plans", icon: List },
+    {
+      name: "Historique",
+      href: "/compte/historique",
+      icon: History,
+    },
+    {
+      name: "Séries",
+      href: "/compte/series",
+      show: !isLoading && user?.subscription !== null,
+      icon: Flame,
+    },
+    {
+      name: "Parrainages",
+      href: "/compte/parrainages",
+      icon: UserPlus,
+    },
+  ];
 
   // Strict matching logic for nested routes
   const isActiveLink = (href: string) => {
@@ -125,6 +135,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                   {navigation.map((item) => {
                     const isActive = isActiveLink(item.href);
                     const hasSubmenu = item.submenu && item.submenu.length > 0;
+                    const isInactive = item.show === false;
                     // Always show Pratiques submenu, toggle others
                     const isExpanded =
                       item.name === "Pratiques" ||
@@ -137,19 +148,25 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                           <div className="mb-4">
                             <button
                               onClick={() =>
+                                !isInactive &&
                                 item.name !== "Pratiques" &&
                                 toggleSubmenu(item.name)
                               }
+                              disabled={isInactive}
                               className={classNames(
                                 isActive || isSubmenuActive(item.submenu)
                                   ? "text-gray-400"
                                   : "text-gray-400",
                                 "group flex gap-x-3 items-center rounded-full pt-2 pl-2 text-sm/6 w-full",
-                                item.name === "Pratiques" && "cursor-default"
+                                item.name === "Pratiques" && "cursor-default",
+                                isInactive && "opacity-40 cursor-not-allowed"
                               )}
                             >
-                              <span className="flex-1 text-left">
+                              <span className="flex-1 text-left flex items-center gap-x-2">
                                 {item.name}
+                                {isInactive && (
+                                  <Crown className="size-4 text-amber-500" />
+                                )}
                               </span>
                               {item.name !== "Pratiques" && (
                                 <ChevronDown
@@ -168,27 +185,45 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                   );
                                   return (
                                     <li key={subItem.name}>
-                                      <Link
-                                        href={subItem.href}
-                                        onClick={onClose}
-                                        className={classNames(
-                                          isSubActive
-                                            ? "bg-accent text-white"
-                                            : "text-gray-600 hover:bg-gray-50 hover:text-primary",
-                                          "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6"
-                                        )}
-                                      >
-                                        <item.icon
-                                          aria-hidden="true"
+                                      {isInactive ? (
+                                        <div
                                           className={classNames(
-                                            isActive
-                                              ? "text-primary hover:text-white"
-                                              : "text-gray-400 group-hover:text-white",
-                                            "size-5 shrink-0"
+                                            "text-gray-600 opacity-40 cursor-not-allowed",
+                                            "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6"
                                           )}
-                                        />
-                                        <span>{subItem.name}</span>
-                                      </Link>
+                                        >
+                                          <item.icon
+                                            aria-hidden="true"
+                                            className="text-gray-400 size-5 shrink-0"
+                                          />
+                                          <span className="flex-1 flex items-center gap-x-2">
+                                            {subItem.name}
+                                            {/* <Crown className="size-3 text-amber-500" /> */}
+                                          </span>
+                                        </div>
+                                      ) : (
+                                        <Link
+                                          href={subItem.href}
+                                          onClick={onClose}
+                                          className={classNames(
+                                            isSubActive
+                                              ? "bg-accent text-white"
+                                              : "text-gray-600 hover:bg-gray-50 hover:text-primary",
+                                            "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6"
+                                          )}
+                                        >
+                                          <item.icon
+                                            aria-hidden="true"
+                                            className={classNames(
+                                              isActive
+                                                ? "text-primary hover:text-white"
+                                                : "text-gray-400 group-hover:text-white",
+                                              "size-5 shrink-0"
+                                            )}
+                                          />
+                                          <span>{subItem.name}</span>
+                                        </Link>
+                                      )}
                                     </li>
                                   );
                                 })}
@@ -196,27 +231,47 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                             )}
                           </div>
                         ) : (
-                          <Link
-                            href={item.href}
-                            onClick={onClose}
-                            className={classNames(
-                              isActive
-                                ? "bg-accent text-white"
-                                : "text-gray-700 hover:bg-gray-50 hover:text-primary",
-                              "group border border-accent/20 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                          <>
+                            {isInactive ? (
+                              <div
+                                className={classNames(
+                                  "text-gray-700 opacity-40 cursor-not-allowed",
+                                  "group border border-accent/20 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                                )}
+                              >
+                                <item.icon
+                                  aria-hidden="true"
+                                  className="text-gray-400 size-5 shrink-0"
+                                />
+                                <span className="flex-1 flex items-center gap-x-2">
+                                  {item.name}
+                                  <Crown className="size-4 text-amber-500" />
+                                </span>
+                              </div>
+                            ) : (
+                              <Link
+                                href={item.href}
+                                onClick={onClose}
+                                className={classNames(
+                                  isActive
+                                    ? "bg-accent text-white"
+                                    : "text-gray-700 hover:bg-gray-50 hover:text-primary",
+                                  "group border border-accent/20 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                                )}
+                              >
+                                <item.icon
+                                  aria-hidden="true"
+                                  className={classNames(
+                                    isActive
+                                      ? "text-white"
+                                      : "text-gray-400 group-hover:text-primary",
+                                    "size-5 shrink-0"
+                                  )}
+                                />
+                                <span>{item.name}</span>
+                              </Link>
                             )}
-                          >
-                            <item.icon
-                              aria-hidden="true"
-                              className={classNames(
-                                isActive
-                                  ? "text-white"
-                                  : "text-gray-400 group-hover:text-primary",
-                                "size-5 shrink-0"
-                              )}
-                            />
-                            <span>{item.name}</span>
-                          </Link>
+                          </>
                         )}
                       </li>
                     );

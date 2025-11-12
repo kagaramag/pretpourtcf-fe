@@ -185,9 +185,9 @@ function PlansPage() {
           {plans
             .filter((plan) => plan.type !== "trial")
             .map((plan) => (
-              <Card
+              <div
                 key={plan.id}
-                className={`relative ${plan.type === "premium" ? "border-primary" : ""}`}
+                className={`relative p-4 border-4 border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -196,9 +196,9 @@ function PlansPage() {
                     </span>
                   </div>
                 )}
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
                   {plan.description}
-                <CardFooter>
+                <div className="my-3">
                   <Button
                     onClick={() => handleSelectPlan(plan)}
                     className="w-full"
@@ -206,25 +206,25 @@ function PlansPage() {
                   >
                     Choisir ce plan
                   </Button>
-                </CardFooter>
-                <CardContent>
+                </div>
+                <div>
                   <div className="mb-2">
                     <div className="space-y-1">
                       <div>
                         <span className="text-2xl font-bold tracking-tight">
                           {plan.price_rwf === 0
                             ? "Gratuit"
-                            : new Intl.NumberFormat("rw-RW", {
+                            : new Intl.NumberFormat("en-US", {
                                 style: "currency",
-                                currency: "RWF",
+                                currency: "USD",
                                 minimumFractionDigits: 0,
-                              }).format(plan.price_rwf)}
+                              }).format(plan.price_usd)}
                         </span>
                         <span className="text-muted-foreground ml-2 text-sm">
                           / {plan.duration_days} jours
                         </span>
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      {/* <div className="text-xs text-muted-foreground">
                         {plan.price_usd === 0
                           ? ""
                           : `ou ${new Intl.NumberFormat("en-US", {
@@ -232,43 +232,43 @@ function PlansPage() {
                               currency: "USD",
                               minimumFractionDigits: 0,
                             }).format(plan.price_usd)}`}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         {plan?.duration_days} jours
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         Compréhension Orale: {plan.details?.co} tests
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         Compréhension Ecrite: {plan.details?.ce} tests
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         Expression Orale: {plan.details?.eo} tests
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         Expression Ecrite: {plan.details?.ee} tests
                       </span>
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm">
+                      <span className="text-xs">
                         Correction automatique et détaillée
                       </span>
                     </li>
@@ -277,7 +277,7 @@ function PlansPage() {
                         <Check
                           className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
                         />
-                        <span className={`text-sm`}>
+                        <span className={`text-xs`}>
                           Historique des pratiques
                         </span>
                       </li>
@@ -286,7 +286,7 @@ function PlansPage() {
                         <Check
                           className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
                         />
-                        <span className={`text-sm  text-gray-400`}>
+                        <span className={`text-xs text-gray-400`}>
                           Historique des pratiques
                         </span>
                       </li>
@@ -311,8 +311,8 @@ function PlansPage() {
                       </li>
                     )}
                   </ul>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
         </div>
       )}

@@ -151,11 +151,11 @@ function TarifsPage() {
                         >
                           {plan.price_rwf === 0
                             ? "Gratuit"
-                            : new Intl.NumberFormat("rw-RW", {
+                            : new Intl.NumberFormat("us-US", {
                                 style: "currency",
-                                currency: "RWF",
+                                currency: "USD",
                                 minimumFractionDigits: 0,
-                              }).format(plan.price_rwf)}
+                              }).format(plan.price_usd)}
                         </h4>
                         {plan.price > 0 && (
                           <span
@@ -168,24 +168,6 @@ function TarifsPage() {
                             / {plan.duration_days} jours
                           </span>
                         )}
-                      </div>
-                      <div
-                        className={`
-                        text-sm
-                              ${
-                                plan.popular
-                                  ? "text-white/80"
-                                  : "text-muted-foreground"
-                              }
-                            `}
-                      >
-                        {plan.price_usd === 0
-                          ? ""
-                          : `ou ${new Intl.NumberFormat("en-US", {
-                              style: "currency",
-                              currency: "USD",
-                              minimumFractionDigits: 0,
-                            }).format(plan.price_usd)}`}
                       </div>
                     </div>
 
