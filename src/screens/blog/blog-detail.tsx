@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -146,9 +146,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
 
       {/* Metadata */}
       <Card>
-        <CardHeader>
           <CardTitle>Details</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -182,9 +180,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
       {/* Cover Image */}
       {blog.cover_image && (
         <Card>
-          <CardHeader>
             <CardTitle>Cover Image</CardTitle>
-          </CardHeader>
           <CardContent>
             <img
               src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
@@ -197,9 +193,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
 
       {/* Content */}
       <Card>
-        <CardHeader>
           <CardTitle>Content</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="prose prose-sm max-w-none dark:prose-invert">
             <ReactMarkdown

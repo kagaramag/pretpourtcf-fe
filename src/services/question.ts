@@ -16,6 +16,7 @@ export interface CreateQuestionData {
   text: string;
   options?: string[];
   correct?: number;
+  answer?: string; // For essay and short answer questions - supports markdown
   score: number;
   media?: MediaContent;
   difficulty?: CEFRLevel;
@@ -28,6 +29,7 @@ export interface UpdateQuestionData {
   text?: string;
   options?: string[];
   correct?: number;
+  answer?: string; // For essay and short answer questions - supports markdown
   score?: number;
   media?: MediaContent;
   difficulty?: CEFRLevel;

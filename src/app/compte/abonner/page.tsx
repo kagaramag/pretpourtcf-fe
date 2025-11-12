@@ -9,9 +9,7 @@ import { SubscriptionPlan } from "@/types";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -45,7 +43,7 @@ function AbonnerPageContent() {
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">(
     "momo"
   );
-  const [currency, setCurrency] = useState<"RWF" | "USD">("RWF"); // Default to RWF
+  const [currency, setCurrency] = useState<"RWF" | "USD">("USD"); // Default to USD (Pesapal)
   const [msisdn, setMsisdn] = useState("");
   const [promoCode, setPromoCode] = useState("");
   const [promoCodeApplied, setPromoCodeApplied] = useState(false);
@@ -143,20 +141,22 @@ function AbonnerPageContent() {
   };
 
   const checkCallbackStatus = async () => {
-    // Check if this is a callback from Kpay
+    // Check if this is a callback from payment gateway (KPay or Pesapal)
     const status = searchParams.get("status");
     const txnId = searchParams.get("transaction_id");
     const method = searchParams.get("method"); // Get payment method from URL
+    const gateway = searchParams.get("gateway"); // Get payment gateway from URL
 
     if (status === "callback" && txnId) {
+      console.log(`[CALLBACK] Received callback for ${gateway || 'unknown'} gateway, method: ${method}, transaction: ${txnId}`);
       setCurrentTransactionId(txnId);
       setCurrentPaymentMethod(method);
       setPageStatus("processing");
 
-      // For card/spenn payments, check status immediately since user is coming back from payment page
+      // For Pesapal or card/spenn payments, check status immediately since user is coming back from payment page
       // The payment should already be processed
-      if (method === "cc" || method === "spenn") {
-        console.log("[CALLBACK] Card/SPENN payment - checking status immediately");
+      if (gateway === "pesapal" || method === "cc" || method === "spenn") {
+        console.log("[CALLBACK] Pesapal/Card/SPENN payment - checking status immediately");
         await checkImmediateStatus(txnId);
       } else {
         // For mobile money, start polling since payment might still be processing
@@ -342,6 +342,7 @@ function AbonnerPageContent() {
         plan_id: plan.id,
         payment_method: paymentMethod,
         currency: currency,
+        payment_gateway: "pesapal", // Use Pesapal as default gateway
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
         promo_code: promoCodeApplied ? promoCode.trim() : undefined,
       });
@@ -462,17 +463,13 @@ function AbonnerPageContent() {
     return (
       <div className="container">
         <Card className="border-green-200">
-          <CardHeader className="text-center pb-3">
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <CheckCircle2 className="h-10 w-10 text-green-600" />
             </div>
             <CardTitle className="text-2xl text-green-700">
               Paiement réussi!
             </CardTitle>
-            <CardDescription>
               Votre abonnement a été activé avec succès
-            </CardDescription>
-          </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="space-y-2">
@@ -527,17 +524,13 @@ function AbonnerPageContent() {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
         <Card className="border-red-200">
-          <CardHeader className="text-center pb-3">
             <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
               <XCircle className="h-10 w-10 text-red-600" />
             </div>
             <CardTitle className="text-2xl text-red-700">
               Paiement échoué
             </CardTitle>
-            <CardDescription>
               Le paiement n'a pas pu être traité
-            </CardDescription>
-          </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <p className="text-sm text-red-900">
@@ -587,19 +580,15 @@ function AbonnerPageContent() {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
         <Card className="border-yellow-200">
-          <CardHeader className="text-center pb-3">
             <div className="mx-auto w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
               <Clock className="h-10 w-10 text-yellow-600 animate-pulse" />
             </div>
             <CardTitle className="text-2xl text-yellow-700">
               {isCardPayment ? "Vérification du paiement..." : "En attente de confirmation..."}
             </CardTitle>
-            <CardDescription>
               {isCardPayment
                 ? "Nous vérifions votre paiement"
                 : "Veuillez approuver le paiement sur votre téléphone"}
-            </CardDescription>
-          </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               {isMobileMoney ? (
@@ -677,12 +666,8 @@ function AbonnerPageContent() {
       </Button>
 
       <Card>
-        <CardHeader>
           <CardTitle>Finaliser votre abonnement</CardTitle>
-          <CardDescription>
             Choisissez votre méthode de paiement pour activer votre abonnement
-          </CardDescription>
-        </CardHeader>
 
         <CardContent className="space-y-2">
           {/* Plan Summary */}

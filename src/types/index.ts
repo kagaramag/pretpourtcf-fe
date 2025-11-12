@@ -134,6 +134,7 @@ export interface PracticeQuestion {
   text: string;
   options?: string[];
   correct?: number;
+  answer?: string; // For essay and short answer questions - supports markdown
   score: number;
   media?: MediaContent;
   difficulty?: CEFRLevel;

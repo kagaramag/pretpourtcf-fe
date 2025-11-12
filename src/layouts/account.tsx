@@ -3,7 +3,7 @@
 import { ReactNode, useState } from "react";
 import { Menu } from "lucide-react";
 import Header from "@/components/organisms/header";
-import Sidebar from "@/components/organisms/sidebar";
+import Sidebar from "@/components/organisms/sidebar-learner";
 import Footer from "@/components/organisms/footer";
 
 interface AccountLayoutProps {

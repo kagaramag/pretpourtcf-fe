@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   BookOpen,
   FileQuestion,
@@ -276,9 +276,7 @@ export function DashboardOverview() {
           <div>
             {/* Practice Session Insights Card */}
             <Card className="col-span-3">
-              <CardHeader>
                 <CardTitle>Practice Session Insights</CardTitle>
-              </CardHeader>
               <CardContent className="space-y-4">
                 {sessionStats.map((stat) => {
                   const Icon = stat.icon;
@@ -311,9 +309,7 @@ export function DashboardOverview() {
         </div>
         <div className="w-full  md:max-w-[350px] lg:max-w-[420px]">
           <Card className="col-span-4">
-            <CardHeader>
               <CardTitle>Recent users</CardTitle>
-            </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {stats.recentUsers.length === 0 ? (
@@ -368,9 +364,7 @@ function DashboardSkeleton() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Practices Group Skeleton */}
             <Card className="border-blue-200 dark:border-blue-900">
-              <CardHeader className="pb-3">
                 <Skeleton className="h-5 w-20" />
-              </CardHeader>
               <CardContent className="space-y-3">
                 {[...Array(2)].map((_, i) => (
                   <div key={i} className="space-y-1">
@@ -387,9 +381,7 @@ function DashboardSkeleton() {
 
             {/* Subscriptions & Plans Group Skeleton */}
             <Card className="border-purple-200 dark:border-purple-900">
-              <CardHeader className="pb-3">
                 <Skeleton className="h-5 w-32" />
-              </CardHeader>
               <CardContent className="space-y-3">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="space-y-1">
@@ -406,9 +398,7 @@ function DashboardSkeleton() {
 
             {/* Streaks Group Skeleton */}
             <Card className="border-orange-200 dark:border-orange-900">
-              <CardHeader className="pb-3">
                 <Skeleton className="h-5 w-20" />
-              </CardHeader>
               <CardContent className="space-y-3">
                 {[...Array(2)].map((_, i) => (
                   <div key={i} className="space-y-1">
@@ -427,10 +417,8 @@ function DashboardSkeleton() {
           {/* Additional Stats - Total Users Skeleton */}
           <div className="grid gap-3 md:grid-cols-1 lg:grid-cols-3">
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Skeleton className="h-4 w-24" />
                 <Skeleton className="h-4 w-4 rounded" />
-              </CardHeader>
               <CardContent>
                 <Skeleton className="h-8 w-20" />
                 <Skeleton className="h-4 w-32 mt-1" />
@@ -441,9 +429,7 @@ function DashboardSkeleton() {
           {/* Practice Session Insights Card */}
           <div>
             <Card className="col-span-3">
-              <CardHeader>
                 <Skeleton className="h-6 w-48" />
-              </CardHeader>
               <CardContent className="space-y-4">
                 {[...Array(3)].map((_, i) => (
                   <div key={i} className="flex items-center justify-between">
@@ -469,9 +455,7 @@ function DashboardSkeleton() {
         {/* Right Sidebar - Recent Users */}
         <div className="w-full md:max-w-[350px] lg:max-w-[420px]">
           <Card className="col-span-4">
-            <CardHeader>
               <Skeleton className="h-6 w-32" />
-            </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {[...Array(5)].map((_, i) => (

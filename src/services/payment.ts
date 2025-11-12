@@ -5,6 +5,7 @@ export interface InitiatePaymentRequest {
   plan_id: string;
   payment_method: "momo" | "cc" | "spenn";
   currency: "RWF" | "USD"; // User-selected currency
+  payment_gateway?: "kpay" | "pesapal"; // Optional payment gateway selection
   msisdn?: string;
   promo_code?: string; // Optional promo code
 }
@@ -22,6 +23,7 @@ export interface InitiatePaymentResponse {
     status: string;
     checkout_url?: string;
     payment_method: string;
+    payment_gateway?: string;
   };
 }
 
@@ -29,6 +31,7 @@ export interface Transaction {
   id: string;
   refid: string;
   kpay_tid?: string;
+  pesapal_order_tracking_id?: string;
   amount: number;
   original_amount?: number;
   discount_amount?: number;
@@ -38,6 +41,7 @@ export interface Transaction {
   status: string;
   status_description?: string;
   payment_method: string;
+  payment_gateway?: string;
   subscription_id?: string;
   plan: {
     id: string;

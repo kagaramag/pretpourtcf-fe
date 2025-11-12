@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -117,23 +117,14 @@ function PracticesScreenContent() {
     if (statusFilter) params.set("isActive", statusFilter);
 
     const queryString = params.toString();
-    router.push(
-      `/dashboard/practices${queryString ? `?${queryString}` : ""}`,
-      {
-        scroll: false,
-      }
-    );
+    router.push(`/dashboard/practices${queryString ? `?${queryString}` : ""}`, {
+      scroll: false,
+    });
   }, [searchQuery, typeFilter, levelFilter, statusFilter]);
 
   useEffect(() => {
     fetchPractices();
-  }, [
-    pagination.page,
-    debouncedSearch,
-    typeFilter,
-    levelFilter,
-    statusFilter,
-  ]);
+  }, [pagination.page, debouncedSearch, typeFilter, levelFilter, statusFilter]);
 
   const fetchPractices = async () => {
     try {
@@ -144,10 +135,7 @@ function PracticesScreenContent() {
         search: debouncedSearch || undefined,
         type: (typeFilter || undefined) as any,
         level: (levelFilter || undefined) as any,
-        isActive:
-          statusFilter !== ""
-            ? statusFilter === "true"
-            : undefined,
+        isActive: statusFilter !== "" ? statusFilter === "true" : undefined,
       });
 
       if (response.data) {
@@ -206,7 +194,7 @@ function PracticesScreenContent() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Practices</h1>
@@ -226,255 +214,247 @@ function PracticesScreenContent() {
         )}
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <CardTitle>All Practices</CardTitle>
-              <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search practices..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-
-            {/* Filters */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <Select
-                value={typeFilter || undefined}
-                onValueChange={(value) => setTypeFilter(value || "")}
-              >
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="listening">Listening</SelectItem>
-                  <SelectItem value="reading">Reading</SelectItem>
-                  <SelectItem value="writing">Writing</SelectItem>
-                  <SelectItem value="speaking">Speaking</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select
-                value={levelFilter || undefined}
-                onValueChange={(value) => setLevelFilter(value || "")}
-              >
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue placeholder="All Levels" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="A1">A1</SelectItem>
-                  <SelectItem value="A2">A2</SelectItem>
-                  <SelectItem value="B1">B1</SelectItem>
-                  <SelectItem value="B2">B2</SelectItem>
-                  <SelectItem value="C1">C1</SelectItem>
-                  <SelectItem value="C2">C2</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select
-                value={statusFilter || undefined}
-                onValueChange={(value) => setStatusFilter(value || "")}
-              >
-                <SelectTrigger className="w-[160px]">
-                  <SelectValue placeholder="All Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="true">Active</SelectItem>
-                  <SelectItem value="false">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {hasActiveFilters && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="gap-2"
-                >
-                  <X className="h-4 w-4" />
-                  Clear Filters
-                </Button>
-              )}
-            </div>
+      <div className="space-y-1">
+        {/* Filters */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <div className="relative w-64">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search practices..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
           </div>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className=" max-w-[200px]">Title</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Level</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Questions</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin mx-auto" />
-                    <p className="mt-2 text-muted-foreground">
-                      Loading practices...
-                    </p>
-                  </TableCell>
-                </TableRow>
-              ) : practices.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={8}
-                    className="text-center py-8 text-muted-foreground"
+
+          <Select
+            value={typeFilter || undefined}
+            onValueChange={(value) => setTypeFilter(value || "")}
+          >
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="All Types" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="listening">Listening</SelectItem>
+              <SelectItem value="reading">Reading</SelectItem>
+              <SelectItem value="writing">Writing</SelectItem>
+              <SelectItem value="speaking">Speaking</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={levelFilter || undefined}
+            onValueChange={(value) => setLevelFilter(value || "")}
+          >
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="All Levels" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="A1">A1</SelectItem>
+              <SelectItem value="A2">A2</SelectItem>
+              <SelectItem value="B1">B1</SelectItem>
+              <SelectItem value="B2">B2</SelectItem>
+              <SelectItem value="C1">C1</SelectItem>
+              <SelectItem value="C2">C2</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={statusFilter || undefined}
+            onValueChange={(value) => setStatusFilter(value || "")}
+          >
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">Active</SelectItem>
+              <SelectItem value="false">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {hasActiveFilters && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="gap-2"
+            >
+              <X className="h-4 w-4" />
+              Clear Filters
+            </Button>
+          )}
+        </div>
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="max-w-[200px]">Title</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Level</TableHead>
+            <TableHead>Duration</TableHead>
+            <TableHead>Questions</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={8} className="text-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                <p className="mt-2 text-muted-foreground">
+                  Loading practices...
+                </p>
+              </TableCell>
+            </TableRow>
+          ) : practices.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={8}
+                className="text-center py-8 text-muted-foreground"
+              >
+                No practices found
+              </TableCell>
+            </TableRow>
+          ) : (
+            practices.map((practice) => (
+              <TableRow key={practice._id}>
+                <TableCell className="max-w-[200px]">
+                  <div className="gap-2 truncate">
+                    <Link
+                      href={`/dashboard/practices/${practice._id}`}
+                      className="flex items-center gap-2"
+                    >
+                      <BookOpen className="h-4 w-4 text-muted-foreground" />
+                      <span className="font-medium ">{practice.title}</span>
+                    </Link>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge className={getTypeColor(practice.type)}>
+                    {practice.type.charAt(0).toUpperCase() +
+                      practice.type.slice(1)}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {practice.level ? (
+                    <Badge className={getLevelColor(practice.level)}>
+                      {practice.level}
+                    </Badge>
+                  ) : (
+                    <span className="text-muted-foreground text-sm">N/A</span>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1 text-sm">
+                    <Clock className="h-3 w-3 text-muted-foreground" />
+                    {practice.durationMinutes} min
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-1 text-sm">
+                    <FileQuestion className="h-3 w-3 text-muted-foreground" />
+                    {practice.totalQuestions}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge
+                    className={
+                      practice.isActive
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-100 text-gray-800"
+                    }
                   >
-                    No practices found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                practices.map((practice) => (
-                  <TableRow key={practice._id}>
-                    <TableCell className="max-w-[200px]">
-                      <div className="gap-2 truncate">
-                        <Link href={`/dashboard/practices/${practice._id}`} className="flex items-center gap-2">
-                        <BookOpen className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium ">{practice.title}</span>
-                        </Link>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getTypeColor(practice.type)}>
-                        {practice.type.charAt(0).toUpperCase() +
-                          practice.type.slice(1)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {practice.level ? (
-                        <Badge className={getLevelColor(practice.level)}>
-                          {practice.level}
-                        </Badge>
-                      ) : (
-                        <span className="text-muted-foreground text-sm">
-                          N/A
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-sm">
-                        <Clock className="h-3 w-3 text-muted-foreground" />
-                        {practice.durationMinutes} min
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1 text-sm">
-                        <FileQuestion className="h-3 w-3 text-muted-foreground" />
-                        {practice.totalQuestions}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className={
-                          practice.isActive
-                            ? "bg-green-100 text-green-800"
-                            : "bg-gray-100 text-gray-800"
-                        }
+                    {practice.isActive ? "Active" : "Inactive"}
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() => {
+                          router.push(`/dashboard/practices/${practice._id}`);
+                        }}
                       >
-                        {practice.isActive ? "Active" : "Inactive"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <Eye className="mr-2 h-4 w-4" />
+                        View Details
+                      </DropdownMenuItem>
+                      {canUpdate && (
+                        <>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             onClick={() => {
-                              router.push(`/dashboard/practices/${practice._id}`);
+                              setSelectedPractice(practice);
+                              setFormMode("edit");
+                              setPracticeFormDialog(true);
                             }}
                           >
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit Practice
                           </DropdownMenuItem>
-                          {canUpdate && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                onClick={() => {
-                                  setSelectedPractice(practice);
-                                  setFormMode("edit");
-                                  setPracticeFormDialog(true);
-                                }}
-                              >
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Practice
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                          {canDelete && (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={() => handleDeletePractice(practice)}
-                                disabled={deleteMutation.isPending}
-                              >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Delete Practice
-                              </DropdownMenuItem>
-                            </>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-
-          {/* Pagination */}
-          {!isLoading && practices.length > 0 && (
-            <div className="flex items-center justify-between mt-4 pt-4 border-t">
-              <div className="text-sm text-muted-foreground">
-                Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-                {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
-                of {pagination.total} practices
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-                  }
-                  disabled={!pagination.hasPrevPage}
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-                  }
-                  disabled={!pagination.hasNextPage}
-                >
-                  Next
-                </Button>
-              </div>
-            </div>
+                        </>
+                      )}
+                      {canDelete && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-red-600"
+                            onClick={() => handleDeletePractice(practice)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Delete Practice
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))
           )}
-        </CardContent>
-      </Card>
+        </TableBody>
+      </Table>
+
+      {/* Pagination */}
+      {!isLoading && practices.length > 0 && (
+        <div className="flex items-center justify-between mt-4 pt-4 border-t">
+          <div className="text-sm text-muted-foreground">
+            Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
+            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
+            {pagination.total} practices
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
+              }
+              disabled={!pagination.hasPrevPage}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
+              }
+              disabled={!pagination.hasNextPage}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Practice Form Dialog */}
       <PracticeFormDialog

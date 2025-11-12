@@ -22,7 +22,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, X, Volume2, Image as ImageIcon, Upload, Trash } from "lucide-react";
+import { Loader2, Plus, X, Volume2, Image as ImageIcon, Upload, Trash, Eye, EyeOff } from "lucide-react";
+import MDEditor from '@uiw/react-md-editor';
+import ReactMarkdown from 'react-markdown';
 import {
   questionService,
   CreateQuestionData,
@@ -57,12 +59,15 @@ export function QuestionFormDialog({
     text: "",
     options: ["", "", "", ""],
     correct: 0,
+    answer: "", // For essay and short answer questions
     score: 1,
     audioUrl: "",
     imageUrl: "",
     difficulty: "" as CEFRLevel | "",
     tags: "",
   });
+
+  const [showAnswerPreview, setShowAnswerPreview] = useState(false);
 
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -83,6 +88,7 @@ export function QuestionFormDialog({
         text: question.text,
         options: question.options || ["", "", "", ""],
         correct: question.correct || 0,
+        answer: question.answer || "",
         score: question.score,
         audioUrl: question.media?.audio || "",
         imageUrl: question.media?.image || "",
@@ -97,6 +103,7 @@ export function QuestionFormDialog({
         text: "",
         options: ["", "", "", ""],
         correct: 0,
+        answer: "",
         score: 1,
         audioUrl: "",
         imageUrl: "",
@@ -105,6 +112,7 @@ export function QuestionFormDialog({
       });
       setAudioFile(null);
       setImageFile(null);
+      setShowAnswerPreview(false);
     }
   }, [open, question, mode]);
 
@@ -281,6 +289,12 @@ export function QuestionFormDialog({
     if (formData.type === "mcq") {
       submitData.options = formData.options.filter((opt) => opt.trim() !== "");
       submitData.correct = formData.correct;
+    }
+
+    if (formData.type === "essay" || formData.type === "short_answer" || formData.type === "audio") {
+      if (formData.answer && formData.answer.trim() !== "") {
+        submitData.answer = formData.answer;
+      }
     }
 
     if (Object.keys(media).length > 0) {
@@ -477,6 +491,59 @@ export function QuestionFormDialog({
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
+            )}
+
+            {(formData.type === "essay" || formData.type === "audio") && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="answer">
+                    Sample Answer (Optional)
+                  </Label>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowAnswerPreview(!showAnswerPreview)}
+                    className="gap-2"
+                  >
+                    {showAnswerPreview ? (
+                      <>
+                        <EyeOff className="h-4 w-4" />
+                        Hide Preview
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="h-4 w-4" />
+                        Show Preview
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Provide a sample answer for reference. Supports markdown formatting (bold, italic, lists, etc.)
+                </p>
+                {showAnswerPreview ? (
+                  <div className="border rounded-lg p-4 min-h-[200px] prose prose-sm max-w-none bg-muted/30">
+                    {formData.answer ? (
+                      <ReactMarkdown>{formData.answer}</ReactMarkdown>
+                    ) : (
+                      <p className="text-muted-foreground italic">No content to preview</p>
+                    )}
+                  </div>
+                ) : (
+                  <div data-color-mode="light">
+                    <MDEditor
+                      value={formData.answer}
+                      onChange={(value) => setFormData({ ...formData, answer: value || "" })}
+                      preview="edit"
+                      height={300}
+                      textareaProps={{
+                        placeholder: "Enter sample answer here... You can use markdown formatting."
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             )}
 

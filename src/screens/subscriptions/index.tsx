@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -149,7 +149,6 @@ function SubscriptionsScreenContent() {
       </div>
 
       <Card>
-        <CardHeader>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle>All Subscriptions</CardTitle>
@@ -193,7 +192,6 @@ function SubscriptionsScreenContent() {
               )}
             </div>
           </div>
-        </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>

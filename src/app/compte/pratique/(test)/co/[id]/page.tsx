@@ -6,8 +6,6 @@ import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -442,12 +440,8 @@ export default function PracticeSessionPage() {
             </div>
 
             <Card>
-              <CardHeader>
                 <CardTitle className="text-2xl">Revue des réponses</CardTitle>
-                <CardDescription>
                   Analysez vos réponses pour mieux comprendre vos erreurs
-                </CardDescription>
-              </CardHeader>
               <CardContent className="space-y-6">
                 {questionsWithAnswers.map((item, index) => (
                   <Card
@@ -458,7 +452,6 @@ export default function PracticeSessionPage() {
                         : "border-red-200 bg-red-50/50"
                     }`}
                   >
-                    <CardHeader>
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="text-xl">
@@ -479,7 +472,6 @@ export default function PracticeSessionPage() {
                           )}
                         </div>
                       </div>
-                    </CardHeader>
                     <CardContent className="space-y-4">
                       {/* Question media */}
                       {item.question.media?.image && (
@@ -574,17 +566,13 @@ export default function PracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6 max-w-4xl">
           <Card className={`border-2 ${getResultColor(sessionResult.grade)}`}>
-            <CardHeader className="text-center">
               <div className="flex justify-center mb-4">
                 {getResultIcon(sessionResult.grade)}
               </div>
               <CardTitle className="text-3xl mb-2">
                 {sessionResult.message}
               </CardTitle>
-              <CardDescription className="text-lg">
                 Exercice terminé
-              </CardDescription>
-            </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>

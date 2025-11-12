@@ -8,9 +8,7 @@ import { SubscriptionPlan } from "@/types";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -72,19 +70,15 @@ function PlansPage() {
 
         <div className="grid gap-6 max-w-3xl">
           <Card>
-            <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>{subscription.plan.name}</span>
                 <span className="text-sm font-normal px-3 py-1 bg-green-100 text-green-700 rounded-full">
                   Actif
                 </span>
               </CardTitle>
-              <CardDescription>
                 {subscription.plan.type === "trial"
                   ? "Plan découverte"
                   : "Plan premium"}
-              </CardDescription>
-            </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -140,12 +134,8 @@ function PlansPage() {
           </Card>
 
           <Card>
-            <CardHeader>
               <CardTitle>Accéder aux pratiques</CardTitle>
-              <CardDescription>
                 Commencez vos exercices TCF maintenant
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
                 <a href="/compte">Voir les pratiques</a>
@@ -206,10 +196,8 @@ function PlansPage() {
                     </span>
                   </div>
                 )}
-                <CardHeader>
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <CardDescription>{plan.description}</CardDescription>
-                </CardHeader>
+                  {plan.description}
                 <CardFooter>
                   <Button
                     onClick={() => handleSelectPlan(plan)}

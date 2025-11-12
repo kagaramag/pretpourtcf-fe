@@ -100,6 +100,82 @@ class ReferralService {
     );
     return response;
   }
+
+  /**
+   * Get specific apprenant profile
+   */
+  async getApprenantProfile(apprenantId: string): Promise<{
+    success: boolean;
+    data?: {
+      user: any;
+      referral: {
+        acceptedAt: Date;
+        createdAt: Date;
+      };
+      stats: {
+        totalPracticeSessions: number;
+        lastActive: Date | null;
+      };
+    };
+  }> {
+    const response = await apiClient.get<any>(
+      `/referrals/apprenant/${apprenantId}`
+    );
+    return response;
+  }
+
+  /**
+   * Get apprenant's practice history
+   */
+  async getApprenantPractices(
+    apprenantId: string,
+    params?: {
+      page?: number;
+      limit?: number;
+    }
+  ): Promise<{
+    success: boolean;
+    data?: {
+      practices: Array<{
+        id: string;
+        practice: {
+          id: string;
+          title: string;
+          category: string;
+          difficulty: string;
+        };
+        completedAt: Date;
+        startedAt: Date;
+        totalScore: number;
+        maxPossibleScore: number;
+        percentageScore: number;
+        timeElapsedSeconds: number;
+        durationMinutes: number;
+        totalQuestions: number;
+        correctAnswers: number;
+        grade: "excellent" | "good" | "needs_improvement";
+      }>;
+      pagination: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPages: number;
+        hasMore: boolean;
+      };
+      stats: {
+        totalSessions: number;
+        averageScore: number;
+        totalTimeSpent: number;
+        totalPoints: number;
+      };
+    };
+  }> {
+    const response = await apiClient.get<any>(
+      `/referrals/apprenant/${apprenantId}/practices`,
+      { params }
+    );
+    return response;
+  }
 }
 
 export const referralService = new ReferralService();

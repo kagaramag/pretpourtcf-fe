@@ -10,9 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
-  CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Mail, Phone, Send, Loader2 } from "lucide-react";
@@ -107,13 +105,9 @@ function ContactPage() {
         {/* Contact Form */}
         <div className="max-w-3xl p-4 mx-auto lg:col-span-2">
           <Card>
-            <CardHeader>
               <CardTitle>Envoyez-nous un message</CardTitle>
-              <CardDescription>
                 Remplissez le formulaire ci-dessous et nous vous répondrons dans
                 les 24 heures
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Honeypot field - hidden from users, visible to bots */}

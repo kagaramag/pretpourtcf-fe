@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -401,7 +401,6 @@ function UsersScreenContent() {
         {/* All Users Tab */}
         <TabsContent value="all" className="space-y-4">
           <Card>
-            <CardHeader>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <CardTitle>All Users</CardTitle>
@@ -458,7 +457,6 @@ function UsersScreenContent() {
                   )}
                 </div>
               </div>
-            </CardHeader>
             <CardContent>{renderUsersTable()}</CardContent>
           </Card>
         </TabsContent>
@@ -466,7 +464,6 @@ function UsersScreenContent() {
         {/* Admins Tab */}
         <TabsContent value="admins" className="space-y-4">
           <Card>
-            <CardHeader>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <CardTitle>Administrators</CardTitle>
@@ -509,7 +506,6 @@ function UsersScreenContent() {
                   )}
                 </div>
               </div>
-            </CardHeader>
             <CardContent>{renderUsersTable()}</CardContent>
           </Card>
         </TabsContent>
@@ -517,7 +513,6 @@ function UsersScreenContent() {
         {/* Clients Tab */}
         <TabsContent value="clients" className="space-y-4">
           <Card>
-            <CardHeader>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <CardTitle>Clients</CardTitle>
@@ -560,7 +555,6 @@ function UsersScreenContent() {
                   )}
                 </div>
               </div>
-            </CardHeader>
             <CardContent>{renderUsersTable()}</CardContent>
           </Card>
         </TabsContent>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Streak, Reward } from "@/services/streak";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Trophy, Clock, Zap } from "lucide-react";
@@ -108,20 +108,6 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
           <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 animate-pulse" />
         </>
       )}
-
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-xl">
-            <Flame
-              className={`h-6 w-6 ${isActive ? "text-orange-500 animate-pulse" : "text-gray-400"}`}
-            />
-            Série de 7 jours
-          </CardTitle>
-          <Badge className={getStatusColor(streak.status)}>
-            {getStatusLabel(streak.status)}
-          </Badge>
-        </div>
-      </CardHeader>
 
       <CardContent className="space-y-2">
         {/* Progress */}

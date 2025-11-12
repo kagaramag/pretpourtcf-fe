@@ -1,4 +1,4 @@
-import ReferralsScreen from "@/screens/referrals";
+import ReferralsScreen from "@/screens/compte/referrals/index";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

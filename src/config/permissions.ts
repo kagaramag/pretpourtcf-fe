@@ -72,4 +72,18 @@ export const ROLE_PERMISSIONS = {
     // Profile
     CUSTOM_PERMISSIONS.PROFILE_READ,
   ],
+  trainer: [
+    // Users (read-only for viewing learners)
+    PERMISSIONS.USERS_READ,
+    // Practices (read and create for managing exercises)
+    PERMISSIONS.PRACTICES_READ,
+    PERMISSIONS.PRACTICES_CREATE,
+    PERMISSIONS.PRACTICES_UPDATE,
+    // Followups (for tracking student progress)
+    PERMISSIONS.FOLLOWUPS_READ,
+    PERMISSIONS.FOLLOWUPS_CREATE,
+    PERMISSIONS.FOLLOWUPS_UPDATE,
+    // Profile
+    CUSTOM_PERMISSIONS.PROFILE_READ,
+  ],
 } as const;

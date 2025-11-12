@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -233,9 +233,6 @@ function PracticeDetailsContent() {
 
       {/* Practice Info Card */}
       <Card>
-        <CardHeader>
-          <CardTitle>Practice Information</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             <div>
@@ -292,11 +289,6 @@ function PracticeDetailsContent() {
 
       {/* Questions List */}
       <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Questions ({pagination.total})</CardTitle>
-          </div>
-        </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>

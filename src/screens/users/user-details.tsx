@@ -3,7 +3,7 @@
 import { useRouter, useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { userService } from "@/services/user";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -120,12 +120,6 @@ export default function UserDetailsScreen() {
 
         {/* User Information */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
-              Informations personnelles
-            </CardTitle>
-          </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
@@ -174,7 +168,6 @@ export default function UserDetailsScreen() {
 
         {/* Payment History */}
         <Card>
-          <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Historique des paiements enregistrés</CardTitle>
               <div className="flex gap-2">
@@ -205,7 +198,6 @@ export default function UserDetailsScreen() {
                 </Select>
               </div>
             </div>
-          </CardHeader>
           <CardContent>
             {isLoadingPayments ? (
               <div className="space-y-2">

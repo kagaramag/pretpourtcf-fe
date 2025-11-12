@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -94,15 +92,11 @@ export default function StreaksPage() {
       <div className="w-full">
         <div className="max-w-2xl mx-auto">
           <Card className="border-yellow-200 bg-yellow-50">
-            <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Crown className="h-6 w-6 text-yellow-600" />
                 Fonctionnalité Premium
               </CardTitle>
-              <CardDescription>
                 Les séries sont réservées aux abonnés premium
-              </CardDescription>
-            </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Relevez le défi des séries de 7 jours! Complétez 20 exercices

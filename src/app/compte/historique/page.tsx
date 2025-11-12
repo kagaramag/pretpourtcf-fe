@@ -6,8 +6,6 @@ import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -164,24 +162,16 @@ export default function PracticeHistoryPage() {
       {statistics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card>
-            <CardHeader className="pb-3">
-              <CardDescription className="flex items-center gap-2">
                 <BarChart className="h-4 w-4" />
                 Sessions totales
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">{statistics.totalSessions}</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardHeader className="pb-3">
-              <CardDescription className="flex items-center gap-2">
                 <Trophy className="h-4 w-4" />
                 Score moyen
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.round(statistics.averageScore)}%
@@ -190,12 +180,8 @@ export default function PracticeHistoryPage() {
           </Card>
 
           <Card>
-            <CardHeader className="pb-3">
-              <CardDescription className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Meilleur score
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.round(statistics.highestScore)}%
@@ -204,12 +190,8 @@ export default function PracticeHistoryPage() {
           </Card>
 
           <Card>
-            <CardHeader className="pb-3">
-              <CardDescription className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
                 Temps total
-              </CardDescription>
-            </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">
                 {Math.floor(statistics.totalTimeSeconds / 3600)}h{" "}
@@ -222,12 +204,8 @@ export default function PracticeHistoryPage() {
 
       {/* Sessions Table */}
       <Card>
-        <CardHeader>
           <CardTitle>Historique des sessions</CardTitle>
-          <CardDescription>
             Toutes vos sessions de pratique passées
-          </CardDescription>
-        </CardHeader>
         <CardContent>
           {sessions.length === 0 ? (
             <div className="text-center py-12">

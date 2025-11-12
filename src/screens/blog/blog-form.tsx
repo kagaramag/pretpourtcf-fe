@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -198,9 +198,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
         <div className="space-y-6">
           {/* Basic Info */}
           <Card>
-            <CardHeader>
               <CardTitle>Basic Information</CardTitle>
-            </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="title">
@@ -247,9 +245,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
 
           {/* Cover Image */}
           <Card>
-            <CardHeader>
               <CardTitle>Cover Image</CardTitle>
-            </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label>Upload Cover Image</Label>
@@ -310,11 +306,9 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
 
           {/* Body Content */}
           <Card>
-            <CardHeader>
               <CardTitle>
                 Content <span className="text-destructive">*</span>
               </CardTitle>
-            </CardHeader>
             <CardContent>
               <div data-color-mode="light">
                 <MDEditor

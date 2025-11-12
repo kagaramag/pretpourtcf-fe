@@ -9,13 +9,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 import { authService } from "@/services/auth";
 import { referralService } from "@/services/referral";
@@ -44,12 +38,16 @@ export function SignupForm() {
   const [referralToken, setReferralToken] = useState<string | null>(null);
   const [referrerName, setReferrerName] = useState<string | null>(null);
   const [isValidatingReferral, setIsValidatingReferral] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<"client" | "trainer" | null>(
+    null
+  );
+  const [showForm, setShowForm] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    setValue,
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -57,7 +55,7 @@ export function SignupForm() {
       last_name: "",
       email: "",
       password: "",
-      role: "client",
+      role: undefined,
     },
   });
 
@@ -133,21 +131,24 @@ export function SignupForm() {
     }
   };
 
+  const handleRoleConfirm = () => {
+    if (selectedRole) {
+      setValue("role", selectedRole);
+      setShowForm(true);
+    }
+  };
+
   // Show verification message after successful signup
   if (showVerificationMessage) {
     return (
       <Card className="">
-        <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="rounded-full bg-green-100 p-3">
-              <Mail className="h-12 w-12 text-green-600" />
-            </div>
+        <div className="flex justify-center mb-4">
+          <div className="rounded-full bg-green-100 p-3">
+            <Mail className="h-12 w-12 text-green-600" />
           </div>
-          <CardTitle className="text-2xl">Vérifiez votre email</CardTitle>
-          <CardDescription>
-            Un email de vérification a été envoyé à <strong>{userEmail}</strong>
-          </CardDescription>
-        </CardHeader>
+        </div>
+        <CardTitle className="text-2xl">Vérifiez votre email</CardTitle>
+        Un email de vérification a été envoyé à <strong>{userEmail}</strong>
         <CardContent className="space-y-4">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
             <p className="text-sm text-blue-800">
@@ -184,12 +185,103 @@ export function SignupForm() {
     );
   }
 
+  // Show role selection screen first
+  if (!showForm) {
+    return (
+      <div>
+        <h3 className="text-2xl font-semibold">Créer un compte</h3>
+        <div className="text-sm text-gray-500 mb-6">
+          Choisissez votre type de compte pour commencer
+        </div>
+
+        {/* Referral indicator */}
+        {referrerName && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
+            <UserPlus className="h-5 w-5 text-blue-600 mt-0.5" />
+            <div>
+              <p className="text-sm text-blue-800 font-medium">
+                Invitation de {referrerName}
+              </p>
+              <p className="text-xs text-blue-600">
+                Vous créez un compte suite à une invitation
+              </p>
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={() => setSelectedRole("client")}
+              className={`flex flex-col items-center justify-center space-y-3 border-2 rounded-lg p-6 cursor-pointer transition-all ${
+                selectedRole === "client"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <div className="text-4xl">👨‍🎓</div>
+              <span className="font-semibold text-lg">Apprenant</span>
+              <p className="text-sm text-gray-600 text-center">
+                Je veux m'entraîner et passer des tests
+              </p>
+            </button>
+
+            <button
+              onClick={() => setSelectedRole("trainer")}
+              className={`flex flex-col items-center justify-center space-y-3 border-2 rounded-lg p-6 cursor-pointer transition-all ${
+                selectedRole === "trainer"
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <div className="text-4xl">👨‍🏫</div>
+              <span className="font-semibold text-lg">Formateur</span>
+              <p className="text-sm text-gray-600 text-center">
+                Je veux créer et gérer des tests
+              </p>
+            </button>
+          </div>
+
+          <Button
+            size="lg"
+            onClick={handleRoleConfirm}
+            className="w-full"
+            disabled={!selectedRole}
+          >
+            Continuer
+          </Button>
+
+          <p className="text-center text-sm text-muted-foreground">
+            Vous avez déjà un compte?{" "}
+            <Link href="/login" className="text-primary hover:underline">
+              Connectez-vous
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show signup form after role selection
   return (
     <div>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => {
+          setShowForm(false);
+          setSelectedRole(null);
+        }}
+        className="w-auto"
+      >
+        Retour
+      </Button>
       <h3 className="text-2xl font-semibold">Créer un compte</h3>
       <div className="text-sm text-gray-500 mb-4">
-        Inscrivez-vous pour accéder aux tests d'entraînement
-        <br /> et suivre votre progression.
+        Inscrivez-vous en tant que{" "}
+        <span className="font-semibold">
+          {selectedRole === "client" ? "Apprenant" : "Formateur"}
+        </span>
       </div>
 
       {/* Referral indicator */}
@@ -239,11 +331,7 @@ export function SignupForm() {
                 Prenom
               </Label>
               <div className="relative">
-                <Input
-                  id="last_name"
-                  type="text"
-                  {...register("last_name")}
-                />
+                <Input id="last_name" type="text" {...register("last_name")} />
               </div>
               {errors.last_name && (
                 <p className="text-sm text-red-500">
@@ -251,47 +339,6 @@ export function SignupForm() {
                 </p>
               )}
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="role" className="text-foreground">
-              Type de compte
-            </Label>
-            <div className="grid grid-cols-2 gap-3">
-              <label
-                className={`flex items-center justify-center space-x-2 border-2 rounded-lg p-3 cursor-pointer transition-all ${
-                  watch("role") === "client"
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-200 hover:border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  value="client"
-                  {...register("role")}
-                  className="sr-only"
-                />
-                <span className="font-medium">Apprenant</span>
-              </label>
-              <label
-                className={`flex items-center justify-center space-x-2 border-2 rounded-lg p-3 cursor-pointer transition-all ${
-                  watch("role") === "trainer"
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-200 hover:border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  value="trainer"
-                  {...register("role")}
-                  className="sr-only"
-                />
-                <span className="font-medium">Formateur</span>
-              </label>
-            </div>
-            {errors.role && (
-              <p className="text-sm text-red-500">{errors.role.message}</p>
-            )}
           </div>
 
           <div className="space-y-2">
@@ -333,21 +380,23 @@ export function SignupForm() {
             )}
           </div>
 
-          <Button
-            size={"lg"}
-            type="submit"
-            className="w-full"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                En cours...
-              </>
-            ) : (
-              "S’inscrire"
-            )}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              size={"lg"}
+              type="submit"
+              className="flex-1"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  En cours...
+                </>
+              ) : (
+                "S'inscrire"
+              )}
+            </Button>
+          </div>
 
           <p className="text-center text-sm text-muted-foreground">
             Vous avez déjà un compte?{" "}

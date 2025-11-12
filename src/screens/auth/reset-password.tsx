@@ -8,8 +8,6 @@ import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
@@ -65,12 +63,6 @@ function ResetPasswordForm() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-2xl">Invalid Reset Link</CardTitle>
-            <CardDescription>
-              This password reset link is invalid or has expired
-            </CardDescription>
-          </CardHeader>
           <CardContent>
             <Link href="/forgot-password">
               <Button className="w-full">Request a new reset link</Button>
@@ -84,10 +76,6 @@ function ResetPasswordForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl">Reset your password</CardTitle>
-          <CardDescription>Enter your new password below</CardDescription>
-        </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">

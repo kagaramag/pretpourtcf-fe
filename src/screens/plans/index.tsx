@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -58,9 +58,7 @@ export function PlansScreen() {
 
       {/* Plans Table */}
       <Card>
-        <CardHeader>
           <CardTitle>Liste des Plans</CardTitle>
-        </CardHeader>
         <CardContent>
           {plans.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">

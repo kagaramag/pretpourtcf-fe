@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Loader2, CheckCircle2, XCircle, Mail } from "lucide-react";
@@ -65,14 +63,6 @@ function VerifyEmailContent() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Vérification de l'email</CardTitle>
-          <CardDescription>
-            {status === "loading" && "Vérification en cours..."}
-            {status === "success" && "Votre email a été vérifié"}
-            {status === "error" && "Erreur de vérification"}
-          </CardDescription>
-        </CardHeader>
         <CardContent className="flex flex-col items-center space-y-6">
           {status === "loading" && (
             <>
@@ -150,10 +140,6 @@ export default function VerifyEmailPage() {
       fallback={
         <div className="min-h-screen flex items-center justify-center p-4">
           <Card className="w-full max-w-md">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Vérification de l'email</CardTitle>
-              <CardDescription>Vérification en cours...</CardDescription>
-            </CardHeader>
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="flex justify-center">
                 <Loader2 className="h-16 w-16 animate-spin text-primary" />

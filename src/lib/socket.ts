@@ -49,7 +49,6 @@ class SocketService {
     });
 
     this.socket.on("connect_error", (error) => {
-      console.error("[SOCKET] Connection error:", error.message);
       this.reconnectAttempts++;
 
       if (this.reconnectAttempts >= this.maxReconnectAttempts) {

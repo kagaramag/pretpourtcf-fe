@@ -6,8 +6,6 @@ import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -98,7 +96,7 @@ export default function AccountPage() {
             </Button>
           </Link>
           <Link href="/compte/pratique/eo">
-            <Button variant="secondary" disabled block size="lg">
+            <Button variant="secondary" block size="lg">
               Expression orale
             </Button>
           </Link>

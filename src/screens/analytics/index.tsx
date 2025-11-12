@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   TrendingUp,
@@ -72,9 +72,6 @@ export function AnalyticsScreen() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Filters</CardTitle>
-        </CardHeader>
         <CardContent className="flex gap-4 flex-wrap">
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Date Range</label>
@@ -120,10 +117,6 @@ export function AnalyticsScreen() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatCurrency(overview.totalRevenue)}
@@ -136,12 +129,6 @@ export function AnalyticsScreen() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Active Clients
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{overview.activeClients}</div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -151,12 +138,6 @@ export function AnalyticsScreen() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Overdue Payments
-            </CardTitle>
-            <AlertCircle className="h-4 w-4 text-red-500" />
-          </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
               {overview.overduePayments}
@@ -168,12 +149,6 @@ export function AnalyticsScreen() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">
-              Follow-ups Pending
-            </CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {overview.pendingFollowups}
@@ -186,9 +161,6 @@ export function AnalyticsScreen() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Revenue Trend</CardTitle>
-        </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={revenueData}>
@@ -210,9 +182,6 @@ export function AnalyticsScreen() {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Agent Performance</CardTitle>
-        </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={agentPerformanceData}>
@@ -229,9 +198,6 @@ export function AnalyticsScreen() {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Agent Statistics</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">

@@ -25,7 +25,7 @@ export function CheckoutDialog({
   onSuccess,
 }: CheckoutDialogProps) {
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">("momo");
-  const [currency, setCurrency] = useState<"RWF" | "USD">("RWF"); // Default to RWF
+  const [currency, setCurrency] = useState<"RWF" | "USD">("USD"); // Default to USD (Pesapal)
   const [msisdn, setMsisdn] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -58,6 +58,7 @@ export function CheckoutDialog({
         plan_id: plan.id,
         payment_method: paymentMethod,
         currency: currency,
+        payment_gateway: "pesapal", // Use Pesapal as default gateway
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
       });
 
