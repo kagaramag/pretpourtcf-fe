@@ -31,9 +31,9 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
       <main className="flex-1 max-w-5xl w-full mx-auto sm:pt-4 sm:pb-20 px-4 sm:px-6 lg:px-0">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar - hidden on mobile, visible on desktop */}
-          <aside className="hidden lg:block lg:w-[200px] mt-6 flex-shrink-0">
+          {/* <aside className="hidden lg:block lg:w-[200px] mt-6 flex-shrink-0">
             <Sidebar isOpen={true} />
-          </aside>
+          </aside> */}
 
           {/* Mobile Sidebar */}
           <div className="lg:hidden">

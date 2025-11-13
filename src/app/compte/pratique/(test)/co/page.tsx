@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
@@ -74,82 +70,77 @@ export default function ListeningPracticePage() {
 
   return (
     <AccountLayout>
-      <div className="container mx-auto  max-w-6xl">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <Headphones className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />
-            <h1 className="lg:text-3xl text-xl font-bold">Compréhension Orale (CO)</h1>
+      <div className="container mx-auto max-w-6xl">
+        <div className="mb-4">
+          <div className="flex items-center gap-3">
+            <h1 className="lg:text-3xl text-xl font-bold">
+              Compréhension Orale
+            </h1>
           </div>
-          <p className="text-muted-foreground">
+          <p className="text-gray-400">
             Choisissez un exercice d&apos;écoute pour pratiquer votre
             compréhension orale
           </p>
         </div>
 
         {practices.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">
-                Aucun exercice disponible
-              </h3>
-              <p className="text-muted-foreground text-center max-w-md">
-                Il n&apos;y a pas d&apos;exercices de compréhension orale
-                disponibles pour le moment.
-              </p>
-            </CardContent>
-          </Card>
+          <div>
+            <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">
+              Aucun exercice disponible
+            </h3>
+            <p className="text-muted-foreground text-center max-w-md">
+              Il n&apos;y a pas d&apos;exercices de compréhension orale
+              disponibles pour le moment.
+            </p>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {practices.map((practice) => (
-              <Card
+              <div
                 key={practice._id}
-                className="hover:shadow-lg transition-shadow cursor-pointer group"
+                className="border border-gray-200 p-4 hover:border-accent cursor-pointer flex flex-col gap-3 rounded-3xl"
               >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="group-hover:text-primary transition-colors">
-                        {practice.title}
-                      </CardTitle>
-                      {practice.level && (
-                        <span
-                          className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getLevelColor(
-                            practice.level
-                          )}`}
-                        >
-                          {practice.level}
-                        </span>
-                      )}
-                    </div>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="group-hover:text-primary transition-colors">
+                      {practice.title}
+                    </CardTitle>
+                    {practice.level && (
+                      <span
+                        className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getLevelColor(
+                          practice.level
+                        )}`}
+                      >
+                        {practice.level}
+                      </span>
+                    )}
                   </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{practice.durationMinutes} min</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
-                      <span>{practice.totalQuestions} questions</span>
-                    </div>
-                <CardContent>
+                </div>
+                <div>
                   <NavigationLink href={`/compte/pratique/co/${practice._id}`}>
-                    <Button className="w-full group-hover:bg-primary/90" size="sm">
-                      <Play className="h-4 w-4 mr-2" />
-                      Commencer l&apos;exercice
+                    <Button
+                      size="sm"
+                      variant={"outline"}
+                      block
+                    >
+                      <Play className="h-3 w-3 mr-2" />
+                      Commencer
                     </Button>
                   </NavigationLink>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}
 
         <div className="mt-8">
-          <Card className="border-blue-200 bg-blue-50">
-              <CardTitle className="flex items-center gap-2 text-blue-900">
-                <BarChart className="h-5 w-5" />
-                Conseils pour réussir
-              </CardTitle>
-            <CardContent className="text-sm text-blue-800 space-y-2">
+          <div className="p-4 border border-gray-200 bg-blue-50">
+            <h3 className="flex items-center gap-2 text-blue-900">
+              <BarChart className="h-5 w-5" />
+              Conseils pour réussir
+            </h3>
+            <div className="text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
               <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>
               <p>
@@ -158,8 +149,8 @@ export default function ListeningPracticePage() {
               </p>
               <p>• Le chronomètre démarre dès le début de l&apos;exercice</p>
               <p>• Votre score est calculé sur 699 points maximum</p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </AccountLayout>
