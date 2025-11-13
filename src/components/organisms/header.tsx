@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import {
   DropdownMenu,
@@ -9,25 +10,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, ArrowRight, LogOut, House } from "lucide-react";
+import { User, ArrowRight, LogOut, House, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import LearnerNavigation from "@/components/molecules/learner-navigation";
 
 const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Preparations", href: "/preparations" },
   { name: "Formations", href: "/formations" },
   { name: "Tarifs", href: "/tarifs" },
-  // { name: "Contact", href: "/contactez-nous" },
 ];
 
 export default function Header() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -54,8 +56,8 @@ export default function Header() {
       {/* <div className="relative text-center secondary-gradient text-white font-semibold">
 Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
       </div> */}
-      <header className="fixed inset-x-0 top-0 z-50 bg-white/50 backdrop-blur-[2px] border-b border-gray-200">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
+      <header className="relative inset-x-0 top-0 z-50 bg-white/50 backdrop-blur-[2px] border-b border-gray-200">
+        <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
           <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
             <Link href="/">
               <div className="w-[140px] sm:w-[180px] lg:w-[210px] hidden lg:block">
@@ -80,6 +82,7 @@ Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
               </div>
             </Link>
           </div>
+          {/* Desktop Navigation - Hidden on small screens */}
           <div className="hidden flex-1 lg:flex lg:gap-x-0 flex-row items-center h-14 px-0 sm:px-0">
             {navigation.map((item) => (
               <Link
@@ -91,6 +94,22 @@ Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
               </Link>
             ))}
           </div>
+
+          {/* Mobile Menu Button - Visible only on small screens */}
+          <div className="flex-1 flex lg:hidden items-center justify-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 bg-primary text-white rounded-full"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+
           <div className="lg:w-[210px] flex items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
             {!isLoading && isAuthenticated && (
               <>
@@ -175,6 +194,15 @@ Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
             )}
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown with Learner Navigation */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+            <div className="w-full space-y-2 flex flex-col px-4 py-4">
+              <LearnerNavigation onLinkClick={() => setIsMobileMenuOpen(false)} />
+            </div>
+          </div>
+        )}
       </header>
     </div>
   );

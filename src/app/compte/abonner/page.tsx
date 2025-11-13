@@ -10,6 +10,10 @@ import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import Visa from "@/assets/images/visa.svg";
+import Mastercard from "@/assets/images/mastercard.svg";
+import Amex from "@/assets/images/amex.svg";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Loader2,
@@ -831,15 +835,29 @@ function AbonnerPageContent() {
           {/* Payment Method Info - Only show if price > 0 */}
           {calculateFinalPrice() > 0 && (
             <div className="space-y-3">
-              <h4 className="font-semibold">Méthode de paiement</h4>
-              <div className="flex items-center space-x-3 border rounded-lg p-4 bg-gray-50">
-                <CreditCard className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="font-medium">Carte bancaire</div>
-                  <div className="text-xs text-muted-foreground">
-                    Visa, Mastercard, Amex
-                  </div>
-                </div>
+              {/* <h4 className="font-semibold">Méthode de paiement</h4> */}
+              <div className="flex items-start space-x-2">
+                <Image
+                  src={Mastercard}
+                  width={54}
+                  height={20}
+                  priority
+                  alt="VISA"
+                />
+                <Image
+                  src={Visa}
+                  width={54}
+                  height={20}
+                  priority
+                  alt="VISA"
+                />
+                <Image
+                  src={Amex}
+                  width={54}
+                  height={20}
+                  priority
+                  alt="VISA"
+                />
               </div>
             </div>
           )}

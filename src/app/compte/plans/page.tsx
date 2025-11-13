@@ -5,12 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -69,26 +64,26 @@ function PlansPage() {
         </div>
 
         <div className="grid gap-6 max-w-3xl">
-          <Card>
-              <CardTitle className="flex items-center justify-between">
-                <span>{subscription.plan.name}</span>
-                <span className="text-sm font-normal px-3 py-1 bg-green-100 text-green-700 rounded-full">
-                  Actif
-                </span>
-              </CardTitle>
-                {subscription.plan.type === "trial"
-                  ? "Plan découverte"
-                  : "Plan premium"}
-            <CardContent className="space-y-4">
+          <div className="p-4 border border-gray-300 rounded-2xl">
+            <h3 className="text-2xl font-semibold flex items-center justify-between">
+              <span>{subscription.plan.name}</span>
+              <span className="text-sm font-normal px-3 py-1 bg-green-100 text-green-700 rounded-full">
+                Actif
+              </span>
+            </h3>
+            {subscription.plan.type === "trial"
+              ? "Plan découverte"
+              : "Plan premium"}
+            <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Prix</p>
                   <p className="text-lg font-semibold">
                     {subscription.plan.price === 0
                       ? "Gratuit"
-                      : `${new Intl.NumberFormat("rw-RW", {
+                      : `${new Intl.NumberFormat("us-US", {
                           style: "currency",
-                          currency: "RWF",
+                          currency: "USD",
                           minimumFractionDigits: 0,
                         }).format(subscription.plan.price)}`}
                   </p>
@@ -130,18 +125,14 @@ function PlansPage() {
                   </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card>
-              <CardTitle>Accéder aux pratiques</CardTitle>
-                Commencez vos exercices TCF maintenant
-            <CardContent>
-              <Button asChild className="w-full">
-                <a href="/compte">Voir les pratiques</a>
-              </Button>
-            </CardContent>
-          </Card>
+          <div>
+            <Button asChild className="w-full">
+              <a href="/compte">Voir les pratiques</a>
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -196,8 +187,8 @@ function PlansPage() {
                     </span>
                   </div>
                 )}
-                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                  {plan.description}
+                <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                {plan.description}
                 <div className="my-3">
                   <Button
                     onClick={() => handleSelectPlan(plan)}

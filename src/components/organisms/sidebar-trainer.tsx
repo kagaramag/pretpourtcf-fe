@@ -110,7 +110,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
           <nav className="relative flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
-                <ul role="list" className="-mx-2 space-y-1">
+                <ul role="list" className="space-y-1">
                   {navigation.map((item) => {
                     const isActive = isActiveLink(item.href);
                     const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -143,7 +143,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                               {item.name !== "Pratiques" && (
                                 <ChevronDown
                                   className={classNames(
-                                    "size-4 transition-transform",
+                                    "size-3 transition-transform",
                                     isExpanded ? "rotate-180" : ""
                                   )}
                                 />
@@ -164,7 +164,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                           isSubActive
                                             ? "bg-accent text-white"
                                             : "text-gray-600 border border-accent/20hover:bg-gray-50 hover:text-primary",
-                                          "group flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6"
+                                          "group flex gap-x-1 items-center rounded-full py-2 px-4 text-sm/6"
                                         )}
                                       >
                                         <item.icon
@@ -173,7 +173,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                             isActive
                                               ? "text-primary hover:text-white"
                                               : "text-gray-400 group-hover:text-white",
-                                            "size-5 shrink-0"
+                                            "size-4 shrink-0"
                                           )}
                                         />
                                         <span>{subItem.name}</span>
@@ -201,7 +201,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                 isActive
                                   ? "text-white"
                                   : "text-gray-400 group-hover:text-primary",
-                                "size-5 shrink-0"
+                                "size-4 shrink-0"
                               )}
                             />
                             <span>{item.name}</span>

@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import Header from "@/components/organisms/header";
 import Sidebar from "@/components/organisms/sidebar-learner";
 import Footer from "@/components/organisms/footer";
+import ProfileCard from "@/components/organisms/user-profile";
 
 interface AccountLayoutProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <ProfileCard />
 
       {/* Mobile menu button */}
       <button
@@ -26,7 +28,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
         <Menu className="h-6 w-6" />
       </button>
 
-      <main className="flex-1 max-w-6xl w-full mx-auto mt-10 sm:py-16 px-4 sm:px-6 lg:px-0">
+      <main className="flex-1 max-w-5xl w-full mx-auto sm:pt-4 sm:pb-20 px-4 sm:px-6 lg:px-0">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar - hidden on mobile, visible on desktop */}
           <aside className="hidden lg:block lg:w-[200px] mt-6 flex-shrink-0">
@@ -35,13 +37,14 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
 
           {/* Mobile Sidebar */}
           <div className="lg:hidden">
-            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+            <Sidebar
+              isOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+            />
           </div>
 
           {/* Main content */}
-          <div className="flex-1 w-full lg:w-auto">
-            {children}
-          </div>
+          <div className="flex-1 w-full lg:w-auto">{children}</div>
         </div>
       </main>
 
