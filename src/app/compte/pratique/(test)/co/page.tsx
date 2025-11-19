@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import Link from "next/link";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
@@ -11,6 +12,7 @@ import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
+import MethodCO from "./methodology";
 
 export default function ListeningPracticePage() {
   const { user } = useAuth();
@@ -77,10 +79,14 @@ export default function ListeningPracticePage() {
               Compréhension Orale
             </h1>
           </div>
-          <p className="text-gray-400">
+          <p className="text-black/45 text-sm">
             Choisissez un exercice d&apos;écoute pour pratiquer votre
             compréhension orale
           </p>
+        </div>
+        <MethodCO />
+        <div>
+          <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques</h1>
         </div>
 
         {practices.length === 0 ? (
@@ -89,47 +95,27 @@ export default function ListeningPracticePage() {
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice disponible
             </h3>
-            <p className="text-muted-foreground text-center max-w-md">
+            <div className="text-muted-foreground text-center max-w-md">
               Il n&apos;y a pas d&apos;exercices de compréhension orale
               disponibles pour le moment.
-            </p>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {practices.map((practice) => (
-              <div
+              <Link
+                href={`/compte/pratique/co/${practice._id}`}
                 key={practice._id}
-                className="border border-gray-200 p-4 hover:border-accent cursor-pointer flex flex-col gap-3 rounded-3xl"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="group-hover:text-primary transition-colors">
-                      {practice.title}
-                    </CardTitle>
-                    {practice.level && (
-                      <span
-                        className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getLevelColor(
-                          practice.level
-                        )}`}
-                      >
-                        {practice.level}
-                      </span>
-                    )}
+                <div className="border border-gray-400 p-4 hover:bg-primary/5 hover:border-primary hover:text-primary cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
+                  <h3 className="font-semibold flex-1 tracking-wide leading-tight">
+                    {practice.title}
+                  </h3>
+                  <div className="w-6 h-6">
+                    <Play className="h-6 w-6" />
                   </div>
                 </div>
-                <div>
-                  <NavigationLink href={`/compte/pratique/co/${practice._id}`}>
-                    <Button
-                      size="sm"
-                      variant={"outline"}
-                      block
-                    >
-                      <Play className="h-3 w-3 mr-2" />
-                      Commencer
-                    </Button>
-                  </NavigationLink>
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

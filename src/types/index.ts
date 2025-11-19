@@ -1,10 +1,12 @@
 export type PlanType = "trial" | "basic" | "advanced" | "premium";
+export type PlanCategory = "preparation" | "training";
 export type SubscriptionStatus = "active" | "expired" | "cancelled";
 
 export interface SubscriptionPlan {
   id: string;
   name: string;
   type: PlanType;
+  category?: PlanCategory;
   duration_days: number;
   price: number; // Legacy field - will be price_rwf
   price_rwf: number; // Price in Rwandan Francs
@@ -21,6 +23,10 @@ export interface SubscriptionPlan {
     correction: boolean;
     streak: boolean;
     history: boolean;
+  };
+  training_details?: {
+    sessions: number;
+    duration_days: number;
   };
 }
 

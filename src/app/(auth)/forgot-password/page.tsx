@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import AuthLayout from "@/layouts/auth";
 
 export const metadata: Metadata = {
-  title: "Mot de passe oublié | Pret Pour TCF",
+  title: "Mot de passe oublié | PRET POUR TCF",
   description: "Demandez une réinitialisation de votre mot de passe",
 };
 

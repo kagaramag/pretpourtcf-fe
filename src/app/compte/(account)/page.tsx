@@ -39,28 +39,29 @@ export default function AccountPage() {
         <div>
           <StreakStatusWidget />
         </div>
-
-        {/* Subscription Status Banner */}
-        <div className="border-blue-200 bg-blue-50 py-4 px-6 border rounded-full flex items-center justify-between flex-row gap-4">
-          <div className="flex-1 flex flex-col">
-            <h3 className="text-lg font-semibold">
-              {user.subscription.plan.name}
-            </h3>
-            <div className="text-sm text-gray-500/80">
-              Abonnement actif: Expire dans {user.subscription.days_remaining}
-              jour(s)
-            </div>
-          </div>
-          <div className="">
-            <Link href="/compte/plans">
-              <Button variant="outline" size="sm">
-                Voir détails
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Premium Streak Feature */}
+     
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 my-2">
+          <Link href="/compte/pratique/co">
+            <Button variant="secondary" block size="lg">
+              Compréhension orale
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/ce">
+            <Button variant="secondary" disabled block size="lg">
+              Compréhension écrite
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/eo">
+            <Button variant="secondary" block size="lg">
+              Expression orale
+            </Button>
+          </Link>
+          <Link href="/compte/pratique/ee">
+            <Button variant="secondary" disabled block size="lg">
+              Expression écrite
+            </Button>
+          </Link>
+        </div>   {/* Premium Streak Feature */}
         <div className="py-4 px-6 border border-gray-200 rounded-3xl">
           <h3 className="flex items-center gap-2">Séries Premium</h3>
           <div>Maintenez votre engagement et gagnez des emblème!</div>
@@ -84,28 +85,6 @@ export default function AccountPage() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 my-2">
-          <Link href="/compte/pratique/co">
-            <Button variant="secondary" block size="lg">
-              Compréhension orale
-            </Button>
-          </Link>
-          <Link href="/compte/pratique/ce">
-            <Button variant="secondary" disabled block size="lg">
-              Compréhension écrite
-            </Button>
-          </Link>
-          <Link href="/compte/pratique/eo">
-            <Button variant="secondary" block size="lg">
-              Expression orale
-            </Button>
-          </Link>
-          <Link href="/compte/pratique/ee">
-            <Button variant="secondary" disabled block size="lg">
-              Expression écrite
-            </Button>
-          </Link>
-        </div>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import { BackendApiResponse, SubscriptionPlan, Subscription } from "@/types";
+import { BackendApiResponse, SubscriptionPlan, Subscription, PlanCategory } from "@/types";
 
 export interface SubscribeData {
   plan_id: string;
@@ -61,10 +61,11 @@ export const subscriptionService = {
     throw new Error("Failed to fetch subscriptions");
   },
 
-  getAllPlans: async (): Promise<SubscriptionPlan[]> => {
+  getAllPlans: async (category?: PlanCategory): Promise<SubscriptionPlan[]> => {
+    const params = category ? { category } : {};
     const response = await apiClient.get<
       BackendApiResponse<{ plans: SubscriptionPlan[] }>
-    >("/subscriptions/plans");
+    >("/subscriptions/plans", { params });
 
     return response.data?.plans || [];
   },

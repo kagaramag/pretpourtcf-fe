@@ -4,8 +4,8 @@ import AuthLayout from "@/layouts/auth";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Sign Up | Pret Pour TCF",
-  description: "Create your Pret Pour TCF account",
+  title: "Sign Up | PRET POUR TCF",
+  description: "Create your PRET POUR TCF account",
 };
 
 export default function SignupPage() {

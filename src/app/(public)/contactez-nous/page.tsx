@@ -96,7 +96,7 @@ function ContactPage() {
             Contactez-nous
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Vous avez des questions sur Pret Pour TCF? Nous sommes là pour vous
+            Vous avez des questions sur PRET POUR TCF? Nous sommes là pour vous
             aider. Envoyez-nous un message et nous vous répondrons dans les plus
             brefs délais.
           </p>

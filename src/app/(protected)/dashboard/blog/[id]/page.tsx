@@ -1,7 +1,7 @@
 import BlogDetailScreen from "@/screens/blog/blog-detail";
 
 export const metadata = {
-  title: "Blog Post | Pret Pour TCF",
+  title: "Blog Post | PRET POUR TCF",
   description: "View blog post details",
 };
 

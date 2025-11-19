@@ -3,7 +3,7 @@ import { ReferralsScreen } from "@/screens/compte/referrals";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Parrainages | Pret Pour TCF",
+  title: "Parrainages | PRET POUR TCF",
   description: "Invitez vos amis à rejoindre la plateforme",
 };
 

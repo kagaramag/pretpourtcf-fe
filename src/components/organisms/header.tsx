@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import {
   DropdownMenu,
@@ -21,8 +21,8 @@ import LearnerNavigation from "@/components/molecules/learner-navigation";
 
 const navigation = [
   { name: "Accueil", href: "/" },
-  { name: "Preparations", href: "/preparations" },
-  { name: "Formations", href: "/formations" },
+  // { name: "Preparations", href: "/preparations" },
+  // { name: "Formations", href: "/formations" },
   { name: "Tarifs", href: "/tarifs" },
 ];
 
@@ -30,6 +30,20 @@ export default function Header() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY >= 140) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -50,14 +64,15 @@ export default function Header() {
     }
   };
 
-
   return (
     <div>
-      {/* <div className="relative text-center secondary-gradient text-white font-semibold">
-Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
-      </div> */}
-      <header className="relative inset-x-0 top-0 z-50 bg-white/50 backdrop-blur-[2px] border-b border-gray-200">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
+      {/* className={`inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "fixed bg-white/50 backdrop-blur-[2px] border-b border-gray-200/10"
+          : "absolute"
+      }`} */}
+      <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
+        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
           <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
             <Link href="/">
               <div className="w-[140px] sm:w-[180px] lg:w-[210px] hidden lg:block">
@@ -82,20 +97,18 @@ Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
               </div>
             </Link>
           </div>
-          {/* Desktop Navigation - Hidden on small screens */}
           <div className="hidden flex-1 lg:flex lg:gap-x-0 flex-row items-center h-14 px-0 sm:px-0">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="font-semibold text-sm px-2 py-1"
+                className="font-semibold text-sm px-2 py-1 text-primary"
               >
                 {item.name}
               </Link>
             ))}
           </div>
 
-          {/* Mobile Menu Button - Visible only on small screens */}
           <div className="flex-1 flex lg:hidden items-center justify-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -195,11 +208,12 @@ Nouveaux inscrits : Accès GRATUIT avec le code FREESTART - Offre limitée!
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown with Learner Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
             <div className="w-full space-y-2 flex flex-col px-4 py-4">
-              <LearnerNavigation onLinkClick={() => setIsMobileMenuOpen(false)} />
+              <LearnerNavigation
+                onLinkClick={() => setIsMobileMenuOpen(false)}
+              />
             </div>
           </div>
         )}

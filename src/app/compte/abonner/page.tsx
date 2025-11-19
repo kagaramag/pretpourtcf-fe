@@ -494,15 +494,18 @@ function AbonnerPageContent() {
   if (pageStatus === "success") {
     return (
       <div className="container">
-        <Card className="border-green-200">
+        <div>
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
             <CheckCircle2 className="h-10 w-10 text-green-600" />
           </div>
-          <CardTitle className="text-2xl text-green-700">
-            Paiement réussi!
-          </CardTitle>
-          Votre abonnement a été activé avec succès
-          <CardContent className="space-y-4">
+          <div className="text-center">
+            <h3 className="text-2xl font-semibold text-green-700">
+              Paiement réussi!
+            </h3>
+            <div>Votre abonnement a été activé avec succès</div>
+          </div>
+
+          <div className="space-y-4">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
@@ -533,7 +536,7 @@ function AbonnerPageContent() {
                 ✓ Abonnement activé et enregistré
               </p>
             </div>
-          </CardContent>
+          </div>
           <CardFooter className="flex flex-col gap-2">
             <Button onClick={() => router.push("/compte")} className="w-full">
               Commencer les exercices
@@ -546,7 +549,7 @@ function AbonnerPageContent() {
               Voir mon abonnement
             </Button>
           </CardFooter>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -844,20 +847,8 @@ function AbonnerPageContent() {
                   priority
                   alt="VISA"
                 />
-                <Image
-                  src={Visa}
-                  width={54}
-                  height={20}
-                  priority
-                  alt="VISA"
-                />
-                <Image
-                  src={Amex}
-                  width={54}
-                  height={20}
-                  priority
-                  alt="VISA"
-                />
+                <Image src={Visa} width={54} height={20} priority alt="VISA" />
+                <Image src={Amex} width={54} height={20} priority alt="VISA" />
               </div>
             </div>
           )}

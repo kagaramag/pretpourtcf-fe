@@ -81,12 +81,12 @@ export default function PublicBlogDetailScreen({
     dateModified: blog.updatedAt,
     author: {
       "@type": "Organization",
-      name: "Pret Pour TCF",
+      name: "PRET POUR TCF",
       url: process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "Pret Pour TCF",
+      name: "PRET POUR TCF",
       logo: {
         "@type": "ImageObject",
         url: `${config.cloudFlarePublicUrl}logo.png`,
@@ -159,7 +159,7 @@ export default function PublicBlogDetailScreen({
               </div>
             </div>
             <meta itemProp="dateModified" content={blog.updatedAt} />
-            <meta itemProp="author" content="Pret Pour TCF" />
+            <meta itemProp="author" content="PRET POUR TCF" />
           </header>
           <Separator className="mb-4" />
           {/* Article Content */}

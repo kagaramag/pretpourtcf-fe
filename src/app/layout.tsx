@@ -17,7 +17,7 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "Pret Pour TCF",
+  title: "PRET POUR TCF",
   description: "Analytics and Recovery Management System",
   icons: {
     icon: "/images/favicon.png",

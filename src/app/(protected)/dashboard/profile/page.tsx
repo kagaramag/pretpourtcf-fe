@@ -2,7 +2,7 @@ import ProfileScreen from "@/screens/profile";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Profil | Pret Pour TCF",
+  title: "Profil | PRET POUR TCF",
   description: "Gérez vos paramètres de profil",
 };
 

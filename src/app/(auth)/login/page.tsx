@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import AuthLayout from "@/layouts/auth";
 
 export const metadata: Metadata = {
-  title: "Connexion | Pret Pour TCF",
-  description: "Connectez-vous à l'application Pret Pour TCF",
+  title: "Connexion | PRET POUR TCF",
+  description: "Connectez-vous à l'application PRET POUR TCF",
 };
 
 export default function LoginPage() {

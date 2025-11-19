@@ -1,7 +1,7 @@
 import PublicBlogScreen from "@/screens/public-blog";
 
 export const metadata = {
-  title: "Blog | Pret Pour TCF",
+  title: "Blog | PRET POUR TCF",
   description: "Découvrez nos articles, conseils et actualités sur la préparation au TCF",
 };
 

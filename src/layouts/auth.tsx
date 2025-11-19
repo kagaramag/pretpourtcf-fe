@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import Lottie from "lottie-react";
-import Logo from "@/assets/images/logo.svg";
+import Logo from "@/assets/images/logo_white.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,12 +17,22 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="w-full h-screen mx-auto flex flex-row overflow-hidden">
       <div className="w-xl h-full bg-primary flex items-end justify-center relative">
+        <div className="w-[140px] sm:w-[180px] lg:w-[240px] hidden lg:block absolute top-4 left-4">
+          <Image
+            src={Logo}
+            width={240}
+            height={120}
+            priority
+            alt="logo"
+            className="w-full mx-auto"
+          />
+        </div>
         <div className="-mb-4">
           <Lottie animationData={happyUserAnimation} loop={true} />
         </div>
       </div>
       <div className="flex-1 border p-4 relative">
-        <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
+        {/* <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
           <Link href="/">
             <div className="w-[140px] sm:w-[180px] lg:w-[210px] hidden lg:block">
               <Image
@@ -45,7 +55,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
               />
             </div>
           </Link>
-        </div>
+        </div> */}
         <div className="flex items-center justify-center flex-col h-screen">
           <div className="mx-auto w-sm">{children}</div>
           <div className="mt-2">

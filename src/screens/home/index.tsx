@@ -1,4 +1,7 @@
 import Hero from "@/assets/images/hero-bg.svg";
+import Wave from "@/assets/images/hero-waves.svg";
+import TCFMethod from "@/assets/images/tcf_method.svg";
+import TCFPhoto from "@/assets/images/tcf_photo.jpg";
 import Image from "next/image";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import LandingFeatures from "./landing-features";
@@ -31,6 +34,16 @@ export function IndexScreen() {
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
+        <div className="w-full absolute bottom-0 right-0 left-0 mx-auto -z-10">
+          <Image
+            src={Wave}
+            width={1200}
+            height={514}
+            priority
+            alt="logo"
+            className="w-full mx-auto"
+          />
+        </div>
         <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10">
           <Image
             src={Hero}
@@ -53,24 +66,46 @@ export function IndexScreen() {
             className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
           />
         </div>
-        <div className="mx-auto max-w-77xl py-24 sm:py-32 md:py-48 lg:py-56">
-          <div className="text-center px-2 sm:px-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tighter pb-2 text-balance bg-gradient-to-r from-[#4E56C0] via-[#9B5DE0] to-[#D78FEE] bg-clip-text text-transparent leading-tight">
-              Préparez votre test TCF avec assurance.
-              <br className="hidden sm:block" />
-              <span className="sm:inline"> </span>La réussite, c'est 0% magie,
-              100% préparation.
+        <div className="mx-auto max-w-6xl py-32 sm:py-56 md:py-48 lg:py-36 flex items-center relative">
+          <div className="px-2 sm:px-0 flex-1">
+            <h1 className="text-xl text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-none tracking-tight pb-2">
+              Préparez votre test TCF avec assurance. La réussite, c'est 0%
+              magie, 100% préparation.
             </h1>
-            <p className="mb-4 mt-4 text-base sm:text-lg md:text-xl font-light text-pretty text-gray-500 px-2">
+            {/* <br className="hidden sm:block" /> */}
+            {/* <span className="sm:inline"> </span> */}
+            <div className="mb-4 mt-2 text-base sm:text-lg md:text-md font-light text-pretty text-gray-500 px-2 max-w-[450px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-x-2 px-4">
+            </div>
+            <div className="mt-6 flex flex-col  justify-center gap-3 sm:gap-x-2 px-4">
               <NavigationLink href="/signup">
-                <Button size="xlg" variant={"secondary"}>
+                <Button size="xlg">
                   Essayer gratuitement
                 </Button>
               </NavigationLink>
+            </div>
+          </div>
+          <div className="w-[373px] h-[440px] relative">
+            <div className="w-[373px] h-[440px] absolute right-0 bottom-0">
+              <Image
+                src={TCFMethod}
+                width={373}
+                height={440}
+                priority
+                alt="logo"
+                className="w-full mx-auto"
+              />
+            </div>
+            <div className="w-[191px] h-[210px] absolute -top-[56px] -left-[50px] overflow-hidden rounded-3xl">
+              <Image
+                src={TCFPhoto}
+                width={191}
+                height={210}
+                priority
+                alt="logo"
+                className="w-full mx-auto"
+              />
             </div>
           </div>
         </div>
@@ -83,11 +118,11 @@ export function IndexScreen() {
               clipPath:
                 "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
             }}
-            className="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"
+            className="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-primary opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"
           />
         </div>
       </div>
-      <div className="primary-gradient py-16 sm:py-20 md:py-24">
+      <div className="bg-primary py-16 sm:py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-none text-pretty text-white">
@@ -139,7 +174,7 @@ export function IndexScreen() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-secondary">
+      <div className="bg-primary">
         <div className="px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:px-8">
           <div className="mx-auto max-w-5xl text-center flex flex-col gap-3">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-tight text-balance text-white">

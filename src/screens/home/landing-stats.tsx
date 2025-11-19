@@ -7,7 +7,7 @@ const stats = [
 
 export default function LandingStats() {
   return (
-    <div className="primary-gradient py-20 sm:py-20 md:py-20">
+    <div className="bg-primary py-20 sm:py-20 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">

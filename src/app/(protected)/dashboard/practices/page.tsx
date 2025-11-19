@@ -1,7 +1,7 @@
 import { PracticesScreen } from "@/screens/practices";
 
 export const metadata = {
-  title: "Practices | Pret Pour TCF",
+  title: "Practices | PRET POUR TCF",
   description: "Manage TCF practice exams",
 };
 

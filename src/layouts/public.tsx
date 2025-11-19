@@ -13,7 +13,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     <div className="relative">
       <Header />
       <main className="flex-1 overflow-auto">
-        <div className="w-full mx-auto pt-24">{children}</div>
+        <div className="w-full mx-auto">{children}</div>
       </main>
       <Footer />
     </div>

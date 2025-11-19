@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Trainer from "@/assets/images/trainer.svg";
+import Practice from "@/assets/images/practice.svg";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
@@ -10,12 +13,17 @@ import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
+import { Modal } from "@/components/molecules";
 
 function PlansPage() {
   const router = useRouter();
   const { user, refreshUser } = useAuth();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [formationPlans, setFormationPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [formationLoading, setFormationLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFormationModalOpen, setIsFormationModalOpen] = useState(false);
 
   // Listen for real-time payment status updates via WebSocket
   usePaymentStatus({
@@ -28,18 +36,35 @@ function PlansPage() {
 
   useEffect(() => {
     loadPlans();
+    loadFormationPlans();
   }, []);
 
   const loadPlans = async () => {
     try {
       setLoading(true);
-      const fetchedPlans = await subscriptionService.getAllPlans();
+      const fetchedPlans = await subscriptionService.getAllPlans("preparation");
       setPlans(fetchedPlans);
     } catch (error) {
       console.error("Failed to load plans:", error);
       toast.error("Impossible de charger les plans");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadFormationPlans = async () => {
+    try {
+      setFormationLoading(true);
+      const fetchedPlans = await subscriptionService.getAllPlans("training");
+      console.log("Formation plans fetched:", fetchedPlans);
+      console.log("Formation plans count:", fetchedPlans.length);
+      console.log("Formation plans after filter:", fetchedPlans.filter((plan) => plan.type !== "trial"));
+      setFormationPlans(fetchedPlans);
+    } catch (error) {
+      console.error("Failed to load formation plans:", error);
+      toast.error("Impossible de charger les plans de formation");
+    } finally {
+      setFormationLoading(false);
     }
   };
 
@@ -148,165 +173,358 @@ function PlansPage() {
     return "outline";
   };
 
+  const renderPlansForPractices = () => {
+    return (
+      <>
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : plans.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">
+              Aucun plan disponible pour le moment.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Veuillez contacter l'administrateur.
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-row gap-3">
+            {plans
+              .filter((plan) => plan.type !== "trial")
+              .map((plan) => (
+                <div
+                  key={plan.id}
+                  className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                        Recommandé
+                      </span>
+                    </div>
+                  )}
+                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                  {plan.description}
+                  <div className="my-3">
+                    <Button
+                      onClick={() => handleSelectPlan(plan)}
+                      className="w-full"
+                      variant={getButtonType(plan.type)}
+                    >
+                      Choisir ce plan
+                    </Button>
+                  </div>
+                  <div>
+                    <div className="mb-2">
+                      <div className="space-y-1">
+                        <div>
+                          <span className="text-2xl font-bold tracking-tight">
+                            {plan.price_rwf === 0
+                              ? "Gratuit"
+                              : new Intl.NumberFormat("en-US", {
+                                  style: "currency",
+                                  currency: "USD",
+                                  minimumFractionDigits: 0,
+                                }).format(plan.price_usd)}
+                          </span>
+                          <span className="text-muted-foreground ml-2 text-sm">
+                            / {plan.duration_days} jours
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          {plan?.duration_days} jours
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Compréhension Orale: {plan.details?.co} tests
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Compréhension Ecrite: {plan.details?.ce} tests
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Expression Orale: {plan.details?.eo} tests
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Expression Ecrite: {plan.details?.ee} tests
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Correction automatique et détaillée
+                        </span>
+                      </li>
+                      {plan.details.history ? (
+                        <li className="flex items-start gap-3">
+                          <Check
+                            className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
+                          />
+                          <span className={`text-xs`}>
+                            Historique des pratiques
+                          </span>
+                        </li>
+                      ) : (
+                        <li className="flex items-start gap-3 line-through opacity-50">
+                          <Check
+                            className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
+                          />
+                          <span className={`text-xs text-gray-400`}>
+                            Historique des pratiques
+                          </span>
+                        </li>
+                      )}
+                      {plan.details.streak ? (
+                        <li className="flex items-start gap-3">
+                          <Check
+                            className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
+                          />
+                          <span className={`text-sm`}>
+                            Accès aux séries de tests
+                          </span>
+                        </li>
+                      ) : (
+                        <li className="flex items-start gap-3 line-through opacity-50">
+                          <Check
+                            className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
+                          />
+                          <span className={`text-sm  text-gray-400`}>
+                            Accès aux séries de tests
+                          </span>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+      </>
+    );
+  };
+
+  const renderPlansForFormation = () => {
+    console.log("Rendering formation plans, loading:", formationLoading);
+    console.log("Formation plans state:", formationPlans);
+    console.log("Formation plans length:", formationPlans.length);
+
+    const filteredPlans = formationPlans.filter((plan) => plan.type !== "trial");
+    console.log("Filtered formation plans (non-trial):", filteredPlans);
+    console.log("Filtered plans length:", filteredPlans.length);
+
+    return (
+      <>
+        {formationLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : formationPlans.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">
+              Aucun plan de formation disponible pour le moment.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Veuillez contacter l'administrateur.
+            </p>
+            <p className="text-xs text-gray-400 mt-4">
+              Debug: Total plans = {formationPlans.length}, After filter = {filteredPlans.length}
+            </p>
+          </div>
+        ) : filteredPlans.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">
+              Tous les plans de formation sont actuellement en mode essai.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Veuillez contacter l'administrateur pour activer les plans premium.
+            </p>
+            <p className="text-xs text-gray-400 mt-4">
+              Debug: Total plans = {formationPlans.length}, After filter = {filteredPlans.length}
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-row gap-3">
+            {filteredPlans.map((plan) => (
+                <div
+                  key={plan.id}
+                  className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
+                >
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                        Recommandé
+                      </span>
+                    </div>
+                  )}
+                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                  {plan.description}
+                  <div className="my-3">
+                    <Button
+                      onClick={() => handleSelectPlan(plan)}
+                      className="w-full"
+                      variant={getButtonType(plan.type)}
+                    >
+                      Choisir ce plan
+                    </Button>
+                  </div>
+                  <div>
+                    <div className="mb-2">
+                      <div className="space-y-1">
+                        <div>
+                          <span className="text-2xl font-bold tracking-tight">
+                            {plan.price_rwf === 0
+                              ? "Gratuit"
+                              : new Intl.NumberFormat("en-US", {
+                                  style: "currency",
+                                  currency: "USD",
+                                  minimumFractionDigits: 0,
+                                }).format(plan.price_usd)}
+                          </span>
+                          <span className="text-muted-foreground ml-2 text-sm">
+                            / {plan.training_details?.duration_days || plan.duration_days} jours
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          {plan.training_details?.sessions || 0} séances de formation
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Formation personnalisée avec un formateur expert
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Suivi et corrections détaillées
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-xs">
+                          Accès aux exercices de pratique
+                        </span>
+                      </li>
+                      {plan.features && plan.features.length > 0 &&
+                        plan.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                            <span className="text-xs">{feature}</span>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+      </>
+    );
+  };
+
   // If user doesn't have a subscription, show plans
   return (
-    <div>
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold mb-2">Plans & Tarifs</h1>
-        <h2 className="text-muted-foreground">
+    <div className="">
+      <div className="mb-4">
+        <h1 className="text-3xl font-bold">Plans & Tarifs</h1>
+        <h2 className="text-muted-foreground text-sm">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
+          Canada ou Québec
         </h2>
       </div>
+      <div className="flex flex-row gap-2">
+        <div className="w-1/2 flex flex-row items-start bg-[#d3f4eb] gap-2  p-4 rounded-2xl">
+          <div className="w-18 h-18">
+            <Image
+              src={Practice}
+              width={60}
+              height={60}
+              priority
+              alt="logo"
+              className="w-full mx-auto"
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-semibold text-black/70">
+              Pratiquez à Votre Rythme
+            </h2>
+            <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+              Accédez à les exercices interactifs, des examens blancs et des
+              corrections détaillées. Progressez seul, quand vous voulez, où
+              vous voulez.
+            </div>
+            <Button onClick={() => setIsModalOpen(true)} className="w-full bg-[#1d9e70]">
+              Voir les Tarifs
+            </Button>
+          </div>
+        </div>
+        <div className="w-1/2 flex flex-row items-start bg-[#ece1f5] gap-2 p-4 rounded-2xl">
+          <div className="w-18 h-18">
+            <Image
+              src={Trainer}
+              width={60}
+              height={60}
+              priority
+              alt="logo"
+              className="w-full mx-auto"
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-semibold text-black/70">
+              Apprenez avec un Formateur
+            </h2>
+            <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+              Recevez une préparation personnalisée basée sur la méthodologie du
+              TCF avec nos formateurs experts.
+            </div>
+            <Button onClick={() => setIsFormationModalOpen(true)} className="w-full bg-[#9f5fdd]">
+              Voir les Tarifs
+            </Button>
+          </div>
+        </div>
+      </div>
 
-      {loading ? (
-        <div className="flex justify-center items-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-      ) : plans.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">
-            Aucun plan disponible pour le moment.
-          </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Veuillez contacter l'administrateur.
-          </p>
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-3 gap-3 mt-4">
-          {plans
-            .filter((plan) => plan.type !== "trial")
-            .map((plan) => (
-              <div
-                key={plan.id}
-                className={`relative p-4 border-4 border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                      Recommandé
-                    </span>
-                  </div>
-                )}
-                <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                {plan.description}
-                <div className="my-3">
-                  <Button
-                    onClick={() => handleSelectPlan(plan)}
-                    className="w-full"
-                    variant={getButtonType(plan.type)}
-                  >
-                    Choisir ce plan
-                  </Button>
-                </div>
-                <div>
-                  <div className="mb-2">
-                    <div className="space-y-1">
-                      <div>
-                        <span className="text-2xl font-bold tracking-tight">
-                          {plan.price_rwf === 0
-                            ? "Gratuit"
-                            : new Intl.NumberFormat("en-US", {
-                                style: "currency",
-                                currency: "USD",
-                                minimumFractionDigits: 0,
-                              }).format(plan.price_usd)}
-                        </span>
-                        <span className="text-muted-foreground ml-2 text-sm">
-                          / {plan.duration_days} jours
-                        </span>
-                      </div>
-                      {/* <div className="text-xs text-muted-foreground">
-                        {plan.price_usd === 0
-                          ? ""
-                          : `ou ${new Intl.NumberFormat("en-US", {
-                              style: "currency",
-                              currency: "USD",
-                              minimumFractionDigits: 0,
-                            }).format(plan.price_usd)}`}
-                      </div> */}
-                    </div>
-                  </div>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        {plan?.duration_days} jours
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Compréhension Orale: {plan.details?.co} tests
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Compréhension Ecrite: {plan.details?.ce} tests
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Expression Orale: {plan.details?.eo} tests
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Expression Ecrite: {plan.details?.ee} tests
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Correction automatique et détaillée
-                      </span>
-                    </li>
-                    {plan.details.history ? (
-                      <li className="flex items-start gap-3">
-                        <Check
-                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
-                        />
-                        <span className={`text-xs`}>
-                          Historique des pratiques
-                        </span>
-                      </li>
-                    ) : (
-                      <li className="flex items-start gap-3 line-through opacity-50">
-                        <Check
-                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
-                        />
-                        <span className={`text-xs text-gray-400`}>
-                          Historique des pratiques
-                        </span>
-                      </li>
-                    )}
-                    {plan.details.streak ? (
-                      <li className="flex items-start gap-3">
-                        <Check
-                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-green-500 `}
-                        />
-                        <span className={`text-sm`}>
-                          Accès aux séries de tests
-                        </span>
-                      </li>
-                    ) : (
-                      <li className="flex items-start gap-3 line-through opacity-50">
-                        <Check
-                          className={`h-4 w-4 flex-shrink-0 mt-0.5 text-gray-300 `}
-                        />
-                        <span className={`text-sm  text-gray-400`}>
-                          Accès aux séries de tests
-                        </span>
-                      </li>
-                    )}
-                  </ul>
-                </div>
-              </div>
-            ))}
-        </div>
-      )}
+      {/* Practice Plans Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Plans & Tarifs - Pratique"
+      >
+        {renderPlansForPractices()}
+      </Modal>
+
+      {/* Formation Plans Modal */}
+      <Modal
+        isOpen={isFormationModalOpen}
+        onClose={() => setIsFormationModalOpen(false)}
+        title="Plans & Tarifs - Formation"
+      >
+        {renderPlansForFormation()}
+      </Modal>
     </div>
   );
 }

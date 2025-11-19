@@ -2,7 +2,7 @@ import ApprenantsScreen from "@/screens/trainer/apprenants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "apprenants | Pret Pour TCF",
+  title: "apprenants | PRET POUR TCF",
   description: "Invitez vos amis à rejoindre la plateforme",
 };
 

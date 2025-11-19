@@ -2,7 +2,7 @@ import SubscriptionScreen from "@/screens/subscriptions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Subscriptions | Pret Pour TCF",
+  title: "Subscriptions | PRET POUR TCF",
   description: "Manage your subscription plans and access to premium features",
 };
 

@@ -2,8 +2,8 @@ import { StreaksScreen } from "@/screens/streaks";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Streaks | Pret Pour TCF",
-  description: "Consultez l'historique des streaks Pret Pour TCF",
+  title: "Streaks | PRET POUR TCF",
+  description: "Consultez l'historique des streaks PRET POUR TCF",
 };
 
 export default function StreaksPage() {
