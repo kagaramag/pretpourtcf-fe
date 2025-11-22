@@ -78,7 +78,7 @@ export function AnalyticsScreen() {
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className="border rounded-md px-3 py-2 bg-background"
+              className="border rounded-md px-3 py-2 bg-gray-100"
             >
               <option value="week">Last 7 Days</option>
               <option value="month">Last 30 Days</option>
@@ -92,7 +92,7 @@ export function AnalyticsScreen() {
             <select
               value={selectedAgent}
               onChange={(e) => setSelectedAgent(e.target.value)}
-              className="border rounded-md px-3 py-2 bg-background"
+              className="border rounded-md px-3 py-2 bg-gray-100"
             >
               <option value="all">All Agents</option>
               {dummyAgentAnalytics.map((agent) => (
@@ -105,7 +105,7 @@ export function AnalyticsScreen() {
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Status</label>
-            <select className="border rounded-md px-3 py-2 bg-background">
+            <select className="border rounded-md px-3 py-2 bg-gray-100">
               <option value="all">All Status</option>
               <option value="paid">Paid</option>
               <option value="pending">Pending</option>

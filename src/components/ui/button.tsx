@@ -9,24 +9,26 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-primary text-white hover:bg-primary/90',
         destructive:
           'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border bg-background hover:bg-gray-100/90 hover:text-accent-foreground',
+          'bg-white border border-primary text-primary hover:bg-primary/90 hover:text-primary',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'bg-secondary text-white hover:bg-secondary/80',
+        tertiary:
+          'bg-tertiary text-gray-900 hover:bg-tertiary/80',
         accent:
           'bg-accent text-white hover:bg-accent/80',
         ghost:
-          'bg-gray-300/20 hover:bg-gray-200/40 hover:text-accent-foreground dark:hover:bg-accent/50',
+          'bg-gray-300/20 hover:bg-gray-200/40 hover:text-black dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
         default: 'h-9 px-4 py-2 rounded-full has-[>svg]:px-3',
         sm: 'h-8 rounded-full gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-12 text-md font-semibold rounded-full px-6 has-[>svg]:px-4',
-        xlg: 'h-14 text-lg font-bold rounded-full px-12 has-[>svg]:px-4',
+        xlg: 'h-14 text-lg font-semibold rounded-full px-12 has-[>svg]:px-4',
         icon: 'size-9',
         'icon-sm': 'size-8',
         'icon-lg': 'size-10',

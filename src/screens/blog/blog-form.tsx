@@ -314,7 +314,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
                 <MDEditor
                   value={body}
                   onChange={(val) => setBody(val || "")}
-                  height={500}
+                  minHeight={500}
                   preview="edit"
                 />
               </div>

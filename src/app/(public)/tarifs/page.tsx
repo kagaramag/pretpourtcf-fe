@@ -4,14 +4,17 @@ import { useEffect, useState } from "react";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Check, Loader2, Sparkles } from "lucide-react";
+import Image from "next/image";
+import Trainer from "@/assets/images/trainer.svg";
+import Practice from "@/assets/images/practice.svg";
+import { Check, Loader2, NotebookText, Target, LaptopMinimal } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
 
 const reasons = [
   {
     title: "Tests Authentiques",
     description: "Exercices conformes au format officiel du TCF",
-    icon: <Check className="h-8 w-8 text-primary" />,
+    icon: <NotebookText className="h-8 w-8 text-primary" />,
   },
   {
     title: "Correction Détaillée",
@@ -21,18 +24,21 @@ const reasons = [
   {
     title: "Suivi de Progression",
     description: "Analysez vos résultats et identifiez vos points forts",
-    icon: <Check className="h-8 w-8 text-primary" />,
+    icon: <Target className="h-8 w-8 text-primary" />,
   },
   {
     title: "Accès Flexible",
     description: "Pratiquez où vous voulez, quand vous voulez",
-    icon: <Check className="h-8 w-8 text-primary" />,
+    icon: <LaptopMinimal className="h-8 w-8 text-primary" />,
   },
 ];
 
 function TarifsPage() {
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState<"preparation" | "training">(
+    "preparation"
+  );
 
   useEffect(() => {
     loadPlans();
@@ -52,59 +58,93 @@ function TarifsPage() {
 
   const getCardClassName = (plan: SubscriptionPlan) => {
     if (plan.popular) {
-      return "p-7 rounded-3xl relative border border-primary scale-105 bg-primary text-white";
+      return "p-7 relative border border-primary scale-105 bg-primary text-white";
     }
-    return "p-7 rounded-3xl relative border border-gray-200 bg-white";
+    return "p-7 relative border border-gray-100 bg-white";
   };
 
   const getButtonVariant = (plan: SubscriptionPlan) => {
-    if (plan.type === "premium") {
+    if (plan.popular) {
       return "secondary";
     }
-    if (plan.type === "advanced") {
-      return "secondary";
-    }
-    return "outline";
+    return "default";
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      <div className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold b-4">
-              Plans & Tarifs
-            </h1>
-            <p className="text-gray-600/90 max-w-3xl mx-auto">
-              Choisissez le plan qui vous convient pour réussir votre TCF
-            </p>
-            <p className="text-gray-600/80 max-w-2xl mx-auto">
-              Des prix transparents, sans engagement. Commencez à vous préparer
-              aujourd'hui.
-            </p>
+    <div className="min-h-screen">
+      <div className="py-7">
+        <div className="max-w-5xl w-full mx-auto">
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold b-4 text-center text-primary">
+            Plans & Tarifs
+          </h1>
+          <div className="bg-primary/10 p-3 mt-4 rounded-full w-fit mx-auto flex gap-2">
+            <Button
+              variant={category === "preparation" ? "default" : "outline"}
+              onClick={() => setCategory("preparation")}
+            >
+              Preparation
+            </Button>
+            <Button
+              variant={category === "training" ? "default" : "outline"}
+              onClick={() => setCategory("training")}
+            >
+              Formation
+            </Button>
           </div>
         </div>
       </div>
-
-      {/* Free Practice Banner */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-8 max-w-4xl secondary-gradient text-white border-none p-10 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-10">
-        <div className="flex-1 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl sm:text-3xl font-bold">Essai Gratuit</h2>
+      {/* Hero Section */}
+      <div className="max-w-5xl w-full mx-auto">
+        {category === "preparation" && (
+          <div className="w-full flex flex-row items-start bg-[#d3f4eb] gap-2  p-4">
+            <div className="w-18 h-18">
+              <Image
+                src={Practice}
+                width={60}
+                height={60}
+                priority
+                alt="logo"
+                className="w-full mx-auto"
+              />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-semibold text-black/70">
+                Pratiquez à votre rythme
+              </h2>
+              <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+                Accédez à les exercices interactifs, des examens et des
+                corrections. Progressez seul, quand vous voulez, où vous voulez.
+              </div>
+            </div>
           </div>
-          <p className=" text-white/90 leading-none">
-            Découvrez notre plateforme avec des exercices gratuits. Aucune carte
-            de crédit requise.
-          </p>
-        </div>
-        <NavigationLink href="/compte/essai-gratuit">
-          <Button size="lg">Essai Gratuit</Button>
-        </NavigationLink>
+        )}
+        {category === "training" && (
+          <div className="w-full flex flex-row items-start bg-[#ece1f5] gap-2 p-4">
+            <div className="w-18 h-18">
+              <Image
+                src={Trainer}
+                width={60}
+                height={60}
+                priority
+                alt="logo"
+                className="w-full mx-auto"
+              />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-semibold text-black/70">
+                Apprenez avec un formateur
+              </h2>
+              <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+                Recevez une préparation personnalisée basée sur la méthodologie
+                du TCF avec nos formateurs experts.
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Pricing Plans */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      <div className="max-w-5xl w-full mx-auto px-4 sm:px-3 lg:px-0 py-8 sm:py-12">
         {loading ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -119,15 +159,17 @@ function TarifsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {plans
-              .filter((plan) => plan.type !== "trial")
+              .filter(
+                (plan) => plan.type !== "trial" && plan.category === category
+              )
               .map((plan) => (
                 <div key={plan.id} className={getCardClassName(plan)}>
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <span className="bg-secondary text-white px-4 py-2 rounded-full text-sm font-bold">
-                        ⭐ Recommandé
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="bg-secondary text-white px-3 py-1.5 rounded-full text-sm">
+                        Recommandé
                       </span>
                     </div>
                   )}
@@ -337,12 +379,8 @@ function TarifsPage() {
                       )}
                     </ul>
                   </div>
-                  <NavigationLink href="/signup">
-                    <Button
-                      className="w-full"
-                      size={"lg"}
-                      variant={getButtonVariant(plan)}
-                    >
+                  <NavigationLink href={`/compte/abonner?plan_id=${plan.id}`}>
+                    <Button className="w-full" variant={getButtonVariant(plan)}>
                       Choisir ce plan
                     </Button>
                   </NavigationLink>
@@ -351,24 +389,39 @@ function TarifsPage() {
           </div>
         )}
       </div>
+      {/* Free Practice Banner */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8  bg-gray-800 text-white border-none p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+        <div className="flex-1 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <h2 className="text-2xl sm:text-3xl font-bold">Essai Gratuit</h2>
+          </div>
+          <h3 className=" text-white/90 leading-none mt-2">
+            Découvrez notre plateforme avec des exercices gratuits. Aucune carte
+            de crédit requise.
+          </h3>
+        </div>
+        <NavigationLink href="/compte/essai-gratuit">
+          <Button size="lg">Essai Gratuit</Button>
+        </NavigationLink>
+      </div>
 
       {/* Benefits Section */}
-      <div className="bg-gray-50 py-0 sm:py-12">
-        <div className=" mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+      <div className="py-0 sm:py-16">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-4">
+            <h2 className="text-3xl sm:text-5xl font-bold text-primary">
               Pourquoi choisir notre plateforme?
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h3 className="mt-2">
               Une préparation complète pour réussir votre Test de Connaissance
               du Français
-            </p>
+            </h3>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {reasons.map((reason: any) => (
               <div
-                className="text-center bg-gray-200/50 p-6 rounded-xl py-8"
+                className="text-center bg-primary/10 p-6 rounded-xl py-8"
                 key={reason.title}
               >
                 <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -377,56 +430,20 @@ function TarifsPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {reason.title}
                 </h3>
-                <p className="text-gray-600">{reason.description}</p>
+                <div className="text-sm">{reason.description}</div>
               </div>
             ))}
-
-            {/* <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Correction Détaillée
-              </h3>
-              <p className="text-gray-600">
-                Feedback immédiat pour progresser rapidement
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Suivi de Progression
-              </h3>
-              <p className="text-gray-600">
-                Analysez vos résultats et identifiez vos points forts
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Accès Flexible
-              </h3>
-              <p className="text-gray-600">
-                Pratiquez où vous voulez, quand vous voulez
-              </p>
-            </div> */}
           </div>
         </div>
       </div>
 
       {/* CTA Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-4">
-        <div className="bg-gradient-to-r from-[#4E56C0] to-[#9089fc] rounded-3xl p-8 sm:p-12 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+      <div className="max-w-6xl  mx-auto px-4 sm:px-6 lg:px-0 py-2 sm:py-4 mb-16">
+        <div className="bg-primary rounded-3xl p-8 sm:p-12 text-center">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-2">
             Prêt à commencer votre préparation?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-white/90 mb-4 max-w-2xl mx-auto">
             Rejoignez des milliers d'étudiants qui ont déjà réussi leur TCF avec
             notre plateforme
           </p>

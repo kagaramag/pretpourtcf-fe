@@ -114,7 +114,7 @@ export default function PublicBlogDetailScreen({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-background mt-4">
+      <div className="min-h-screen bg-gray-100 mt-4">
         {/* Cover Image */}
         {blog.cover_image && (
           <div className="w-full max-h-[540px] max-w-4xl overflow-hidden rounded-4xl mx-auto">

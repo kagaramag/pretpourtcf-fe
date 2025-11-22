@@ -23,7 +23,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials, redirectTo?: string) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
   changePassword: (data: ChangePasswordData) => Promise<void>;
@@ -113,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [logout]);
 
   const login = useCallback(
-    async (credentials: LoginCredentials) => {
+    async (credentials: LoginCredentials, redirectTo?: string) => {
       try {
         setIsLoading(true);
         const response = await authService.login(credentials);
@@ -124,9 +124,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(loggedInUser);
           console.log("loggedInUser", loggedInUser)
 
-          // Redirect based on role
+          // Redirect based on redirectTo parameter or role
           setTimeout(() => {
-            if (loggedInUser.role === "client") {
+            if (redirectTo) {
+              router.push(redirectTo);
+            } else if (loggedInUser.role === "client") {
               router.push("/compte");
             } else if (loggedInUser.role === "trainer") {
               router.push("/trainer");

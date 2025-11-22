@@ -93,7 +93,7 @@ function VerifyEmailContent() {
                 </div>
               </div>
               <div className="space-y-2 text-center">
-                <p className="text-lg font-medium text-foreground">
+                <p className="text-lg font-medium bg-gray-500">
                   {message}
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -117,7 +117,7 @@ function VerifyEmailContent() {
                 </div>
               </div>
               <div className="space-y-2 text-center">
-                <p className="text-lg font-medium text-foreground">{message}</p>
+                <p className="text-lg font-medium bg-gray-500">{message}</p>
                 <p className="text-sm text-muted-foreground">
                   Le lien de vérification est peut-être expiré ou invalide.
                 </p>

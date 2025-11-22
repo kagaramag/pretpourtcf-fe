@@ -52,7 +52,7 @@ const faqs = [
 
 export default function LandingFAQ() {
   return (
-    <div className="bg-gray-50 py-10 sm:py-20 md:py-24 lg:py-14">
+    <div className="bg-gray-50 py-10 sm:py-20 md:py-24 lg:py-4">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-gray-900 text-center leading-tight">
@@ -68,7 +68,7 @@ export default function LandingFAQ() {
                   <AccordionTrigger className="text-left text-base sm:text-lg font-semibold">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm sm:text-base text-gray-600">
+                  <AccordionContent className="text-sm sm:text-base">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

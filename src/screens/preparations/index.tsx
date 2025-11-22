@@ -449,7 +449,7 @@ const PreparationScreen = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 primary-gradient ">
+      <section className="py-20 px-4 bg-primary ">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

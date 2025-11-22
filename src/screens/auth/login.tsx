@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,7 @@ export function LoginForm() {
   const [showResendButton, setShowResendButton] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const [isPending, setIsPending] = useState(false);
 
@@ -40,7 +41,10 @@ export function LoginForm() {
       setLoginError("");
       setShowResendButton(false);
       setUserEmail(data.email);
-      await login(data);
+
+      // Get redirect parameter from URL
+      const redirectTo = searchParams.get('redirect');
+      await login(data, redirectTo || undefined);
     } catch (error: any) {
       const errorMessage =
         error?.response?.data?.message ||
@@ -107,7 +111,7 @@ export function LoginForm() {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-foreground">
+            <Label htmlFor="email">
               Email
             </Label>
             <div className="relative">
@@ -119,7 +123,7 @@ export function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-foreground">
+            <Label htmlFor="password">
               Mot de passe
             </Label>
             <div className="relative">
@@ -131,7 +135,7 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-3 text-muted-foreground hover:bg-gray-500"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -171,8 +175,11 @@ export function LoginForm() {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground mt-4">
-            Vous n’avez pas de compte?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
+            Vous n'avez pas de compte?{" "}
+            <Link
+              href={searchParams.get('redirect') ? `/signup?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/signup'}
+              className="text-primary hover:underline"
+            >
               Inscrivez-vous
             </Link>
           </p>

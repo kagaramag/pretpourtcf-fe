@@ -599,7 +599,7 @@ function AbonnerPageContent() {
               onClick={() => router.push("/compte/plans")}
               className="w-full"
             >
-              Retour aux plans
+              Retour aux tarifs
             </Button>
           </CardFooter>
         </Card>
@@ -684,7 +684,7 @@ function AbonnerPageContent() {
               }}
               className="w-full"
             >
-              Retour aux plans
+              Retour aux tarifs
             </Button>
           </CardFooter>
         </Card>
@@ -701,12 +701,14 @@ function AbonnerPageContent() {
         className="mb-4"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Retour aux plans
+        Retour aux tarifs
       </Button>
 
       <div>
         <h3 className="text-lg font-semibold">Finaliser votre abonnement</h3>
-        Choisissez votre méthode de paiement pour activer votre abonnement
+        <div className="mb-3">
+          Choisissez votre méthode de paiement pour activer votre abonnement
+        </div>
         <div className="space-y-2">
           {/* Plan Summary */}
           <div className="bg-gray-50 p-4 rounded-lg space-y-2">
@@ -859,7 +861,7 @@ function AbonnerPageContent() {
             disabled={loading}
             className="flex-1"
             size={"lg"}
-            variant={"accent"}
+            variant={"secondary"}
           >
             {loading ? (
               <>

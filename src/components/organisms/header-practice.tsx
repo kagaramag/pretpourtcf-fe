@@ -28,7 +28,7 @@ export default function Header({ title, onClose }: HeaderPracticeProps) {
   const fullName = user ? `${user.first_name}`.trim() : "User";
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 border-b bg-white">
+    <header className="sticky inset-x-0 top-0 z-50 border-b border-gray-100 bg-white">
       <div className="w-full mx-auto flex items-center gap-6 py-2 px-2">
         <div className="w-[56px]">
           <Image

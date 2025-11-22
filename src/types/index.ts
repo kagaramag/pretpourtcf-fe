@@ -110,6 +110,7 @@ export interface Practice {
   durationMinutes: number;
   totalQuestions: number;
   isActive: boolean;
+  freemium: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -168,7 +169,8 @@ export type SessionGrade = "excellent" | "good" | "needs_improvement";
 export interface SessionAnswer {
   questionId: string;
   questionNumber: number;
-  selectedAnswer: number;
+  selectedAnswer?: number; // Optional for essay/short answer questions
+  textAnswer?: string; // For essay and short answer questions - supports markdown
   isCorrect: boolean;
   pointsEarned: number;
   answeredAt: Date;

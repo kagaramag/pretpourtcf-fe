@@ -133,10 +133,10 @@ export function CheckoutDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Finaliser votre abonnement</DialogTitle>
-          <DialogDescription>
+          <h3 className="font-semibold">Finaliser votre abonnement</h3>
+          <div className="mt-3">
             Choisissez votre méthode de paiement pour activer votre abonnement
-          </DialogDescription>
+          </div>
         </DialogHeader>
 
         <div className="space-y-6 py-4">

@@ -103,7 +103,11 @@ export function SignupForm() {
         } else {
           // Old flow: direct login (for backward compatibility)
           toast.success("Account created successfully!");
-          const redirectPath = data.role === "trainer" ? "/trainer" : "/compte";
+
+          // Get redirect parameter from URL
+          const redirectTo = searchParams.get('redirect');
+          const redirectPath = redirectTo || (data.role === "trainer" ? "/trainer" : "/compte");
+
           setTimeout(() => {
             router.push(redirectPath);
             router.refresh();
@@ -253,7 +257,10 @@ export function SignupForm() {
 
           <p className="text-center text-sm text-muted-foreground">
             Vous avez déjà un compte?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link
+              href={searchParams.get('redirect') ? `/login?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/login'}
+              className="text-primary hover:underline"
+            >
               Connectez-vous
             </Link>
           </p>
@@ -309,7 +316,7 @@ export function SignupForm() {
 
           <div className="flex flex-col lg:flex-row gap-2">
             <div className="space-y-2">
-              <Label htmlFor="first_name" className="text-foreground">
+              <Label htmlFor="first_name" className="bg-gray-500">
                 Nom
               </Label>
               <div className="relative">
@@ -327,7 +334,7 @@ export function SignupForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="last_name" className="text-foreground">
+              <Label htmlFor="last_name" className="bg-gray-500">
                 Prenom
               </Label>
               <div className="relative">
@@ -342,7 +349,7 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-foreground">
+            <Label htmlFor="email" className="bg-gray-500">
               Email
             </Label>
             <div className="relative">
@@ -354,7 +361,7 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-foreground">
+            <Label htmlFor="password" className="bg-gray-500">
               Mot de passe
             </Label>
             <div className="relative">
@@ -366,7 +373,7 @@ export function SignupForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-3 text-muted-foreground hover:bg-gray-500"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -400,7 +407,10 @@ export function SignupForm() {
 
           <p className="text-center text-sm text-muted-foreground">
             Vous avez déjà un compte?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link
+              href={searchParams.get('redirect') ? `/login?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/login'}
+              className="text-primary hover:underline"
+            >
               Connectez-vous
             </Link>
           </p>

@@ -43,7 +43,6 @@ export const metadata: Metadata = {
       "Entraînez-vous pour le TCF Canada ou Québec avec des exercices audio et des résultats instantanés.",
     images: ["/images/og-cover.jpg"],
   },
-  themeColor: "#6C47FF",
   alternates: {
     canonical: "https://pretpourtcf.com",
   },

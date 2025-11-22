@@ -71,7 +71,7 @@ function PublicBlogScreenContent() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-100">
       {/* Header */}
       <div className="bg-primary text-primary-foreground py-16">
         <div className="container mx-auto px-4">

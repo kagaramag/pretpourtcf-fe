@@ -430,7 +430,7 @@ export function QuestionFormDialog({
               <Label htmlFor="text">
                 Question Text <span className="text-red-500">*</span>
               </Label>
-              {formData.type === "short_answer" ? (
+              {formData.type === "short_answer" || formData.type === "essay" ? (
                 <>
                   {showAnswerPreview ? (
                     <div className="border rounded-lg p-4 min-h-[200px] prose prose-sm max-w-none bg-muted/30">
@@ -457,7 +457,7 @@ export function QuestionFormDialog({
                           commands.orderedListCommand,
                         ]}
                         preview="edit"
-                        height={120}
+                        minHeight={120}
                         textareaProps={{
                           placeholder: "type....",
                         }}
@@ -479,7 +479,9 @@ export function QuestionFormDialog({
               )}
             </div>
 
-            {formData.type === "mcq" && (
+            {
+            practice?.type !== "writing" &&
+            formData.type === "mcq" && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>
@@ -601,7 +603,7 @@ export function QuestionFormDialog({
                         commands.orderedListCommand,
                       ]}
                       preview="edit"
-                      height={300}
+                      minHeight={300}
                       textareaProps={{
                         placeholder:
                           "Enter sample answer here... You can use markdown formatting.",
@@ -612,199 +614,202 @@ export function QuestionFormDialog({
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="score">
-                  Score (Points) <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="score"
-                  type="number"
-                  min="1"
-                  max="100"
-                  value={formData.score}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      score: parseInt(e.target.value) || 1,
-                    })
-                  }
-                  required
-                />
-              </div>
+          
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="score">
+                    Score (Points) <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="score"
+                    type="number"
+                    min="1"
+                    max="100"
+                    value={formData.score}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        score: parseInt(e.target.value) || 1,
+                      })
+                    }
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="difficulty">Difficulty Level</Label>
-                <Select
-                  value={formData.difficulty || "none"}
-                  onValueChange={(value: CEFRLevel | "none") =>
-                    setFormData({
-                      ...formData,
-                      difficulty: value === "none" ? "" : value,
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Optional" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="A1">A1</SelectItem>
-                    <SelectItem value="A2">A2</SelectItem>
-                    <SelectItem value="B1">B1</SelectItem>
-                    <SelectItem value="B2">B2</SelectItem>
-                    <SelectItem value="C1">C1</SelectItem>
-                    <SelectItem value="C2">C2</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="space-y-2">
+                  <Label htmlFor="difficulty">Difficulty Level</Label>
+                  <Select
+                    value={formData.difficulty || "none"}
+                    onValueChange={(value: CEFRLevel | "none") =>
+                      setFormData({
+                        ...formData,
+                        difficulty: value === "none" ? "" : value,
+                      })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Optional" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="A1">A1</SelectItem>
+                      <SelectItem value="A2">A2</SelectItem>
+                      <SelectItem value="B1">B1</SelectItem>
+                      <SelectItem value="B2">B2</SelectItem>
+                      <SelectItem value="C1">C1</SelectItem>
+                      <SelectItem value="C2">C2</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
-
+            
             {/* Media Section */}
-            <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
-              <div className="flex items-center gap-2">
-                <Label className="text-base font-semibold">
-                  Media Attachments (Optional)
-                </Label>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Upload audio and/or image files for this question
-              </p>
+            {practice?.type !== "writing" && (
+              <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
+                <div className="flex items-center gap-2">
+                  <Label className="text-base font-semibold">
+                    Media Attachments (Optional)
+                  </Label>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Upload audio and/or image files for this question
+                </p>
 
-              <div className="space-y-4">
-                {/* Audio Upload */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Volume2 className="h-4 w-4 text-blue-600" />
-                    <Label>Audio File</Label>
-                  </div>
-
-                  {formData.audioUrl ? (
-                    <div className="flex items-center gap-2 p-3 border rounded-lg bg-blue-50">
+                <div className="space-y-4">
+                  {/* Audio Upload */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
                       <Volume2 className="h-4 w-4 text-blue-600" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Audio uploaded</p>
-                        <a
-                          href={formData.audioUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-600 hover:underline"
-                        >
-                          {audioFile?.name || "View file"}
-                        </a>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRemoveAudio}
-                        disabled={isUploadingAudio}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
+                      <Label>Audio File</Label>
                     </div>
-                  ) : (
-                    <div>
-                      <input
-                        ref={audioInputRef}
-                        type="file"
-                        accept="audio/*"
-                        onChange={handleAudioFileSelect}
-                        className="hidden"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => audioInputRef.current?.click()}
-                        disabled={isUploadingAudio}
-                        className="w-full"
-                      >
-                        {isUploadingAudio ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="mr-2 h-4 w-4" />
-                            Upload Audio (MP3, WAV, etc.)
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Max 10MB. Supported: MP3, WAV, OGG, AAC
-                  </p>
-                </div>
 
-                {/* Image Upload */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <ImageIcon className="h-4 w-4 text-green-600" />
-                    <Label>Image File</Label>
+                    {formData.audioUrl ? (
+                      <div className="flex items-center gap-2 p-3 border rounded-lg bg-blue-50">
+                        <Volume2 className="h-4 w-4 text-blue-600" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Audio uploaded</p>
+                          <a
+                            href={formData.audioUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-blue-600 hover:underline"
+                          >
+                            {audioFile?.name || "View file"}
+                          </a>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleRemoveAudio}
+                          disabled={isUploadingAudio}
+                        >
+                          <Trash className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <input
+                          ref={audioInputRef}
+                          type="file"
+                          accept="audio/*"
+                          onChange={handleAudioFileSelect}
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => audioInputRef.current?.click()}
+                          disabled={isUploadingAudio}
+                          className="w-full"
+                        >
+                          {isUploadingAudio ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="mr-2 h-4 w-4" />
+                              Upload Audio (MP3, WAV, etc.)
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      Max 10MB. Supported: MP3, WAV, OGG, AAC
+                    </p>
                   </div>
 
-                  {formData.imageUrl ? (
-                    <div className="flex items-center gap-2 p-3 border rounded-lg bg-green-50">
+                  {/* Image Upload */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
                       <ImageIcon className="h-4 w-4 text-green-600" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Image uploaded</p>
-                        <a
-                          href={formData.imageUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-green-600 hover:underline"
+                      <Label>Image File</Label>
+                    </div>
+
+                    {formData.imageUrl ? (
+                      <div className="flex items-center gap-2 p-3 border rounded-lg bg-green-50">
+                        <ImageIcon className="h-4 w-4 text-green-600" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">Image uploaded</p>
+                          <a
+                            href={formData.imageUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-green-600 hover:underline"
+                          >
+                            {imageFile?.name || "View file"}
+                          </a>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleRemoveImage}
+                          disabled={isUploadingImage}
                         >
-                          {imageFile?.name || "View file"}
-                        </a>
+                          <Trash className="h-4 w-4" />
+                        </Button>
                       </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRemoveImage}
-                        disabled={isUploadingImage}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>
-                      <input
-                        ref={imageInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageFileSelect}
-                        className="hidden"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => imageInputRef.current?.click()}
-                        disabled={isUploadingImage}
-                        className="w-full"
-                      >
-                        {isUploadingImage ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="mr-2 h-4 w-4" />
-                            Upload Image (JPG, PNG, etc.)
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Max 10MB. Supported: JPG, PNG, GIF, WEBP
-                  </p>
+                    ) : (
+                      <div>
+                        <input
+                          ref={imageInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileSelect}
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => imageInputRef.current?.click()}
+                          disabled={isUploadingImage}
+                          className="w-full"
+                        >
+                          {isUploadingImage ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="mr-2 h-4 w-4" />
+                              Upload Image (JPG, PNG, etc.)
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                      Max 10MB. Supported: JPG, PNG, GIF, WEBP
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="space-y-2">
               <Label htmlFor="tags">Tags (Optional)</Label>

@@ -29,22 +29,22 @@ const testimonials = [
 
 export default function LandingTestimonials() {
   return (
-    <div className="bg-gray-50 py-16 sm:py-20 md:py-24 lg:py-32">
+    <div className="bg-gray-50 py-10 sm:py-20 md:py-14 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-gray-900 leading-tight">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-semibold tracking-tighter text-gray-900 leading-tight">
             Ce que disent nos utilisateurs
           </h2>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600">
             Rejoignez des milliers de personnes qui ont réussi leur TCF grâce à
             notre plateforme.
           </p>
         </div>
-        <div className="mx-auto mt-12 sm:mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-12 sm:mt-16 grid max-w-2xl grid-cols-1 gap-2 sm:gap-4 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className="flex flex-col bg-white p-6 sm:p-8 rounded-2xl shadow-sm"
+              className="flex flex-col bg-white p-6 sm:p-8 rounded-2xl border border-gray-300/50"
             >
               <div className="flex gap-x-1 text-primary">
                 {[...Array(testimonial.rating)].map((_, i) => (

@@ -48,10 +48,10 @@ export default function LandingHowItWorks() {
             {steps.map((step, index) => (
               <div key={step.name} className="relative">
                 <div className="flex flex-col items-center text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary">
                     <step.icon
                       aria-hidden="true"
-                      className="h-8 w-8 text-primary"
+                      className="h-8 w-8 text-white"
                     />
                   </div>
                   <div className="mt-6">

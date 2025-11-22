@@ -75,7 +75,6 @@ export default function WritingPracticePage() {
       <div className="container mx-auto  max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <PenTool className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />
             <h1 className="lg:text-3xl text-xl font-bold">Expression Écrite</h1>
           </div>
           <p className="text-muted-foreground">

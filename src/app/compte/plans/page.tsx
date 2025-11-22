@@ -8,9 +8,9 @@ import Practice from "@/assets/images/practice.svg";
 import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
+import { NavigationLink } from "@/components/ui/navigation-link";
 import { toast } from "sonner";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
 import { Modal } from "@/components/molecules";
@@ -58,7 +58,10 @@ function PlansPage() {
       const fetchedPlans = await subscriptionService.getAllPlans("training");
       console.log("Formation plans fetched:", fetchedPlans);
       console.log("Formation plans count:", fetchedPlans.length);
-      console.log("Formation plans after filter:", fetchedPlans.filter((plan) => plan.type !== "trial"));
+      console.log(
+        "Formation plans after filter:",
+        fetchedPlans.filter((plan) => plan.type !== "trial")
+      );
       setFormationPlans(fetchedPlans);
     } catch (error) {
       console.error("Failed to load formation plans:", error);
@@ -325,7 +328,9 @@ function PlansPage() {
     console.log("Formation plans state:", formationPlans);
     console.log("Formation plans length:", formationPlans.length);
 
-    const filteredPlans = formationPlans.filter((plan) => plan.type !== "trial");
+    const filteredPlans = formationPlans.filter(
+      (plan) => plan.type !== "trial"
+    );
     console.log("Filtered formation plans (non-trial):", filteredPlans);
     console.log("Filtered plans length:", filteredPlans.length);
 
@@ -344,7 +349,8 @@ function PlansPage() {
               Veuillez contacter l'administrateur.
             </p>
             <p className="text-xs text-gray-400 mt-4">
-              Debug: Total plans = {formationPlans.length}, After filter = {filteredPlans.length}
+              Debug: Total plans = {formationPlans.length}, After filter ={" "}
+              {filteredPlans.length}
             </p>
           </div>
         ) : filteredPlans.length === 0 ? (
@@ -353,93 +359,99 @@ function PlansPage() {
               Tous les plans de formation sont actuellement en mode essai.
             </p>
             <p className="text-sm text-muted-foreground mt-2">
-              Veuillez contacter l'administrateur pour activer les plans premium.
+              Veuillez contacter l'administrateur pour activer les plans
+              premium.
             </p>
             <p className="text-xs text-gray-400 mt-4">
-              Debug: Total plans = {formationPlans.length}, After filter = {filteredPlans.length}
+              Debug: Total plans = {formationPlans.length}, After filter ={" "}
+              {filteredPlans.length}
             </p>
           </div>
         ) : (
           <div className="flex flex-row gap-3">
             {filteredPlans.map((plan) => (
-                <div
-                  key={plan.id}
-                  className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                        Recommandé
-                      </span>
-                    </div>
-                  )}
-                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                  {plan.description}
-                  <div className="my-3">
-                    <Button
-                      onClick={() => handleSelectPlan(plan)}
-                      className="w-full"
-                      variant={getButtonType(plan.type)}
-                    >
-                      Choisir ce plan
-                    </Button>
+              <div
+                key={plan.id}
+                className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                      Recommandé
+                    </span>
                   </div>
-                  <div>
-                    <div className="mb-2">
-                      <div className="space-y-1">
-                        <div>
-                          <span className="text-2xl font-bold tracking-tight">
-                            {plan.price_rwf === 0
-                              ? "Gratuit"
-                              : new Intl.NumberFormat("en-US", {
-                                  style: "currency",
-                                  currency: "USD",
-                                  minimumFractionDigits: 0,
-                                }).format(plan.price_usd)}
-                          </span>
-                          <span className="text-muted-foreground ml-2 text-sm">
-                            / {plan.training_details?.duration_days || plan.duration_days} jours
-                          </span>
-                        </div>
+                )}
+                <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                {plan.description}
+                <div className="my-3">
+                  <Button
+                    onClick={() => handleSelectPlan(plan)}
+                    className="w-full"
+                    variant={getButtonType(plan.type)}
+                  >
+                    Choisir ce plan
+                  </Button>
+                </div>
+                <div>
+                  <div className="mb-2">
+                    <div className="space-y-1">
+                      <div>
+                        <span className="text-2xl font-bold tracking-tight">
+                          {plan.price_rwf === 0
+                            ? "Gratuit"
+                            : new Intl.NumberFormat("en-US", {
+                                style: "currency",
+                                currency: "USD",
+                                minimumFractionDigits: 0,
+                              }).format(plan.price_usd)}
+                        </span>
+                        <span className="text-muted-foreground ml-2 text-sm">
+                          /{" "}
+                          {plan.training_details?.duration_days ||
+                            plan.duration_days}{" "}
+                          jours
+                        </span>
                       </div>
                     </div>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-xs">
-                          {plan.training_details?.sessions || 0} séances de formation
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-xs">
-                          Formation personnalisée avec un formateur expert
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-xs">
-                          Suivi et corrections détaillées
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-xs">
-                          Accès aux exercices de pratique
-                        </span>
-                      </li>
-                      {plan.features && plan.features.length > 0 &&
-                        plan.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                            <span className="text-xs">{feature}</span>
-                          </li>
-                        ))
-                      }
-                    </ul>
                   </div>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs">
+                        {plan.training_details?.sessions || 0} séances de
+                        formation
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs">
+                        Formation personnalisée avec un formateur expert
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs">
+                        Suivi et corrections détaillées
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs">
+                        Accès aux exercices de pratique
+                      </span>
+                    </li>
+                    {plan.features &&
+                      plan.features.length > 0 &&
+                      plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs">{feature}</span>
+                        </li>
+                      ))}
+                  </ul>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         )}
       </>
@@ -448,21 +460,21 @@ function PlansPage() {
 
   // If user doesn't have a subscription, show plans
   return (
-    <div className="">
-      <div className="mb-4">
+    <div className="flex flex-col gap-4">
+      <div>
         <h1 className="text-3xl font-bold">Plans & Tarifs</h1>
-        <h2 className="text-muted-foreground text-sm">
+        <h2 className="text-sm">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
           Canada ou Québec
         </h2>
       </div>
       <div className="flex flex-row gap-2">
-        <div className="w-1/2 flex flex-row items-start bg-[#d3f4eb] gap-2  p-4 rounded-2xl">
-          <div className="w-18 h-18">
+        <div className="w-1/2 flex flex-row items-start bg-[#d3f4eb] gap-4 p-6">
+          <div className="w-26 h-26">
             <Image
               src={Practice}
-              width={60}
-              height={60}
+              width={72}
+              height={72}
               priority
               alt="logo"
               className="w-full mx-auto"
@@ -470,42 +482,65 @@ function PlansPage() {
           </div>
           <div className="flex-1">
             <h2 className="text-2xl font-semibold text-black/70">
-              Pratiquez à Votre Rythme
+              Pratiquez à votre rythme
             </h2>
-            <div className="leading-tight mb-4 text-black/50 text-sm my-2">
-              Accédez à les exercices interactifs, des examens blancs et des
-              corrections détaillées. Progressez seul, quand vous voulez, où
-              vous voulez.
-            </div>
-            <Button onClick={() => setIsModalOpen(true)} className="w-full bg-[#1d9e70]">
+            <h3 className="leading-tight mb-4 text-black/50 text-sm my-2">
+              Accédez à les exercices interactifs, des examens et des
+              corrections. Progressez seul, quand vous voulez, où vous voulez.
+            </h3>
+            <Button
+              variant="tertiary"
+              onClick={() => setIsModalOpen(true)}
+              className="w-full"
+            >
               Voir les Tarifs
             </Button>
           </div>
         </div>
-        <div className="w-1/2 flex flex-row items-start bg-[#ece1f5] gap-2 p-4 rounded-2xl">
-          <div className="w-18 h-18">
+        <div className="w-1/2 flex flex-row items-start bg-[#ece1f5] gap-4 p-6">
+          <div className="w-26 h-26">
             <Image
               src={Trainer}
-              width={60}
-              height={60}
+              width={72}
+              height={72}
               priority
               alt="logo"
               className="w-full mx-auto"
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-1 pr-6">
             <h2 className="text-2xl font-semibold text-black/70">
-              Apprenez avec un Formateur
+              Apprenez avec un formateur
             </h2>
-            <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+            <h3 className="leading-tight mb-4 text-black/50 text-sm my-2">
               Recevez une préparation personnalisée basée sur la méthodologie du
               TCF avec nos formateurs experts.
-            </div>
-            <Button onClick={() => setIsFormationModalOpen(true)} className="w-full bg-[#9f5fdd]">
+            </h3>
+            <Button
+              onClick={() => setIsFormationModalOpen(true)}
+              variant={"secondary"}
+              className="w-full"
+            >
               Voir les Tarifs
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* Free Practice Banner */}
+      <div className="px-4 sm:px-6 lg:px-8  bg-gray-800 text-white border-none p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+        <div className="flex-1 text-center md:text-left">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-1">
+            Essai Gratuit
+          </h2>
+          <h3 className="text-white/90 leading-none">
+            Découvrez notre plateforme avec des exercices gratuits. Aucune carte
+            de crédit requise.
+          </h3>
+        </div>
+        <NavigationLink href="/compte/essai-gratuit">
+          <Button variant="tertiary">Essai Gratuit</Button>
+        </NavigationLink>
       </div>
 
       {/* Practice Plans Modal */}

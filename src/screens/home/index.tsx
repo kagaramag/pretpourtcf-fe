@@ -34,16 +34,6 @@ export function IndexScreen() {
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
-        {/* <div className="w-full absolute bottom-0 right-0 left-0 mx-auto -z-10">
-          <Image
-            src={Wave}
-            width={1200}
-            height={514}
-            priority
-            alt="logo"
-            className="w-full mx-auto"
-          />
-        </div> */}
         <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10">
           <Image
             src={Hero}
@@ -66,21 +56,22 @@ export function IndexScreen() {
             className="relative right-[calc(50%-5rem)] aspect-1155/678 w-300 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-5rem)] sm:w-340"
           />
         </div>
-        <div className="mx-auto max-w-6xl py-32 sm:py-56 md:py-48 lg:py-36 flex items-center relative">
+        <div className="mx-auto max-w-6xl py-28 sm:py-56 md:py-18 lg:py-24 flex items-center relative">
           <div className="px-2 sm:px-0 flex-1">
             <h1 className="text-xl text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            {/* <br className="hidden sm:block" /> */}
-            {/* <span className="sm:inline"> </span> */}
-            <div className="mb-4 mt-2 text-base sm:text-lg md:text-md font-light text-pretty text-gray-500 px-2 max-w-[450px]">
+            <h4 className="mb-4 mt-2 text-black/80 sm:text-lg md:text-md text-pretty max-w-[550px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
-            </div>
-            <div className="mt-6 flex flex-col  justify-center gap-3 sm:gap-x-2 px-4">
+            </h4>
+            <div className="mt-6 flex flex-row gap-2 sm:gap-x-2">
               <NavigationLink href="/signup">
-                <Button size="xlg">
+                <Button size="lg">Créer un compte</Button>
+              </NavigationLink>
+              <NavigationLink href="/compte/essai-gratuit">
+                <Button variant={"outline"} size="lg">
                   Essayer gratuitement
                 </Button>
               </NavigationLink>
@@ -124,23 +115,22 @@ export function IndexScreen() {
       </div>
       <div className="bg-primary py-16 sm:py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-none text-pretty text-white">
-              Trois étapes simples <br className="hidden sm:block" /> pour
-              commencer
+          <div className="mx-auto max-w-4xl lg:mx-0">
+            <h2 className="text-2xl sm:text-2xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
+              Etapes simples commencer
             </h2>
-            <p className="mt-4 sm:mt-6 text-base sm:text-lg text-white leading-tight">
+            <h4 className="text-base sm:text-lg text-white leading-tight mt-2">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
               créez votre compte, choisissez un plan adapté à vos besoins et
               commencez à progresser à votre rythme.
-            </p>
+            </h4>
           </div>
-          <div className="mx-auto mt-8 sm:mt-12 lg:mt-16 max-w-2xl lg:max-w-none">
+          <div className="mx-auto mt-2 sm:mt-12 lg:mt-16 max-w-2xl lg:max-w-none">
             <dl className="grid max-w-xl grid-cols-1 gap-4 sm:gap-6 md:gap-8 lg:max-w-none lg:grid-cols-3">
               {quickSteps.map((feature) => (
                 <div
                   key={feature.name}
-                  className="flex flex-col bg-accent-foreground/70 p-4 sm:p-6 rounded-lg"
+                  className="flex flex-col bg-white/5 p-4 sm:p-6 rounded-lg"
                 >
                   <h3 className="text-lg sm:text-xl font-semibold text-white">
                     {feature.name}
@@ -161,9 +151,9 @@ export function IndexScreen() {
       <LandingStats />
 
       {/* How It Works Section */}
-      <div id="how-it-works">
+      {/* <div id="how-it-works">
         <LandingHowItWorks />
-      </div>
+      </div> */}
 
       {/* Testimonials Section */}
       <LandingTestimonials />
@@ -175,18 +165,23 @@ export function IndexScreen() {
 
       {/* CTA Section */}
       <div className="bg-primary">
-        <div className="px-4 sm:px-6 py-16 sm:py-24 md:py-32 lg:px-8">
+        <div className="px-4 sm:px-6 py-10 sm:py-24 md:py-20 lg:px-4">
           <div className="mx-auto max-w-5xl text-center flex flex-col gap-3">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tighter leading-tight text-balance text-white">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl  font-semibold tracking-tighter leading-tight text-balance text-white">
               Prêt à améliorer votre français?
             </h2>
-            <p className="mx-auto max-w-xl text-base sm:text-lg text-pretty text-white/80 px-4">
+            <p className="mx-auto max-w-xl text-base sm:text-lg text-white/50 px-4">
               Rejoignez des milliers d'apprenants qui préparent leur TCF avec
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
             <div className="flex items-center justify-center gap-x-6 px-4">
               <NavigationLink href="/signup">
-                <Button size={"lg"} variant={"outline"}>
+                <Button size="lg" variant={"tertiary"}>
+                  Créer un compte
+                </Button>
+              </NavigationLink>
+              <NavigationLink href="/compte/essai-gratuit">
+                <Button variant={"outline"} size="lg">
                   Essayer gratuitement
                 </Button>
               </NavigationLink>

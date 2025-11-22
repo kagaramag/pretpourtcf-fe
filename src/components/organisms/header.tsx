@@ -66,12 +66,17 @@ export default function Header() {
 
   return (
     <div>
-      {/* className={`inset-x-0 top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "fixed bg-white/50 backdrop-blur-[2px] border-b border-gray-200/10"
-          : "absolute"
-      }`} */}
-      <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
+      {!isLoading && !isAuthenticated && (
+        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white">
+          Offre exclusive! Préparez votre TCF gratuitement avec le code{" "}
+          <span className="font-semibold">PRET100</span> et accédez à tous nos
+          tests, exercices, et outils.
+          <a href="/signup" className="whitespace-nowrap underline pl-2">
+            Inscrivez-vous maintenant
+          </a>
+        </div>
+      )}
+      <header className="relative  inset-x-0 top-0 z-50 transition-all duration-300">
         <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
           <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
             <Link href="/">

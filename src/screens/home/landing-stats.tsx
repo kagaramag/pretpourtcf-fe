@@ -28,7 +28,7 @@ export default function LandingStats() {
                 <dt className="text-sm font-medium text-white text-center">
                   {stat.name}
                 </dt>
-                <h3 className="mt-2 text-3xl sm:text-4xl font-bold tracking-wide text-white">
+                <h3 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-wide text-white">
                   {stat.value}
                 </h3>
               </div>

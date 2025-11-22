@@ -52,6 +52,7 @@ export function PracticeFormDialog({
     durationMinutes: 40,
     totalQuestions: 10,
     isActive: true,
+    freemium: false,
   });
 
   const queryClient = useQueryClient();
@@ -66,6 +67,7 @@ export function PracticeFormDialog({
         durationMinutes: practice.durationMinutes,
         totalQuestions: practice.totalQuestions,
         isActive: practice.isActive,
+        freemium: practice.freemium,
       });
     } else if (!open) {
       // Reset form when dialog closes
@@ -76,6 +78,7 @@ export function PracticeFormDialog({
         durationMinutes: 40,
         totalQuestions: 10,
         isActive: true,
+        freemium: false,
       });
     }
   }, [open, practice, mode]);
@@ -136,6 +139,7 @@ export function PracticeFormDialog({
       durationMinutes: formData.durationMinutes,
       totalQuestions: formData.totalQuestions,
       isActive: formData.isActive,
+      freemium: formData.freemium,
     };
 
     if (mode === "create") {
@@ -282,6 +286,22 @@ export function PracticeFormDialog({
                 checked={formData.isActive}
                 onCheckedChange={(checked) =>
                   setFormData({ ...formData, isActive: checked })
+                }
+              />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="freemium">Freemium</Label>
+                <p className="text-xs text-muted-foreground">
+                  Allow free access to this practice
+                </p>
+              </div>
+              <Switch
+                id="freemium"
+                checked={formData.freemium}
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, freemium: checked })
                 }
               />
             </div>

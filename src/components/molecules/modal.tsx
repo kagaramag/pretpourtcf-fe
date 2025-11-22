@@ -25,7 +25,7 @@ export default function Modal({
     >
       <div className="bg-black/20 backdrop-blur h-screen w-screen top-0 left-0 absolute -z-10" />
       <div
-        className={`bg-white rounded-lg p-6 ${maxWidth} w-full max-h-[90vh] overflow-y-auto m-4`}
+        className={`bg-white rounded-lg p-6 ${maxWidth} w-full max-h-[90vh] overflow-y-auto m-4 absolute top-6`}
         onClick={(e) => e.stopPropagation()}
       >
         <button

@@ -15,6 +15,7 @@ export interface CreatePracticeData {
   durationMinutes: number;
   totalQuestions: number;
   isActive?: boolean;
+  freemium?: boolean;
 }
 
 export interface UpdatePracticeData {
@@ -24,6 +25,7 @@ export interface UpdatePracticeData {
   durationMinutes?: number;
   totalQuestions?: number;
   isActive?: boolean;
+  freemium?: boolean;
 }
 
 export interface PracticeQueryParams {

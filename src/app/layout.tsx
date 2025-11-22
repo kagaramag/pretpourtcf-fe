@@ -31,7 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fredoka.variable} antialiased`}>
+      <body className={`${geist.variable} ${fredoka.variable} bg-white antialiased`}>
           <GoogleAnalytics />
           <AuthProvider>
             <PermissionProvider>

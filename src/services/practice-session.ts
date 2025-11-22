@@ -18,7 +18,8 @@ export interface SubmitAnswerData {
   sessionId: string;
   questionId: string;
   questionNumber: number;
-  selectedAnswer: number;
+  selectedAnswer?: number; // Optional for essay/short answer questions
+  textAnswer?: string; // For essay and short answer questions - supports markdown
 }
 
 export interface CompleteSessionData {
@@ -32,7 +33,8 @@ export interface BulkSubmitAndCompleteData {
   answers: {
     questionId: string;
     questionNumber: number;
-    selectedAnswer: number;
+    selectedAnswer?: number; // Optional for essay/short answer questions
+    textAnswer?: string; // For essay and short answer questions - supports markdown
   }[];
 }
 
