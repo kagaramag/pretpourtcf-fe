@@ -34,7 +34,7 @@ export function IndexScreen() {
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
-        <div className="w-full absolute bottom-0 right-0 left-0 mx-auto -z-10">
+        {/* <div className="w-full absolute bottom-0 right-0 left-0 mx-auto -z-10">
           <Image
             src={Wave}
             width={1200}
@@ -43,7 +43,7 @@ export function IndexScreen() {
             alt="logo"
             className="w-full mx-auto"
           />
-        </div>
+        </div> */}
         <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10">
           <Image
             src={Hero}
@@ -56,14 +56,14 @@ export function IndexScreen() {
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-2xl -sm:top-40"
         >
           <div
             style={{
               clipPath:
-                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+                "polygon(74.1% 30.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 90.1%, 80.5% 50.3%, 80.2% 34.5%, 50.5% 76.7%, 0.1% 64.9%, 45.9% 100%, 70.6% 76.8%, 90.1% 97.7%, 90.1% 44.1%)",
             }}
-            className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
+            className="relative right-[calc(50%-5rem)] aspect-1155/678 w-300 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-5rem)] sm:w-340"
           />
         </div>
         <div className="mx-auto max-w-6xl py-32 sm:py-56 md:py-48 lg:py-36 flex items-center relative">
