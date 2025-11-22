@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Trainer from "@/assets/images/trainer.svg";
 import Practice from "@/assets/images/practice.svg";
-import { Check, Loader2, NotebookText, Target, LaptopMinimal } from "lucide-react";
+import {
+  Check,
+  Loader2,
+  NotebookText,
+  Target,
+  LaptopMinimal,
+} from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
 
 const reasons = [
@@ -58,14 +64,14 @@ function TarifsPage() {
 
   const getCardClassName = (plan: SubscriptionPlan) => {
     if (plan.popular) {
-      return "p-7 relative border border-primary scale-105 bg-primary text-white";
+      return "p-7 flex-1 relative border-2 border-primary scale-105 bg-primary text-white";
     }
-    return "p-7 relative border border-gray-100 bg-white";
+    return "p-7 flex-1 relative border-2 border-primary bg-white";
   };
 
   const getButtonVariant = (plan: SubscriptionPlan) => {
     if (plan.popular) {
-      return "secondary";
+      return "tertiary";
     }
     return "default";
   };
@@ -159,7 +165,7 @@ function TarifsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-6">
             {plans
               .filter(
                 (plan) => plan.type !== "trial" && plan.category === category
@@ -168,14 +174,14 @@ function TarifsPage() {
                 <div key={plan.id} className={getCardClassName(plan)}>
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-secondary text-white px-3 py-1.5 rounded-full text-sm">
+                      <span className="bg-tertiary text-black px-3 py-1.5  text-sm">
                         Recommandé
                       </span>
                     </div>
                   )}
 
                   <h3
-                    className={`text-3xl ${
+                    className={`text-2xl font-semibold ${
                       plan.popular ? "text-white" : "text-gray-900"
                     }`}
                   >
@@ -212,107 +218,62 @@ function TarifsPage() {
                         )}
                       </div>
                     </div>
-
+                    {/* training_details */}
                     {/* Features */}
-                    <ul className="space-y-1">
-                      <li className="flex items-start gap-3">
-                        <Check
-                          className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                            plan.popular ? "text-white" : "text-green-500"
-                          }`}
-                        />
-                        <span
-                          className={`text-sm ${
-                            plan.popular ? "text-white" : "text-gray-700"
-                          }`}
-                        >
-                          Accès pour {plan.duration_days} jour
-                          {plan.duration_days > 1 ? "s" : ""}
-                        </span>
-                      </li>
+                    {plan.category === "training" && (
+                      <ul className="space-y-1">
+                        <li className="flex items-start gap-3">
+                          <Check
+                            className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                              plan.popular ? "text-white" : "text-green-500"
+                            }`}
+                          />
+                          <span
+                            className={`text-sm ${
+                              plan.popular ? "text-white" : "text-gray-700"
+                            }`}
+                          >
+                            Duree de la formation:{" "}
+                            {plan.training_details?.duration_days} jours
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Check
+                            className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                              plan.popular ? "text-white" : "text-green-500"
+                            }`}
+                          />
+                          <span
+                            className={`text-sm ${
+                              plan.popular ? "text-white" : "text-gray-700"
+                            }`}
+                          >
+                            Duree de la formation:{" "}
+                            {plan.training_details?.sessions} séances
+                          </span>
+                        </li>
+                      </ul>
+                    )}
+                    {plan.category === "preparation" && (
+                      <ul className="space-y-1">
+                        <li className="flex items-start gap-3">
+                          <Check
+                            className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                              plan.popular ? "text-white" : "text-green-500"
+                            }`}
+                          />
+                          <span
+                            className={`text-sm ${
+                              plan.popular ? "text-white" : "text-gray-700"
+                            }`}
+                          >
+                            Accès pour {plan.duration_days} jour
+                            {plan.duration_days > 1 ? "s" : ""}
+                          </span>
+                        </li>
 
-                      {plan.details && (
-                        <>
-                          <li className="flex items-start gap-3">
-                            <Check
-                              className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                plan.popular ? "text-white" : "text-green-500"
-                              }`}
-                            />
-                            <span
-                              className={`text-sm ${
-                                plan.popular ? "text-white" : "text-gray-700"
-                              }`}
-                            >
-                              Compréhension Orale: {plan.details.co} test
-                              {plan.details.co > 1 ? "s" : ""}
-                            </span>
-                          </li>
-
-                          <li className="flex items-start gap-3">
-                            <Check
-                              className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                plan.popular ? "text-white" : "text-green-500"
-                              }`}
-                            />
-                            <span
-                              className={`text-sm ${
-                                plan.popular ? "text-white" : "text-gray-700"
-                              }`}
-                            >
-                              Compréhension Écrite: {plan.details.ce} test
-                              {plan.details.ce > 1 ? "s" : ""}
-                            </span>
-                          </li>
-
-                          <li className="flex items-start gap-3">
-                            <Check
-                              className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                plan.popular ? "text-white" : "text-green-500"
-                              }`}
-                            />
-                            <span
-                              className={`text-sm ${
-                                plan.popular ? "text-white" : "text-gray-700"
-                              }`}
-                            >
-                              Expression Orale: {plan.details.eo} test
-                              {plan.details.eo > 1 ? "s" : ""}
-                            </span>
-                          </li>
-
-                          <li className="flex items-start gap-3">
-                            <Check
-                              className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                plan.popular ? "text-white" : "text-green-500"
-                              }`}
-                            />
-                            <span
-                              className={`text-sm ${
-                                plan.popular ? "text-white" : "text-gray-700"
-                              }`}
-                            >
-                              Expression Écrite: {plan.details.ee} test
-                              {plan.details.ee > 1 ? "s" : ""}
-                            </span>
-                          </li>
-
-                          <li className="flex items-start gap-3">
-                            <Check
-                              className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                plan.popular ? "text-white" : "text-green-500"
-                              }`}
-                            />
-                            <span
-                              className={`text-sm ${
-                                plan.popular ? "text-white" : "text-gray-700"
-                              }`}
-                            >
-                              Correction automatique et détaillée
-                            </span>
-                          </li>
-
-                          {plan.details.history ? (
+                        {plan.details && (
+                          <>
                             <li className="flex items-start gap-3">
                               <Check
                                 className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
@@ -324,27 +285,11 @@ function TarifsPage() {
                                   plan.popular ? "text-white" : "text-gray-700"
                                 }`}
                               >
-                                Historique des pratiques
+                                Compréhension Orale: {plan.details.co} test
+                                {plan.details.co > 1 ? "s" : ""}
                               </span>
                             </li>
-                          ) : (
-                            <li className="flex items-start gap-3 line-through opacity-50">
-                              <Check
-                                className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
-                                  plan.popular ? "text-white" : "text-green-500"
-                                }`}
-                              />
-                              <span
-                                className={`text-sm ${
-                                  plan.popular ? "text-white" : "text-gray-700"
-                                }`}
-                              >
-                                Historique des pratiques
-                              </span>
-                            </li>
-                          )}
 
-                          {plan.details.streak ? (
                             <li className="flex items-start gap-3">
                               <Check
                                 className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
@@ -356,11 +301,12 @@ function TarifsPage() {
                                   plan.popular ? "text-white" : "text-gray-700"
                                 }`}
                               >
-                                Accès aux séries de tests
+                                Compréhension Écrite: {plan.details.ce} test
+                                {plan.details.ce > 1 ? "s" : ""}
                               </span>
                             </li>
-                          ) : (
-                            <li className="flex items-start gap-3 line-through opacity-50">
+
+                            <li className="flex items-start gap-3">
                               <Check
                                 className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
                                   plan.popular ? "text-white" : "text-green-500"
@@ -371,13 +317,125 @@ function TarifsPage() {
                                   plan.popular ? "text-white" : "text-gray-700"
                                 }`}
                               >
-                                Accès aux séries de tests
+                                Expression Orale: {plan.details.eo} test
+                                {plan.details.eo > 1 ? "s" : ""}
                               </span>
                             </li>
-                          )}
-                        </>
-                      )}
-                    </ul>
+
+                            <li className="flex items-start gap-3">
+                              <Check
+                                className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                  plan.popular ? "text-white" : "text-green-500"
+                                }`}
+                              />
+                              <span
+                                className={`text-sm ${
+                                  plan.popular ? "text-white" : "text-gray-700"
+                                }`}
+                              >
+                                Expression Écrite: {plan.details.ee} test
+                                {plan.details.ee > 1 ? "s" : ""}
+                              </span>
+                            </li>
+
+                            <li className="flex items-start gap-3">
+                              <Check
+                                className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                  plan.popular ? "text-white" : "text-green-500"
+                                }`}
+                              />
+                              <span
+                                className={`text-sm ${
+                                  plan.popular ? "text-white" : "text-gray-700"
+                                }`}
+                              >
+                                Correction automatique et détaillée
+                              </span>
+                            </li>
+
+                            {plan.details.history ? (
+                              <li className="flex items-start gap-3">
+                                <Check
+                                  className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-green-500"
+                                  }`}
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Historique des pratiques
+                                </span>
+                              </li>
+                            ) : (
+                              <li className="flex items-start gap-3 line-through opacity-50">
+                                <Check
+                                  className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-green-500"
+                                  }`}
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Historique des pratiques
+                                </span>
+                              </li>
+                            )}
+
+                            {plan.details.streak ? (
+                              <li className="flex items-start gap-3">
+                                <Check
+                                  className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-green-500"
+                                  }`}
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Accès aux séries de tests
+                                </span>
+                              </li>
+                            ) : (
+                              <li className="flex items-start gap-3 line-through opacity-50">
+                                <Check
+                                  className={`h-6 w-6 flex-shrink-0 mt-0.5 ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-green-500"
+                                  }`}
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    plan.popular
+                                      ? "text-white"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Accès aux séries de tests
+                                </span>
+                              </li>
+                            )}
+                          </>
+                        )}
+                      </ul>
+                    )}
                   </div>
                   <NavigationLink href={`/compte/abonner?plan_id=${plan.id}`}>
                     <Button className="w-full" variant={getButtonVariant(plan)}>

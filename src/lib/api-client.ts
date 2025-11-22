@@ -113,7 +113,7 @@ class ApiClient {
     data?: any,
     config?: AxiosRequestConfig
   ): Promise<T> {
-    const response = await this.client.patch<T>(url, data, config);
+    const response = await this.client.put<T>(url, data, config);
     return response.data;
   }
 
