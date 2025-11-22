@@ -4,11 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, h4 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
@@ -57,7 +53,7 @@ interface ApprenantProfileData {
   };
 }
 
-interface PracticeData {
+interface response {
   practices: Array<{
     id: string;
     practice: {
@@ -99,7 +95,7 @@ export default function ApprenantProfile() {
   const [profileData, setProfileData] = useState<ApprenantProfileData | null>(
     null
   );
-  const [practiceData, setPracticeData] = useState<PracticeData | null>(null);
+  const [response, setresponse] = useState<response | null>(null);
   const [practicesLoading, setPracticesLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -147,13 +143,16 @@ export default function ApprenantProfile() {
   const fetchPracticeHistory = async (page: number) => {
     try {
       setPracticesLoading(true);
-      const response = await referralService.getApprenantPractices(apprenantId, {
-        page,
-        limit: 15,
-      });
+      const response = await referralService.getApprenantPractices(
+        apprenantId,
+        {
+          page,
+          limit: 15,
+        }
+      );
 
       if (response.success && response.data) {
-        setPracticeData(response.data);
+        setresponse(response.data);
       }
     } catch (error: any) {
       console.error("Error fetching practice history:", error);
@@ -215,118 +214,109 @@ export default function ApprenantProfile() {
 
   const { user, referral, stats } = profileData;
 
-  console.log(":##:", practiceData)
+  console.log(":##:", response);
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.push("/trainer/apprenants")}
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div className="flex-1">
-          <h1 className="text-xl font-semibold">
-            {user.first_name} {user.last_name}
-          </h1>
-          <div className="text-sm">{user.email}</div>
+      <div className="border p-2">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push("/trainer/apprenants")}
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-xl font-semibold">
+              {user.first_name} {user.last_name}
+            </h1>
+            <div className="text-sm">{user.email}</div>
+          </div>
+          <Badge
+            variant={user.status === "active" ? "default" : "secondary"}
+            className="capitalize"
+          >
+            {user.status === "active" ? "Actif" : "Inactif"}
+          </Badge>
         </div>
-        <Badge
-          variant={user.status === "active" ? "default" : "secondary"}
-          className="capitalize"
-        >
-          {user.status === "active" ? "Actif" : "Inactif"}
-        </Badge>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-            <CardTitle className="text-sm font-medium">
-              Date d'inscription
-            </CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatDate(new Date(user.createdAt))}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Invité le {formatDate(new Date(referral.createdAt))}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-            <CardTitle className="text-sm font-medium">
-              Sessions pratiques
-            </CardTitle>
-            <BookOpen className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {stats.totalPracticeSessions}
-            </div>
-            <p className="text-xs text-muted-foreground">Total complété</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-            <CardTitle className="text-sm font-medium">
-              Dernière activité
-            </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {stats.lastActive
-                ? formatDate(new Date(stats.lastActive))
-                : "Jamais"}
-            </div>
-            <p className="text-xs text-muted-foreground">Dernière connexion</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-            <CardTitle className="text-sm font-medium">
-              Acceptation invitation
-            </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatDate(new Date(referral.acceptedAt))}
-            </div>
-            <p className="text-xs text-muted-foreground">Date d'acceptation</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-          <CardTitle className="flex items-center justify-between">
-            <span>Historique des Pratiques</span>
-            {practiceData && (
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>
-                  <Trophy className="inline h-4 w-4 mr-1" />
-                  Moyenne: {practiceData.stats.averageScore.toFixed(1)}%
-                </span>
-                <span>
-                  <Target className="inline h-4 w-4 mr-1" />
-                  Total: {practiceData.stats.totalPoints} points
-                </span>
+        {/* Stats Cards */}
+        <div className="grid gap-1 md:grid-cols-4 mt-2">
+          <div className="p-2 border">
+            <h5 className="text-sm">Date d'inscription</h5>
+            <div>
+              <div className="font-semibold">
+                {formatDate(new Date(user.createdAt))}
               </div>
-            )}
-          </CardTitle>
-            Performances des 3 derniers mois (15 résultats par page)
-        <CardContent>
+              <p className="text-xs text-muted-foreground">
+                Invité le {formatDate(new Date(referral.createdAt))}
+              </p>
+            </div>
+          </div>
+          <div className="p-2 border">
+            <h5 className="text-sm">Dernière activité</h5>
+            <div>
+              <div className="font-semibold">
+                {stats.lastActive
+                  ? formatDate(new Date(stats.lastActive))
+                  : "Jamais"}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Dernière connexion
+              </p>
+            </div>
+          </div>
+          <div className="p-2 border">
+            <h5 className="text-sm">Acceptation invitation</h5>
+            <div>
+              <div className="font-semibold">
+                {formatDate(new Date(referral.acceptedAt))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Date d'acceptation
+              </p>
+            </div>
+          </div>{" "}
+          <div className="p-2 border">
+            <h5 className="text-sm">Sessions pratiques</h5>
+            <div>
+              <div className="font-semibold">{stats.totalPracticeSessions}</div>
+              <p className="text-xs text-muted-foreground">Total complété</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 className="font-semibold flex items-center justify-between">
+          <span>Historique des Pratiques</span>
+          {response && (
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span>
+                <Trophy className="inline h-4 w-4 mr-1" />
+                Moyenne: {response.stats.averageScore.toFixed(1)}%
+              </span>
+              <span>
+                <Target className="inline h-4 w-4 mr-1" />
+                Total: {response.stats.totalPoints} points
+              </span>
+            </div>
+          )}
+        </h4>
+        <div className="text-sm text-gray-400 mb-4">
+          Performances des 3 derniers mois (15 résultats par page)
+        </div>
+        <div>
           {practicesLoading ? (
             <div className="flex justify-center py-8">
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
-          ) : practiceData && practiceData.practices.length > 0 ? (
+          ) : response && response.practices.length > 0 ? (
             <div className="space-y-4">
-              {practiceData.practices.map((session) => (
-                <Card key={session.id} className="p-4">
+              {response.practices.map((session) => (
+                <div key={session.id} className="p-4 border border-gray-100">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className="font-medium">{session.practice.title}</h4>
@@ -341,7 +331,8 @@ export default function ApprenantProfile() {
                         </span>
                         <span>
                           <BookOpen className="inline h-3 w-3 mr-1" />
-                          {session.correctAnswers}/{session.totalQuestions} correctes
+                          {session.correctAnswers}/{session.totalQuestions}{" "}
+                          correctes
                         </span>
                         <span>
                           <Award className="inline h-3 w-3 mr-1" />
@@ -349,12 +340,6 @@ export default function ApprenantProfile() {
                         </span>
                       </div>
                       <div className="flex gap-2 mt-2">
-                        <Badge variant="outline" className="text-xs">
-                          {session.practice.category}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {session.practice.difficulty}
-                        </Badge>
                         <Badge
                           variant={getGradeBadgeVariant(session.grade)}
                           className="text-xs"
@@ -364,23 +349,22 @@ export default function ApprenantProfile() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold">
+                      <div className="font-semibold">
                         {session.percentageScore.toFixed(0)}%
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        Score
-                      </div>
+                      <div className="text-xs text-muted-foreground">Score</div>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
 
               {/* Pagination */}
-              {practiceData.pagination.totalPages > 1 && (
+              {response.pagination.totalPages > 1 && (
                 <div className="flex items-center justify-between pt-4">
                   <div className="text-sm text-muted-foreground">
-                    Page {practiceData.pagination.page} sur {practiceData.pagination.totalPages}
-                    {" "}({practiceData.pagination.total} résultats)
+                    Page {response.pagination.page} sur{" "}
+                    {response.pagination.totalPages} (
+                    {response.pagination.total} résultats)
                   </div>
                   <div className="flex gap-2">
                     <Button
@@ -396,7 +380,7 @@ export default function ApprenantProfile() {
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(currentPage + 1)}
-                      disabled={!practiceData.pagination.hasMore}
+                      disabled={!response.pagination.hasMore}
                     >
                       Suivant
                       <ChevronRight className="h-4 w-4 ml-1" />
@@ -410,8 +394,8 @@ export default function ApprenantProfile() {
               Aucune pratique complétée dans les 3 derniers mois
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

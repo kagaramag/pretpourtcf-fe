@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, XCircle, Mic, Eye, EyeOff } from "lucide-react";
+import { AlertCircle, XCircle, PenTool, Eye, EyeOff } from "lucide-react";
 import { practiceService } from "@/services/practice";
 import { questionService } from "@/services/question";
 import { Practice, PracticeQuestion } from "@/types";
@@ -15,7 +15,7 @@ import PracticeLayout from "@/layouts/practice";
 import Header from "@/components/organisms/header-practice";
 import AudioPlayer from "@/components/organisms/player";
 
-export default function SpeakingPracticeSessionPage() {
+export default function WritingPracticeSessionPage() {
   const router = useRouter();
   const params = useParams();
   const practiceId = params.id as string;
@@ -31,7 +31,7 @@ export default function SpeakingPracticeSessionPage() {
   }, [practiceId]);
 
   const onClose = () => {
-    router.push("/compte/pratique/eo");
+    router.push("/compte/pratique/ee");
   };
 
   const initializePractice = async () => {
@@ -62,7 +62,7 @@ export default function SpeakingPracticeSessionPage() {
       toast.error(
         error.response?.data?.message || "Erreur lors de l'initialisation"
       );
-      router.push("/compte/pratique/eo");
+      router.push("/compte/pratique/ee");
     } finally {
       setLoading(false);
     }
@@ -97,7 +97,7 @@ export default function SpeakingPracticeSessionPage() {
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
               </h3>
-              <Button onClick={() => router.push("/compte/pratique/eo")}>
+              <Button onClick={() => router.push("/compte/pratique/ee")}>
                 Retour aux exercices
               </Button>
             </CardContent>
@@ -119,7 +119,7 @@ export default function SpeakingPracticeSessionPage() {
               <h3 className="text-lg font-semibold mb-2">
                 Aucune question disponible
               </h3>
-              <Button onClick={() => router.push("/compte/pratique/eo")}>
+              <Button onClick={() => router.push("/compte/pratique/ee")}>
                 Retour aux exercices
               </Button>
             </CardContent>
@@ -135,9 +135,9 @@ export default function SpeakingPracticeSessionPage() {
       <div className="container mx-auto lg:p-6 p-4 max-w-3xl">
         {/* Header */}
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-2">Questions</h2>
+          <h2 className="text-2xl font-semibold mb-2">Sujets d'actualité</h2>
           <p className="text-muted-foreground">
-            Total: {questions.length} questions
+            Total: {questions.length} sujets
           </p>
         </div>
 
@@ -145,52 +145,10 @@ export default function SpeakingPracticeSessionPage() {
         <div className="space-y-6">
           {questions.map((question) => (
             <Card key={question._id} className="lg:p-5 p-4">
-              <div className="lg:mb-4 mb-3 flex justify-between items-center">
-                <div className="text-xl font-medium">
-                  Question {question.number}
-                </div>
-                <div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      setShowAnswers((prev) => ({
-                        ...prev,
-                        [question._id]: !prev[question._id],
-                      }))
-                    }
-                  >
-                    {showAnswers[question._id] ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-              </div>
+                <h4 className="text-xl font-medium">
+                  Tâche {question.number}
+                </h4>
               <div className="space-y-3">
-                {/* Image if exists */}
-                {question.media?.image && (
-                  <div className="flex justify-center">
-                    <img
-                      src={`${config.cloudFlarePublicUrl}practices/images/${question.media.image}`}
-                      alt="Question"
-                      className="max-w-full h-auto rounded-lg"
-                    />
-                  </div>
-                )}
-
-                {/* Audio player if exists */}
-                {question.media?.audio && (
-                  <div className="flex items-center">
-                    <AudioPlayer
-                      src={`${config.cloudFlarePublicUrl}practices/audio/${question.media.audio}`}
-                    />
-                  </div>
-                )}
-
-                {/* Question text */}
-                {/* <div className="text-base">{question.text}</div> */}
                 {question?.text && (
                   <div>
                     <ReactMarkdown>{question.text}</ReactMarkdown>
@@ -220,31 +178,6 @@ export default function SpeakingPracticeSessionPage() {
                     ))}
                   </div>
                 )}
-
-                {/* Answer display - shown when toggle is active */}
-                {showAnswers[question._id] && (
-                  <div className="mt-4 p-4 rounded-lg bg-green-50 border border-green-200">
-                    <p className="text-sm font-medium text-green-900 mb-2">
-                      Réponse:
-                    </p>
-                    {question.answer ? (
-                      <p className="text-base text-green-800">
-                        {question.answer}
-                      </p>
-                    ) : question.correct !== undefined && question.options ? (
-                      <p className="text-base text-green-800">
-                        Option correcte:{" "}
-                        {String.fromCharCode(65 + question.correct)}
-                        {" - "}
-                        {question.options[question.correct]}
-                      </p>
-                    ) : (
-                      <p className="text-base text-muted-foreground">
-                        Aucune réponse disponible
-                      </p>
-                    )}
-                  </div>
-                )}
               </div>
             </Card>
           ))}
@@ -253,7 +186,7 @@ export default function SpeakingPracticeSessionPage() {
         {/* Bottom actions */}
         <div className="mt-8 flex justify-center">
           <Button
-            onClick={() => router.push("/compte/pratique/eo")}
+            onClick={() => router.push("/compte/pratique/ee")}
             variant="outline"
             size="lg"
           >

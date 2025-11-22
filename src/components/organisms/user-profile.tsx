@@ -47,8 +47,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                 </div>
                 <Link href="/compte/plans">
                   <div className="px-2 text-xs bg-secondary text-white rounded-4xl font-semibold">
-                    {user?.subscription?.plan?.name}{" "}
-                    {user?.subscription?.days_remaining}
+                    {user?.subscription?.plan?.name}{" "}({user?.subscription?.days_remaining}jours)
                   </div>
                 </Link>
               </h3>
@@ -62,19 +61,21 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
           </div>
         </div>
       </div>
-      <div className="py-2 bg-gray-100 mb-2 border-b border-t border-gray-300">
-        <div className="mx-auto max-w-5xl">
-          <ul className="flex items-center gap-5">
-            {navigation.map((item, idx) => (
-              <li key={idx}>
-                <Link href={`${item.href}`} className="text-sm">
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {user?.role === "client" && (
+        <div className="py-2 bg-gray-100 mb-2 border-b border-t border-gray-300">
+          <div className="mx-auto max-w-5xl">
+            <ul className="flex items-center gap-5">
+              {navigation.map((item, idx) => (
+                <li key={idx}>
+                  <Link href={`${item.href}`} className="text-sm">
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

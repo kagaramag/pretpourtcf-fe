@@ -21,10 +21,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Loader2, Plus, X, Volume2, Image as ImageIcon, Upload, Trash, Eye, EyeOff } from "lucide-react";
-import MDEditor from '@uiw/react-md-editor';
-import ReactMarkdown from 'react-markdown';
+import {
+  Loader2,
+  Plus,
+  X,
+  Volume2,
+  Image as ImageIcon,
+  Upload,
+  Trash,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import MDEditor, { commands } from "@uiw/react-md-editor";
+import ReactMarkdown from "react-markdown";
 import {
   questionService,
   CreateQuestionData,
@@ -117,7 +126,9 @@ export function QuestionFormDialog({
   }, [open, question, mode]);
 
   // File upload handlers
-  const handleAudioFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAudioFileSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -156,7 +167,9 @@ export function QuestionFormDialog({
     }
   };
 
-  const handleImageFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageFileSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -223,9 +236,7 @@ export function QuestionFormDialog({
       onSuccess?.();
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Failed to create question"
-      );
+      toast.error(error.response?.data?.message || "Failed to create question");
     },
   });
 
@@ -241,9 +252,7 @@ export function QuestionFormDialog({
       onSuccess?.();
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Failed to update question"
-      );
+      toast.error(error.response?.data?.message || "Failed to update question");
     },
   });
 
@@ -291,7 +300,11 @@ export function QuestionFormDialog({
       submitData.correct = formData.correct;
     }
 
-    if (formData.type === "essay" || formData.type === "short_answer" || formData.type === "audio") {
+    if (
+      formData.type === "essay" ||
+      formData.type === "short_answer" ||
+      formData.type === "audio"
+    ) {
       if (formData.answer && formData.answer.trim() !== "") {
         submitData.answer = formData.answer;
       }
@@ -340,7 +353,10 @@ export function QuestionFormDialog({
     setFormData({
       ...formData,
       options: newOptions,
-      correct: formData.correct >= index ? Math.max(0, formData.correct - 1) : formData.correct,
+      correct:
+        formData.correct >= index
+          ? Math.max(0, formData.correct - 1)
+          : formData.correct,
     });
   };
 
@@ -387,7 +403,6 @@ export function QuestionFormDialog({
                   required
                 />
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="type">
                   Question Type <span className="text-red-500">*</span>
@@ -415,16 +430,53 @@ export function QuestionFormDialog({
               <Label htmlFor="text">
                 Question Text <span className="text-red-500">*</span>
               </Label>
-              <Textarea
-                id="text"
-                value={formData.text}
-                onChange={(e) =>
-                  setFormData({ ...formData, text: e.target.value })
-                }
-                placeholder="Enter the question text..."
-                rows={3}
-                required
-              />
+              {formData.type === "short_answer" ? (
+                <>
+                  {showAnswerPreview ? (
+                    <div className="border rounded-lg p-4 min-h-[200px] prose prose-sm max-w-none bg-muted/30">
+                      {formData.answer ? (
+                        <ReactMarkdown>{formData.text}</ReactMarkdown>
+                      ) : (
+                        <p className="text-muted-foreground italic">-</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div data-color-mode="light">
+                      <MDEditor
+                        value={formData.text}
+                        onChange={(value) =>
+                          setFormData({ ...formData, text: value || "" })
+                        }
+                        commands={[
+                          commands.bold,
+                          commands.italic,
+                          commands.hr,
+                          commands.title,
+                          commands.quote,
+                          commands.unorderedListCommand,
+                          commands.orderedListCommand,
+                        ]}
+                        preview="edit"
+                        height={120}
+                        textareaProps={{
+                          placeholder: "type....",
+                        }}
+                      />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Textarea
+                  id="text"
+                  value={formData.text}
+                  onChange={(e) =>
+                    setFormData({ ...formData, text: e.target.value })
+                  }
+                  placeholder="Enter the question text..."
+                  rows={3}
+                  required
+                />
+              )}
             </div>
 
             {formData.type === "mcq" && (
@@ -497,9 +549,7 @@ export function QuestionFormDialog({
             {(formData.type === "essay" || formData.type === "audio") && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="answer">
-                    Sample Answer (Optional)
-                  </Label>
+                  <Label htmlFor="answer">Sample Answer (Optional)</Label>
                   <Button
                     type="button"
                     variant="ghost"
@@ -521,25 +571,40 @@ export function QuestionFormDialog({
                   </Button>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Provide a sample answer for reference. Supports markdown formatting (bold, italic, lists, etc.)
+                  Provide a sample answer for reference. Supports markdown
+                  formatting (bold, italic, lists, etc.)
                 </p>
                 {showAnswerPreview ? (
                   <div className="border rounded-lg p-4 min-h-[200px] prose prose-sm max-w-none bg-muted/30">
                     {formData.answer ? (
                       <ReactMarkdown>{formData.answer}</ReactMarkdown>
                     ) : (
-                      <p className="text-muted-foreground italic">No content to preview</p>
+                      <p className="text-muted-foreground italic">
+                        No content to preview
+                      </p>
                     )}
                   </div>
                 ) : (
                   <div data-color-mode="light">
                     <MDEditor
                       value={formData.answer}
-                      onChange={(value) => setFormData({ ...formData, answer: value || "" })}
+                      onChange={(value) =>
+                        setFormData({ ...formData, answer: value || "" })
+                      }
+                      commands={[
+                        commands.bold,
+                        commands.italic,
+                        commands.hr,
+                        commands.title,
+                        commands.quote,
+                        commands.unorderedListCommand,
+                        commands.orderedListCommand,
+                      ]}
                       preview="edit"
                       height={300}
                       textareaProps={{
-                        placeholder: "Enter sample answer here... You can use markdown formatting."
+                        placeholder:
+                          "Enter sample answer here... You can use markdown formatting.",
                       }}
                     />
                   </div>

@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import ReactMarkdown from "react-markdown";
 import {
   Table,
   TableBody,
@@ -549,8 +550,12 @@ function PracticeDetailsContent() {
 
               {/* Question Text */}
               <div>
-                <p className="text-sm text-muted-foreground">Question</p>
-                <p className="text-base">{previewQuestion.text}</p>
+                <div className="text-sm text-muted-foreground">Question</div>
+                {previewQuestion?.text && (
+                  <div>
+                    <ReactMarkdown>{previewQuestion.text}</ReactMarkdown>
+                  </div>
+                )}
               </div>
 
               {/* Media */}

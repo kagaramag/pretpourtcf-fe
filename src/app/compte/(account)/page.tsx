@@ -47,7 +47,7 @@ export default function AccountPage() {
             </Button>
           </Link>
           <Link href="/compte/pratique/ce">
-            <Button variant="secondary" disabled block size="lg">
+            <Button variant="secondary" block size="lg">
               Compréhension écrite
             </Button>
           </Link>
@@ -57,7 +57,7 @@ export default function AccountPage() {
             </Button>
           </Link>
           <Link href="/compte/pratique/ee">
-            <Button variant="secondary" disabled block size="lg">
+            <Button variant="secondary" block size="lg">
               Expression écrite
             </Button>
           </Link>
