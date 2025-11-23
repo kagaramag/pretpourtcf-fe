@@ -248,8 +248,8 @@ function TarifsPage() {
                               plan.popular ? "text-white" : "text-gray-700"
                             }`}
                           >
-                            Duree de la formation:{" "}
-                            {plan.training_details?.sessions} séances
+                            Nombre de seances:{" "}
+                            {plan.training_details?.sessions}
                           </span>
                         </li>
                       </ul>

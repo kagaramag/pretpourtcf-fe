@@ -166,14 +166,11 @@ function PlansPage() {
     );
   }
 
-  const getButtonType = (planType: string) => {
-    if (planType === "premium") {
-      return "default";
+  const getButtonType = (plan: any) => {
+    if (plan.popular) {
+      return "tertiary";
     }
-    if (planType === "advanced") {
-      return "secondary";
-    }
-    return "outline";
+    return "default";
   };
 
   const renderPlansForPractices = () => {
@@ -199,22 +196,24 @@ function PlansPage() {
               .map((plan) => (
                 <div
                   key={plan.id}
-                  className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
+                  className={`relative w-1/3 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-tertiary text-black px-3 py-1 text-sm">
                         Recommandé
                       </span>
                     </div>
                   )}
                   <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                  {plan.description}
+                  <div className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}>
+                    {plan.description}
+                  </div>
                   <div className="my-3">
                     <Button
                       onClick={() => handleSelectPlan(plan)}
                       className="w-full"
-                      variant={getButtonType(plan.type)}
+                      variant={getButtonType(plan)}
                     >
                       Choisir ce plan
                     </Button>
@@ -324,15 +323,9 @@ function PlansPage() {
   };
 
   const renderPlansForFormation = () => {
-    console.log("Rendering formation plans, loading:", formationLoading);
-    console.log("Formation plans state:", formationPlans);
-    console.log("Formation plans length:", formationPlans.length);
-
     const filteredPlans = formationPlans.filter(
       (plan) => plan.type !== "trial"
     );
-    console.log("Filtered formation plans (non-trial):", filteredPlans);
-    console.log("Filtered plans length:", filteredPlans.length);
 
     return (
       <>
@@ -372,22 +365,24 @@ function PlansPage() {
             {filteredPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative p-4 border border-gray-100 ${plan.type === "premium" ? "border-primary" : ""}`}
+                className={`relative w-1/2 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                    <span className="bg-tertiary text-black px-3 py-1 text-sm">
                       Recommandé
                     </span>
                   </div>
                 )}
                 <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                {plan.description}
+                 <div className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}>
+                    {plan.description}
+                  </div>
                 <div className="my-3">
                   <Button
                     onClick={() => handleSelectPlan(plan)}
                     className="w-full"
-                    variant={getButtonType(plan.type)}
+                    variant={getButtonType(plan)}
                   >
                     Choisir ce plan
                   </Button>
@@ -414,40 +409,20 @@ function PlansPage() {
                       </div>
                     </div>
                   </div>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        {plan.training_details?.sessions || 0} séances de
-                        formation
+                  <ul className="space-y-1">
+                    <li className="flex items-start gap-3">
+                      <Check className={`h-6 w-6 flex-shrink-0 mt-0.5 `} />
+                      <span className={`text-sm`}>
+                        Duree de la formation:{" "}
+                        {plan.training_details?.duration_days} jours
                       </span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Formation personnalisée avec un formateur expert
+                    <li className="flex items-start gap-3">
+                      <Check className={`h-6 w-6 flex-shrink-0 mt-0.5`} />
+                      <span className={`text-sm`}>
+                        Nombre de seances: {plan.training_details?.sessions}
                       </span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Suivi et corrections détaillées
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs">
-                        Accès aux exercices de pratique
-                      </span>
-                    </li>
-                    {plan.features &&
-                      plan.features.length > 0 &&
-                      plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-xs">{feature}</span>
-                        </li>
-                      ))}
                   </ul>
                 </div>
               </div>

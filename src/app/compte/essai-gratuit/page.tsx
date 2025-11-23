@@ -76,12 +76,12 @@ function PratiqueGratuitPage() {
         <div className="flex-1 py-4">
           {!selectedCategory && (
             <div className="text-gray-500 text-center mt-8">
-              Select a category to view available practices
+              Sélectionnez une catégorie pour afficher les pratiques disponibles
             </div>
           )}
 
           {loading && (
-            <div className="text-center mt-8">Loading practices...</div>
+            <div className="text-center mt-8">Chargement...</div>
           )}
 
           {error && (
@@ -94,7 +94,7 @@ function PratiqueGratuitPage() {
                 {categories.find((c) => c.type === selectedCategory)?.label}
               </h2> */}
               {practices.length === 0 ? (
-                <div className="text-gray-500">No practices available</div>
+                <div className="text-gray-500">Aucune pratique gratuite disponible pour cette catégorie pour le moment</div>
               ) : (
                 <div className="grid border-t border-b border-gray-100 divide-y divide-gray-100">
                   {practices
