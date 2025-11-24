@@ -93,9 +93,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       await authService.logout();
       setUser(null);
-      router.push("/login");
+      router.push("/");
     } catch (error) {
-      console.error("Logout error:", error);
       toast.error("Logout failed");
     } finally {
       setIsLoading(false);

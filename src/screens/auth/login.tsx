@@ -15,7 +15,6 @@ import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string>("");
-  const [showResendButton, setShowResendButton] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,7 +38,6 @@ export function LoginForm() {
     try {
       setIsPending(true);
       setLoginError("");
-      setShowResendButton(false);
       setUserEmail(data.email);
 
       // Get redirect parameter from URL
@@ -53,13 +51,6 @@ export function LoginForm() {
       setLoginError(errorMessage);
 
       // Check if error is about email verification
-      if (
-        errorMessage.toLowerCase().includes("vérifier") ||
-        errorMessage.toLowerCase().includes("verify") ||
-        errorMessage.toLowerCase().includes("email")
-      ) {
-        setShowResendButton(true);
-      }
     } finally {
       setIsPending(false);
     }
@@ -96,17 +87,6 @@ export function LoginForm() {
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <p className="text-sm text-red-800">{loginError}</p>
               </div>
-              {showResendButton && (
-                <Button
-                  type="button"
-                  onClick={handleResendEmail}
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                >
-                  Renvoyer l'email de vérification
-                </Button>
-              )}
             </div>
           )}
 

@@ -274,7 +274,7 @@ export function SignupForm() {
     <div>
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         onClick={() => {
           setShowForm(false);
           setSelectedRole(null);
@@ -316,7 +316,7 @@ export function SignupForm() {
 
           <div className="flex flex-col lg:flex-row gap-2">
             <div className="space-y-2">
-              <Label htmlFor="first_name" className="bg-gray-500">
+              <Label htmlFor="first_name">
                 Nom
               </Label>
               <div className="relative">
@@ -334,7 +334,7 @@ export function SignupForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="last_name" className="bg-gray-500">
+              <Label htmlFor="last_name">
                 Prenom
               </Label>
               <div className="relative">
@@ -349,7 +349,7 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="bg-gray-500">
+            <Label htmlFor="email">
               Email
             </Label>
             <div className="relative">
@@ -361,7 +361,7 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="bg-gray-500">
+            <Label htmlFor="password">
               Mot de passe
             </Label>
             <div className="relative">

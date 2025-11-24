@@ -72,7 +72,7 @@ export default function Header() {
           <span className="font-semibold">PRET100</span> et accédez à tous nos
           tests, exercices, et outils.
           <a href="/signup" className="whitespace-nowrap underline pl-2">
-            Inscrivez-vous maintenant
+            Créer un compte maintenant
           </a>
         </div>
       )}
@@ -206,7 +206,7 @@ export default function Header() {
                 <Button>Se connecter</Button>
               </NavigationLink> */}
                 <Link href="/signup?next=/compte/essai-gratuit&package=trial">
-                  <Button variant="secondary">Essai Gratuit</Button>
+                  <Button variant="tertiary">Créer un compte</Button>
                 </Link>
               </div>
             )}
