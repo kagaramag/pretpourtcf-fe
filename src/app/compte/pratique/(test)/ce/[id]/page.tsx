@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import {
@@ -14,7 +14,6 @@ import {
   AlertCircle,
   CheckCircle2,
   Clock,
-  EyeClosed,
   Trophy,
   XCircle,
   RotateCcw,
@@ -724,22 +723,6 @@ export default function PracticeSessionPage() {
               </div>
             )}
 
-            {/* Question text */}
-            <div className="flex">
-              <div className="text-sm flex-1">{currentQuestion.text}</div>
-              <Button
-                onClick={() => setShowCorrectAnswer(!showCorrectAnswer)}
-                variant="outline"
-                size="sm"
-                className="gap-2"
-              >
-                {showCorrectAnswer ? (
-                  <Eye className="h-4 w-4" />
-                ) : (
-                  <EyeClosed className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
             {/* Answer options */}
             {currentQuestion.options && currentQuestion.options.length > 0 && (
               <div className="space-y-1">
