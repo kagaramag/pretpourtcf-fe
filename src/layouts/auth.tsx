@@ -59,7 +59,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             </Link>
             {pathname === "/signup" && (
               <Link href={"/login"} className="text-primary hover:underline">
-                <Button>Se connecter</Button>
+                <Button variant={"tertiary"}>Se connecter</Button>
               </Link>
             )}
             {pathname === "/login" && (
@@ -67,15 +67,12 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
                 <Button>Créer un compte</Button>
               </Link>
             )}
-
-            {/* <Button variant={"ghost"}>Acceuil</Button>
-            <Button variant={"outline"}>login</Button> */}
           </div>
         </div>
 
         <div className="flex items-center justify-center flex-col h-screen relative">
-          <div className="mx-auto w-sm">{children}</div>
-          <div className="mt-2">
+          <div className="mx-auto w-sm lg:px-0 px-6">{children}</div>
+          <div className="mt-2  lg:px-0 px-10">
             <p className="text-center text-xs text-muted-foreground px-2">
               En vous connectant, vous acceptez nos Conditions d'utilisation
               <br className="hidden sm:block" />

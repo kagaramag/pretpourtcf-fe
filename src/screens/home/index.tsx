@@ -174,7 +174,7 @@ export function IndexScreen() {
               Rejoignez des milliers d'apprenants qui préparent leur TCF avec
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
-            <div className="flex items-center lg:flex-row flex-col justify-center gap-6 px-4">
+            <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-6 gap-2 px-4">
               <NavigationLink href="/signup">
                 <Button size="lg" variant={"tertiary"}>
                   Créer un compte

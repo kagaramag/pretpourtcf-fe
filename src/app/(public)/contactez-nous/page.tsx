@@ -7,11 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Mail, Phone, Send, Loader2 } from "lucide-react";
 import apiClient from "@/lib/api-client";
@@ -56,13 +52,13 @@ function ContactPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await apiClient.post<{ status: string; message: string }>(
-        API_ENDPOINTS.CONTACT,
-        {
-          ...data,
-          timestamp: formStartTime,
-        }
-      );
+      const response = await apiClient.post<{
+        status: string;
+        message: string;
+      }>(API_ENDPOINTS.CONTACT, {
+        ...data,
+        timestamp: formStartTime,
+      });
 
       if (response.status === "success") {
         toast.success("Message envoyé avec succès!", {
@@ -104,124 +100,122 @@ function ContactPage() {
 
         {/* Contact Form */}
         <div className="max-w-3xl p-4 mx-auto lg:col-span-2">
-          <Card>
-              <CardTitle>Envoyez-nous un message</CardTitle>
-                Remplissez le formulaire ci-dessous et nous vous répondrons dans
-                les 24 heures
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                {/* Honeypot field - hidden from users, visible to bots */}
-                <input
-                  type="text"
-                  {...register("honeypot")}
-                  style={{
-                    position: "absolute",
-                    left: "-9999px",
-                    width: "1px",
-                    height: "1px",
-                  }}
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+          <div>
+            <CardTitle>Envoyez-nous un message</CardTitle>
+            Remplissez le formulaire ci-dessous et nous vous répondrons dans les
+            24 heures
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Honeypot field - hidden from users, visible to bots */}
+              <input
+                type="text"
+                {...register("honeypot")}
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  width: "1px",
+                  height: "1px",
+                }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
-                      Nom <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="name"
-                      placeholder="Jean Dupont"
-                      {...register("name")}
-                      aria-invalid={!!errors.name}
-                    />
-                    {errors.name && (
-                      <p className="text-xs text-destructive">
-                        {errors.name.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                      Email <span className="text-destructive">*</span>
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="jean@exemple.com"
-                      {...register("email")}
-                      aria-invalid={!!errors.email}
-                    />
-                    {errors.email && (
-                      <p className="text-xs text-destructive">
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm font-medium">
-                    Sujet <span className="text-destructive">*</span>
+                  <label htmlFor="name" className="text-sm font-medium">
+                    Nom <span className="text-destructive">*</span>
                   </label>
                   <Input
-                    id="subject"
-                    placeholder="Comment pouvons-nous vous aider?"
-                    {...register("subject")}
-                    aria-invalid={!!errors.subject}
+                    id="name"
+                    placeholder="Jean Dupont"
+                    {...register("name")}
+                    aria-invalid={!!errors.name}
                   />
-                  {errors.subject && (
+                  {errors.name && (
                     <p className="text-xs text-destructive">
-                      {errors.subject.message}
+                      {errors.name.message}
                     </p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">
-                    Message <span className="text-destructive">*</span>
+                  <label htmlFor="email" className="text-sm font-medium">
+                    Email <span className="text-destructive">*</span>
                   </label>
-                  <Textarea
-                    id="message"
-                    placeholder="Parlez-nous de votre demande..."
-                    className="min-h-32"
-                    {...register("message")}
-                    aria-invalid={!!errors.message}
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="jean@exemple.com"
+                    {...register("email")}
+                    aria-invalid={!!errors.email}
                   />
-                  {errors.message && (
+                  {errors.email && (
                     <p className="text-xs text-destructive">
-                      {errors.message.message}
+                      {errors.email.message}
                     </p>
                   )}
                 </div>
+              </div>
 
-                <div className="flex items-center justify-between pt-4">
-                  <p className="text-xs text-muted-foreground">
-                    Nous ne partagerons jamais vos informations avec des tiers
+              <div className="space-y-2">
+                <label htmlFor="subject" className="text-sm font-medium">
+                  Sujet <span className="text-destructive">*</span>
+                </label>
+                <Input
+                  id="subject"
+                  placeholder="Comment pouvons-nous vous aider?"
+                  {...register("subject")}
+                  aria-invalid={!!errors.subject}
+                />
+                {errors.subject && (
+                  <p className="text-xs text-destructive">
+                    {errors.subject.message}
                   </p>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    size="lg"
-                    className="gap-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Envoi...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Envoyer
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="text-sm font-medium">
+                  Message <span className="text-destructive">*</span>
+                </label>
+                <Textarea
+                  id="message"
+                  placeholder="Parlez-nous de votre demande..."
+                  className="min-h-32"
+                  {...register("message")}
+                  aria-invalid={!!errors.message}
+                />
+                {errors.message && (
+                  <p className="text-xs text-destructive">
+                    {errors.message.message}
+                  </p>
+                )}
+              </div>
+
+              <p className="text-xs text-muted-foreground">
+                Nous ne partagerons jamais vos informations avec des tiers
+              </p>
+              <div className="flex items-center justify-between">
+                <Button
+                  disabled={isSubmitting}
+                  size="lg"
+                  className="gap-2"
+                  variant={"tertiary"}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Envoi...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Envoyer
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
 
         {/* Additional Info */}

@@ -76,8 +76,8 @@ export default function Header() {
 
   return (
     <div>
-      {/* {!isLoading && !isAuthenticated && (
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white">
+      {!isLoading && !isAuthenticated && (
+        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white lg:text-md text-sm">
           Offre exclusive! Préparez votre TCF gratuitement avec le code{" "}
           <span className="font-semibold">PRET100</span> et accédez à tous nos
           tests, exercices, et outils.
@@ -85,9 +85,9 @@ export default function Header() {
             Créer un compte maintenant
           </a>
         </div>
-      )} */}
+      )}
       <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
-        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-2 max-w-6xl relative">
+        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 lg:px-6 px-2 max-w-6xl relative">
           <div className="lg:hidden gap-1 flex">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -153,8 +153,8 @@ export default function Header() {
           )}
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-1 sm:gap-1 justify-end flex-1">
-              <Link href="/login" className="">
-                <Button>Se connecter</Button>
+              <Link href="/login">
+                <Button variant={"tertiary"}>Se connecter</Button>
               </Link>
               <Link href="/signup?next=/compte/essai-gratuit&package=trial" className="lg:flex hidden">
                 <Button variant="tertiary">Créer un compte</Button>
