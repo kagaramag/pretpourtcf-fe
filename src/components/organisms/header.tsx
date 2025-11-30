@@ -10,7 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, ArrowRight, LogOut, House, Menu, X, UserRound } from "lucide-react";
+import {
+  User,
+  ArrowRight,
+  LogOut,
+  House,
+  Menu,
+  X,
+  UserRound,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
@@ -68,7 +76,7 @@ export default function Header() {
 
   return (
     <div>
-      {!isLoading && !isAuthenticated && (
+      {/* {!isLoading && !isAuthenticated && (
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white">
           Offre exclusive! Préparez votre TCF gratuitement avec le code{" "}
           <span className="font-semibold">PRET100</span> et accédez à tous nos
@@ -77,9 +85,22 @@ export default function Header() {
             Créer un compte maintenant
           </a>
         </div>
-      )}
-      <header className="relative  inset-x-0 top-0 z-50 transition-all duration-300">
-        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-6 ">
+      )} */}
+      <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
+        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 px-6 sm:px-2 max-w-6xl relative">
+          <div className="lg:hidden gap-1 flex">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 bg-primary text-white rounded-full"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
           <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
             <Link href="/">
               <div className="w-[10px] sm:w-[180px] lg:w-[210px] hidden lg:block">
@@ -116,45 +137,30 @@ export default function Header() {
             ))}
           </div>
 
-          <div className="lg:w-[210px] flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
-            {!isLoading && isAuthenticated && (
-              <>
-                <Link href={getUserLink(user?.role)}>
-                  <div className="flex items-center gap-1 sm:gap-2 bg-primary/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-primary/20 transition-colors">
-                    <span className="text-xs sm:text-sm text-primary hidden sm:inline">
-                      Mon compte
-                    </span>
-                    <div className="w-9 h-9 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
-                      <UserRound className="lg:h-3 lg:w-3 sm:h-4 sm:w-4 text-white" />
-                    </div>
+          {!isLoading && isAuthenticated && (
+            <div className="lg:w-[210px] sm:hidden md:hidden flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
+              <Link href={getUserLink(user?.role)}>
+                <div className="flex items-center gap-1 sm:gap-2 bg-primary/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-primary/20 transition-colors">
+                  <span className="text-xs sm:text-sm text-primary hidden sm:inline">
+                    Mon compte
+                  </span>
+                  <div className="w-9 h-9 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
+                    <UserRound className="lg:h-3 lg:w-3 sm:h-4 sm:w-4 text-white" />
                   </div>
-                </Link>
-              </>
-            )}
-            {!isLoading && !isAuthenticated && (
-              <div className="flex gap-1 sm:gap-1">
-                <Link href="/login">
-                  <Button>Se connecter</Button>
-                </Link>
-                <Link href="/signup?next=/compte/essai-gratuit&package=trial">
-                  <Button variant="tertiary">Créer un compte</Button>
-                </Link>
-              </div>
-            )}
-          </div>
-          <div className="lg:hidden w-10">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 bg-primary text-white rounded-full"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </div>
+                </div>
+              </Link>
+            </div>
+          )}
+          {!isLoading && !isAuthenticated && (
+            <div className="flex gap-1 sm:gap-1 justify-end flex-1">
+              <Link href="/login" className="">
+                <Button>Se connecter</Button>
+              </Link>
+              <Link href="/signup?next=/compte/essai-gratuit&package=trial" className="lg:flex hidden">
+                <Button variant="tertiary">Créer un compte</Button>
+              </Link>
+            </div>
+          )}
         </div>
 
         {isMobileMenuOpen && (

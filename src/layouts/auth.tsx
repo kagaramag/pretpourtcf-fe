@@ -20,17 +20,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   console.log("jurl", pathname);
   return (
     <div className="w-full h-screen mx-auto flex flex-row overflow-hidden">
-      <div className="w-xl h-full bg-primary flex items-end justify-center relative">
-        {/* <div className="w-[140px] sm:w-[180px] lg:w-[240px] hidden lg:block absolute top-4 left-4">
-          <Image
-            src={Logo}
-            width={240}
-            height={120}
-            priority
-            alt="logo"
-            className="w-full mx-auto"
-          />
-        </div> */}
+      <div className="w-xl h-full bg-primary lg:flex items-end justify-center relative hidden">
         <div className="-mb-4">
           <Lottie animationData={happyUserAnimation} loop={true} />
         </div>

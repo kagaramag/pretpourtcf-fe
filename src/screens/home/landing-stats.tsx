@@ -19,7 +19,7 @@ export default function LandingStats() {
               leur TCF
             </p>
           </div>
-          <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-8 lg:grid-cols-4">
+          <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-4 lg:gap-8 lg:grid-cols-4">
             {stats.map((stat) => (
               <div
                 key={stat.id}

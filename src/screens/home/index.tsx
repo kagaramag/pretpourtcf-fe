@@ -34,7 +34,7 @@ export function IndexScreen() {
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
-        <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10">
+        <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10 lg:block hidden">
           <Image
             src={Hero}
             width={1200}
@@ -56,17 +56,17 @@ export function IndexScreen() {
             className="relative right-[calc(50%-5rem)] aspect-1155/678 w-300 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-5rem)] sm:w-340"
           />
         </div>
-        <div className="mx-auto max-w-6xl py-28 sm:py-56 md:py-18 lg:py-24 flex items-center relative">
-          <div className="px-2 sm:px-0 flex-1">
-            <h1 className="text-xl text-primary sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-none tracking-tight pb-2">
+        <div className="mx-auto max-w-6xl py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative">
+          <div className="px-2 sm:px-0 flex-1 text-center lg:text-left">
+            <h1 className="text-3xl text-primary sm:text-2xl md:text-5xl lg:text-4xl xl:text-5xl font-semibold lg:leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            <h4 className="mb-4 mt-2 text-black/80 sm:text-lg md:text-md text-pretty max-w-[550px]">
+            <h4 className="mb-4 mt-2 text-black/80 sm:text-lg md:text-md text-pretty lg:max-w-[550px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
             </h4>
-            <div className="mt-6 flex flex-row gap-2 sm:gap-x-2">
+            <div className="mt-6 flex lg:flex-row flex-col gap-2 sm:gap-x-2">
               <NavigationLink href="/signup">
                 <Button size="lg">Créer un compte</Button>
               </NavigationLink>
@@ -78,7 +78,7 @@ export function IndexScreen() {
             </div>
           </div>
           <div className="w-[373px] h-[440px] relative">
-            <div className="w-[373px] h-[440px] absolute right-0 bottom-0">
+            <div className="sm:w-[373px] sm:h-[440px] w-[360px] h-[300px] top-0 absolute right-0 bottom-0">
               <Image
                 src={TCFMethod}
                 width={373}
@@ -88,7 +88,7 @@ export function IndexScreen() {
                 className="w-full mx-auto"
               />
             </div>
-            <div className="w-[191px] h-[210px] absolute -top-[56px] -left-[50px] overflow-hidden rounded-3xl">
+            <div className="w-[191px] h-[210px] absolute -top-[56px] -left-[50px] overflow-hidden lg:block hidden">
               <Image
                 src={TCFPhoto}
                 width={191}
@@ -102,7 +102,7 @@ export function IndexScreen() {
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+          className="sm:block hidden  md:hidden absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         >
           <div
             style={{
@@ -116,7 +116,7 @@ export function IndexScreen() {
       <div className="bg-primary py-16 sm:py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl lg:mx-0">
-            <h2 className="text-2xl sm:text-2xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
+            <h2 className="text-2xl sm:text-xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
               Etapes simples commencer
             </h2>
             <h4 className="text-base sm:text-lg text-white leading-tight mt-2">
@@ -125,8 +125,8 @@ export function IndexScreen() {
               commencez à progresser à votre rythme.
             </h4>
           </div>
-          <div className="mx-auto mt-2 sm:mt-12 lg:mt-16 max-w-2xl lg:max-w-none">
-            <dl className="grid max-w-xl grid-cols-1 gap-4 sm:gap-6 md:gap-8 lg:max-w-none lg:grid-cols-3">
+          <div className="mx-auto mt-2 sm:mt-12 lg:mt-16 max-w-2xl w-full">
+            <dl className="grid lg:max-w-xl grid-cols-1 gap-4 sm:gap-6 md:gap-8 w-full lg:grid-cols-3">
               {quickSteps.map((feature) => (
                 <div
                   key={feature.name}
@@ -174,7 +174,7 @@ export function IndexScreen() {
               Rejoignez des milliers d'apprenants qui préparent leur TCF avec
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
-            <div className="flex items-center justify-center gap-x-6 px-4">
+            <div className="flex items-center lg:flex-row flex-col justify-center gap-6 px-4">
               <NavigationLink href="/signup">
                 <Button size="lg" variant={"tertiary"}>
                   Créer un compte
