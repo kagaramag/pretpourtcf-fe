@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, ArrowRight, LogOut, House, Menu, X } from "lucide-react";
+import { User, ArrowRight, LogOut, House, Menu, X, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
@@ -125,7 +125,7 @@ export default function Header() {
                       Mon compte
                     </span>
                     <div className="w-9 h-9 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
-                      <ArrowRight className="lg:h-3.5 lg:w-3.5 sm:h-5 sm:w-5 text-white" />
+                      <UserRound className="lg:h-3 lg:w-3 sm:h-4 sm:w-4 text-white" />
                     </div>
                   </div>
                 </Link>
@@ -158,11 +158,26 @@ export default function Header() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg absolute inset-x-0 top-full z-40">
             <div className="w-full space-y-2 flex flex-col px-4 py-4">
-              <LearnerNavigation
-                onLinkClick={() => setIsMobileMenuOpen(false)}
-              />
+              {!isLoading && isAuthenticated ? (
+                <LearnerNavigation
+                  onLinkClick={() => setIsMobileMenuOpen(false)}
+                />
+              ) : (
+                <>
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="font-semibold text-sm px-2 py-3 text-primary hover:bg-gray-50 rounded-lg"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         )}

@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/auth-context";
-import { User } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
     await logout();
   };
   const navigation = [
-    { name: "Mon compte", href: "/compte", icon: User, show: true },
+    { name: "Mon compte", href: "/compte", icon: UserRound, show: true },
     {
       name: "Séries",
       href: "/compte/series",
@@ -37,7 +37,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
         <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2">
             <div className="w-16 h-16 sm:w-18 sm:h-18 border border-gray-100 bg-white rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
-              <User className="h-6 w-6 sm:h-7 sm:w-7" />
+              <UserRound className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
               <div>
@@ -57,7 +57,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                 </Link>
               )}
             </div>
-            {/* <div className="w-full sm:w-auto">
+            <div className="w-full sm:w-auto lg:block md:block hidden">
               <Button
                 onClick={handleLogout}
                 size={"sm"}
@@ -66,7 +66,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
               >
                 Se déconnecter
               </Button>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
