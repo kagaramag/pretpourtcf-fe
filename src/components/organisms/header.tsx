@@ -138,7 +138,7 @@ export default function Header() {
           </div>
 
           {!isLoading && isAuthenticated && (
-            <div className="lg:w-[210px] sm:hidden md:hidden flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
+            <div className="lg:w-[210px] flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
               <Link href={getUserLink(user?.role)}>
                 <div className="flex items-center gap-1 sm:gap-2 bg-primary/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-primary/20 transition-colors">
                   <span className="text-xs sm:text-sm text-primary hidden sm:inline">
