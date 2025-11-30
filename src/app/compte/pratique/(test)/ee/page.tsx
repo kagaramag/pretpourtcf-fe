@@ -72,15 +72,23 @@ export default function WritingPracticePage() {
 
   return (
     <AccountLayout>
-      <div className="container mx-auto  max-w-6xl">
-        <div className="mb-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-2">
+          <Link
+            href="/compte"
+            className="px-0 text-blue-600 hover:text-blue-400"
+          >
+            &larr; Retour aux pratiques
+          </Link>
+        </div>
+        <div className="mb-4">
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="lg:text-3xl text-xl font-bold">Expression Écrite</h1>
+            <h1 className="lg:text-3xl text-xl font-bold">Expression écrite</h1>
           </div>
-          <p className="text-muted-foreground">
+          <h5>
             Choisissez un exercice d&apos;expression écrite pour pratiquer votre
             rédaction et votre grammaire
-          </p>
+          </h5>
         </div>
         <MethodEE />
         <div className="mt-6">

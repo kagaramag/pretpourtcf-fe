@@ -4,34 +4,38 @@ export default function MethodEO() {
       <h1 className="lg:text-2xl text-lg font-bold">
         Méthodologie pour la pratique de la expression orale
       </h1>
-      <div className="text-black/75 text-sm mb-2 max-w-3xl">
-        Vous écoutez des enregistrements audio (conversations, annonces,
-        interviews) diffusés une seule fois, puis vous répondez aux questions à
-        choix multiples basées sur ce que vous avez entendu.
-      </div>
+      <h5 className="text-sm mb-2 max-w-3xl">
+        L'épreuve se compose de 3 tâches : une présentation personnelle (2 min),
+        poser des questions sur un sujet donné (2 min de préparation + 4 min
+        d'interaction), et un débat avec l'examinateur sur un sujet d'actualité.
+      </h5>
       <div className="grid grid-cols-4 gap-3">
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Avant l'audio</h4>
+          <h4>Avant l'épreuve</h4>
           <div className="text-black/80 text-sm">
-            Lire rapidement les questions pour savoir quoi écouter
+            Préparer la présentation personnelle : identité, parcours, projets
+            et motivations.
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Pendant l'audio</h4>
+          <h4>Pendant la préparation</h4>
           <div className="text-black/80 text-sm">
-            Lire rapidement les questions pour savoir quoi écouter
+            Lire attentivement le sujet et noter rapidement des questions
+            variées ou des arguments clés.
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Répondre immédiatement</h4>
+          <h4>Pendant l'interaction</h4>
           <div className="text-black/80 text-sm">
-            Lire rapidement les questions pour savoir quoi écouter
+            Parler clairement, utiliser des connecteurs logiques et réagir aux
+            propos de l'examinateur.
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
           <h4>Conseil pratique</h4>
           <div className="text-black/80 text-sm">
-            S’entraîner avec des audios pour habituer l’oreille.
+            S'entraîner régulièrement à voix haute et suivre l'actualité pour
+            enrichir ses arguments.
           </div>
         </div>
       </div>

@@ -4,11 +4,11 @@ export default function MethodCO() {
       <h1 className="lg:text-2xl text-lg font-bold">
         Méthodologie pour la pratique de la compréhension orale
       </h1>
-      <div className="text-black/75 text-sm mb-2 max-w-3xl">
+      <h5 className="text-sm mb-2 max-w-3xl">
         Vous écoutez des enregistrements audio (conversations, annonces,
         interviews) diffusés une seule fois, puis vous répondez aux questions à
         choix multiples basées sur ce que vous avez entendu.
-      </div>
+      </h5>
       <div className="grid grid-cols-4 gap-3">
         <div className="p-3 bg-[#53d7b6] rounded-xl">
           <h4>Avant l'audio</h4>

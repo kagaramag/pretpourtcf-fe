@@ -430,7 +430,9 @@ export function QuestionFormDialog({
               <Label htmlFor="text">
                 Question Text <span className="text-red-500">*</span>
               </Label>
-              {formData.type === "short_answer" || formData.type === "essay" ? (
+              {formData.type === "short_answer" ||
+              formData.type === "essay" ||
+              practice?.type === "speaking" ? (
                 <>
                   {showAnswerPreview ? (
                     <div className="border rounded-lg p-4 min-h-[200px] prose prose-sm max-w-none bg-muted/30">
@@ -479,9 +481,7 @@ export function QuestionFormDialog({
               )}
             </div>
 
-            {
-            practice?.type !== "writing" &&
-            formData.type === "mcq" && (
+            {practice?.type !== "writing" && formData.type === "mcq" && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label>
@@ -614,55 +614,54 @@ export function QuestionFormDialog({
               </div>
             )}
 
-          
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="score">
-                    Score (Points) <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="score"
-                    type="number"
-                    min="1"
-                    max="100"
-                    value={formData.score}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        score: parseInt(e.target.value) || 1,
-                      })
-                    }
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="difficulty">Difficulty Level</Label>
-                  <Select
-                    value={formData.difficulty || "none"}
-                    onValueChange={(value: CEFRLevel | "none") =>
-                      setFormData({
-                        ...formData,
-                        difficulty: value === "none" ? "" : value,
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Optional" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
-                      <SelectItem value="A1">A1</SelectItem>
-                      <SelectItem value="A2">A2</SelectItem>
-                      <SelectItem value="B1">B1</SelectItem>
-                      <SelectItem value="B2">B2</SelectItem>
-                      <SelectItem value="C1">C1</SelectItem>
-                      <SelectItem value="C2">C2</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="score">
+                  Score (Points) <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="score"
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={formData.score}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      score: parseInt(e.target.value) || 1,
+                    })
+                  }
+                  required
+                />
               </div>
-            
+
+              <div className="space-y-2">
+                <Label htmlFor="difficulty">Difficulty Level</Label>
+                <Select
+                  value={formData.difficulty || "none"}
+                  onValueChange={(value: CEFRLevel | "none") =>
+                    setFormData({
+                      ...formData,
+                      difficulty: value === "none" ? "" : value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Optional" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="A1">A1</SelectItem>
+                    <SelectItem value="A2">A2</SelectItem>
+                    <SelectItem value="B1">B1</SelectItem>
+                    <SelectItem value="B2">B2</SelectItem>
+                    <SelectItem value="C1">C1</SelectItem>
+                    <SelectItem value="C2">C2</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             {/* Media Section */}
             {practice?.type !== "writing" && (
               <div className="space-y-3 p-4 border rounded-lg bg-muted/30">

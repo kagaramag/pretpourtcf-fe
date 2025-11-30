@@ -333,7 +333,7 @@ function TarifsPage() {
                                   plan.popular ? "text-white" : "text-gray-700"
                                 }`}
                               >
-                                Expression Écrite: {plan.details.ee} test
+                                Expression écrite: {plan.details.ee} test
                                 {plan.details.ee > 1 ? "s" : ""}
                               </span>
                             </li>

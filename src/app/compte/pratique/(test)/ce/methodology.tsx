@@ -1,39 +1,37 @@
-export default function MethodEE() {
+export default function MethodCE() {
   return (
     <div className="p-6 bg-[#69edcd] rounded-2xl flex flex-col gap-1">
       <h1 className="lg:text-2xl text-lg font-bold">
-        Méthodologie pour la pratique de l&apos;expression écrite
+        Méthodologie pour la pratique de la compréhension écrite
       </h1>
       <h5 className="text-sm mb-2 max-w-3xl">
-        Vous répondez à des questions écrites, rédigez des textes courts ou des
-        essais selon le niveau. Vos réponses sont évaluées sur la clarté, la
-        grammaire et la cohérence.
+        Vous lisez des textes variés (articles, annonces, courriels,
+        documents professionnels), puis vous répondez aux questions à
+        choix multiples basées sur votre compréhension du texte.
       </h5>
       <div className="grid grid-cols-4 gap-3">
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Lire attentivement</h4>
+          <h4>Avant la lecture</h4>
           <div className="text-black/80 text-sm">
-            Comprendre la question et ce qui est demandé avant d&apos;écrire
+            Lire rapidement les questions pour identifier les informations clés
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Structurer sa réponse</h4>
+          <h4>Pendant la lecture</h4>
           <div className="text-black/80 text-sm">
-            Organiser ses idées avec une introduction, un développement et une
-            conclusion
+            Repérer les mots-clés et les idées principales du texte
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Soigner la langue</h4>
+          <h4>Répondre méthodiquement</h4>
           <div className="text-black/80 text-sm">
-            Utiliser un vocabulaire riche et varié, éviter les répétitions
+            Relire les passages pertinents avant de choisir votre réponse
           </div>
         </div>
         <div className="p-3 bg-[#53d7b6] rounded-xl">
-          <h4>Relire et corriger</h4>
+          <h4>Conseil pratique</h4>
           <div className="text-black/80 text-sm">
-            Vérifier l&apos;orthographe, la grammaire et la ponctuation avant
-            de soumettre
+            Pratiquer régulièrement la lecture en français pour améliorer votre vitesse
           </div>
         </div>
       </div>

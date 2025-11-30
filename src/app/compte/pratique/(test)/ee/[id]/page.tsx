@@ -189,12 +189,15 @@ export default function WritingPracticeSessionPage() {
 
   // Calculate dynamic editor height based on content
   const calculateEditorHeight = (text: string) => {
-    const lines = text.split('\n').length;
+    const lines = text.split("\n").length;
     const minHeight = 240;
     const lineHeight = 24; // Approximate height per line
     const toolbarHeight = 30; // Toolbar height
     const padding = 20; // Extra padding
-    const calculatedHeight = Math.max(minHeight, lines * lineHeight + toolbarHeight + padding);
+    const calculatedHeight = Math.max(
+      minHeight,
+      lines * lineHeight + toolbarHeight + padding
+    );
     return calculatedHeight;
   };
 
@@ -332,7 +335,7 @@ export default function WritingPracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto lg:p-6 p-4 max-w-3xl">
           <Card className="p-6">
-            <h2 className="text-2xl font-semibold mb-6">Expression Écrite</h2>
+            <h2 className="text-2xl font-semibold mb-6">Expression écrite</h2>
 
             <div className="space-y-4 mb-8">
               <Alert>
@@ -378,7 +381,7 @@ export default function WritingPracticeSessionPage() {
 
             <div className="flex justify-center">
               <Button onClick={startTest} size="lg" className="px-8">
-                Commencer le test
+                Commencer
               </Button>
             </div>
           </Card>

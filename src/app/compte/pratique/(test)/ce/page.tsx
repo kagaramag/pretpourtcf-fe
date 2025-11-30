@@ -4,31 +4,28 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
-import { NavigationLink } from "@/components/ui/navigation-link";
+import { BookOpen, Clock, BarChart, FileText, ChevronRight } from "lucide-react";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
-import MethodCO from "./methodology";
+import MethodCE from "./methodology";
 
-export default function ListeningPracticePage() {
+export default function ReadingPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
   const [practices, setPractices] = useState<Practice[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchListeningPractices();
+    fetchReadingPractices();
   }, []);
 
-  const fetchListeningPractices = async () => {
+  const fetchReadingPractices = async () => {
     try {
       setLoading(true);
       const response = await practiceService.getAllPractices({
-        type: "listening",
+        type: "reading",
         isActive: true,
         sort: "_id",
         limit: 100,
@@ -84,27 +81,27 @@ export default function ListeningPracticePage() {
         <div className="mb-4">
           <div className="flex items-center gap-3">
             <h1 className="lg:text-3xl text-xl font-bold">
-              Compréhension Orale
+              Compréhension écrite
             </h1>
           </div>
           <h5>
-            Choisissez un exercice d&apos;écoute pour pratiquer votre
-            compréhension orale
+            Choisissez un exercice de lecture pour pratiquer votre
+            compréhension écrite
           </h5>
         </div>
-        <MethodCO />
+        <MethodCE />
         <div>
           <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques</h1>
         </div>
 
         {practices.length === 0 ? (
           <div>
-            <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
+            <FileText className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice disponible
             </h3>
             <div className="text-muted-foreground text-center max-w-md">
-              Il n&apos;y a pas d&apos;exercices de compréhension orale
+              Il n&apos;y a pas d&apos;exercices de compréhension écrite
               disponibles pour le moment.
             </div>
           </div>
@@ -112,7 +109,7 @@ export default function ListeningPracticePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {practices.map((practice) => (
               <Link
-                href={`/compte/pratique/co/${practice._id}`}
+                href={`/compte/pratique/ce/${practice._id}`}
                 key={practice._id}
               >
                 <div className="border border-gray-400 p-4 hover:bg-primary/5 hover:border-primary hover:text-primary cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
@@ -120,7 +117,7 @@ export default function ListeningPracticePage() {
                     {practice.title}
                   </h3>
                   <div className="w-6 h-6">
-                    <Play className="h-6 w-6" />
+                    <ChevronRight className="h-6 w-6" />
                   </div>
                 </div>
               </Link>
@@ -136,7 +133,7 @@ export default function ListeningPracticePage() {
             </h3>
             <div className="text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
-              <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>
+              <p>• Lisez attentivement chaque texte avant de répondre</p>
               <p>
                 • Vous ne pouvez pas sauter de questions, répondez dans
                 l&apos;ordre

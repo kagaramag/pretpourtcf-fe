@@ -59,7 +59,7 @@ const PreparationScreen = () => {
     },
     {
       id: 2,
-      title: "Expression Écrite",
+      title: "Expression écrite",
       icon: PenTool,
       color: "bg-purple-500",
       bgGradient:
