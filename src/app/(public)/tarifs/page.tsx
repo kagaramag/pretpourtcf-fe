@@ -99,10 +99,9 @@ function TarifsPage() {
           </div>
         </div>
       </div>
-      {/* Hero Section */}
       <div className="max-w-5xl w-full mx-auto">
         {category === "preparation" && (
-          <div className="w-full flex flex-row items-start bg-[#d3f4eb] gap-2  p-4">
+          <div className="w-full flex lg:flex-row items-start bg-[#d3f4eb] gap-2  p-4">
             <div className="w-18 h-18">
               <Image
                 src={Practice}
@@ -165,7 +164,7 @@ function TarifsPage() {
             </p>
           </div>
         ) : (
-          <div className="flex gap-6">
+          <div className="flex lg:flex-row md:flex-row flex-col gap-6">
             {plans
               .filter(
                 (plan) => plan.type !== "trial" && plan.category === category
