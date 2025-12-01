@@ -7,6 +7,7 @@ import MethodEO from "./methodology";
 import { Button } from "@/components/ui/button";
 import { practiceService } from "@/services/practice";
 import { PracticeWithQuestions } from "@/types";
+import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 import {
   ChevronDown,
@@ -113,9 +114,18 @@ export default function SpeakingPracticePage() {
           </h5>
         </div>
         <MethodEO />
-        <div className="mt-6 flex justify-center items-center gap-2">
+        <div className="mt-6 flex flex-col justify-center items-center gap-4 border-2 border-dashed border-tertiary rounded-lg p-6 bg-tertiary/10 text-center">
+          <div>
+            <h4 className="text-xl font-semibold">
+              Prêt pour un test aléatoire ?
+            </h4>
+            <h5 className="max-w-md">
+              Entraînez-vous dans les conditions réelles de l'examen: un sujet
+              sera tiré au sort parmi les thèmes disponibles
+            </h5>
+          </div>
           <Link href="/compte/pratique/eo/test">
-            <Button size={"lg"}>Test aleatoire</Button>
+            <Button size={"lg"}>Lancer un test aléatoire</Button>
           </Link>
         </div>
 
@@ -143,11 +153,11 @@ export default function SpeakingPracticePage() {
                 return (
                   <div
                     key={practiceData.practice.id}
-                    className="border border-gray-300 rounded-lg overflow-hidden"
+                    className="border-2 border-tertiary rounded-lg overflow-hidden"
                   >
                     {/* Practice Header */}
                     <div
-                      className="bg-gray-50 p-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                      className="bg-tertiary/20 p-4 cursor-pointer hover:bg-tertiary/40 transition-colors border-b-2 border-tertiary"
                       onClick={() => togglePractice(practiceData.practice.id)}
                     >
                       <div className="flex items-center justify-between">
@@ -169,10 +179,6 @@ export default function SpeakingPracticePage() {
                               <Clock className="h-4 w-4" />
                               {practiceData.practice.durationMinutes} min
                             </span>
-                            <span className="flex items-center gap-1">
-                              <MessageSquare className="h-4 w-4" />
-                              {practiceData.questionCount} questions
-                            </span>
                           </div>
                         </div>
                         <div>
@@ -189,52 +195,35 @@ export default function SpeakingPracticePage() {
                     {isExpanded && (
                       <div className="p-4 bg-white">
                         <h4 className="font-semibold mb-3 text-gray-700">
-                          Questions:
+                          Sujets:
                         </h4>
                         <div className="space-y-3">
                           {practiceData.questions.map((question) => (
                             <div
                               key={question._id}
-                              className="border-l-4 border-blue-500 pl-4 py-2 bg-gray-50 rounded-r"
+                              className="border-l-4 border-tertiary pl-4 py-2 bg-gray-50/50 rounded-r"
                             >
                               <div className="flex items-start gap-2">
-                                <span className="font-bold text-blue-600 min-w-[30px]">
+                                <span className="font-bold  min-w-[30px]">
                                   Q{question.number}
                                 </span>
                                 <div className="flex-1">
                                   <p className="text-gray-800">
-                                    {question.text}
+                                    <ReactMarkdown>
+                                      {question.text}
+                                    </ReactMarkdown>
                                   </p>
                                   {question.options &&
                                     question.options.length > 0 && (
                                       <ul className="mt-2 space-y-1 text-sm text-gray-600">
-                                        {question.options.map(
-                                          (option, idx) => (
-                                            <li key={idx}>
-                                              {String.fromCharCode(65 + idx)}.{" "}
-                                              {option}
-                                            </li>
-                                          )
-                                        )}
+                                        {question.options.map((option, idx) => (
+                                          <li key={idx}>
+                                            {String.fromCharCode(65 + idx)}.{" "}
+                                            {option}
+                                          </li>
+                                        ))}
                                       </ul>
                                     )}
-                                  <div className="mt-2 flex gap-2 items-center text-xs">
-                                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                                      Type: {question.type}
-                                    </span>
-                                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
-                                      Points: {question.score}
-                                    </span>
-                                    {question.difficulty && (
-                                      <span
-                                        className={`px-2 py-1 rounded ${getLevelColor(
-                                          question.difficulty
-                                        )}`}
-                                      >
-                                        {question.difficulty}
-                                      </span>
-                                    )}
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -256,13 +245,10 @@ export default function SpeakingPracticePage() {
             </h3>
             <div className="text-sm text-blue-800 space-y-2">
               <p>• Préparez-vous dans un environnement calme</p>
-              <p>
-                • Lisez attentivement chaque question avant de répondre
-              </p>
+              <p>• Lisez attentivement chaque question avant de répondre</p>
               <p>• Pratiquez votre prononciation à voix haute</p>
               <p>
-                • Les questions n&apos;ont ni audio ni image pour ces
-                exercices
+                • Les questions n&apos;ont ni audio ni image pour ces exercices
               </p>
             </div>
           </div>
