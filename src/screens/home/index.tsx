@@ -1,6 +1,7 @@
 import Hero from "@/assets/images/hero-bg.svg";
 import Wave from "@/assets/images/hero-waves.svg";
 import TCFMethod from "@/assets/images/tcf_method.svg";
+import OnBlueBG from "@/assets/images/on-blue-bg.svg";
 import TCFPhoto from "@/assets/images/tcf_photo.jpg";
 import Image from "next/image";
 import { NavigationLink } from "@/components/ui/navigation-link";
@@ -44,7 +45,7 @@ export function IndexScreen() {
             className="w-full mx-auto"
           />
         </div>
-        <div
+        {/* <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-2xl -sm:top-40"
         >
@@ -55,10 +56,10 @@ export function IndexScreen() {
             }}
             className="relative right-[calc(50%-5rem)] aspect-1155/678 w-300 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-5rem)] sm:w-340"
           />
-        </div>
+        </div> */}
         <div className="mx-auto max-w-6xl py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative">
           <div className="px-2 sm:px-0 flex-1 text-center lg:text-left">
-            <h1 className="text-3xl text-primary sm:text-2xl md:text-5xl lg:text-4xl xl:text-5xl font-semibold lg:leading-none tracking-tight pb-2">
+            <h1 className="text-primary text-3xl sm:text-2xl md:text-5xl lg:text-4xl xl:text-5xl font-semibold lg:leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
@@ -88,14 +89,14 @@ export function IndexScreen() {
                 className="w-full mx-auto"
               />
             </div>
-            <div className="w-[191px] h-[210px] absolute -top-[56px] -left-[50px] overflow-hidden lg:block hidden">
+            <div className="w-[191px] h-[220px] absolute -top-[56px] -left-[50px] overflow-hidden lg:block hidden">
               <Image
                 src={TCFPhoto}
                 width={191}
-                height={210}
+                height={220}
                 priority
                 alt="logo"
-                className="w-full mx-auto"
+                className="w-full mx-auto rounded-3xl"
               />
             </div>
           </div>
@@ -113,8 +114,8 @@ export function IndexScreen() {
           />
         </div>
       </div>
-      <div className="bg-primary py-16 sm:py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-primary py-16 sm:py-20 md:py-12 relative overflow-hidden">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 z-10 relative">
           <div className="mx-auto max-w-4xl lg:mx-0">
             <h2 className="text-2xl sm:text-xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
               Etapes simples commencer
@@ -125,23 +126,33 @@ export function IndexScreen() {
               commencez à progresser à votre rythme.
             </h4>
           </div>
-          <div className="mx-auto mt-2 sm:mt-12 lg:mt-16 max-w-2xl w-full">
-            <dl className="grid lg:max-w-xl grid-cols-1 gap-4 sm:gap-6 md:gap-8 w-full lg:grid-cols-3">
+          <div className="mx-auto mt-2 sm:mt-12 lg:mt-6 max-w-6xl w-full">
+            <dl className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 w-full lg:grid-cols-3">
               {quickSteps.map((feature) => (
                 <div
                   key={feature.name}
-                  className="flex flex-col bg-white/5 p-4 sm:p-6 rounded-lg"
+                  className="flex flex-col bg-tertiary p-4 sm:p-6 rounded-lg"
                 >
-                  <h3 className="text-lg sm:text-xl font-semibold text-white">
+                  <h3 className="text-lg sm:text-xl font-semibold text-primary">
                     {feature.name}
                   </h3>
-                  <dd className="mt-2 flex flex-auto flex-col text-sm sm:text-base text-white/80 leading-snug">
-                    <p className="flex-auto">{feature.description}</p>
-                  </dd>
+                  <h5 className="mt-2 flex flex-auto flex-col text-sm sm:text-base text-primary/80 leading-snug">
+                    {feature.description}
+                  </h5>
                 </div>
               ))}
             </dl>
           </div>
+        </div>
+        <div className="w-full h-full bottom-0 top-0 absolute right-0 left-0 z-0 border">
+          <Image
+            src={OnBlueBG}
+            width={1000}
+            height={400}
+            priority
+            alt="lines"
+            className="w-full mx-auto border"
+          />
         </div>
       </div>
       {/* Features Section */}
@@ -174,7 +185,7 @@ export function IndexScreen() {
               Rejoignez des milliers d'apprenants qui préparent leur TCF avec
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
-            <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-6 gap-2 px-4">
+            <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-2 gap-2 px-4">
               <NavigationLink href="/signup">
                 <Button size="lg" variant={"tertiary"}>
                   Créer un compte

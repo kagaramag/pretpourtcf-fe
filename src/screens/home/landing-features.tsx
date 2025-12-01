@@ -48,23 +48,23 @@ const features = [
 
 export default function LandingFeatures() {
   return (
-    <div className="bg-white py-16 sm:py-20 md:py-24 lg:py-32">
+    <div className="bg-white py-16 sm:py-20 md:py-24 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
-          <h2 className="text-base font-semibold text-primary">
+          <h2 className="text-base font-semibold">
             Tout ce dont vous avez besoin
           </h2>
-          <h2 className="mt-2 text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-gray-900 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary leading-tight">
             Une préparation complète au TCF
           </h2>
-          <p className="text-base sm:text-lg text-gray-600">
+          <h5 className="text-base sm:text-lg text-gray-700 leading-none mt-2">
             Nous mettons à votre disposition tous les outils nécessaires pour
             réussir votre test de connaissance du français. Notre plateforme est
             conçue pour vous accompagner à chaque étape.
-          </p>
+          </h5>
         </div>
-        <div className="mx-auto mt-12 sm:mt-16 lg:mt-20 max-w-2xl lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-6 sm:gap-8 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-12 sm:mt-4 lg:mt-4 max-w-2xl lg:max-w-none">
+          <dl className="grid max-w-xl grid-cols-1 gap-2 sm:gap-2 lg:max-w-none lg:grid-cols-3">
             {features.map((feature) => (
               <div
                 key={feature.name}
@@ -77,8 +77,8 @@ export default function LandingFeatures() {
                   />
                   {feature.name}
                 </h3>
-                <dd className="mt-4 flex flex-auto flex-col text-base text-gray-600">
-                  <p className="flex-auto">{feature.description}</p>
+                <dd className="flex flex-auto flex-col text-base text-gray-700 mt-2">
+                  <h5 className="flex-auto leading-none">{feature.description}</h5>
                 </dd>
               </div>
             ))}

@@ -32,43 +32,33 @@ export default function LandingTestimonials() {
     <div className="bg-gray-50 py-10 sm:py-20 md:py-14 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-4xl font-semibold tracking-tighter text-gray-900 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-semibold tracking-tighter text-primary leading-tight">
             Ce que disent nos utilisateurs
           </h2>
-          <p className="text-base sm:text-lg text-gray-600">
+          <h5 className="text-base sm:text-lg">
             Rejoignez des milliers de personnes qui ont réussi leur TCF grâce à
             notre plateforme.
-          </p>
+          </h5>
         </div>
-        <div className="mx-auto mt-12 sm:mt-16 grid max-w-2xl grid-cols-1 gap-2 sm:gap-4 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-4 grid max-w-2xl grid-cols-1 gap-2 sm:gap-4 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
               className="flex flex-col bg-white p-6 sm:p-8 rounded-2xl border border-gray-300/50"
             >
-              <div className="flex gap-x-1 text-primary">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
-              </div>
-              <blockquote className="mt-6 flex-1">
+              <blockquote className="flex-1">
                 <p className="text-base text-gray-900">
                   "{testimonial.content}"
                 </p>
               </blockquote>
-              <div className="mt-6 flex items-center gap-x-4">
+              <div className="mt-3 flex items-center gap-x-4">
                 <img
                   alt={testimonial.name}
                   src={testimonial.image}
-                  className="h-12 w-12 rounded-full bg-gray-50"
+                  className="h-8 w-8 rounded-full bg-gray-50"
                 />
-                <div>
-                  <div className="font-semibold text-gray-900">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {testimonial.role}
-                  </div>
+                <div className="font-semibold text-gray-900">
+                  {testimonial.name}
                 </div>
               </div>
             </div>

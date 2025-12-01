@@ -2,12 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  Calendar,
-  Menu,
-  X,
-  UserRound,
-} from "lucide-react";
+import { Calendar, Menu, X, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
@@ -16,17 +11,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LearnerNavigation from "@/components/molecules/learner-navigation";
 
-const navigation = [
-  { name: "Accueil", href: "/" },
-  { name: "Tarifs", href: "/tarifs" },
-  { name: "Séance gratuite", href: "/book" },
-];
-
 export default function Header() {
   const router = useRouter();
   const { user, isLoading, isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const navigation = [
+    { name: "Accueil", href: "/" },
+    { name: "Tarifs", href: "/tarifs" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,7 +69,7 @@ export default function Header() {
         </div>
       )}
       <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
-        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 lg:px-6 px-2 max-w-6xl relative">
+        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 lg:px-0 px-2 max-w-6xl relative">
           <div className="lg:hidden gap-1 flex">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -125,9 +119,12 @@ export default function Header() {
             ))}
             <Link
               href={"/book"}
-              className="font-semibold text-sm px-3 py-1 text-primary bg-tertiary hover:bg-tertiary/70 rounded-full ml-4 flex items-center gap-1"
+              className="text-sm pl-3 pr-1 py-1 bg-tertiary hover:bg-tertiary/70 rounded-full ml-4 flex items-center gap-1"
             >
-              Séance gratuite  <Calendar className="h-4 w-4" />
+              Séance gratuite
+              <span className="bg-white p-1 rounded-full">
+                <Calendar className="h-3 w-3" />
+              </span>
             </Link>
           </div>
 
@@ -154,7 +151,7 @@ export default function Header() {
                 href="/signup?next=/compte/essai-gratuit&package=trial"
                 className="lg:flex hidden"
               >
-                <Button variant="tertiary">Créer un compte</Button>
+                <Button>Créer un compte</Button>
               </Link>
             </div>
           )}

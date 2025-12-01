@@ -52,16 +52,16 @@ const faqs = [
 
 export default function LandingFAQ() {
   return (
-    <div className="bg-gray-50 py-10 sm:py-20 md:py-24 lg:py-4">
+    <div className="bg-gray-50 py-3 sm:py-20 md:py-24 lg:py-4">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-gray-900 text-center leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary text-center leading-tight">
             Questions fréquentes
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 text-center">
+          <h5 className="text-base sm:text-lg  text-center">
             Vous avez des questions? Nous avons les réponses.
-          </p>
-          <div className="mt-6 sm:mt-12 lg:mt-10">
+          </h5>
+          <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 rounded-2xl border border-gray-300/50">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
@@ -75,11 +75,11 @@ export default function LandingFAQ() {
               ))}
             </Accordion>
           </div>
-          <div className="mt-10 sm:mt-12 text-center">
+          <div className="mt-10 sm:mt-12 text-center mb-6">
             <p className="text-base text-gray-600">
               Vous avez d'autres questions?{" "}
               <a
-                href="#"
+                href="/contactez-nous"
                 className="font-semibold text-primary hover:text-primary/80"
               >
                 Contactez-nous

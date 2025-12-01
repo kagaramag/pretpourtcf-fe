@@ -38,7 +38,7 @@ export default function Footer() {
 
 
         {/* Legal Links */}
-        <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-2 sm:gap-y-3 text-xs sm:text-sm text-white/60">
+        {/* <div className="mt-8 sm:mt-10 flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-2 sm:gap-y-3 text-xs sm:text-sm text-white/60">
           {navigation.legal.map((item) => (
             <Link
               key={item.name}
@@ -48,7 +48,7 @@ export default function Footer() {
               {item.name}
             </Link>
           ))}
-        </div>
+        </div> */}
 
         {/* Copyright */}
         <div className="mt-8 sm:mt-10 border-t border-gray-200/5 pt-6 sm:pt-8">
