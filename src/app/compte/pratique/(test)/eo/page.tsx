@@ -77,9 +77,13 @@ export default function SpeakingPracticePage() {
     "692c1d115778a7b3364f6fde",
     "692c1df65778a7b3364f7011",
   ];
-  const filteredPractices = practicesData.filter((practice) =>
-    targetPracticeIds.includes(practice.practice.id)
-  );
+  const filteredPractices = practicesData
+    .filter((practice) => targetPracticeIds.includes(practice.practice.id))
+    .sort(
+      (a, b) =>
+        targetPracticeIds.indexOf(a.practice.id) -
+        targetPracticeIds.indexOf(b.practice.id)
+    );
 
   if (loading) {
     return (
@@ -208,11 +212,7 @@ export default function SpeakingPracticePage() {
                                   Q{question.number}
                                 </span>
                                 <div className="flex-1">
-                                  <p className="text-gray-800">
-                                    <ReactMarkdown>
-                                      {question.text}
-                                    </ReactMarkdown>
-                                  </p>
+                                  <ReactMarkdown>{question.text}</ReactMarkdown>
                                   {question.options &&
                                     question.options.length > 0 && (
                                       <ul className="mt-2 space-y-1 text-sm text-gray-600">

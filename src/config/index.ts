@@ -79,6 +79,9 @@ export const API_ENDPOINTS = {
   // Contact
   CONTACT: "/contact",
 
+  // Booking
+  BOOKING: "/booking",
+
   // Blogs (Admin)
   BLOGS: "/blogs",
   BLOG_DETAILS: "/blogs/:id",

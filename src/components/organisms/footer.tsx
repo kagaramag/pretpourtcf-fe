@@ -6,6 +6,7 @@ const navigation = {
     { name: "Accueil", href: "/" },
     { name: "Blog", href: "/blog" },
     { name: "Tarifs", href: "/tarifs" },
+    { name: "Séance gratuite", href: "/book" },
     { name: "Contact", href: "/contactez-nous" },
   ],
   legal: [

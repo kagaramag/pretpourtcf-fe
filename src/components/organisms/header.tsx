@@ -3,18 +3,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  User,
-  ArrowRight,
-  LogOut,
-  House,
+  Calendar,
   Menu,
   X,
   UserRound,
@@ -29,9 +18,8 @@ import LearnerNavigation from "@/components/molecules/learner-navigation";
 
 const navigation = [
   { name: "Accueil", href: "/" },
-  // { name: "Preparations", href: "/preparations" },
-  // { name: "Formations", href: "/formations" },
   { name: "Tarifs", href: "/tarifs" },
+  { name: "Séance gratuite", href: "/book" },
 ];
 
 export default function Header() {
@@ -135,6 +123,12 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            <Link
+              href={"/book"}
+              className="font-semibold text-sm px-3 py-1 text-primary bg-tertiary hover:bg-tertiary/70 rounded-full ml-4 flex items-center gap-1"
+            >
+              Séance gratuite  <Calendar className="h-4 w-4" />
+            </Link>
           </div>
 
           {!isLoading && isAuthenticated && (
@@ -156,7 +150,10 @@ export default function Header() {
               <Link href="/login">
                 <Button variant={"tertiary"}>Se connecter</Button>
               </Link>
-              <Link href="/signup?next=/compte/essai-gratuit&package=trial" className="lg:flex hidden">
+              <Link
+                href="/signup?next=/compte/essai-gratuit&package=trial"
+                className="lg:flex hidden"
+              >
                 <Button variant="tertiary">Créer un compte</Button>
               </Link>
             </div>
