@@ -10,6 +10,7 @@ import {
   Flame,
   Crown,
   LogOut,
+  Home,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -34,6 +35,7 @@ export default function LearnerNavigation({
   }
 
   const navigation = [
+    { name: "Accueil", href: "/", icon: Home },
     { name: "Mon compte", href: "/compte", icon: User },
     { name: "Abonnements", href: "/compte/plans", icon: List },
     {
@@ -79,7 +81,6 @@ export default function LearnerNavigation({
     onLinkClick?.();
   };
 
-
   return (
     <nav className="relative flex flex-1 flex-col">
       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -95,7 +96,7 @@ export default function LearnerNavigation({
                     <div
                       className={classNames(
                         "text-gray-700 opacity-40 cursor-not-allowed",
-                        "group border border-accent/20 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
                       )}
                     >
                       <item.icon
@@ -112,7 +113,7 @@ export default function LearnerNavigation({
                       onClick={handleLogout}
                       className={classNames(
                         "text-gray-700 hover:bg-gray-50 hover:text-gray-50",
-                        "group border border-gray-300/50 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold w-full"
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
                       )}
                     >
                       <item.icon
@@ -129,7 +130,7 @@ export default function LearnerNavigation({
                         isActive
                           ? "bg-gray-50"
                           : "text-gray-700 hover:bg-gray-50 hover:text-gray-50",
-                        "group border border-gray-300/50 flex gap-x-3 items-center rounded-full py-2 px-4 text-sm/6 font-semibold"
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
                       )}
                     >
                       <item.icon

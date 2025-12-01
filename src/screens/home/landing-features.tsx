@@ -50,11 +50,11 @@ export default function LandingFeatures() {
   return (
     <div className="bg-white py-16 sm:py-20 md:py-24 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center">
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-base font-semibold">
             Tout ce dont vous avez besoin
           </h2>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary leading-tight">
+          <h2 className="text-4xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary leading-none">
             Une préparation complète au TCF
           </h2>
           <h5 className="text-base sm:text-lg text-gray-700 leading-none mt-2">

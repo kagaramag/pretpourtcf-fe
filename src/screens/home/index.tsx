@@ -116,8 +116,8 @@ export function IndexScreen() {
       </div>
       <div className="bg-primary py-16 sm:py-20 md:py-12 relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 z-10 relative">
-          <div className="mx-auto max-w-4xl lg:mx-0">
-            <h2 className="text-2xl sm:text-xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
+          <div className="mx-auto max-w-4xl lg:mx-0 text-center">
+            <h2 className="text-4xl sm:text-xl md:text-5xl font-semibold tracking-tight leading-none text-pretty text-white">
               Etapes simples commencer
             </h2>
             <h4 className="text-base sm:text-lg text-white leading-tight mt-2">
@@ -144,7 +144,7 @@ export function IndexScreen() {
             </dl>
           </div>
         </div>
-        <div className="w-full h-full bottom-0 top-0 absolute right-0 left-0 z-0 border">
+        <div className="w-full h-full bottom-0 top-0 absolute right-0 left-0 z-0 lg:block hidden">
           <Image
             src={OnBlueBG}
             width={1000}

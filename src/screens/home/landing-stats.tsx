@@ -14,7 +14,7 @@ export default function LandingStats() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
-            <h2 className="text-3xl font-semibold tracking-tighter text-white sm:text-4xl">
+            <h2 className="text-4xl font-semibold tracking-tighter text-white sm:text-4xl">
               Des résultats qui parlent d'eux-mêmes
             </h2>
             <p className="text-base sm:text-lg text-white/90">
@@ -22,7 +22,7 @@ export default function LandingStats() {
               leur TCF
             </p>
           </div>
-          <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-4 lg:gap-8 lg:grid-cols-4">
+          <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-2 lg:gap-8 lg:grid-cols-4">
             {stats.map((stat) => (
               <div
                 key={stat.id}
@@ -39,7 +39,7 @@ export default function LandingStats() {
           </dl>
         </div>
       </div>
-      <div className="w-[1000px] h-full bottom-0 absolute right-0 left-0 z-0 mx-auto">
+      <div className="w-[1000px] h-full bottom-0 absolute right-0 left-0 z-0 mx-auto lg:block hidden">
         <Image
           src={OnBlueBG}
           width={1000}
