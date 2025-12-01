@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { BookOpen, Clock, BarChart, FileText, ChevronRight } from "lucide-react";
+import {
+  BookOpen,
+  Clock,
+  BarChart,
+  FileText,
+  ChevronRight,
+} from "lucide-react";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -85,8 +91,8 @@ export default function ReadingPracticePage() {
             </h1>
           </div>
           <h5>
-            Choisissez un exercice de lecture pour pratiquer votre
-            compréhension écrite
+            Choisissez un exercice de lecture pour pratiquer votre compréhension
+            écrite
           </h5>
         </div>
         <MethodCE />
@@ -128,7 +134,6 @@ export default function ReadingPracticePage() {
         <div className="mt-8">
           <div className="p-4 border border-gray-200 bg-blue-50">
             <h3 className="flex items-center gap-2 text-blue-900">
-              <BarChart className="h-5 w-5" />
               Conseils pour réussir
             </h3>
             <div className="text-sm text-blue-800 space-y-2">

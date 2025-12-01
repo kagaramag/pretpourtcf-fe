@@ -369,14 +369,6 @@ export default function WritingPracticeSessionPage() {
                   </div>
                 ))}
               </div>
-
-              <Alert className="bg-blue-50 border-blue-200">
-                <AlertDescription className="text-blue-900">
-                  <strong>Important:</strong> Le chronomètre démarre dès que
-                  vous cliquez sur "Commencer". Assurez-vous d'être prêt avant
-                  de démarrer le test.
-                </AlertDescription>
-              </Alert>
             </div>
 
             <div className="flex justify-center">

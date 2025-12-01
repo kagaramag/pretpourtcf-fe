@@ -162,6 +162,23 @@ export interface PracticeQuestionsPaginatedResponse {
   };
 }
 
+export interface PracticeWithQuestions {
+  practice: {
+    id: string;
+    title: string;
+    level?: CEFRLevel;
+    durationMinutes: number;
+    totalQuestions: number;
+  };
+  questions: PracticeQuestion[];
+  questionCount: number;
+}
+
+export interface SpeakingPracticesResponse {
+  practices: PracticeWithQuestions[];
+  totalPractices: number;
+}
+
 // Practice Session Types
 export type SessionStatus = "in_progress" | "completed" | "expired";
 export type SessionGrade = "excellent" | "good" | "needs_improvement";

@@ -91,6 +91,9 @@ export default function WritingPracticePage() {
           </h5>
         </div>
         <MethodEE />
+
+        {/* tabs: list of questions | list of series */}
+
         <div className="mt-6">
           {practices.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
@@ -122,20 +125,6 @@ export default function WritingPracticePage() {
               ))}
             </div>
           )}
-        </div>
-
-        <div className="mt-8">
-          <div className="border-blue-200 bg-blue-50 p-4">
-            <h3 className="flex items-center gap-2 text-blue-900">
-              Conseils pour réussir
-            </h3>
-            <div className="text-sm text-blue-800 space-y-2">
-              <p>• Prenez le temps de bien comprendre la consigne</p>
-              <p>• Organisez vos idées avant de commencer à écrire</p>
-              <p>• Utilisez un vocabulaire varié et précis</p>
-              <p>• Relisez-vous pour corriger les fautes</p>
-            </div>
-          </div>
         </div>
       </div>
     </AccountLayout>

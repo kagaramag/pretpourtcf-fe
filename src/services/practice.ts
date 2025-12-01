@@ -5,6 +5,7 @@ import {
   PracticesPaginatedResponse,
   PracticeType,
   CEFRLevel,
+  SpeakingPracticesResponse,
 } from "@/types";
 import { API_ENDPOINTS } from "@/config";
 
@@ -109,6 +110,17 @@ export const practiceService = {
   ): Promise<BackendApiResponse<Record<string, never>>> => {
     return await apiClient.delete<BackendApiResponse<Record<string, never>>>(
       `${API_ENDPOINTS.PRACTICES}/${id}`
+    );
+  },
+
+  /**
+   * Get speaking practices with questions grouped by practice ID
+   */
+  getSpeakingPracticeQuestions: async (): Promise<
+    BackendApiResponse<SpeakingPracticesResponse>
+  > => {
+    return await apiClient.get<BackendApiResponse<SpeakingPracticesResponse>>(
+      `${API_ENDPOINTS.PRACTICES}/speaking/questions`
     );
   },
 };
