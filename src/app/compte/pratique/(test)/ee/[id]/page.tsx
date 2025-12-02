@@ -26,7 +26,7 @@ import MDEditor from "@uiw/react-md-editor";
 const QUESTION_CONFIG = [
   { time: 15, minWords: 60, maxWords: 120, label: "Réduction d'un message" },
   { time: 20, minWords: 80, maxWords: 120, label: "Blog" },
-  { time: 25, minWords: 120, maxWords: 150, label: "Conciliation" },
+  { time: 25, minWords: 120, maxWords: 150, label: "Conciliation des idées" },
 ];
 
 const TOTAL_TIME = 60; // 60 minutes total
