@@ -52,7 +52,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                 <Link href="/compte/plans">
                   <div className="text-xs inline-block whitespace-nowrap">
                     Abonnement: {user?.subscription?.plan?.name} {" - "}
-                    {user?.subscription?.days_remaining}jours
+                    {user?.subscription?.days_remaining} Jours
                   </div>
                 </Link>
               )}

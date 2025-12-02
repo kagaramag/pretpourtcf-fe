@@ -1,13 +1,13 @@
+"use client";
+
+import Image from "next/image";
+import { useAuth } from "@/contexts/auth-context";
 import Hero from "@/assets/images/hero-bg.svg";
-import Wave from "@/assets/images/hero-waves.svg";
 import TCFMethod from "@/assets/images/tcf_method.svg";
 import OnBlueBG from "@/assets/images/on-blue-bg.svg";
 import TCFPhoto from "@/assets/images/tcf_photo.jpg";
-import Image from "next/image";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import LandingFeatures from "./landing-features";
-import LandingHowItWorks from "./landing-how-it-works";
-import LandingPricing from "./landing-pricing";
 import LandingTestimonials from "./landing-testimonials";
 import LandingFAQ from "./landing-faq";
 import LandingStats from "./landing-stats";
@@ -32,6 +32,7 @@ const quickSteps = [
 ];
 
 export function IndexScreen() {
+  const { user, isLoading, isAuthenticated, logout } = useAuth();
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
@@ -45,18 +46,6 @@ export function IndexScreen() {
             className="w-full mx-auto"
           />
         </div>
-        {/* <div
-          aria-hidden="true"
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-2xl -sm:top-40"
-        >
-          <div
-            style={{
-              clipPath:
-                "polygon(74.1% 30.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 90.1%, 80.5% 50.3%, 80.2% 34.5%, 50.5% 76.7%, 0.1% 64.9%, 45.9% 100%, 70.6% 76.8%, 90.1% 97.7%, 90.1% 44.1%)",
-            }}
-            className="relative right-[calc(50%-5rem)] aspect-1155/678 w-300 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-5rem)] sm:w-340"
-          />
-        </div> */}
         <div className="mx-auto max-w-6xl py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative">
           <div className="px-2 sm:px-0 flex-1 text-center lg:text-left">
             <h1 className="text-primary text-3xl sm:text-2xl md:text-5xl lg:text-4xl xl:text-5xl font-semibold lg:leading-none tracking-tight pb-2">
@@ -68,14 +57,24 @@ export function IndexScreen() {
               votre test du premier coup
             </h4>
             <div className="mt-6 flex lg:flex-row flex-col gap-2 sm:gap-x-2">
-              <NavigationLink href="/signup">
-                <Button size="lg">Créer un compte</Button>
-              </NavigationLink>
-              <NavigationLink href="/compte/essai-gratuit">
-                <Button variant={"outline"} size="lg">
-                  Essayer gratuitement
-                </Button>
-              </NavigationLink>
+              {!isLoading && isAuthenticated ? (
+                <>
+                  <NavigationLink href="/compte">
+                    <Button size="lg">Mon compte</Button>
+                  </NavigationLink>
+                </>
+              ) : (
+                <>
+                  <NavigationLink href="/signup">
+                    <Button size="lg">Créer un compte</Button>
+                  </NavigationLink>
+                  <NavigationLink href="/compte/essai-gratuit">
+                    <Button variant={"outline"} size="lg">
+                      Essayer gratuitement
+                    </Button>
+                  </NavigationLink>
+                </>
+              )}
             </div>
           </div>
           <div className="w-[373px] h-[440px] relative">
@@ -155,21 +154,11 @@ export function IndexScreen() {
           />
         </div>
       </div>
-      {/* Features Section */}
       <LandingFeatures />
 
-      {/* Stats Section */}
       <LandingStats />
-
-      {/* How It Works Section */}
-      {/* <div id="how-it-works">
-        <LandingHowItWorks />
-      </div> */}
-
-      {/* Testimonials Section */}
       <LandingTestimonials />
 
-      {/* FAQ Section */}
       <div id="faq">
         <LandingFAQ />
       </div>
@@ -186,16 +175,28 @@ export function IndexScreen() {
               succès. Commencez votre préparation dès aujourd'hui.
             </p>
             <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-2 gap-2 px-4">
-              <NavigationLink href="/signup">
-                <Button size="lg" variant={"tertiary"}>
-                  Créer un compte
-                </Button>
-              </NavigationLink>
-              <NavigationLink href="/compte/essai-gratuit">
-                <Button variant={"outline"} size="lg">
-                  Essayer gratuitement
-                </Button>
-              </NavigationLink>
+              {!isLoading && isAuthenticated ? (
+                <>
+                  <NavigationLink href="/compte">
+                    <Button size="lg" variant={"tertiary"}>
+                      Mon compte
+                    </Button>
+                  </NavigationLink>
+                </>
+              ) : (
+                <>
+                  <NavigationLink href="/signup">
+                    <Button size="lg" variant={"tertiary"}>
+                      Créer un compte
+                    </Button>
+                  </NavigationLink>
+                  <NavigationLink href="/compte/essai-gratuit">
+                    <Button variant={"outline"} size="lg">
+                      Essayer gratuitement
+                    </Button>
+                  </NavigationLink>
+                </>
+              )}
             </div>
           </div>
         </div>

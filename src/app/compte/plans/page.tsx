@@ -85,10 +85,10 @@ function PlansPage() {
     return (
       <div className="w-full">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Mon Abonnement</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Mon abonnement</h1>
+          <h5 className="text-muted-foreground">
             Gérez votre abonnement et consultez les détails
-          </p>
+          </h5>
         </div>
 
         <div className="grid gap-6 max-w-3xl">
@@ -206,7 +206,9 @@ function PlansPage() {
                     </div>
                   )}
                   <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                  <div className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}>
+                  <div
+                    className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}
+                  >
                     {plan.description}
                   </div>
                   <div className="my-3">
@@ -375,9 +377,11 @@ function PlansPage() {
                   </div>
                 )}
                 <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                 <div className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}>
-                    {plan.description}
-                  </div>
+                <div
+                  className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}
+                >
+                  {plan.description}
+                </div>
                 <div className="my-3">
                   <Button
                     onClick={() => handleSelectPlan(plan)}
