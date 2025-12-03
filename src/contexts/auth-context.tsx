@@ -41,23 +41,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check if user is logged in on mount
     const initAuth = async () => {
       try {
-        const cachedUser = authService.getCachedUser();
-        if (cachedUser) {
-          setUser(cachedUser);
+        const token = authService.getToken();
 
+        // Only proceed if we have a token
+        if (token) {
           try {
+            // Verify token is still valid by fetching current user from API
             const currentUser = await authService.getCurrentUser();
             if (currentUser) {
               setUser(currentUser);
+            } else {
+              // Token exists but couldn't get user - clear everything
+              setUser(null);
+              authService.logout();
             }
           } catch (error) {
             console.error("Failed to verify user:", error);
+            // Token is invalid or expired - clear everything
             setUser(null);
             authService.logout();
           }
+        } else {
+          // No token found - ensure user state is null
+          setUser(null);
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
+        setUser(null);
       } finally {
         setIsLoading(false);
       }

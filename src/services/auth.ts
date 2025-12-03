@@ -70,38 +70,46 @@ export const authService = {
 
   logout: async (): Promise<void> => {
     if (typeof window !== "undefined") {
+      // Clear all auth-related data from localStorage
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_data");
 
+      // Clear cookies
       document.cookie =
         "access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      document.cookie =
+        "refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     }
   },
 
   getCurrentUser: async (): Promise<User | null> => {
     try {
-      if (typeof window !== "undefined") {
-        const userStr = localStorage.getItem("user_data");
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          return user;
-        }
-      }
-
+      // Always fetch from API to verify token is still valid
       const response = await apiClient.get<BackendApiResponse<{ user: User }>>(
         "/auth/me"
       );
 
       if (response.data?.user) {
-        localStorage.setItem("user_data", JSON.stringify(response.data.user));
+        // Update cache with fresh data
+        if (typeof window !== "undefined") {
+          localStorage.setItem("user_data", JSON.stringify(response.data.user));
+        }
         return response.data.user;
       }
 
+      // API returned no user - clear stale cache
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user_data");
+      }
       return null;
     } catch (error) {
       console.error("Failed to get current user:", error);
-      return null;
+      // Clear stale cache on error
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("user_data");
+      }
+      throw error;
     }
   },
 
@@ -155,7 +163,9 @@ export const authService = {
   isAuthenticated: (): boolean => {
     if (typeof window === "undefined") return false;
     const token = localStorage.getItem("access_token");
-    return !!token;
+    const userData = localStorage.getItem("user_data");
+    // Only consider authenticated if BOTH token and user data exist
+    return !!token && !!userData;
   },
 
   getCachedUser: (): User | null => {

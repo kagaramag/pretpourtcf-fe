@@ -56,8 +56,18 @@ function PratiqueGratuitPage() {
     <AccountLayout>
       <div className="flex flex-col gap-4">
         <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-4">Pratiques gratuit</h2>
-          <div className="flex flex-row gap-2 bg-primary/10 p-2 rounded-full">
+          <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
+          <div className="mt-6 flex flex-col justify-center items-center border-2 border-dashed border-tertiary rounded-lg p-6 bg-tertiary/10 text-center">
+            Offre exclusive! Préparez votre TCF gratuitement avec le code
+            PRET100 et accédez à tous nos tests, exercices, et outils.
+            <a href="/compte/abonner?plan_id=6907104178c21a54d6e2cd9c" className="whitespace-nowrap underline pl-2">
+              Allez au paiement
+            </a>
+            et saisissez le code PRET100 lors du checkout — le montant sera
+            annulé.
+          </div>
+
+          {/* <div className="flex flex-row gap-2 bg-primary/10 p-2 rounded-full">
             {categories.map((category) => (
               <button
                 key={category.type}
@@ -71,9 +81,9 @@ function PratiqueGratuitPage() {
                 {category.label}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
-        <div className="flex-1 py-4">
+        {/* <div className="flex-1 py-4">
           {!selectedCategory && (
             <div className="text-gray-500 text-center mt-8">
               Sélectionnez une catégorie pour afficher les pratiques disponibles
@@ -90,9 +100,6 @@ function PratiqueGratuitPage() {
 
           {!loading && !error && selectedCategory && (
             <div>
-              {/* <h2 className="text-xl font-semibold mb-4">
-                {categories.find((c) => c.type === selectedCategory)?.label}
-              </h2> */}
               {practices.length === 0 ? (
                 <div className="text-gray-500">Aucune pratique gratuite disponible pour cette catégorie pour le moment</div>
               ) : (
@@ -138,7 +145,7 @@ function PratiqueGratuitPage() {
               )}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </AccountLayout>
   );

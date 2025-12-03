@@ -12,6 +12,7 @@ import LandingTestimonials from "./landing-testimonials";
 import LandingFAQ from "./landing-faq";
 import LandingStats from "./landing-stats";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const quickSteps = [
   {
@@ -32,7 +33,7 @@ const quickSteps = [
 ];
 
 export function IndexScreen() {
-  const { user, isLoading, isAuthenticated, logout } = useAuth();
+  const { user, isLoading, isAuthenticated } = useAuth();
   return (
     <>
       <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
@@ -60,7 +61,10 @@ export function IndexScreen() {
               {!isLoading && isAuthenticated ? (
                 <>
                   <NavigationLink href="/compte">
-                    <Button size="lg">Mon compte</Button>
+                    <Button size="lg">
+                      Mon compte
+                      <ArrowRight className="mx-2 h-4 w-4" />
+                    </Button>
                   </NavigationLink>
                 </>
               ) : (
@@ -179,7 +183,7 @@ export function IndexScreen() {
                 <>
                   <NavigationLink href="/compte">
                     <Button size="lg" variant={"tertiary"}>
-                      Mon compte
+                      Mon compte <ArrowRight className="mx-2 h-4 w-4" />
                     </Button>
                   </NavigationLink>
                 </>
