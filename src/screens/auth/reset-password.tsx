@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
-  CardContent,
-  CardTitle,
+    CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -63,11 +62,11 @@ function ResetPasswordForm() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <Card className="w-full max-w-md">
-          <CardContent>
+          <div>
             <Link href="/forgot-password">
               <Button className="w-full">Request a new reset link</Button>
             </Link>
-          </CardContent>
+          </div>
         </Card>
       </div>
     );
@@ -76,7 +75,7 @@ function ResetPasswordForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
-        <CardContent>
+        <div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">New password</Label>
@@ -145,7 +144,7 @@ function ResetPasswordForm() {
               </Button>
             </Link>
           </form>
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

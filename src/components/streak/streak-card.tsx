@@ -1,7 +1,7 @@
 "use client";
 
 import { Streak, Reward } from "@/services/streak";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Trophy, Clock, Zap } from "lucide-react";
@@ -109,7 +109,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
         </>
       )}
 
-      <CardContent className="space-y-2">
+      <div className="p-6 space-y-2">
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
@@ -222,7 +222,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
             </p>
           )}
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

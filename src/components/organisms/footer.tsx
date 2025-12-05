@@ -51,7 +51,7 @@ export default function Footer() {
         </div> */}
 
         {/* Copyright */}
-        <div className="mt-8 sm:mt-10 border-t border-gray-200/5 pt-6 sm:pt-8">
+        <div className="mt-8 sm:mt-10 border-t border-border/5 pt-6 sm:pt-8">
           <p className="text-center text-xs sm:text-sm text-white/60 px-4">
             &copy; 2025 PRET POUR TCF. Tous les droits sont réservés.
           </p>

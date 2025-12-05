@@ -274,7 +274,7 @@ export default function PracticeSessionPage() {
         </div>
 
         {/* Question Card */}
-        <div className="lg:p-5 lg:border border-gray-200 rounded-2xl">
+        <div className="lg:p-5 lg:border border-border rounded-2xl">
           <div className="lg:mb-6 mb-3 flex justify-between items-center">
             <div className="text-xl">Question {currentQuestion.number}</div>
           </div>
@@ -333,7 +333,7 @@ export default function PracticeSessionPage() {
                           ? "border-green-500 bg-green-50 shadow-md"
                           : selectedAnswer === index
                             ? "border-primary bg-primary/10 shadow-md"
-                            : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
+                            : "border-border hover:border-primary/50 hover:bg-gray-50"
                       } ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       <div className="flex items-center gap-3">

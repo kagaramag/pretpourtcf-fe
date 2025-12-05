@@ -9,7 +9,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 import { authService } from "@/services/auth";
 import { referralService } from "@/services/referral";
@@ -152,8 +152,10 @@ export function SignupForm() {
           </div>
         </div>
         <CardTitle className="text-2xl">Vérifiez votre email</CardTitle>
-        Un email de vérification a été envoyé à <strong>{userEmail}</strong>
-        <CardContent className="space-y-4">
+        <div className="p-6">
+          Un email de vérification a été envoyé à <strong>{userEmail}</strong>
+        </div>
+        <div className="p-6 space-y-4">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
             <p className="text-sm text-blue-800">
               Veuillez vérifier votre boîte de réception et cliquer sur le lien
@@ -184,7 +186,7 @@ export function SignupForm() {
               Renvoyer l'email de vérification
             </Button>
           </div>
-        </CardContent>
+        </div>
       </Card>
     );
   }
@@ -220,7 +222,7 @@ export function SignupForm() {
               className={`flex flex-col items-center justify-center space-y-3 border-2 rounded-lg p-6 cursor-pointer transition-all ${
                 selectedRole === "client"
                   ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-border hover:border-gray-300"
               }`}
             >
               <div className="text-4xl">👨‍🎓</div>
@@ -235,7 +237,7 @@ export function SignupForm() {
               className={`flex flex-col items-center justify-center space-y-3 border-2 rounded-lg p-6 cursor-pointer transition-all ${
                 selectedRole === "trainer"
                   ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-border hover:border-gray-300"
               }`}
             >
               <div className="text-4xl">👨‍🏫</div>

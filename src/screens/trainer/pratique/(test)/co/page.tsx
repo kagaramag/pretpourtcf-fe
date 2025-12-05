@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
-  CardContent,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -88,7 +87,7 @@ export default function ListeningPracticePage() {
 
         {practices.length === 0 ? (
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucun exercice disponible
@@ -97,7 +96,7 @@ export default function ListeningPracticePage() {
                 Il n&apos;y a pas d&apos;exercices de compréhension orale
                 disponibles pour le moment.
               </p>
-            </CardContent>
+            </div>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -106,6 +105,7 @@ export default function ListeningPracticePage() {
                 key={practice._id}
                 className="hover:shadow-lg transition-shadow cursor-pointer group"
               >
+                <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <CardTitle className="group-hover:text-primary transition-colors">
@@ -122,7 +122,9 @@ export default function ListeningPracticePage() {
                       )}
                     </div>
                   </div>
-                    <div className="flex items-center gap-1">
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
                       <span>{practice.durationMinutes} min</span>
                     </div>
@@ -130,14 +132,15 @@ export default function ListeningPracticePage() {
                       <BookOpen className="h-4 w-4" />
                       <span>{practice.totalQuestions} questions</span>
                     </div>
-                <CardContent>
+                </div>
+                <div className="p-6">
                   <NavigationLink href={`/compte/pratique/co/${practice._id}`}>
                     <Button className="w-full group-hover:bg-primary/90" size="sm">
                       <Play className="h-4 w-4 mr-2" />
                       Commencer l&apos;exercice
                     </Button>
                   </NavigationLink>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
@@ -145,11 +148,11 @@ export default function ListeningPracticePage() {
 
         <div className="mt-8">
           <Card className="border-blue-200 bg-blue-50">
-              <CardTitle className="flex items-center gap-2 text-blue-900">
-                <BarChart className="h-5 w-5" />
-                Conseils pour réussir
-              </CardTitle>
-            <CardContent className="text-sm text-blue-800 space-y-2">
+            <CardTitle className="flex items-center gap-2 text-blue-900">
+              <BarChart className="h-5 w-5" />
+              Conseils pour réussir
+            </CardTitle>
+            <div className="p-6 text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
               <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>
               <p>
@@ -158,7 +161,7 @@ export default function ListeningPracticePage() {
               </p>
               <p>• Le chronomètre démarre dès le début de l&apos;exercice</p>
               <p>• Votre score est calculé sur 699 points maximum</p>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>

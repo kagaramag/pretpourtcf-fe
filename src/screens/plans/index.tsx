@@ -244,16 +244,11 @@ export function PlansScreen() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Plans d'abonnement
-          </h1>
-          <p className="text-muted-foreground">
-            Liste de tous les plans d'abonnement disponibles
-          </p>
+          <h1 className="text-2xl font-bold">Plans</h1>
         </div>
         <Button onClick={handleCreatePlan}>
           <Plus className="h-4 w-4 mr-2" />

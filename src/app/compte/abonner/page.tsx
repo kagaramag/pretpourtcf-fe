@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { subscriptionService } from "@/services/subscription";
 import { paymentService } from "@/services/payment";
 import { SubscriptionPlan } from "@/types";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -566,7 +566,7 @@ function AbonnerPageContent() {
             Paiement échoué
           </CardTitle>
           Le paiement n'a pas pu être traité
-          <CardContent className="space-y-4">
+          <div className="p-6" className="space-y-4">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <p className="text-sm text-red-900">
                 Votre paiement n'a pas pu être complété. Veuillez vérifier vos
@@ -583,7 +583,7 @@ function AbonnerPageContent() {
                 <li>Carte expirée ou invalide</li>
               </ul>
             </div>
-          </CardContent>
+          </div>
           <CardFooter className="flex flex-col gap-2">
             <Button
               onClick={() => {
@@ -627,7 +627,7 @@ function AbonnerPageContent() {
           {isCardPayment
             ? "Nous vérifions votre paiement"
             : "Veuillez approuver le paiement sur votre téléphone"}
-          <CardContent className="space-y-4">
+          <div className="space-y-4">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               {isMobileMoney ? (
                 <div className="space-y-3">
@@ -667,7 +667,7 @@ function AbonnerPageContent() {
                 ? "Nous écoutons les mises à jour en temps réel de Mobile Money..."
                 : "Vérification en cours..."}
             </p>
-          </CardContent>
+          </div>
           <CardFooter className="flex flex-col gap-2">
             <p className="text-xs text-center text-muted-foreground w-full">
               Ne fermez pas cette page pendant le traitement

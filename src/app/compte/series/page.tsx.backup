@@ -196,13 +196,13 @@ export default function StreaksPage() {
         )}
         {stats && (
           <>
-            <div className="border-2 border-gray-200 rounded-lg p-3">
+            <div className="border-2 border-border rounded-lg p-3">
               <h4 className="text-sm font-medium text-muted-foreground">
                 Total séries
               </h4>
               <p className="text-2xl font-bold">{stats.totalStreaks}</p>
             </div>
-            <div className="border-2 border-gray-200 rounded-lg p-3">
+            <div className="border-2 border-border rounded-lg p-3">
               <div className="">
                 <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                   <Trophy className="h-4 w-4 text-yellow-600" />

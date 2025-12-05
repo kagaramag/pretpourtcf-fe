@@ -139,7 +139,7 @@ export default function PracticeDetailPage() {
                         className={`p-3 rounded-lg ${
                           isCorrect
                             ? "bg-green-50 border-2 border-green-500 font-semibold"
-                            : "bg-gray-50 border border-gray-200"
+                            : "bg-gray-50 border border-border"
                         }`}
                       >
                         <div className="flex items-center gap-2">

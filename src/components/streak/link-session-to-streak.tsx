@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Flame, Trophy, Zap } from "lucide-react";
 import { streakService } from "@/services/streak";
@@ -95,7 +95,7 @@ export function LinkSessionToStreak({
 
   return (
     <Card className="border-orange-500 border-2 bg-gradient-to-br from-orange-50 to-red-50">
-      <CardContent className="p-6">
+      <div className="p-6" className="p-6">
         <div className="flex items-start gap-4">
           <div className="rounded-full bg-orange-500 p-3">
             <Flame className="h-6 w-6 text-white animate-pulse" />
@@ -148,7 +148,7 @@ export function LinkSessionToStreak({
             </Button>
           </div>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

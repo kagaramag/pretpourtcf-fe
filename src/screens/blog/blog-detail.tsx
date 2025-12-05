@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -101,7 +101,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -113,8 +113,9 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{blog.title}</h1>
-            <p className="text-muted-foreground">{blog.description}</p>
+            <h1 className="text-3xl font-semibold tracking-tight truncate">
+              {blog.title}
+            </h1>
           </div>
         </div>
         <div className="flex gap-2">
@@ -123,7 +124,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
               variant="outline"
               onClick={() => router.push(`/dashboard/blog/${blogId}/edit`)}
             >
-              <Edit className="mr-2 h-4 w-4" />
+              <Edit className="h-4 w-4" />
               Edit
             </Button>
           )}
@@ -134,9 +135,9 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
               disabled={deleteMutation.isPending}
             >
               {deleteMutation.isPending ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                <Trash2 className="mr-2 h-4 w-4" />
+                <Trash2 className="h-4 w-4" />
               )}
               Delete
             </Button>
@@ -144,67 +145,61 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
         </div>
       </div>
 
-      {/* Metadata */}
-      <Card>
-          <CardTitle>Details</CardTitle>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Status</p>
-              <div className="mt-1">{getStatusBadge(blog.status)}</div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Author</p>
-              <p className="mt-1">
-                {blog.written_by.first_name} {blog.written_by.last_name}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Created At
-              </p>
-              <p className="mt-1">{formatDate(blog.createdAt)}</p>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Published At
-              </p>
-              <p className="mt-1">
-                {blog.published_at ? formatDate(blog.published_at) : "Not published"}
-              </p>
-            </div>
+      <div className="flex p-4 bg-white rounded-2xl">
+        <div className="w-6/12 grid grid-cols-1 md:grid-cols-1 gap-3">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Status</p>
+            <div className="mt-1">{getStatusBadge(blog.status)}</div>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Cover Image */}
-      {blog.cover_image && (
-        <Card>
-            <CardTitle>Cover Image</CardTitle>
-          <CardContent>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Author</p>
+            <p className="mt-1">
+              {blog.written_by.first_name} {blog.written_by.last_name}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">
+              Created At
+            </p>
+            <p className="mt-1">{formatDate(blog.createdAt)}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">
+              Published At
+            </p>
+            <p className="mt-1">
+              {blog.published_at
+                ? formatDate(blog.published_at)
+                : "Not published"}
+            </p>
+          </div>
+        </div>
+        {/* Cover Image */}
+        {blog.cover_image && (
+          <div className="6/12">
             <img
               src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
               alt={blog.title}
-              className="w-full max-w-2xl rounded-lg border"
+              className="w-full max-w-2xl rounded-lg border border-border"
             />
-          </CardContent>
-        </Card>
-      )}
+          </div>
+        )}
+      </div>
+      <div className="flex p-4 bg-white rounded-2xl">
+        <h5 className="text-md">{blog.description}</h5>
+      </div>
 
       {/* Content */}
-      <Card>
-          <CardTitle>Content</CardTitle>
-        <CardContent>
-          <div className="prose prose-sm max-w-none dark:prose-invert">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-            >
-              {blog.body}
-            </ReactMarkdown>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex p-4 bg-white rounded-2xl">
+        <div className="prose prose-sm max-w-none dark:prose-invert">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+          >
+            {blog.body}
+          </ReactMarkdown>
+        </div>
+      </div>
     </div>
   );
 }

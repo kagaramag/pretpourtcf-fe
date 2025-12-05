@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
-  CardContent,
-  CardTitle,
+    CardTitle,
 } from "@/components/ui/card";
 import {
   Table,
@@ -150,12 +149,12 @@ export function ReferralsScreen() {
               Invitations acceptées
             </CardTitle>
             <UserPlus className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
+          <div>
             <div className="text-2xl font-bold">{acceptedReferrals.length}</div>
             <p className="text-xs text-muted-foreground">
               Utilisateurs qui ont rejoint grâce à vous
             </p>
-          </CardContent>
+          </div>
         </Card>
 
         <Card>
@@ -163,12 +162,12 @@ export function ReferralsScreen() {
               Invitations en attente
             </CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
+          <div>
             <div className="text-2xl font-bold">{pendingReferrals.length}</div>
             <p className="text-xs text-muted-foreground">
               Invitations envoyées non acceptées
             </p>
-          </CardContent>
+          </div>
         </Card>
       </div>
 
@@ -179,7 +178,7 @@ export function ReferralsScreen() {
             Envoyer une invitation
           </CardTitle>
             Entrez l'adresse e-mail de la personne que vous souhaitez inviter
-        <CardContent>
+        <div>
           <form onSubmit={handleSendInvitation} className="flex gap-2">
             <div className="flex-1">
               <Input
@@ -204,7 +203,7 @@ export function ReferralsScreen() {
               )}
             </Button>
           </form>
-        </CardContent>
+        </div>
       </Card>
 
       {/* Referrals List */}
@@ -214,7 +213,7 @@ export function ReferralsScreen() {
             Mes parrainages
           </CardTitle>
             Liste de toutes vos invitations
-        <CardContent>
+        <div>
           <Tabs defaultValue="all" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="all">
@@ -255,7 +254,7 @@ export function ReferralsScreen() {
               />
             </TabsContent>
           </Tabs>
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -17,7 +13,15 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, UserPlus, Users, Check, Clock, X, Loader2 } from "lucide-react";
+import {
+  Search,
+  UserPlus,
+  Users,
+  Check,
+  Clock,
+  X,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { referralService, Referral } from "@/services/referral";
 import { formatDate } from "@/lib/utils";
@@ -37,7 +41,10 @@ export default function ReferralsScreen() {
   const fetchReferrals = async () => {
     try {
       setIsLoading(true);
-      const status = currentTab === "all" ? undefined : (currentTab as "pending" | "accepted" | "expired");
+      const status =
+        currentTab === "all"
+          ? undefined
+          : (currentTab as "pending" | "accepted" | "expired");
 
       const response = await referralService.getAllReferrals({
         page: 1,
@@ -110,95 +117,68 @@ export default function ReferralsScreen() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Parrainages</h1>
-        <p className="text-muted-foreground mt-2">
-          Gérer tous les parrainages de la plateforme
-        </p>
+      <div className="flex items-center gap-2">
+        <div className="flex-1">
+          <h1 className="text-xl font-bold">Parrainages</h1>
+        </div>
+        <div className="relative">
+          <Search className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Rechercher par email ou nom..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-8"
+          />
+        </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-2 md:grid-cols-3">
         <Card>
-            <CardTitle className="text-sm font-medium">Total</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
+          <h5 className="text-sm font-medium">Total</h5>
+          <div>
             <div className="text-2xl font-bold">{referrals.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Tous les parrainages
-            </p>
-          </CardContent>
+            <p className="text-xs">Tous les parrainages</p>
+          </div>
         </Card>
 
         <Card>
-            <CardTitle className="text-sm font-medium">Acceptés</CardTitle>
-            <UserPlus className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
+          <h5 className="text-sm font-medium">Acceptés</h5>
+          <div>
             <div className="text-2xl font-bold">{acceptedReferrals.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Utilisateurs qui ont rejoint
-            </p>
-          </CardContent>
+            <p className="text-xs">Utilisateurs qui ont rejoint</p>
+          </div>
         </Card>
 
         <Card>
-            <CardTitle className="text-sm font-medium">En attente</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          <CardContent>
+          <h5 className="text-sm font-medium">En attente</h5>
+          <div>
             <div className="text-2xl font-bold">{pendingReferrals.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Invitations non acceptées
-            </p>
-          </CardContent>
+            <p className="text-xs">Invitations non acceptées</p>
+          </div>
         </Card>
       </div>
 
-      {/* Search */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="relative">
-            <Search className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher par email ou nom..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-8"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Referrals List */}
-      <Card>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Liste des parrainages
-          </CardTitle>
-            Tous les parrainages de la plateforme
-        <CardContent>
-          <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="all">
-                Tous ({referrals.length})
-              </TabsTrigger>
-              <TabsTrigger value="accepted">
-                Acceptés ({acceptedReferrals.length})
-              </TabsTrigger>
-              <TabsTrigger value="pending">
-                En attente ({pendingReferrals.length})
-              </TabsTrigger>
-            </TabsList>
+      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+        <TabsList>
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="accepted">
+            Accepted ({acceptedReferrals.length})
+          </TabsTrigger>
+          <TabsTrigger value="pending">
+            Pending ({pendingReferrals.length})
+          </TabsTrigger>
+        </TabsList>
 
-            <TabsContent value={currentTab} className="mt-4">
-              <ReferralsTable
-                referrals={getReferralsForTab()}
-                isLoading={isLoading}
-                getStatusBadge={getStatusBadge}
-              />
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+        <TabsContent value={currentTab} className="mt-4">
+          <ReferralsTable
+            referrals={getReferralsForTab()}
+            isLoading={isLoading}
+            getStatusBadge={getStatusBadge}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
@@ -230,7 +210,7 @@ function ReferralsTable({
   }
 
   return (
-    <div className="rounded-md border">
+    <div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -273,9 +253,7 @@ function ReferralsTable({
                 )}
               </TableCell>
               <TableCell>{getStatusBadge(referral.status)}</TableCell>
-              <TableCell>
-                {formatDate(new Date(referral.createdAt))}
-              </TableCell>
+              <TableCell>{formatDate(new Date(referral.createdAt))}</TableCell>
               <TableCell>
                 {referral.acceptedAt
                   ? formatDate(new Date(referral.acceptedAt))

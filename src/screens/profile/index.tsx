@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import PhoneNumberInput from "@/components/ui/phone-input";
 import {
   Card,
-  CardContent,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -78,7 +77,7 @@ export default function ProfileScreen() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Overview Card */}
         <Card className="lg:col-span-1">
-          <CardContent className="space-y-4">
+          <div className="p-6 space-y-4">
             <div className="flex flex-col items-center text-center">
               <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <User className="w-10 h-10 text-primary" />
@@ -132,12 +131,12 @@ export default function ProfileScreen() {
                 </div>
               )}
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Settings Card */}
         <Card className="lg:col-span-2">
-          <CardContent>
+          <div className="p-6">
             <form onSubmit={handleUpdateProfile} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -205,7 +204,7 @@ export default function ProfileScreen() {
                 {isLoading ? "Saving..." : "Save Changes"}
               </Button>
             </form>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

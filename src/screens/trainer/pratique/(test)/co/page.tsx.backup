@@ -90,7 +90,7 @@ export default function ListeningPracticePage() {
 
         {practices.length === 0 ? (
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="flex flex-col items-center justify-center py-12">
               <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucun exercice disponible
@@ -99,7 +99,7 @@ export default function ListeningPracticePage() {
                 Il n&apos;y a pas d&apos;exercices de compréhension orale
                 disponibles pour le moment.
               </p>
-            </CardContent>
+            </div>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -136,14 +136,14 @@ export default function ListeningPracticePage() {
                     </div>
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <div>
                   <NavigationLink href={`/compte/pratique/co/${practice._id}`}>
                     <Button className="w-full group-hover:bg-primary/90" size="sm">
                       <Play className="h-4 w-4 mr-2" />
                       Commencer l&apos;exercice
                     </Button>
                   </NavigationLink>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function ListeningPracticePage() {
                 Conseils pour réussir
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-blue-800 space-y-2">
+            <div className="text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
               <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>
               <p>
@@ -166,7 +166,7 @@ export default function ListeningPracticePage() {
               </p>
               <p>• Le chronomètre démarre dès le début de l&apos;exercice</p>
               <p>• Votre score est calculé sur 699 points maximum</p>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>

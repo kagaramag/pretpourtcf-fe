@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, PenTool, Play } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";

@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,10 +15,6 @@ import {
 } from "@/components/ui/table";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -43,7 +39,6 @@ import {
   Plus,
   Tag,
   Trash2,
-  Edit,
   Calendar,
   Users,
   TrendingUp,
@@ -84,8 +79,7 @@ function PromoCodesScreenContent() {
     },
     onError: (error: any) => {
       toast.error(
-        error.response?.data?.message ||
-          "Échec de la suppression du code promo"
+        error.response?.data?.message || "Échec de la suppression du code promo"
       );
     },
   });
@@ -141,13 +135,10 @@ function PromoCodesScreenContent() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Codes Promo</h1>
-          <p className="text-muted-foreground mt-1">
-            Gérer les codes promotionnels et les réductions
-          </p>
+          <h1 className="text-xl font-bold">Codes Promo</h1>
         </div>
         <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
           <DialogTrigger asChild>
@@ -161,205 +152,192 @@ function PromoCodesScreenContent() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total</p>
-                <p className="text-2xl font-bold">{promoCodes.length}</p>
-              </div>
-              <Tag className="h-8 w-8 text-muted-foreground" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Total</p>
+              <p className="text-2xl font-bold">{promoCodes.length}</p>
             </div>
-          </CardContent>
+            <Tag className="h-8 w-8 text-muted-foreground" />
+          </div>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Actifs</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {promoCodes.filter((pc) => isActive(pc)).length}
-                </p>
-              </div>
-              <TrendingUp className="h-8 w-8 text-green-600" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Actifs</p>
+              <p className="text-2xl font-bold text-green-600">
+                {promoCodes.filter((pc) => isActive(pc)).length}
+              </p>
             </div>
-          </CardContent>
+            <TrendingUp className="h-8 w-8 text-green-600" />
+          </div>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Expirés</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {promoCodes.filter((pc) => isExpired(pc.end_date)).length}
-                </p>
-              </div>
-              <Calendar className="h-8 w-8 text-red-600" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Expirés</p>
+              <p className="text-2xl font-bold text-red-600">
+                {promoCodes.filter((pc) => isExpired(pc.end_date)).length}
+              </p>
             </div>
-          </CardContent>
+            <Calendar className="h-8 w-8 text-red-600" />
+          </div>
         </Card>
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Utilisations</p>
-                <p className="text-2xl font-bold">
-                  {promoCodes.reduce((acc, pc) => acc + pc.current_uses, 0)}
-                </p>
-              </div>
-              <Users className="h-8 w-8 text-muted-foreground" />
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Utilisations</p>
+              <p className="text-2xl font-bold">
+                {promoCodes.reduce((acc, pc) => acc + pc.current_uses, 0)}
+              </p>
             </div>
-          </CardContent>
+            <Users className="h-8 w-8 text-muted-foreground" />
+          </div>
         </Card>
       </div>
 
-      <Card>
-          <div className="flex items-center justify-between">
-            <CardTitle>Liste des codes promo</CardTitle>
-            <Select
-              value={statusFilter}
-              onValueChange={(value) => setStatusFilter(value)}
-            >
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Tous les statuts" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les statuts</SelectItem>
-                <SelectItem value="active">Actif</SelectItem>
-                <SelectItem value="inactive">Inactif</SelectItem>
-                <SelectItem value="expired">Expiré</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Code</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Réduction</TableHead>
-                <TableHead>Période</TableHead>
-                <TableHead>Utilisations</TableHead>
-                <TableHead>Statut</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow key="loading">
-                  <TableCell colSpan={7} className="text-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin mx-auto" />
-                    <p className="mt-2 text-muted-foreground">
-                      Chargement des codes promo...
+      <div className="flex items-center justify-between mb-4">
+        <Select
+          value={statusFilter}
+          onValueChange={(value) => setStatusFilter(value)}
+        >
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Tous les statuts" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous les statuts</SelectItem>
+            <SelectItem value="active">Actif</SelectItem>
+            <SelectItem value="inactive">Inactif</SelectItem>
+            <SelectItem value="expired">Expiré</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Code</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Réduction</TableHead>
+            <TableHead>Période</TableHead>
+            <TableHead>Utilisations</TableHead>
+            <TableHead>Statut</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            <TableRow key="loading">
+              <TableCell colSpan={7} className="text-center py-8">
+                <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                <p className="mt-2 text-muted-foreground">
+                  Chargement des codes promo...
+                </p>
+              </TableCell>
+            </TableRow>
+          ) : promoCodes.length === 0 ? (
+            <TableRow key="empty">
+              <TableCell
+                colSpan={7}
+                className="text-center py-8 text-muted-foreground"
+              >
+                Aucun code promo trouvé
+              </TableCell>
+            </TableRow>
+          ) : (
+            promoCodes.map((promoCode) => (
+              <TableRow key={promoCode.id}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Tag className="h-4 w-4 text-muted-foreground" />
+                    <span className="font-mono font-semibold">
+                      {promoCode.code}
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="max-w-xs">
+                    <p className="text-sm truncate">
+                      {promoCode.description || "—"}
                     </p>
-                  </TableCell>
-                </TableRow>
-              ) : promoCodes.length === 0 ? (
-                <TableRow key="empty">
-                  <TableCell
-                    colSpan={7}
-                    className="text-center py-8 text-muted-foreground"
-                  >
-                    Aucun code promo trouvé
-                  </TableCell>
-                </TableRow>
-              ) : (
-                promoCodes.map((promoCode, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>
+                    {promoCode.applicable_plans &&
+                      promoCode.applicable_plans.length > 0 && (
+                        <p className="text-xs text-muted-foreground">
+                          {promoCode.applicable_plans.length} plan(s)
+                          spécifique(s)
+                        </p>
+                      )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <span className="font-semibold text-green-600">
+                    {promoCode.discount_percentage}%
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <Calendar className="h-3 w-3" />
+                      <span>{formatDate(promoCode.start_date)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <span>→</span>
+                      <span>{formatDate(promoCode.end_date)}</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="space-y-1">
+                    <div className="text-sm font-medium">
+                      {promoCode.current_uses}
+                      {promoCode.max_uses && ` / ${promoCode.max_uses}`}
+                    </div>
+                    {promoCode.max_uses && (
                       <div className="flex items-center gap-2">
-                        <Tag className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-mono font-semibold">
-                          {promoCode.code}
+                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                          <div
+                            className="bg-blue-600 h-1.5 rounded-full"
+                            style={{
+                              width: `${getUsagePercentage(promoCode)}%`,
+                            }}
+                          ></div>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {getUsagePercentage(promoCode)}%
                         </span>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-xs">
-                        <p className="text-sm truncate">
-                          {promoCode.description || "—"}
-                        </p>
-                        {promoCode.applicable_plans &&
-                          promoCode.applicable_plans.length > 0 && (
-                            <p className="text-xs text-muted-foreground">
-                              {promoCode.applicable_plans.length} plan(s)
-                              spécifique(s)
-                            </p>
-                          )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="font-semibold text-green-600">
-                        {promoCode.discount_percentage}%
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <Calendar className="h-3 w-3" />
-                          <span>{formatDate(promoCode.start_date)}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-muted-foreground">
-                          <span>→</span>
-                          <span>{formatDate(promoCode.end_date)}</span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="text-sm font-medium">
-                          {promoCode.current_uses}
-                          {promoCode.max_uses && ` / ${promoCode.max_uses}`}
-                        </div>
-                        {promoCode.max_uses && (
-                          <div className="flex items-center gap-2">
-                            <div className="w-full bg-gray-200 rounded-full h-1.5">
-                              <div
-                                className="bg-blue-600 h-1.5 rounded-full"
-                                style={{
-                                  width: `${getUsagePercentage(promoCode)}%`,
-                                }}
-                              ></div>
-                            </div>
-                            <span className="text-xs text-muted-foreground">
-                              {getUsagePercentage(promoCode)}%
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(promoCode.status)}>
-                        {promoCode.status === "active" && "Actif"}
-                        {promoCode.status === "inactive" && "Inactif"}
-                        {promoCode.status === "expired" && "Expiré"}
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Badge className={getStatusColor(promoCode.status)}>
+                    {promoCode.status === "active" && "Actif"}
+                    {promoCode.status === "inactive" && "Inactif"}
+                    {promoCode.status === "expired" && "Expiré"}
+                  </Badge>
+                  {isExpired(promoCode.end_date) &&
+                    promoCode.status === "active" && (
+                      <Badge className="ml-2 bg-orange-100 text-orange-800">
+                        Date dépassée
                       </Badge>
-                      {isExpired(promoCode.end_date) &&
-                        promoCode.status === "active" && (
-                          <Badge className="ml-2 bg-orange-100 text-orange-800">
-                            Date dépassée
-                          </Badge>
-                        )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(promoCode)}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                    )}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(promoCode)}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

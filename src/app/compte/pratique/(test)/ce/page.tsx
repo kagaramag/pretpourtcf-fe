@@ -132,7 +132,7 @@ export default function ReadingPracticePage() {
         )}
 
         <div className="mt-8">
-          <div className="p-4 border border-gray-200 bg-blue-50">
+          <div className="p-4 border border-border bg-blue-50">
             <h3 className="flex items-center gap-2 text-blue-900">
               Conseils pour réussir
             </h3>

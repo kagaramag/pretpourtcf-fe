@@ -32,6 +32,12 @@ const menuItems: MenuItem[] = [
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
+    name: "Users",
+    icon: <User className="h-5 w-5" />,
+    href: "/dashboard/users",
+    permission: PERMISSIONS.USERS_READ,
+  },
+  {
     name: "Streaks",
     icon: <ReceiptText className="h-5 w-5" />,
     href: "/dashboard/streaks",
@@ -73,12 +79,6 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/blog",
     permission: PERMISSIONS.PRACTICES_READ,
   },
-  {
-    name: "Users",
-    icon: <User className="h-5 w-5" />,
-    href: "/dashboard/users",
-    permission: PERMISSIONS.USERS_READ,
-  },
 ];
 
 export default function Sidebar() {
@@ -114,7 +114,7 @@ export default function Sidebar() {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-gray-200"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-border"
       >
         {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
@@ -130,19 +130,19 @@ export default function Sidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "flex flex-col h-screen bg-white border-r border-gray-200 transition-all duration-300",
+          "flex flex-col h-screen bg-white border-r border-border transition-all duration-300",
           "fixed lg:relative z-40 lg:z-0",
           isCollapsed ? "w-16" : "w-64",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex items-center justify-between px-4 border-b border-border">
         {!isCollapsed ? (
-          <div className="mb-5 my-3 w-[200px] sm:w-[280px] mx-auto">
+          <div className="my-2.5 py-0.5 w-[170px] sm:w-[200px] mx-auto">
             <Image
               src={Logo}
-              width={280}
-              height={140}
+              width={200}
+              height={120}
               priority
               alt="logo"
               className="w-full mx-auto"
@@ -176,10 +176,10 @@ export default function Sidebar() {
                 <Link
                   href={href}
                   className={cn(
-                    "flex items-center px-3 py-2.5 rounded-lg transition-colors",
+                    "flex items-center px-3 py-2.5 rounded-full transition-colors",
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-gray-600 hover:bg-gray-100",
+                      ? "bg-tertiary text-primary-foreground"
+                      : "text-black hover:bg-gray-100",
                     isCollapsed ? "justify-center" : "gap-3"
                   )}
                   title={isCollapsed ? item.name : undefined}

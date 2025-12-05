@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -154,7 +154,7 @@ function BlogScreenContent() {
 
     return (
       <Badge variant={variants[status] || "default"}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
+        {status.toLocaleUpperCase()}
       </Badge>
     );
   };
@@ -163,38 +163,17 @@ function BlogScreenContent() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Blog</h1>
-          <p className="text-muted-foreground">
-            Manage blog posts and articles
-          </p>
+        <div className="flex-1">
+          <h1 className="text-xl font-bold tracking-tight">Blog</h1>
         </div>
-        {canCreate && (
-          <Button onClick={() => router.push("/dashboard/blog/new")}>
-            <Plus className="mr-2 h-4 w-4" />
-            New Blog Post
-          </Button>
-        )}
-      </div>
-
-      {/* Filters */}
-      <Card>
-          <CardTitle>Filters</CardTitle>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search blogs..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8"
-                />
-              </div>
-            </div>
-
-            <Select value={statusFilter || "all"} onValueChange={(value) => setStatusFilter(value === "all" ? "" : value)}>
+        <div className="flex items-center gap-2">
+          <div>
+            <Select
+              value={statusFilter || "all"}
+              onValueChange={(value) =>
+                setStatusFilter(value === "all" ? "" : value)
+              }
+            >
               <SelectTrigger className="w-full sm:w-[200px]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -205,113 +184,109 @@ function BlogScreenContent() {
                 <SelectItem value="archived">Archived</SelectItem>
               </SelectContent>
             </Select>
-
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                onClick={clearFilters}
-                className="w-full sm:w-auto"
-              >
-                <X className="mr-2 h-4 w-4" />
-                Clear
-              </Button>
-            )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Blog List */}
-      <Card>
-        <CardContent className="p-0">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-            </div>
-          ) : blogs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-center">
-              <p className="text-lg font-medium">No blogs found</p>
-              <p className="text-sm text-muted-foreground">
-                {hasActiveFilters
-                  ? "Try adjusting your filters"
-                  : "Get started by creating your first blog post"}
-              </p>
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Author</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Published</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {blogs.map((blog) => (
-                  <TableRow key={blog._id}>
-                    <TableCell className="font-medium">
-                      <div>
-                        <div className="font-medium">{blog.title}</div>
-                        <div className="text-sm text-muted-foreground line-clamp-1">
-                          {blog.description}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {blog.written_by.first_name} {blog.written_by.last_name}
-                    </TableCell>
-                    <TableCell>{getStatusBadge(blog.status)}</TableCell>
-                    <TableCell>{formatDate(blog.createdAt)}</TableCell>
-                    <TableCell>
-                      {blog.published_at
-                        ? formatDate(blog.published_at)
-                        : "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem asChild>
-                            <Link href={`/dashboard/blog/${blog._id}`}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View
-                            </Link>
-                          </DropdownMenuItem>
-                          {canUpdate && (
-                            <DropdownMenuItem asChild>
-                              <Link href={`/dashboard/blog/${blog._id}/edit`}>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit
-                              </Link>
-                            </DropdownMenuItem>
-                          )}
-                          {canDelete && (
-                            <DropdownMenuItem
-                              onClick={() => handleDelete(blog._id)}
-                              className="text-destructive"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search blogs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8"
+            />
+          </div>
+          {canCreate && (
+            <Button onClick={() => router.push("/dashboard/blog/new")}>
+              <Plus className="mr-2 h-4 w-4" />
+              Create
+            </Button>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      ) : blogs.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-64 text-center">
+          <p className="text-lg font-medium">No blogs found</p>
+          <p className="text-sm text-muted-foreground">
+            {hasActiveFilters
+              ? "Try adjusting your filters"
+              : "Get started by creating your first blog post"}
+          </p>
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Author</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>Published</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {blogs.map((blog) => (
+              <TableRow key={blog._id}>
+                <TableCell>
+                  <div className="max-w-[450px]">
+                    <h4 className="text-lg/60 font-normal leading-none">
+                      {blog.title}
+                    </h4>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {blog.written_by.first_name} {blog.written_by.last_name}
+                </TableCell>
+                <TableCell>{getStatusBadge(blog.status)}</TableCell>
+                <TableCell>{formatDate(blog.createdAt)}</TableCell>
+                <TableCell>
+                  {blog.published_at ? formatDate(blog.published_at) : "-"}
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href={`/dashboard/blog/${blog._id}`}>
+                          <Eye className="mr-2 h-4 w-4" />
+                          View
+                        </Link>
+                      </DropdownMenuItem>
+                      {canUpdate && (
+                        <DropdownMenuItem asChild>
+                          <Link href={`/dashboard/blog/${blog._id}/edit`}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
+                      {canDelete && (
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(blog._id)}
+                          className="text-destructive"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
       {/* Pagination */}
       {!isLoading && blogs.length > 0 && (

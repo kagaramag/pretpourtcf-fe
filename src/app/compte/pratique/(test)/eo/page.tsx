@@ -239,7 +239,7 @@ export default function SpeakingPracticePage() {
         </div>
 
         <div className="mt-8">
-          <div className="p-4 border border-gray-200 bg-blue-50 rounded-lg">
+          <div className="p-4 border border-border bg-blue-50 rounded-lg">
             <h3 className="flex items-center gap-2 text-blue-900 font-semibold mb-2">
               Conseils pour réussir
             </h3>

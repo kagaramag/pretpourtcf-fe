@@ -23,7 +23,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -282,7 +281,9 @@ const PreparationScreen = () => {
                   <CardTitle className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                     {prep.title}
                   </CardTitle>
+                  <div className="p-6">
                     {prep.description}
+                  </div>
 
                   <div className="flex gap-4 mt-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
@@ -389,7 +390,7 @@ const PreparationScreen = () => {
             className="max-w-4xl mx-auto"
           >
             <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5">
-              <CardContent className="p-8 md:p-12">
+              <div className="p-8 md:p-12">
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold mb-4">
                     Votre Parcours de Réussite
@@ -442,7 +443,7 @@ const PreparationScreen = () => {
                     </Button>
                   </NavigationLink>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </motion.div>
         </div>

@@ -405,7 +405,7 @@ export default function PracticeSessionPage() {
         <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="p-6" className="flex flex-col items-center justify-center py-12">
               <XCircle className="h-16 w-16 text-red-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
@@ -413,7 +413,7 @@ export default function PracticeSessionPage() {
               <Button onClick={() => router.push("/compte/pratique/co")}>
                 Retour aux exercices
               </Button>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </PracticeLayout>
@@ -442,7 +442,7 @@ export default function PracticeSessionPage() {
             <Card>
                 <CardTitle className="text-2xl">Revue des réponses</CardTitle>
                   Analysez vos réponses pour mieux comprendre vos erreurs
-              <CardContent className="space-y-6">
+              <div className="p-6" className="space-y-6">
                 {questionsWithAnswers.map((item, index) => (
                   <Card
                     key={item.question._id}
@@ -472,7 +472,7 @@ export default function PracticeSessionPage() {
                           )}
                         </div>
                       </div>
-                    <CardContent className="space-y-4">
+                    <div className="p-6" className="space-y-4">
                       {/* Question media */}
                       {item.question.media?.image && (
                         <div className="flex justify-center">
@@ -511,7 +511,7 @@ export default function PracticeSessionPage() {
                                   ? "border-green-500 bg-green-50"
                                   : isUserAnswer
                                     ? "border-red-500 bg-red-50"
-                                    : "border-gray-200 bg-white"
+                                    : "border-border bg-white"
                               }`}
                             >
                               <div className="flex items-center gap-3">
@@ -550,10 +550,10 @@ export default function PracticeSessionPage() {
                           </p>
                         </div>
                       )}
-                    </CardContent>
+                    </div>
                   </Card>
                 ))}
-              </CardContent>
+              </div>
             </Card>
           </div>
         </PracticeLayout>
@@ -573,34 +573,34 @@ export default function PracticeSessionPage() {
                 {sessionResult.message}
               </CardTitle>
                 Exercice terminé
-            <CardContent className="space-y-6">
+            <div className="p-6" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
-                  <CardContent className="pt-6 text-center">
+                  <div className="p-6" className="pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Score</p>
                     <p className="text-3xl font-bold">
                       {sessionResult.totalScore}/
                       {sessionResult.maxPossibleScore}
                     </p>
-                  </CardContent>
+                  </div>
                 </Card>
                 <Card>
-                  <CardContent className="pt-6 text-center">
+                  <div className="p-6" className="pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">
                       Pourcentage
                     </p>
                     <p className="text-3xl font-bold">
                       {sessionResult.percentageScore}%
                     </p>
-                  </CardContent>
+                  </div>
                 </Card>
                 <Card>
-                  <CardContent className="pt-6 text-center">
+                  <div className="p-6" className="pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Temps</p>
                     <p className="text-3xl font-bold">
                       {formatTime(sessionResult.timeElapsedSeconds)}
                     </p>
-                  </CardContent>
+                  </div>
                 </Card>
               </div>
 
@@ -642,7 +642,7 @@ export default function PracticeSessionPage() {
                   Retour aux exercices
                 </Button>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </PracticeLayout>
@@ -657,7 +657,7 @@ export default function PracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="p-6" className="flex flex-col items-center justify-center py-12">
               <AlertCircle className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucune question disponible
@@ -665,7 +665,7 @@ export default function PracticeSessionPage() {
               <Button onClick={() => router.push("/compte/pratique/co")}>
                 Retour aux exercices
               </Button>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </PracticeLayout>
@@ -700,7 +700,7 @@ export default function PracticeSessionPage() {
         </div>
 
         {/* Question Card */}
-        <div className="lg:p-5 lg:border border-gray-200 rounded-2xl">
+        <div className="lg:p-5 lg:border border-border rounded-2xl">
           <div className="lg:mb-6 mb-3 flex justify-between items-center">
             <div className="text-xl">Question {currentQuestion.number}</div>
           </div>
@@ -759,7 +759,7 @@ export default function PracticeSessionPage() {
                           ? "border-green-500 bg-green-50 shadow-md"
                           : selectedAnswer === index
                             ? "border-primary bg-primary/10 shadow-md"
-                            : "border-gray-200 hover:border-primary/50 hover:bg-gray-50"
+                            : "border-border hover:border-primary/50 hover:bg-gray-50"
                       } ${submitting ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       <div className="flex items-center gap-3">

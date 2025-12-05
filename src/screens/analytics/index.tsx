@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   TrendingUp,
@@ -72,7 +72,7 @@ export function AnalyticsScreen() {
       </div>
 
       <Card>
-        <CardContent className="flex gap-4 flex-wrap">
+        <div className="p-6 flex gap-4 flex-wrap">
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium">Date Range</label>
             <select
@@ -112,12 +112,12 @@ export function AnalyticsScreen() {
               <option value="overdue">Overdue</option>
             </select>
           </div>
-        </CardContent>
+        </div>
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardContent>
+          <div className="p-6">
             <div className="text-2xl font-bold">
               {formatCurrency(overview.totalRevenue)}
             </div>
@@ -125,43 +125,43 @@ export function AnalyticsScreen() {
               <TrendingUp className="h-3 w-3 text-green-500" />+
               {overview.monthlyGrowth.toFixed(1)}% from last month
             </p>
-          </CardContent>
+          </div>
         </Card>
 
         <Card>
-          <CardContent>
+          <div className="p-6">
             <div className="text-2xl font-bold">{overview.activeClients}</div>
             <p className="text-xs text-muted-foreground mt-1">
               of {overview.totalClients} total clients
             </p>
-          </CardContent>
+          </div>
         </Card>
 
         <Card>
-          <CardContent>
+          <div className="p-6">
             <div className="text-2xl font-bold text-red-600">
               {overview.overduePayments}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {formatCurrency(overview.overdueAmount)} outstanding
             </p>
-          </CardContent>
+          </div>
         </Card>
 
         <Card>
-          <CardContent>
+          <div className="p-6">
             <div className="text-2xl font-bold">
               {overview.pendingFollowups}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {overview.completedFollowups} completed this month
             </p>
-          </CardContent>
+          </div>
         </Card>
       </div>
 
       <Card>
-        <CardContent>
+        <div className="p-6">
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -178,11 +178,11 @@ export function AnalyticsScreen() {
               />
             </LineChart>
           </ResponsiveContainer>
-        </CardContent>
+        </div>
       </Card>
 
       <Card>
-        <CardContent>
+        <div className="p-6">
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={agentPerformanceData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -194,11 +194,11 @@ export function AnalyticsScreen() {
               <Bar dataKey="clients" fill="#1C352D" name="Clients" />
             </BarChart>
           </ResponsiveContainer>
-        </CardContent>
+        </div>
       </Card>
 
       <Card>
-        <CardContent>
+        <div className="p-6">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -248,7 +248,7 @@ export function AnalyticsScreen() {
               </tbody>
             </table>
           </div>
-        </CardContent>
+        </div>
       </Card>
     </div>
   );

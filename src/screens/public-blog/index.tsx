@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Loader2, Calendar, User } from "lucide-react";
@@ -127,7 +127,7 @@ function PublicBlogScreenContent() {
                         />
                       </div>
                     )}
-                    <CardContent className="p-6">
+                    <div className="p-6">
                       <h2 className="text-xl font-bold mb-2 line-clamp-2">
                         {blog.title}
                       </h2>
@@ -144,7 +144,7 @@ function PublicBlogScreenContent() {
                           </span>
                         </div>
                       </div>
-                    </CardContent>
+                    </div>
                   </div>
                 </Link>
               ))}

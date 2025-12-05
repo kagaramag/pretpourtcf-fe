@@ -63,7 +63,7 @@ function VerifyEmailContent() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
-        <CardContent className="flex flex-col items-center space-y-6">
+        <div className="p-6" className="flex flex-col items-center space-y-6">
           {status === "loading" && (
             <>
               <div className="flex justify-center">
@@ -128,7 +128,7 @@ function VerifyEmailContent() {
               </div>
             </>
           )}
-        </CardContent>
+        </div>
       </Card>
     </div>
   );
@@ -140,14 +140,14 @@ export default function VerifyEmailPage() {
       fallback={
         <div className="min-h-screen flex items-center justify-center p-4">
           <Card className="w-full max-w-md">
-            <CardContent className="flex flex-col items-center space-y-6">
+            <div className="p-6" className="flex flex-col items-center space-y-6">
               <div className="flex justify-center">
                 <Loader2 className="h-16 w-16 animate-spin text-primary" />
               </div>
               <p className="text-center text-muted-foreground">
                 Veuillez patienter pendant que nous vérifions votre email...
               </p>
-            </CardContent>
+            </div>
           </Card>
         </div>
       }

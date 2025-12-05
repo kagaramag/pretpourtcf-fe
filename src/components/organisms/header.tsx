@@ -158,7 +158,7 @@ export default function Header() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg absolute inset-x-0 top-full z-40">
+          <div className="lg:hidden bg-white border-t border-border shadow-lg absolute inset-x-0 top-full z-40">
             <div className="w-full space-y-2 flex flex-col px-4 py-4">
               {!isLoading && isAuthenticated ? (
                 <LearnerNavigation

@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import { User, BackendApiResponse, UsersPaginatedResponse } from "@/types";
+import { User, BackendApiResponse, UsersPaginatedResponse, PracticeSession } from "@/types";
 import { API_ENDPOINTS } from "@/config";
 
 export interface CreateUserData {
@@ -67,8 +67,8 @@ export const userService = {
    */
   getUserById: async (
     id: string
-  ): Promise<BackendApiResponse<{ user: User }>> => {
-    return await apiClient.get<BackendApiResponse<{ user: User }>>(
+  ): Promise<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null }>> => {
+    return await apiClient.get<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null }>>(
       `${API_ENDPOINTS.USERS}/${id}`
     );
   },

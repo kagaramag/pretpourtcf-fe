@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
@@ -129,7 +129,7 @@ export default function ListeningPracticePage() {
         )}
 
         <div className="mt-8">
-          <div className="p-4 border border-gray-200 bg-blue-50">
+          <div className="p-4 border border-border bg-blue-50">
             <h3 className="flex items-center gap-2 text-blue-900">
               <BarChart className="h-5 w-5" />
               Conseils pour réussir

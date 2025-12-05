@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from "react-markdown";
@@ -234,7 +234,7 @@ function PracticeDetailsContent() {
 
       {/* Practice Info Card */}
       <Card>
-        <CardContent>
+        <div>
           <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
             <div>
               <p className="text-sm text-muted-foreground">Type</p>
@@ -285,12 +285,12 @@ function PracticeDetailsContent() {
               <span className="text-sm font-medium">{pagination.total}</span>
             </div>
           </div>
-        </CardContent>
+        </div>
       </Card>
 
       {/* Questions List */}
       <Card>
-        <CardContent>
+        <div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -497,7 +497,7 @@ function PracticeDetailsContent() {
               </div>
             </div>
           )}
-        </CardContent>
+        </div>
       </Card>
 
       {/* Question Form Dialog */}

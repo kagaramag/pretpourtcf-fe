@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Mail, Phone, Send, Loader2 } from "lucide-react";
 import apiClient from "@/lib/api-client";

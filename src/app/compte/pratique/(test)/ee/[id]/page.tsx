@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -292,7 +292,7 @@ export default function WritingPracticeSessionPage() {
         <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="p-6" className="flex flex-col items-center justify-center py-12">
               <XCircle className="h-16 w-16 text-red-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
@@ -300,7 +300,7 @@ export default function WritingPracticeSessionPage() {
               <Button onClick={() => router.push("/compte/pratique/ee")}>
                 Retour aux exercices
               </Button>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </PracticeLayout>
@@ -313,7 +313,7 @@ export default function WritingPracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="p-6" className="flex flex-col items-center justify-center py-12">
               <AlertCircle className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Cet exercice doit contenir exactement 3 questions
@@ -321,7 +321,7 @@ export default function WritingPracticeSessionPage() {
               <Button onClick={() => router.push("/compte/pratique/ee")}>
                 Retour aux exercices
               </Button>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </PracticeLayout>

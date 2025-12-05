@@ -4,60 +4,24 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  UserPlus,
-  Search,
-  MoreVertical,
-  Edit,
-  Loader2,
-  X,
-  Ban,
-  CheckCircle,
-  Users,
-  Shield,
-  UserCog,
-} from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { UserPlus, Search, MoreVertical, Edit, Loader2, X, Ban, CheckCircle } from "lucide-react";
 import { userService } from "@/services/user";
 import { User } from "@/types";
 import { toast } from "sonner";
 import { UserFormDialog } from "@/components/users/user-form-dialog";
 import { formatDate } from "@/lib/date-utils";
+import Link from "next/link";
 
 function UsersScreenContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-
-  // Active tab state
-  const [activeTab, setActiveTab] = useState("all");
 
   // Get filters from URL
   const [searchQuery, setSearchQuery] = useState(
@@ -85,15 +49,6 @@ function UsersScreenContent() {
     hasNextPage: false,
     hasPrevPage: false,
   });
-
-
-  // Get effective role filter based on active tab
-  const effectiveRoleFilter =
-    activeTab === "all"
-      ? roleFilter
-      : activeTab === "admins"
-      ? "admin"
-      : "client";
 
   // Deactivate user mutation
   const deactivateMutation = useMutation({
@@ -136,13 +91,7 @@ function UsersScreenContent() {
 
   useEffect(() => {
     fetchUsers();
-  }, [
-    pagination.page,
-    debouncedSearch,
-    roleFilter,
-    statusFilter,
-    activeTab,
-  ]);
+  }, [pagination.page, debouncedSearch, roleFilter, statusFilter]);
 
   const fetchUsers = async () => {
     try {
@@ -151,7 +100,7 @@ function UsersScreenContent() {
         page: pagination.page,
         limit: pagination.limit,
         search: debouncedSearch || undefined,
-        role: (effectiveRoleFilter || undefined) as any,
+        role: (roleFilter || undefined) as any,
         status: (statusFilter || undefined) as any,
       });
 
@@ -197,8 +146,7 @@ function UsersScreenContent() {
     setStatusFilter("");
   };
 
-  const hasActiveFilters =
-    searchQuery || roleFilter || statusFilter;
+  const hasActiveFilters = searchQuery || roleFilter || statusFilter;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -237,10 +185,7 @@ function UsersScreenContent() {
         <TableBody>
           {isLoading ? (
             <TableRow>
-              <TableCell
-                colSpan={7}
-                className="text-center py-8"
-              >
+              <TableCell colSpan={7} className="text-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin mx-auto" />
                 <p className="mt-2 text-muted-foreground">Loading users...</p>
               </TableCell>
@@ -258,12 +203,12 @@ function UsersScreenContent() {
             users.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>
-                  <button
-                    onClick={() => router.push(`/users/${user.id}`)}
+                  <Link
+                    href={`/dashboard/users/${user.id}`}
                     className="font-medium text-blue-600 hover:text-blue-800 hover:underline focus:outline-none text-left"
                   >
                     {user.first_name} {user.last_name}
-                  </button>
+                  </Link>
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phone || "N/A"}</TableCell>
@@ -330,7 +275,7 @@ function UsersScreenContent() {
 
       {/* Pagination */}
       {!isLoading && users.length > 0 && (
-        <div className="flex items-center justify-between mt-4 pt-4 border-t">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
           <div className="text-sm text-muted-foreground">
             Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
             {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
@@ -364,11 +309,10 @@ function UsersScreenContent() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-2">
+      {/* Header */}
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">Users</h1>
-        </div>
+        <h1 className="text-2xl font-bold">Users</h1>
         <Button
           className="gap-2"
           onClick={() => {
@@ -382,183 +326,64 @@ function UsersScreenContent() {
         </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="all" className="gap-2">
-            <Users className="h-4 w-4" />
-            All Users
-          </TabsTrigger>
-          <TabsTrigger value="admins" className="gap-2">
-            <Shield className="h-4 w-4" />
-            Admins
-          </TabsTrigger>
-          <TabsTrigger value="clients" className="gap-2">
-            <UserCog className="h-4 w-4" />
-            Clients
-          </TabsTrigger>
-        </TabsList>
+      {/* Filters */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search users..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
 
-        {/* All Users Tab */}
-        <TabsContent value="all" className="space-y-4">
-          <Card>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle>All Users</CardTitle>
-                  <div className="relative w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search users..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
+        <Select
+          value={roleFilter || "all"}
+          onValueChange={(value) => setRoleFilter(value === "all" ? "" : value)}
+        >
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="User Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="super_admin">Super Admin</SelectItem>
+            <SelectItem value="admin">Admin</SelectItem>
+            <SelectItem value="client">Client</SelectItem>
+          </SelectContent>
+        </Select>
 
-                {/* Filters */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <Select
-                    value={roleFilter || undefined}
-                    onValueChange={(value) => setRoleFilter(value || "")}
-                  >
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="All Roles" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="super_admin">Super Admin</SelectItem>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="client">Client</SelectItem>
-                    </SelectContent>
-                  </Select>
+        <Select
+          value={statusFilter || "all"}
+          onValueChange={(value) => setStatusFilter(value === "all" ? "" : value)}
+        >
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="inactive">Inactive</SelectItem>
+          </SelectContent>
+        </Select>
 
-                  <Select
-                    value={statusFilter || undefined}
-                    onValueChange={(value) => setStatusFilter(value || "")}
-                  >
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="All Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
+        {hasActiveFilters && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={clearFilters}
+            className="gap-2"
+          >
+            <X className="h-4 w-4" />
+            Clear Filters
+          </Button>
+        )}
+      </div>
 
-                  {hasActiveFilters && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearFilters}
-                      className="gap-2"
-                    >
-                      <X className="h-4 w-4" />
-                      Clear Filters
-                    </Button>
-                  )}
-                </div>
-              </div>
-            <CardContent>{renderUsersTable()}</CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Admins Tab */}
-        <TabsContent value="admins" className="space-y-4">
-          <Card>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle>Administrators</CardTitle>
-                  <div className="relative w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search admins..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                {/* Filters (without role filter) */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <Select
-                    value={statusFilter || undefined}
-                    onValueChange={(value) => setStatusFilter(value || "")}
-                  >
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="All Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  {hasActiveFilters && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearFilters}
-                      className="gap-2"
-                    >
-                      <X className="h-4 w-4" />
-                      Clear Filters
-                    </Button>
-                  )}
-                </div>
-              </div>
-            <CardContent>{renderUsersTable()}</CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Clients Tab */}
-        <TabsContent value="clients" className="space-y-4">
-          <Card>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle>Clients</CardTitle>
-                  <div className="relative w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search clients..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
-                </div>
-
-                {/* Filters (without role filter) */}
-                <div className="flex items-center gap-3 flex-wrap">
-                  <Select
-                    value={statusFilter || undefined}
-                    onValueChange={(value) => setStatusFilter(value || "")}
-                  >
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="All Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="inactive">Inactive</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  {hasActiveFilters && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearFilters}
-                      className="gap-2"
-                    >
-                      <X className="h-4 w-4" />
-                      Clear Filters
-                    </Button>
-                  )}
-                </div>
-              </div>
-            <CardContent>{renderUsersTable()}</CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      {/* Users Table */}
+      <div >
+        {renderUsersTable()}
+      </div>
 
       {/* User Form Dialog */}
       <UserFormDialog

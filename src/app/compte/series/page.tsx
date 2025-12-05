@@ -97,7 +97,7 @@ export default function StreaksPage() {
                 Fonctionnalité Premium
               </CardTitle>
                 Les séries sont réservées aux abonnés premium
-            <CardContent className="space-y-4">
+            <div className="p-6" className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Relevez le défi des séries de 7 jours! Complétez 20 exercices
                 avec au moins 90% de score et gagnez des emblème exclusives.
@@ -116,7 +116,7 @@ export default function StreaksPage() {
                   Passer à Premium
                 </Button>
               </Link>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>
@@ -190,13 +190,13 @@ export default function StreaksPage() {
         )}
         {stats && (
           <>
-            <div className="border-2 border-gray-200 rounded-lg p-3">
+            <div className="border-2 border-border rounded-lg p-3">
               <h4 className="text-sm font-medium text-muted-foreground">
                 Total séries
               </h4>
               <p className="text-2xl font-bold">{stats.totalStreaks}</p>
             </div>
-            <div className="border-2 border-gray-200 rounded-lg p-3">
+            <div className="border-2 border-border rounded-lg p-3">
               <div className="">
                 <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
                   <Trophy className="h-4 w-4 text-yellow-600" />
@@ -236,7 +236,7 @@ export default function StreaksPage() {
             />
           ) : (
             <Card>
-              <CardContent className="py-12">
+              <div className="p-6" className="py-12">
                 <div className="text-center">
                   <Flame className="h-16 w-16 mx-auto text-gray-300 mb-4" />
                   <h3 className="text-lg font-semibold mb-2">
@@ -255,7 +255,7 @@ export default function StreaksPage() {
                     </Button>
                   )}
                 </div>
-              </CardContent>
+              </div>
             </Card>
           )}
         </TabsContent>
@@ -301,7 +301,7 @@ export default function StreaksPage() {
             </>
           ) : (
             <Card>
-              <CardContent className="py-12">
+              <div className="p-6" className="py-12">
                 <div className="text-center">
                   <TrendingUp className="h-16 w-16 mx-auto text-gray-300 mb-4" />
                   <h3 className="text-lg font-semibold mb-2">
@@ -311,7 +311,7 @@ export default function StreaksPage() {
                     Vos séries passées apparaîtront ici
                   </p>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           )}
         </TabsContent>

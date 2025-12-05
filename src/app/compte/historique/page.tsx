@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -160,40 +160,40 @@ export default function PracticeHistoryPage() {
           <Card>
             <BarChart className="h-4 w-4" />
             Sessions totales
-            <CardContent>
+            <div className="p-6">
               <p className="text-3xl font-bold">{statistics.totalSessions}</p>
-            </CardContent>
+            </div>
           </Card>
 
           <Card>
             <Trophy className="h-4 w-4" />
             Score moyen
-            <CardContent>
+            <div className="p-6">
               <p className="text-3xl font-bold">
                 {Math.round(statistics.averageScore)}%
               </p>
-            </CardContent>
+            </div>
           </Card>
 
           <Card>
             <TrendingUp className="h-4 w-4" />
             Meilleur score
-            <CardContent>
+            <div className="p-6">
               <p className="text-3xl font-bold">
                 {Math.round(statistics.highestScore)}%
               </p>
-            </CardContent>
+            </div>
           </Card>
 
           <Card>
             <Clock className="h-4 w-4" />
             Temps total
-            <CardContent>
+            <div className="p-6">
               <p className="text-3xl font-bold">
                 {Math.floor(statistics.totalTimeSeconds / 3600)}h{" "}
                 {Math.floor((statistics.totalTimeSeconds % 3600) / 60)}m
               </p>
-            </CardContent>
+            </div>
           </Card>
         </div>
       )}

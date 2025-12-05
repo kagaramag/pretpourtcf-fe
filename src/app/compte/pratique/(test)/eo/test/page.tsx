@@ -425,7 +425,7 @@ export default function SpeakingPracticeSessionPage() {
               </Alert>
 
               {/* Tache 1: Presentation */}
-              <div className="space-y-1 p-4 border rounded-lg border-gray-200">
+              <div className="space-y-1 p-4 border rounded-lg border-border">
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
                     1
@@ -514,7 +514,7 @@ export default function SpeakingPracticeSessionPage() {
 
               {/* Tache 2 */}
               {questions.length > 0 && (
-                <div className="space-y-4 p-4 border rounded-lg border-gray-200">
+                <div className="space-y-4 p-4 border rounded-lg border-border">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
                       2
@@ -601,7 +601,7 @@ export default function SpeakingPracticeSessionPage() {
 
               {/* Tache 3 */}
               {questions.length > 1 && (
-                <div className="space-y-4 p-4 border rounded-lg border-gray-200">
+                <div className="space-y-4 p-4 border rounded-lg border-border">
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
                       3
