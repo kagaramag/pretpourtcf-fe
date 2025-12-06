@@ -60,9 +60,9 @@ export default function Header() {
     <div>
       {!isLoading && !isAuthenticated && (
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white lg:text-md text-sm">
-          Offre exclusive! Préparez votre TCF gratuitement avec le code{" "}
-          <span className="font-semibold">PRET100</span> et accédez à tous nos
-          tests, exercices, et outils.
+          Offre exclusive! -30% avec le code{" "}
+          <span className="font-semibold">GO30</span> sur tous nos tests,
+          exercices, et outils.
           <a href="/signup" className="whitespace-nowrap underline pl-2">
             Créer un compte maintenant
           </a>
