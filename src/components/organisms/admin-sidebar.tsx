@@ -26,6 +26,8 @@ import {
   Radius,
   LibraryBig,
   Notebook,
+  AlignEndVerticalIcon,
+  MessageCircle,
 } from "lucide-react";
 
 interface MenuItem {
@@ -71,6 +73,12 @@ const menuItems: MenuItem[] = [
     icon: <ReceiptText className="h-5 w-5" />,
     href: "/dashboard/plans",
     permission: PERMISSIONS.FOLLOWUPS_READ,
+  },
+  {
+    name: "Messages",
+    icon: <MessageCircle className="h-5 w-5" />,
+    href: "/dashboard/messages",
+    permission: PERMISSIONS.PRACTICES_READ,
   },
   {
     name: "Transactions",

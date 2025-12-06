@@ -19,6 +19,8 @@ const badgeVariants = cva(
           'border-transparent bg-red-500 text-white',
         outline:
           'bg-transparent border border-border',
+        tertiary:
+          'bg-tertiary border border-tertiary',
       },
     },
     defaultVariants: {

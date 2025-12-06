@@ -1,0 +1,356 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Plus,
+  MoreVertical,
+  Edit,
+  Loader2,
+  Trash2,
+  Eye,
+  Mail,
+  Power,
+  PowerOff,
+} from "lucide-react";
+import { emailTemplateService, EmailTemplate } from "@/services/email-template";
+import { toast } from "sonner";
+import { EmailTemplateFormDialog } from "@/components/email-templates/email-template-form-dialog";
+import { EmailTemplatePreviewDialog } from "@/components/email-templates/email-template-preview-dialog";
+import { SendBulkEmailDialog } from "@/components/email-templates/send-bulk-email-dialog";
+import { formatDate } from "@/lib/date-utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+
+export function EmailTemplatesScreen() {
+  const queryClient = useQueryClient();
+
+  // Dialogs
+  const [formDialog, setFormDialog] = useState(false);
+  const [formMode, setFormMode] = useState<"create" | "edit">("create");
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<EmailTemplate | null>(null);
+  const [previewDialog, setPreviewDialog] = useState(false);
+  const [sendBulkDialog, setSendBulkDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [templateToDelete, setTemplateToDelete] = useState<string | null>(null);
+
+  const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => emailTemplateService.deleteTemplate(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["email-templates"] });
+      toast.success("Modèle supprimé avec succès");
+      setDeleteDialog(false);
+      setTemplateToDelete(null);
+      fetchTemplates();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message || "Échec de la suppression du modèle"
+      );
+    },
+  });
+
+  // Toggle status mutation
+  const toggleStatusMutation = useMutation({
+    mutationFn: ({ id, isActive }: { id: string; isActive: boolean }) =>
+      emailTemplateService.updateTemplate(id, { isActive }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["email-templates"] });
+      toast.success("Statut du modèle mis à jour");
+      fetchTemplates();
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message ||
+          "Échec de la mise à jour du statut du modèle"
+      );
+    },
+  });
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
+
+  const fetchTemplates = async () => {
+    try {
+      setIsLoading(true);
+      const templates = await emailTemplateService.getAllTemplates();
+      console.log("::##::", templates);
+      setTemplates(templates);
+    } catch (error: any) {
+      console.error("Failed to fetch templates:", error);
+      toast.error("Échec du chargement des modèles");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCreateNew = () => {
+    setFormMode("create");
+    setSelectedTemplate(null);
+    setFormDialog(true);
+  };
+
+  const handleEdit = (template: EmailTemplate) => {
+    setFormMode("edit");
+    setSelectedTemplate(template);
+    setFormDialog(true);
+  };
+
+  const handlePreview = (template: EmailTemplate) => {
+    setSelectedTemplate(template);
+    setPreviewDialog(true);
+  };
+
+  const handleSendBulk = (template: EmailTemplate) => {
+    setSelectedTemplate(template);
+    setSendBulkDialog(true);
+  };
+
+  const handleDelete = (id: string) => {
+    setTemplateToDelete(id);
+    setDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (templateToDelete) {
+      deleteMutation.mutate(templateToDelete);
+    }
+  };
+
+  const handleToggleStatus = (template: EmailTemplate) => {
+    toggleStatusMutation.mutate({
+      id: template._id,
+      isActive: !template.isActive,
+    });
+  };
+
+  console.log("##", templates);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Email templates</h1>
+        </div>
+        <Button onClick={handleCreateNew}>
+          <Plus className="h-4 w-4 mr-2" />
+          Create
+        </Button>
+      </div>
+
+      {/* Table */}
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nom</TableHead>
+              <TableHead>Sujet</TableHead>
+              <TableHead>Variables</TableHead>
+              <TableHead>Statut</TableHead>
+              <TableHead>Créé par</TableHead>
+              <TableHead>Date de création</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto" />
+                </TableCell>
+              </TableRow>
+            ) : templates.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-12">
+                  <p className="text-muted-foreground">Aucun modèle trouvé</p>
+                </TableCell>
+              </TableRow>
+            ) : (
+              templates.map((template) => (
+                <TableRow key={template._id}>
+                  <TableCell>{template.name}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">
+                    {template.subject}
+                  </TableCell>
+                  <TableCell>
+                    {template.variables.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {template.variables.slice(0, 1).map((variable) => (
+                          <Badge key={variable} variant="outline">
+                            {variable}
+                          </Badge>
+                        ))}
+                        {template.variables.length > 2 && (
+                          <Badge variant="outline">
+                            +{template.variables.length - 2}
+                          </Badge>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">
+                        Aucune
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={template.isActive ? "default" : "secondary"}
+                    >
+                      {template.isActive ? "Actif" : "Inactif"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-sm">
+                      <div className="font-medium">
+                        {template.createdBy.first_name}{" "}
+                        {template.createdBy.last_name}
+                      </div>
+                      <div className="text-muted-foreground">
+                        {template.createdBy.email}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>{formatDate(template.createdAt)}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => handlePreview(template)}
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          Preview
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(template)}>
+                          <Edit className="h-4 w-4 mr-2" />
+                          Change
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleToggleStatus(template)}
+                        >
+                          {template.isActive ? (
+                            <>
+                              <PowerOff className="h-4 w-4 mr-2" />
+                              Daactivate
+                            </>
+                          ) : (
+                            <>
+                              <Power className="h-4 w-4 mr-2" />
+                              Activate
+                            </>
+                          )}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleSendBulk(template)}
+                        >
+                          <Mail className="h-4 w-4 mr-2" />
+                          Send a message
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => handleDelete(template._id)}
+                          className="text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Dialogs */}
+      <EmailTemplateFormDialog
+        open={formDialog}
+        onOpenChange={setFormDialog}
+        mode={formMode}
+        template={selectedTemplate}
+        onSuccess={fetchTemplates}
+      />
+
+      <EmailTemplatePreviewDialog
+        open={previewDialog}
+        onOpenChange={setPreviewDialog}
+        template={selectedTemplate}
+      />
+
+      <SendBulkEmailDialog
+        open={sendBulkDialog}
+        onOpenChange={setSendBulkDialog}
+        template={selectedTemplate}
+      />
+
+      <AlertDialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action ne peut pas être annulée. Cela supprimera
+              définitivement ce modèle d&apos;e-mail.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleteMutation.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Suppression...
+                </>
+              ) : (
+                "Supprimer"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+}
