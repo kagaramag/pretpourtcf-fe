@@ -72,10 +72,10 @@ export function LoginForm() {
 
   return (
     <div>
-      <h3 className="text-2xl font-semibold">Bon retour!</h3>
-      <div className="text-sm text-gray-500 mb-4">
+      <h3 className="text-4xl font-semibold">Accès au compte</h3>
+      <h5 className="text-sm text-gray-500 mb-4">
         Entrez vos identifiants pour accéder à votre compte.
-      </div>
+      </h5>
       <div>
         <form
           onSubmit={handleSubmit(onSubmit)}

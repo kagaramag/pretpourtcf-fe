@@ -7,7 +7,6 @@ import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "@/components/organisms/footer";
 import happyUserAnimation from "@/assets/lotties/happy-user.json";
 import { Button } from "@/components/ui/button";
 
@@ -72,12 +71,13 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
 
         <div className="flex items-center justify-center flex-col h-screen relative">
           <div className="mx-auto w-sm lg:px-0 px-6">{children}</div>
-          <div className="mt-2  lg:px-0 px-10">
+          <div className="mt-6  lg:px-0 px-10">
             <p className="text-center text-xs text-muted-foreground px-2">
-              En vous connectant, vous acceptez nos Conditions d'utilisation
-              <br className="hidden sm:block" />
-              <span className="sm:inline"> </span>et notre Politique de
-              confidentialité.
+              En vous connectant, vous acceptez nos{" "}
+              <Link href="/conditions" className="text-primary hover:underline" target="_blank">
+                Conditions d'utilisation
+              </Link>
+              .
             </p>
           </div>
         </div>

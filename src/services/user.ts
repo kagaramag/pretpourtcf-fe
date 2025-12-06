@@ -67,8 +67,8 @@ export const userService = {
    */
   getUserById: async (
     id: string
-  ): Promise<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null }>> => {
-    return await apiClient.get<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null }>>(
+  ): Promise<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any> }>> => {
+    return await apiClient.get<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any> }>>(
       `${API_ENDPOINTS.USERS}/${id}`
     );
   },

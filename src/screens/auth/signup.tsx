@@ -14,11 +14,14 @@ import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 import { authService } from "@/services/auth";
 import { referralService } from "@/services/referral";
 import { toast } from "sonner";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const signupSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
   last_name: z.string().min(2, "Last name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   role: z.enum(["client", "trainer"], {
     required_error: "Please select your account type",
@@ -32,6 +35,7 @@ export function SignupForm() {
   const [signupError, setSignupError] = useState<string>("");
   const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, setIsPending] = useState(false);
@@ -54,6 +58,7 @@ export function SignupForm() {
       first_name: "",
       last_name: "",
       email: "",
+      phone: "",
       password: "",
       role: undefined,
     },
@@ -145,17 +150,14 @@ export function SignupForm() {
   // Show verification message after successful signup
   if (showVerificationMessage) {
     return (
-      <Card className="">
-        <div className="flex justify-center mb-4">
-          <div className="rounded-full bg-green-100 p-3">
-            <Mail className="h-12 w-12 text-green-600" />
+      <div>
+        <div className="flex justify-center mb-2">
+          <div className="rounded-full bg-tertiary/20 p-7">
+            <Mail className="h-12 w-12 text-tertiary" />
           </div>
         </div>
-        <CardTitle className="text-2xl">Vérifiez votre email</CardTitle>
-        <div className="p-6">
-          Un email de vérification a été envoyé à <strong>{userEmail}</strong>
-        </div>
-        <div className="p-6 space-y-4">
+        <h5 className="text-2xl text-center mb-4">Vérifiez votre email</h5>
+        <div className="space-y-4">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
             <p className="text-sm text-blue-800">
               Veuillez vérifier votre boîte de réception et cliquer sur le lien
@@ -169,13 +171,14 @@ export function SignupForm() {
 
           <Button
             onClick={() => router.push("/login")}
-            className="w-full bg-primary hover:bg-primary/90"
+            block
+            variant={"tertiary"}
           >
             Aller à la page de connexion
           </Button>
 
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">
+          <div className="text-center mt-4">
+            <p className="text-sm text-gray-500 mb-2">
               Vous n'avez pas reçu l'email?
             </p>
             <Button
@@ -187,7 +190,7 @@ export function SignupForm() {
             </Button>
           </div>
         </div>
-      </Card>
+      </div>
     );
   }
 
@@ -195,10 +198,10 @@ export function SignupForm() {
   if (!showForm) {
     return (
       <div>
-        <h3 className="text-2xl font-semibold">Créer un compte</h3>
-        <div className="text-sm text-gray-500 mb-6">
+        <h3 className="text-4xl font-semibold">Créer un compte</h3>
+        <h5 className="text-sm text-gray-500 mb-6">
           Choisissez votre type de compte pour commencer
-        </div>
+        </h5>
 
         {/* Referral indicator */}
         {referrerName && (
@@ -257,15 +260,6 @@ export function SignupForm() {
             Continuer
           </Button>
 
-          <p className="text-center text-sm text-muted-foreground">
-            Vous avez déjà un compte?{" "}
-            <Link
-              href={searchParams.get('redirect') ? `/login?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/login'}
-              className="text-primary hover:underline"
-            >
-              Connectez-vous
-            </Link>
-          </p>
         </div>
       </div>
     );
@@ -363,6 +357,26 @@ export function SignupForm() {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="phone">
+              Numéro de téléphone
+            </Label>
+            <div className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 md:text-sm">
+              <PhoneInput
+                international
+                defaultCountry="RW"
+                value={phoneNumber}
+                onChange={(value) => {
+                  setPhoneNumber(value || "");
+                  setValue("phone", value || "", { shouldValidate: true });
+                }}
+              />
+            </div>
+            {errors.phone && (
+              <p className="text-sm text-red-500">{errors.phone.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="password">
               Mot de passe
             </Label>
@@ -406,16 +420,6 @@ export function SignupForm() {
               )}
             </Button>
           </div>
-
-          <p className="text-center text-sm text-muted-foreground">
-            Vous avez déjà un compte?{" "}
-            <Link
-              href={searchParams.get('redirect') ? `/login?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/login'}
-              className="text-primary hover:underline"
-            >
-              Connectez-vous
-            </Link>
-          </p>
         </form>
       </div>
     </div>

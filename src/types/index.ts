@@ -55,7 +55,9 @@ export interface User {
   avatar?: string;
   status: "active" | "inactive";
   createdAt?: string;
+  lastLoginAt?: string;
   subscription?: Subscription | null;
+  subscriptions?: Array<Subscription & { createdAt: string }>;
 }
 
 export interface BackendApiResponse<T> {
