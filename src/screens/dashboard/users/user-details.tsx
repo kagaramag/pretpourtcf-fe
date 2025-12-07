@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
   Mail,
-  Phone,
   Calendar,
   User as UserIcon,
   BookOpen,
@@ -108,7 +107,7 @@ export default function UserDetailsScreen() {
   }
 
   return (
-    <div className="px-8">
+    <div className="lg:px-8">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"
@@ -123,9 +122,9 @@ export default function UserDetailsScreen() {
         {/* Header */}
 
         {/* User Profile */}
-        <div className="bg-white rounded-lg border border-border p-6">
-          <div className="flex items-start gap-4">
-            <div className="h-16 w-16 rounded-full bg-tertiary flex items-center justify-center text-black text-2xl font-bold">
+        <div className="bg-white rounded-lg border border-border lg:p-6 p-2">
+          <div className="flex items-start lg:gap-4 gap-2">
+            <div className="h-16 w-16 rounded-full bg-tertiary flex items-center justify-center text-black lg:text-2xl text-md lg:font-bold">
               {user.first_name?.[0]}
               {user.last_name?.[0]}
             </div>
@@ -149,8 +148,8 @@ export default function UserDetailsScreen() {
                   </Badge>
                 </div>
               </div>
-              <div className="flex flex-items gap-6">
-                <div className="w-3/12">
+              <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-6 gap-2">
+                <div>
                   <h5 className="text-sm text-gray-500">Email</h5>
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-gray-400" />
@@ -158,7 +157,7 @@ export default function UserDetailsScreen() {
                   </div>
                 </div>
 
-                <div className="w-3/12">
+                <div>
                   <h5 className="text-sm text-gray-500">Date de création</h5>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-gray-400" />
@@ -170,7 +169,7 @@ export default function UserDetailsScreen() {
                   </div>
                 </div>
                 {user.lastLoginAt && (
-                  <div className="w-3/12">
+                  <div>
                     <h5 className="text-sm text-gray-500">
                       Dernière connexion
                     </h5>
@@ -210,14 +209,14 @@ export default function UserDetailsScreen() {
           </TabsList>
 
           {/* Subscriptions Tab Content */}
-          <TabsContent value="subscriptions" className="mt-6">
+          <TabsContent value="subscriptions" className="lg:mt-6">
             {subscriptions && subscriptions.length > 0 ? (
-              <div className="bg-white rounded-lg border border-border p-6">
-                <div className="space-y-3">
+              <div className="lg:bg-white rounded-lg lg:border border-border lg:p-6">
+                <div className="space-y-2">
                   {subscriptions.map((subscription: any, index: number) => (
                     <div
                       key={subscription.id}
-                      className="border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                      className="bg-white border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 space-y-2">
@@ -308,9 +307,9 @@ export default function UserDetailsScreen() {
 
           {/* Practice History Tab Content (for clients only) */}
           {user.role === "client" && (
-            <TabsContent value="practice" className="mt-6">
+            <TabsContent value="practice" className="lg:mt-6">
               {practiceHistory && practiceHistory.length > 0 ? (
-                <div className="bg-white rounded-lg border border-border p-6">
+                <div className="lg:bg-white rounded-lg lg:border border-border lg:p-6 p-2">
                   <div className="space-y-2">
                     {practiceHistory.map((session) => {
                       const practice =
@@ -376,7 +375,7 @@ export default function UserDetailsScreen() {
                       return (
                         <div
                           key={session._id}
-                          className="border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                          className="bg-white border border-border rounded-lg p-4 hover:bg-gray-50 transition-colors"
                         >
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1 space-y-2">

@@ -73,8 +73,8 @@ export function Messages() {
 
       {/* Statistics Cards */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4">
+        <div className="grid lg:grid-cols-4 grid-cols-2 lg:gap-4 gap-2">
+          <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
                 <Mail className="h-5 w-5" />
@@ -86,7 +86,7 @@ export function Messages() {
             </div>
           </Card>
 
-          <Card className="p-4">
+          <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
                 <Send className="h-5 w-5 " />
@@ -98,7 +98,7 @@ export function Messages() {
             </div>
           </Card>
 
-          <Card className="p-4">
+          <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100 rounded-lg">
                 <CheckCircle className="h-5 w-5" />
@@ -110,7 +110,7 @@ export function Messages() {
             </div>
           </Card>
 
-          <Card className="p-4">
+          <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
                 <XCircle className="h-5 w-5 " />

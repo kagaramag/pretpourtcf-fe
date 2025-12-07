@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import UserDetailsScreen from "@/screens/users/user-details";
+import UserDetailsScreen from "@/screens/dashboard/users/user-details";
 
 export const metadata: Metadata = {
   title: "Détails utilisateur | PRET POUR TCF",

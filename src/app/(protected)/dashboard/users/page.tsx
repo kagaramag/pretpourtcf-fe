@@ -1,4 +1,4 @@
-import { UsersScreen } from "@/screens/users";
+import { UsersScreen } from "@/screens/dashboard/users";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

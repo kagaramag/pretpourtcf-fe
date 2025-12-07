@@ -139,7 +139,7 @@ export default function Sidebar() {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-border"
+        className="lg:hidden fixed top-2 left-4 z-50 p-2 bg-tertiary rounded-lg"
       >
         {isMobileOpen ? (
           <X className="h-5 w-5" />
