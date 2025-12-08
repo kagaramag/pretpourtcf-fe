@@ -2,87 +2,87 @@
 
 @theme {
   /* Semantic colors */
-  --color-border: #D1D1D1;
-  --color-input: #D1D1D1;
-  --color-ring: #4E56C0;
-  --color-white: #FFFFFF;
-  --color-background: #FFFFFF;
-  --color-foreground: #1C1C1C;
-  --color-primary: #4E56C0;
-  --color-secondary: #97306B;
+  --color-border: #d1d1d1;
+  --color-input: #d1d1d1;
+  --color-ring: #4e56c0;
+  --color-white: #ffffff;
+  --color-background: #ffffff;
+  --color-foreground: #1c1c1c;
+  --color-primary: #4e56c0;
+  --color-secondary: #97306b;
   --color-tertiary: #69edcd;
-  --color-destructive: #D0342F;
-  --color-muted: #F2F2F2;
-  --color-accent: #D78FEE;
-  --color-popover: #FFFFFF;
-  --color-card: #FFFFFF;
-  --color-subtle: #BABABA;
-  --color-divide: #E8E8E8;
-  --color-border: #E8E8E8;
+  --color-destructive: #d0342f;
+  --color-muted: #f2f2f2;
+  --color-accent: #d78fee;
+  --color-popover: #ffffff;
+  --color-card: #ffffff;
+  --color-subtle: #bababa;
+  --color-divide: #e8e8e8;
+  --color-border: #e8e8e8;
 
   /* Gray scale */
-  --color-gray-50: #F2F2F2;
-  --color-gray-100: #E8E8E8;
-  --color-gray-200: #D1D1D1;
-  --color-gray-300: #BABABA;
-  --color-gray-400: #A3A3A3;
-  --color-gray-500: #8C8C8C;
+  --color-gray-50: #f2f2f2;
+  --color-gray-100: #e8e8e8;
+  --color-gray-200: #d1d1d1;
+  --color-gray-300: #bababa;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #8c8c8c;
   --color-gray-600: #707070;
   --color-gray-700: #545454;
   --color-gray-800: #383838;
-  --color-gray-900: #1C1C1C;
-  --color-gray-950: #0D0D0D;
+  --color-gray-900: #1c1c1c;
+  --color-gray-950: #0d0d0d;
 
   /* Green scale */
-  --color-green-50: #F0FDF4;
-  --color-green-100: #DCFCE7;
-  --color-green-200: #BBF7D0;
-  --color-green-300: #86EFAC;
-  --color-green-400: #4ADE80;
-  --color-green-500: #22C55E;
-  --color-green-600: #16A34A;
-  --color-green-700: #15803D;
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
   --color-green-800: #166534;
   --color-green-900: #145231;
-  --color-green-950: #0F2818;
+  --color-green-950: #0f2818;
 
   /* Blue scale */
-  --color-blue-50: #EBF0FF;
-  --color-blue-100: #D1DEFF;
-  --color-blue-200: #A3BDFF;
-  --color-blue-300: #759CFF;
-  --color-blue-400: #477BFF;
-  --color-blue-500: #1B5BFF;
-  --color-blue-600: #0040E0;
-  --color-blue-700: #0030A8;
+  --color-blue-50: #ebf0ff;
+  --color-blue-100: #d1deff;
+  --color-blue-200: #a3bdff;
+  --color-blue-300: #759cff;
+  --color-blue-400: #477bff;
+  --color-blue-500: #1b5bff;
+  --color-blue-600: #0040e0;
+  --color-blue-700: #0030a8;
   --color-blue-800: #002070;
   --color-blue-900: #001038;
-  --color-blue-950: #00091F;
+  --color-blue-950: #00091f;
 
   /* Orange scale */
-  --color-orange-50: #FEEFD2;
-  --color-orange-100: #FDE7BC;
-  --color-orange-200: #FCE0A8;
-  --color-orange-300: #F9BD46;
-  --color-orange-400: #F9B630;
-  --color-orange-500: #F8AE1A;
-  --color-orange-600: #F3A508;
-  --color-orange-700: #DD9607;
-  --color-orange-800: #C78706;
-  --color-orange-900: #B17805;
-  --color-orange-950: #9B6905;
+  --color-orange-50: #feefd2;
+  --color-orange-100: #fde7bc;
+  --color-orange-200: #fce0a8;
+  --color-orange-300: #f9bd46;
+  --color-orange-400: #f9b630;
+  --color-orange-500: #f8ae1a;
+  --color-orange-600: #f3a508;
+  --color-orange-700: #dd9607;
+  --color-orange-800: #c78706;
+  --color-orange-900: #b17805;
+  --color-orange-950: #9b6905;
 
   /* Red scale */
-  --color-red-50: #FAEBEA;
-  --color-red-100: #F6D6D5;
-  --color-red-200: #ECAEAC;
-  --color-red-300: #E38582;
-  --color-red-400: #D95D59;
-  --color-red-500: #D0342F;
-  --color-red-600: #A62A26;
-  --color-red-700: #7D1F1C;
+  --color-red-50: #faebea;
+  --color-red-100: #f6d6d5;
+  --color-red-200: #ecaeac;
+  --color-red-300: #e38582;
+  --color-red-400: #d95d59;
+  --color-red-500: #d0342f;
+  --color-red-600: #a62a26;
+  --color-red-700: #7d1f1c;
   --color-red-800: #531513;
-  --color-red-900: #2A0A09;
+  --color-red-900: #2a0a09;
   --color-red-950: #150505;
 
   /* Border radius */
@@ -96,9 +96,17 @@
     @apply bg-gray-100;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-fredoka), sans-serif;
   }
+}
+.article-body a {
+  color: #4e56c0;
 }
 
 @keyframes gradient {

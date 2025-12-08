@@ -114,7 +114,7 @@ export default function PublicBlogDetailScreen({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-gray-100 mt-4">
+      <div className="min-h-screen mt-4">
         {/* Cover Image */}
         {blog.cover_image && (
           <div className="w-full max-h-[540px] max-w-4xl overflow-hidden rounded-4xl mx-auto">
@@ -164,7 +164,7 @@ export default function PublicBlogDetailScreen({
           <Separator className="mb-4" />
           {/* Article Content */}
           <div
-            className="prose leading-relaxed prose-lg prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg"
+            className="article-body prose leading-relaxed prose-lg prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg"
             itemProp="articleBody"
           >
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
@@ -175,7 +175,7 @@ export default function PublicBlogDetailScreen({
           <Separator className="my-8" />
 
           {/* Back Button */}
-          <div className="mt-12 text-center">
+          <div className="mt-6 pb-12 text-center">
             <Button
               variant="outline"
               onClick={() => router.push("/blog")}

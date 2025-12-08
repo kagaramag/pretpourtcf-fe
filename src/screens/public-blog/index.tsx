@@ -55,7 +55,7 @@ function PublicBlogScreenContent() {
         page: pagination.page,
         limit: pagination.limit,
         search: debouncedSearch || undefined,
-        sort: "-published_at",
+        sort: "_id",
       });
 
       setBlogs(response.data.blogs);
