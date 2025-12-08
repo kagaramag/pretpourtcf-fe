@@ -73,20 +73,20 @@ function PublicBlogScreenContent() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-primary text-primary-foreground py-16">
+      <div className="bg-primary text-white py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">
             Blog
           </h1>
-          <p className="text-xl text-center text-primary-foreground/80 max-w-2xl mx-auto">
+          <p className="text-xl text-center text-white/80 max-w-2xl mx-auto">
             Découvrez nos articles, conseils et actualités sur la préparation au TCF
           </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-6">
         {/* Search */}
-        <div className="max-w-2xl mx-auto mb-12">
+        <div className="max-w-2xl mx-auto mb-6">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
             <Input
@@ -117,7 +117,7 @@ function PublicBlogScreenContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {blogs.map((blog) => (
                 <Link href={`/blog/${blog._id}`} key={blog._id}>
-                  <div className="border rounded-lg h-full hover:shadow-lg transition-shadow cursor-pointer">
+                  <div className="border border-border bg-white rounded-lg h-full hover:shadow-lg transition-shadow cursor-pointer">
                     {blog.cover_image && (
                       <div className="aspect-video overflow-hidden rounded-t-lg">
                         <img
