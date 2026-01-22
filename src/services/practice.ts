@@ -36,6 +36,7 @@ export interface PracticeQueryParams {
   type?: PracticeType;
   level?: CEFRLevel;
   isActive?: boolean;
+  freemium?: boolean;
   sort?: string;
 }
 
@@ -55,6 +56,8 @@ export const practiceService = {
     if (params?.level) queryParams.append("level", params.level);
     if (params?.isActive !== undefined)
       queryParams.append("isActive", params.isActive.toString());
+    if (params?.freemium !== undefined)
+      queryParams.append("freemium", params.freemium.toString());
     if (params?.sort) queryParams.append("sort", params.sort);
 
     const url = `${API_ENDPOINTS.PRACTICES}${

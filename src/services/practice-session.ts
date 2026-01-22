@@ -141,12 +141,29 @@ export const practiceSessionService = {
 
   /**
    * Cancel/delete a practice session
+   * This is an idempotent operation - if the session doesn't exist or is already
+   * completed, it will return success since the goal is already achieved
    */
   cancelSession: async (
     sessionId: string
   ): Promise<BackendApiResponse<Record<string, never>>> => {
-    return await apiClient.delete<BackendApiResponse<Record<string, never>>>(
-      `${API_ENDPOINTS.PRACTICE_SESSIONS}/${sessionId}`
-    );
+    try {
+      return await apiClient.delete<BackendApiResponse<Record<string, never>>>(
+        `${API_ENDPOINTS.PRACTICE_SESSIONS}/${sessionId}`
+      );
+    } catch (error: any) {
+      // If the session doesn't exist (404), treat it as a successful cancellation
+      // since the goal (session not being active) is already achieved
+      if (error.response?.status === 404) {
+        return {
+          status: "success",
+          statusCode: 200,
+          message: "Session already cancelled or completed",
+          data: {},
+        } as BackendApiResponse<Record<string, never>>;
+      }
+      // Re-throw other errors
+      throw error;
+    }
   },
 };

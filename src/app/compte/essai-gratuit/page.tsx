@@ -1,21 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AccountLayout from "@/layouts/account";
 import { practiceService } from "@/services/practice";
 import { Practice, PracticeType } from "@/types";
 import { Button } from "@/components/ui/button";
+import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, MoveRight, Crown } from "lucide-react";
 
 type PracticeCategory = {
   type: PracticeType;
   label: string;
+  slug: "co" | "eo" | "ce" | "ee";
 };
 
 const categories: PracticeCategory[] = [
-  { type: "listening", label: "Compréhension Orale" },
-  { type: "reading", label: "Compréhension Ecrite" },
-  { type: "speaking", label: "Expression Orale" },
-  { type: "writing", label: "Expression Ecrite" },
+  { type: "listening", label: "Compréhension Orale", slug: "co" },
+  { type: "reading", label: "Compréhension Ecrite", slug: "ce" },
+  { type: "speaking", label: "Expression Orale", slug: "eo" },
+  { type: "writing", label: "Expression Ecrite", slug: "ee" },
 ];
 
 function PratiqueGratuitPage() {
@@ -25,6 +27,9 @@ function PratiqueGratuitPage() {
   const [practices, setPractices] = useState<Practice[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleCategoryClick = async (type: PracticeType) => {
     setSelectedCategory(type);
@@ -52,22 +57,23 @@ function PratiqueGratuitPage() {
     }
   };
 
+  // Handle URL parameter on mount
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    if (typeParam) {
+      const category = categories.find((cat) => cat.slug === typeParam);
+      if (category) {
+        handleCategoryClick(category.type);
+      }
+    }
+  }, [searchParams]);
+
   return (
     <AccountLayout>
       <div className="flex flex-col gap-4">
         <div className="w-full">
           <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
-          <div className="mt-6 flex flex-col justify-center items-center border-2 border-dashed border-tertiary rounded-lg p-6 bg-tertiary/10 text-center">
-            Offre exclusive! Préparez votre TCF gratuitement avec le code
-            PRET100 et accédez à tous nos tests, exercices, et outils.
-            <a href="/compte/abonner?plan_id=6907104178c21a54d6e2cd9c" className="whitespace-nowrap underline pl-2">
-              Allez au paiement
-            </a>
-            et saisissez le code PRET100 lors du checkout — le montant sera
-            annulé.
-          </div>
-
-          {/* <div className="flex flex-row gap-2 bg-primary/10 p-2 rounded-full">
+          <div className="flex flex-row gap-2 bg-primary/10 p-2 rounded-full">
             {categories.map((category) => (
               <button
                 key={category.type}
@@ -81,18 +87,16 @@ function PratiqueGratuitPage() {
                 {category.label}
               </button>
             ))}
-          </div> */}
+          </div>
         </div>
-        {/* <div className="flex-1 py-4">
+        <div className="flex-1 py-4">
           {!selectedCategory && (
             <div className="text-gray-500 text-center mt-8">
               Sélectionnez une catégorie pour afficher les pratiques disponibles
             </div>
           )}
 
-          {loading && (
-            <div className="text-center mt-8">Chargement...</div>
-          )}
+          {loading && <div className="text-center mt-8">Chargement...</div>}
 
           {error && (
             <div className="text-red-500 text-center mt-8">{error}</div>
@@ -101,20 +105,31 @@ function PratiqueGratuitPage() {
           {!loading && !error && selectedCategory && (
             <div>
               {practices.length === 0 ? (
-                <div className="text-gray-500">Aucune pratique gratuite disponible pour cette catégorie pour le moment</div>
+                <div className="text-gray-500">
+                  Aucune pratique gratuite disponible pour cette catégorie pour
+                  le moment
+                </div>
               ) : (
-                <div className="grid border-t border-b border-gray-100 divide-y divide-gray-100">
+                <div className="grid gap-2">
                   {practices
                     .sort((a: any, b: any) => b._id - a._id)
                     .map((practice) => (
                       <div
                         key={practice._id}
-                        className="flex items-center gap-4 py-2"
+                        className="flex items-center gap-4 px-6 py-3 bg-gray-50/30 border border-gray-100/90 cursor-pointer hover:bg-gray-50 rounded-lg"
+                        onClick={() => {
+                          const categorySlug = categories.find(
+                            (cat) => cat.type === practice.type
+                          )?.slug;
+                          if (categorySlug) {
+                            router.push(
+                              `/compte/essai-gratuit/${categorySlug}/${practice._id}`
+                            );
+                          }
+                        }}
                       >
                         <div className="flex-1">
-                          <h3 className="font-semibold">
-                            {practice.title}
-                          </h3>
+                          <h3 className="font-semibold">{practice.title}</h3>
                           <div className="flex gap-4 text-sm text-gray-600">
                             <span>
                               Duration: {practice.durationMinutes} min
@@ -137,6 +152,7 @@ function PratiqueGratuitPage() {
                             disabled={!practice.freemium}
                           >
                             <MoveRight className="h-4 w-4" />
+                            <span>Commencer</span>
                           </Button>
                         </div>
                       </div>
@@ -145,7 +161,7 @@ function PratiqueGratuitPage() {
               )}
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </AccountLayout>
   );

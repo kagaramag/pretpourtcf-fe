@@ -58,7 +58,7 @@ export default function Header() {
 
   return (
     <div>
-      {!isLoading && !isAuthenticated && (
+      {/* {!isLoading && !isAuthenticated && (
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white lg:text-md text-sm">
           Offre exclusive! -30% avec le code{" "}
           <span className="font-semibold">GO30</span> sur tous nos tests,
@@ -67,7 +67,7 @@ export default function Header() {
             Créer un compte maintenant
           </a>
         </div>
-      )}
+      )} */}
       <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
         <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 lg:px-0 px-2 max-w-6xl relative">
           <div className="lg:hidden gap-1 flex">
