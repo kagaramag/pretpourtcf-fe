@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import AccountLayout from "@/layouts/account";
 import { practiceService } from "@/services/practice";
 import { Practice, PracticeType } from "@/types";
@@ -20,7 +20,7 @@ const categories: PracticeCategory[] = [
   { type: "writing", label: "Expression Ecrite", slug: "ee" },
 ];
 
-function PratiqueGratuitPage() {
+function PratiqueGratuitContent() {
   const [selectedCategory, setSelectedCategory] = useState<PracticeType | null>(
     null
   );
@@ -167,4 +167,19 @@ function PratiqueGratuitPage() {
   );
 }
 
-export default PratiqueGratuitPage;
+export default function PratiqueGratuitPage() {
+  return (
+    <Suspense fallback={
+      <AccountLayout>
+        <div className="flex flex-col gap-4">
+          <div className="w-full">
+            <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
+            <div className="text-center mt-8">Chargement...</div>
+          </div>
+        </div>
+      </AccountLayout>
+    }>
+      <PratiqueGratuitContent />
+    </Suspense>
+  );
+}
