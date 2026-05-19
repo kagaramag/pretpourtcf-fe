@@ -82,11 +82,11 @@ export default function Header() {
                   className="w-full mx-auto"
                 />
               </div>
-              <div className="w-[48px] sm:w-[48px] lg:w-[48px] lg:hidden">
+              <div className="w-[46px] sm:w-[46px] lg:w-[46px] lg:hidden p-0.5">
                 <Image
                   src={Icon}
-                  width={48}
-                  height={64}
+                  width={36}
+                  height={36}
                   priority
                   alt="logo"
                   className="w-full mx-auto"
@@ -158,7 +158,7 @@ export default function Header() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-border shadow-lg absolute inset-x-0 top-full z-40">
+          <div className="lg:hidden bg-gray-900 border-t border-gray-400/20 shadow-lg absolute inset-x-0 top-full z-40">
             <div className="w-full space-y-2 flex flex-col px-4 py-4">
               {!isLoading && isAuthenticated ? (
                 <LearnerNavigation

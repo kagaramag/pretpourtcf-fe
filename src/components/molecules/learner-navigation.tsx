@@ -95,8 +95,8 @@ export default function LearnerNavigation({
                   {isInactive ? (
                     <div
                       className={classNames(
-                        "text-gray-700 opacity-40 cursor-not-allowed",
-                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
+                        "text-gray-500 opacity-40 cursor-not-allowed",
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary rounded-full"
                       )}
                     >
                       <item.icon
@@ -112,13 +112,13 @@ export default function LearnerNavigation({
                     <button
                       onClick={handleLogout}
                       className={classNames(
-                        "text-gray-700 hover:bg-gray-50 hover:text-gray-50",
-                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
+                        "text-white hover:bg-gray-50 hover:text-gray-50",
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary rounded-full"
                       )}
                     >
                       <item.icon
                         aria-hidden="true"
-                        className="text-gray-400 group-hover:text-primary size-5 shrink-0"
+                        className="text-white group-hover:text-primary size-5 shrink-0"
                       />
                       <span>{item.name}</span>
                     </button>
@@ -128,16 +128,16 @@ export default function LearnerNavigation({
                       onClick={onLinkClick}
                       className={classNames(
                         isActive
-                          ? "bg-gray-50"
-                          : "text-gray-700 hover:bg-gray-50 hover:text-gray-50",
-                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary font-semibold rounded-full"
+                          ? "bg-tertiary"
+                          : "text-white hover:bg-gray-50 hover:text-gray-50",
+                        "group flex gap-x-3 items-center  py-2 px-4 text-sm/6 hover:text-primary rounded-full"
                       )}
                     >
                       <item.icon
                         aria-hidden="true"
                         className={classNames(
                           isActive
-                            ? "text-gray-700"
+                            ? "text-black"
                             : "text-gray-400 group-hover:text-primary",
                           "size-5 shrink-0"
                         )}

@@ -48,16 +48,16 @@ const features = [
 
 export default function LandingFeatures() {
   return (
-    <div className="bg-white py-16 sm:py-20 md:py-24 lg:py-16">
+    <div className="bg-white py-12 sm:py-20 md:py-24 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-semibold">
+          <h2 className="text-base">
             Tout ce dont vous avez besoin
           </h2>
-          <h2 className="text-4xl sm:text-4xl md:text-5xl tracking-tighter leading-none">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter leading-none">
             Une préparation complète au TCF
           </h2>
-          <h5 className="text-base sm:text-lg text-gray-700 leading-none mt-2">
+          <h5 className="text-sm sm:text-lg text-gray-600 leading-none mt-2">
             Nous mettons à votre disposition tous les outils nécessaires pour
             réussir votre test de connaissance du français. Notre plateforme est
             conçue pour vous accompagner à chaque étape.
@@ -70,14 +70,14 @@ export default function LandingFeatures() {
                 key={feature.name}
                 className="flex flex-col bg-gray-50 p-6 rounded-2xl hover:bg-gray-100 transition-colors"
               >
-                <h3 className="flex items-center gap-x-3 text-lg font-semibold text-gray-900">
+                <h3 className="flex items-center gap-x-3 text-lg text-gray-900">
                   <feature.icon
                     aria-hidden="true"
                     className="h-6 w-6 flex-none text-gray-700"
                   />
                   {feature.name}
                 </h3>
-                <dd className="flex flex-auto flex-col text-base text-gray-600 mt-2">
+                <dd className="flex flex-auto flex-col lg:text-base text-sm text-gray-600 mt-2">
                   <h5 className="flex-auto leading-none">{feature.description}</h5>
                 </dd>
               </div>

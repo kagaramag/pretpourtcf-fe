@@ -58,7 +58,7 @@ export default function LandingFAQ() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter text-center leading-tight">
             Questions fréquentes
           </h2>
-          <h5 className="text-base sm:text-lg  text-center">
+          <h5 className="text-sm sm:text-lg  text-center text-gray-600">
             Vous avez des questions? Nous avons les réponses.
           </h5>
           <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 lg:rounded-2xl rounded-lg border border-gray-300/50">

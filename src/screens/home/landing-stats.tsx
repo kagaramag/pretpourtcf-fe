@@ -10,14 +10,14 @@ const stats = [
 
 export default function LandingStats() {
   return (
-    <div className="bg-black py-20 sm:py-20 md:py-20 relative overflow-hidden">
+    <div className="bg-black py-14 sm:py-20 md:py-20 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="text-center">
-            <h2 className="text-4xl tracking-tighter text-white sm:text-4xl">
+            <h2 className="lg:text-4xl text-3xl tracking-tighter text-white sm:text-4xl">
               Des résultats qui parlent d'eux-mêmes
             </h2>
-            <p className="text-base sm:text-lg text-white/60">
+            <p className="text-base sm:text-lg text-gray-500">
               Rejoignez une communauté grandissante de candidats qui ont réussi
               leur TCF
             </p>
@@ -31,7 +31,7 @@ export default function LandingStats() {
                 <dt className="text-sm font-medium text-white/80 text-center">
                   {stat.name}
                 </dt>
-                <h3 className="mt-2 text-3xl sm:text-4xl font-semibold tracking-wide text-white">
+                <h3 className="mt-2 text-3xl sm:text-4xl tracking-wide text-white">
                   {stat.value}
                 </h3>
               </div>

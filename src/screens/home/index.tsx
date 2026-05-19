@@ -47,7 +47,7 @@ export function IndexScreen() {
             className="w-full mx-auto"
           />
         </div>
-        <div className="mx-auto max-w-6xl  mt-20 py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative text-white">
+        <div className="mx-auto max-w-6xl lg:mt-20 py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative text-white">
           <div className="px-2 sm:px-0 flex-1 text-center lg:text-left mt-20">
             <h1 className="text-2xl sm:text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-medium lg:leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
@@ -120,10 +120,10 @@ export function IndexScreen() {
       <div className="bg-black py-16 sm:py-20 md:py-12 relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 z-10 relative">
           <div className="mx-auto max-w-4xl lg:mx-0 text-center">
-            <h2 className="text-4xl sm:text-xl md:text-5xl tracking-tight leading-none text-pretty text-white">
+            <h2 className="text-3xl sm:text-xl md:text-5xl tracking-tight leading-none text-pretty text-white">
               Etapes simples commencer
             </h2>
-            <h4 className="text-base sm:text-lg text-white/60 leading-tight mt-2">
+            <h4 className="text-sm sm:text-lg text-white/60 leading-tight mt-2">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
               créez votre compte, choisissez un plan adapté à vos besoins et
               commencez à progresser à votre rythme.
