@@ -9,31 +9,31 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
     await logout();
   };
   const navigation = [
-    { name: "Mon compte", href: "/compte", icon: UserRound, show: true },
+    { name: "Compte", href: "/compte", icon: UserRound, show: true },
     {
       name: "Séries",
       href: "/compte/series",
       show: !isLoading && user?.subscription !== null,
     },
     {
-      name: "Abonnements",
+      name: "Abos",
       href: "/compte/plans",
       show: !isLoading && user?.subscription !== null,
     },
     {
-      name: "Historique",
+      name: "Activité",
       href: "/compte/historique",
       show: !isLoading && user?.subscription !== null,
     },
     {
-      name: "Parrainages",
+      name: "Invites",
       href: "/compte/parrainages",
       show: true,
     },
   ];
   return (
     <div>
-      <div className="py-3 md:py-2 bg-gray-900 text-white">
+      <div className="pb-3 pt-22 bg-gray-900 text-white">
         <div className="mx-auto max-w-6xl px-4 lg:px-0 md:px-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2">
             <div className="w-14 h-14  bg-black rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
@@ -41,11 +41,13 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
               <div>
-                <h3 className="text-lg lg:text-xl flex flex-col sm:flex-row sm:items-center gap-2 truncate">
-                  Hello, {user?.first_name}!
-                </h3>
+                {!isLoading && user && (
+                  <h3 className="text-lg lg:text-xl flex flex-col sm:flex-row sm:items-center gap-2 truncate">
+                    Hello, {user?.first_name}!
+                  </h3>
+                )}
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-4">
                 <div className="text-sm truncate hidden lg:block">
                   {user?.email}
                 </div>
@@ -58,13 +60,18 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                     {user?.subscription?.days_remaining} Jours{")"}
                   </Link>
                 )}
+                {!user?.subscription && (
+                  <div className="py-1 text-sm rounded-full whitespace-nowrap self-start sm:self-auto">
+                    Plan: Mode gratuit
+                  </div>
+                )}
               </div>
             </div>
             <div className="w-full sm:w-auto lg:block md:block hidden">
               <Button
                 onClick={handleLogout}
                 size={"sm"}
-                variant="destructive"
+                variant="outline"
                 className="w-full sm:w-auto"
               >
                 Se déconnecter
@@ -83,12 +90,12 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                     {item.show ? (
                       <Link
                         href={`${item.href}`}
-                        className={`text-sm hover:text-primary transition-colors`}
+                        className={` text-sm hover:text-primary transition-colors`}
                       >
                         {item.name}
                       </Link>
                     ) : (
-                      <span className={`text-sm text-black/30`}>
+                      <span className={`text-sm text-gray-200/70`}>
                         {item.name}
                       </span>
                     )}
@@ -96,11 +103,6 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                 ))}
               </ul>
             </div>
-            {!user?.subscription && (
-              <div className="bg-black text-white px-3 py-1 text-sm rounded whitespace-nowrap self-start sm:self-auto">
-                Plan: Mode gratuit
-              </div>
-            )}
           </div>
         </div>
       )}

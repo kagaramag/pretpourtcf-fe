@@ -36,8 +36,8 @@ export function IndexScreen() {
   const { user, isLoading, isAuthenticated } = useAuth();
   return (
     <>
-      <div className="relative isolate px-4 sm:px-6 pt-14 lg:px-8">
-        <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10 lg:block hidden">
+      <div className="relative isolate px-4 sm:px-6 pt-14 bg-gray-900 lg:px-8">
+        <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10 lg:block hidden ">
           <Image
             src={Hero}
             width={1200}
@@ -47,13 +47,13 @@ export function IndexScreen() {
             className="w-full mx-auto"
           />
         </div>
-        <div className="mx-auto max-w-6xl py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative">
-          <div className="px-2 sm:px-0 flex-1 text-center lg:text-left">
+        <div className="mx-auto max-w-6xl  mt-20 py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative text-white">
+          <div className="px-2 sm:px-0 flex-1 text-center lg:text-left mt-20">
             <h1 className="text-2xl sm:text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-medium lg:leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            <h4 className="mb-4 mt-2 text-black/60 text-sm lg:text-lg lg:max-w-[550px]">
+            <h4 className="mb-4 mt-2 text-white/60 text-sm lg:text-lg lg:max-w-[550px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
             </h4>
@@ -106,7 +106,7 @@ export function IndexScreen() {
         </div>
         <div
           aria-hidden="true"
-          className="sm:block hidden  md:hidden absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+          className="opacity-50 sm:block hidden  md:hidden absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
         >
           <div
             style={{

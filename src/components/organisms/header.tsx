@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { Calendar, Menu, X, UserRound } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Logo from "@/assets/images/logo.svg";
+import Logo from "@/assets/images/logo_white.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -68,15 +68,15 @@ export default function Header() {
           </a>
         </div>
       )} */}
-      <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
-        <div className="mx-auto flex items-center justify-between gap-2 sm:gap-6 py-0.5 lg:px-0 px-2 max-w-6xl relative">
-          <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
+      <header className="inset-x-0 top-0 z-50 transition-all duration-300 fixed">
+        <div className="flex items-center justify-between gap-2 sm:gap-6 lg:pl-6 lg:pr-2 px-2 lg:mx-auto mx-4 my-2 max-w-6xl border border-white/10 rounded-full bg-black/60 backdrop-blur-md">
+          <div className="w-[120px] sm:w-[180px] lg:w-[190px]">
             <Link href="/">
-              <div className="w-[10px] sm:w-[180px] lg:w-[210px] hidden lg:block">
+              <div className="w-[10px] sm:w-[180px] lg:w-[190px] hidden lg:block">
                 <Image
                   src={Logo}
-                  width={210}
-                  height={120}
+                  width={190}
+                  height={90}
                   priority
                   alt="logo"
                   className="w-full mx-auto"
@@ -94,12 +94,12 @@ export default function Header() {
               </div>
             </Link>
           </div>
-          <div className="hidden flex-1 lg:flex lg:gap-x-0 flex-row items-center h-14 px-0 sm:px-0">
+          <div className="hidden flex-1 lg:flex lg:gap-x-0 flex-row items-center h-12 px-0 sm:px-0">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="font-semibold text-sm px-2 py-1 text-primary"
+                className="font-semibold text-sm px-2 py-1 text-white"
               >
                 {item.name}
               </Link>
@@ -116,10 +116,10 @@ export default function Header() {
           </div>
 
           {!isLoading && isAuthenticated && (
-            <div className="lg:w-[210px] hidden lg:flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
+            <div className="lg:w-[210px] hidden lg:flex flex-1 items-center justify-end py-2 px-0 sm:px-0 gap-2 sm:gap-4">
               <Link href={getUserLink(user?.role)}>
-                <div className="flex items-center gap-1 sm:gap-2 bg-primary/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-primary/20 transition-colors">
-                  <span className="text-xs sm:text-sm text-primary hidden sm:inline">
+                <div className="flex items-center gap-1 sm:gap-2 bg-white/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-white/20 transition-colors">
+                  <span className="text-xs sm:text-sm text-white hidden sm:inline">
                     Mon compte
                   </span>
                   <div className="w-9 h-9 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
