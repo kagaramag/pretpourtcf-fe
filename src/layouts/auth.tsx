@@ -54,7 +54,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           </div>
           <div className="flex gap-4 items-center">
             <Link href={"/"} className="text-primary hover:underline">
-              Acceuil
+              Accueil
             </Link>
             {pathname === "/signup" && (
               <Link href={"/login"} className="text-primary hover:underline">

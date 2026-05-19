@@ -29,21 +29,21 @@ export function FreemiumRestricted({ categorySlug }: FreemiumRestrictedProps) {
         title="Accès restreint"
         onClose={() => router.push(`/compte/essai-gratuit?type=${categorySlug}`)}
       />
-      <div className="container mx-auto p-6 max-w-xl">
+      <div className="container mx-auto lg:p-6 p-2 max-w-xl">
         <div>
-          <div className="p-6 flex flex-col items-center justify-center py-12">
+          <div className="flex flex-col items-center justify-center py-12">
             <AlertCircle className="h-16 w-16 text-orange-500 mb-4" />
-            <h3 className="text-3xl font-semibold mb-2 text-center">
+            <h3 className="text-2xl mb-2 text-center">
               Cet exercice n&apos;est pas disponible en essai gratuit
             </h3>
-            <p className="text-muted-foreground text-center max-w-md mb-6">
-              Cet exercice fait partie de nos offres premium.<br />Pour y accéder,
+            <p className="text-muted-foreground text-center text-sm max-w-sm mb-6">
+              Cet exercice fait partie de nos offres premium. Pour y accéder,
               veuillez souscrire à un abonnement.
             </p>
-            <div className="flex gap-3">
+            <div className="flex lg:flex-row flex-col gap-3">
               <Button
                 onClick={() => router.push("/compte/abonner")}
-                variant="default"
+                variant="tertiary"
               >
                 S'abonner maintenant
               </Button>

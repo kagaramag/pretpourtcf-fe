@@ -55,7 +55,7 @@ export default function LandingFAQ() {
     <div className="bg-gray-50 py-3 sm:py-20 md:py-24 lg:py-4">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary text-center leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter text-center leading-tight">
             Questions fréquentes
           </h2>
           <h5 className="text-base sm:text-lg  text-center">
@@ -65,7 +65,7 @@ export default function LandingFAQ() {
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left text-base sm:text-lg font-semibold">
+                  <AccordionTrigger className="text-left text-base sm:text-lg">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-sm sm:text-base">

@@ -70,6 +70,9 @@ export interface LoginResponse {
   user: User;
   access_token: string;
   refresh_token: string;
+  requiresEmailVerification?: boolean;
+  nextStep?: string;
+  redirectTo?: string;
 }
 
 // API Response Types

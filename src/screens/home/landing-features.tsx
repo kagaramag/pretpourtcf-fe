@@ -54,7 +54,7 @@ export default function LandingFeatures() {
           <h2 className="text-base font-semibold">
             Tout ce dont vous avez besoin
           </h2>
-          <h2 className="text-4xl sm:text-4xl md:text-5xl font-semibold tracking-tighter text-primary leading-none">
+          <h2 className="text-4xl sm:text-4xl md:text-5xl tracking-tighter leading-none">
             Une préparation complète au TCF
           </h2>
           <h5 className="text-base sm:text-lg text-gray-700 leading-none mt-2">
@@ -73,11 +73,11 @@ export default function LandingFeatures() {
                 <h3 className="flex items-center gap-x-3 text-lg font-semibold text-gray-900">
                   <feature.icon
                     aria-hidden="true"
-                    className="h-6 w-6 flex-none text-primary"
+                    className="h-6 w-6 flex-none text-gray-700"
                   />
                   {feature.name}
                 </h3>
-                <dd className="flex flex-auto flex-col text-base text-gray-700 mt-2">
+                <dd className="flex flex-auto flex-col text-base text-gray-600 mt-2">
                   <h5 className="flex-auto leading-none">{feature.description}</h5>
                 </dd>
               </div>

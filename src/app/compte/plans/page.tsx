@@ -190,13 +190,13 @@ function PlansPage() {
             </p>
           </div>
         ) : (
-          <div className="flex flex-row gap-3">
+          <div className="flex lg:flex-row flex-col gap-3">
             {plans
               .filter((plan) => plan.type !== "trial")
               .map((plan) => (
                 <div
                   key={plan.id}
-                  className={`relative w-1/3 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
+                  className={`relative lg:w-1/3 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -205,7 +205,7 @@ function PlansPage() {
                       </span>
                     </div>
                   )}
-                  <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                  <h3 className="text-2xl">{plan.name}</h3>
                   <div
                     className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}
                   >
@@ -363,11 +363,11 @@ function PlansPage() {
             </p>
           </div>
         ) : (
-          <div className="flex flex-row gap-3">
+          <div className="flex lg:flex-row flex-col gap-3">
             {filteredPlans.map((plan) => (
               <div
                 key={plan.id}
-                className={`relative w-1/2 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
+                className={`relative lg:w-1/2 p-4 border-2  border-primary ${plan.popular ? "bg-primary text-white" : ""}`}
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -376,7 +376,7 @@ function PlansPage() {
                     </span>
                   </div>
                 )}
-                <h3 className="text-2xl font-semibold">{plan.name}</h3>
+                <h3 className="text-2xl">{plan.name}</h3>
                 <div
                   className={`text-sm text-gray-500 ${plan.popular ? "text-white/80" : ""}`}
                 >
@@ -441,64 +441,64 @@ function PlansPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-3xl font-bold">Plans & Tarifs</h1>
-        <h2 className="text-sm">
+        <h1 className="text-3xl">Plans & Tarifs</h1>
+        <h2 className="text-sm text-gray-600">
           Choisissez le plan qui vous convient pour accéder aux exercices TCF
           Canada ou Québec
         </h2>
       </div>
-      <div className="flex flex-row gap-2">
-        <div className="w-1/2 flex flex-row items-start bg-[#d3f4eb] gap-4 p-6">
-          <div className="w-26 h-26">
+      <div className="flex lg:flex-row flex-col gap-2">
+        <div className="lg:w-1/2 flex flex-row items-start bg-[#d3f4eb] lg:gap-4 gap-2 lg:p-6 p-2">
+          <div className="lg:w-26 w-20 lg:h-26 h-20">
             <Image
               src={Practice}
-              width={72}
-              height={72}
+              width={64}
+              height={64}
               priority
               alt="logo"
               className="w-full mx-auto"
             />
           </div>
           <div className="flex-1">
-            <h2 className="text-2xl font-semibold text-black/70">
+            <h2 className="lg:text-2xl text-xl text-black/70">
               Pratiquez à votre rythme
             </h2>
-            <h3 className="leading-tight mb-4 text-black/50 text-sm my-2">
+            <h3 className="leading-tight mb-4 text-black/50 text-sm">
               Accédez à les exercices interactifs, des examens et des
               corrections. Progressez seul, quand vous voulez, où vous voulez.
             </h3>
             <Button
               variant="tertiary"
               onClick={() => setIsModalOpen(true)}
-              className="w-full"
+              block
             >
               Voir les Tarifs
             </Button>
           </div>
         </div>
-        <div className="w-1/2 flex flex-row items-start bg-[#ece1f5] gap-4 p-6">
-          <div className="w-26 h-26">
+        <div className="lg:w-1/2 flex flex-row items-start bg-[#ece1f5] lg:gap-4 gap-2 lg:p-6 p-2">
+          <div className="lg:w-26 w-20 lg:h-26 h-20">
             <Image
               src={Trainer}
-              width={72}
-              height={72}
+              width={64}
+              height={64}
               priority
               alt="logo"
               className="w-full mx-auto"
             />
           </div>
           <div className="flex-1 pr-6">
-            <h2 className="text-2xl font-semibold text-black/70">
+            <h2 className="lg:text-2xl text-xl text-black/70">
               Apprenez avec un formateur
             </h2>
-            <h3 className="leading-tight mb-4 text-black/50 text-sm my-2">
+            <h3 className="leading-tight mb-4 text-black/50 text-sm">
               Recevez une préparation personnalisée basée sur la méthodologie du
               TCF avec nos formateurs experts.
             </h3>
             <Button
               onClick={() => setIsFormationModalOpen(true)}
               variant={"secondary"}
-              className="w-full"
+              block
             >
               Voir les Tarifs
             </Button>
@@ -509,9 +509,7 @@ function PlansPage() {
       {/* Free Practice Banner */}
       <div className="px-4 sm:px-6 lg:px-8  bg-gray-800 text-white border-none p-10 flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="flex-1 text-center md:text-left">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-1">
-            Essai Gratuit
-          </h2>
+          <h2 className="text-2xl sm:text-3xl mb-1">Essai Gratuit</h2>
           <h3 className="text-white/90 leading-none">
             Découvrez notre plateforme avec des exercices gratuits. Aucune carte
             de crédit requise.

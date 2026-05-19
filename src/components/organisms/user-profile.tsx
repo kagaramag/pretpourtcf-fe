@@ -41,8 +41,8 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
               <div>
-                <h3 className="text-2xl lg:text-2xl font-semibold flex flex-col sm:flex-row sm:items-center gap-2 truncate">
-                  {user?.last_name} {user?.first_name}
+                <h3 className="text-lg lg:text-2xl flex flex-col sm:flex-row sm:items-center gap-2 truncate">
+                  Hello, {user?.first_name}!
                 </h3>
               </div>
               <div className="text-sm text-gray-500 truncate hidden lg:block">

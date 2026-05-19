@@ -17,7 +17,7 @@ export default function ConditionsGeneralesPage() {
           les presentes conditions generales d&apos;utilisation.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           1. Presentation du site
         </h2>
         <p>
@@ -27,7 +27,7 @@ export default function ConditionsGeneralesPage() {
           pour vous aider dans votre apprentissage du francais.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">2. Avertissement</h2>
+        <h2 className="text-lg mt-4 mb-2">2. Avertissement</h2>
         <p>
           PretPourTCF.com est une plateforme educative independante. Nous ne
           sommes <strong>ni affilies, ni approuves, ni associes</strong> a
@@ -40,7 +40,7 @@ export default function ConditionsGeneralesPage() {
           garantissent aucun resultat specifique aux examens officiels.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           3. Compte utilisateur
         </h2>
         <p>
@@ -49,7 +49,7 @@ export default function ConditionsGeneralesPage() {
           partager votre compte avec d&apos;autres personnes.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           4. Utilisation acceptable
         </h2>
         <p>
@@ -58,7 +58,7 @@ export default function ConditionsGeneralesPage() {
           d&apos;utiliser la plateforme a des fins illegales.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           5. Propriete intellectuelle
         </h2>
         <p>
@@ -67,7 +67,7 @@ export default function ConditionsGeneralesPage() {
           d&apos;auteur et reste la propriete exclusive de PretPourTCF.com.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           6. Paiement et abonnement
         </h2>
         <p>
@@ -76,7 +76,7 @@ export default function ConditionsGeneralesPage() {
           de paiement.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           7. Limitation de responsabilite
         </h2>
         <p>
@@ -87,7 +87,7 @@ export default function ConditionsGeneralesPage() {
           plateforme.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">
+        <h2 className="text-lg mt-4 mb-2">
           8. Politique de confidentialite
         </h2>
         <p>
@@ -96,13 +96,13 @@ export default function ConditionsGeneralesPage() {
           consentez a cette collecte.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">9. Modifications</h2>
+        <h2 className="text-lg mt-4 mb-2">9. Modifications</h2>
         <p>
           Nous nous reservons le droit de modifier ces conditions a tout moment.
           Les modifications prennent effet des leur publication sur le site.
         </p>
 
-        <h2 className="text-lg font-semibold mt-4 mb-2">10. Contact</h2>
+        <h2 className="text-lg mt-4 mb-2">10. Contact</h2>
         <p>Pour toute question concernant ces conditions, contactez-nous a :</p>
         <p>
           <strong>Email :</strong>{" "}
@@ -114,10 +114,10 @@ export default function ConditionsGeneralesPage() {
 
         <hr className="my-2" />
 
-        <p className="text-center italic">
+        <div className="italic text-sm">
           En utilisant PretPourTCF.com, vous reconnaissez avoir lu et accepte
           les presentes Conditions Generales d&apos;Utilisation.
-        </p>
+        </div>
       </div>
     </div>
   );

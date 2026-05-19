@@ -566,7 +566,7 @@ function AbonnerPageContent() {
             Paiement échoué
           </CardTitle>
           Le paiement n'a pas pu être traité
-          <div className="p-6" className="space-y-4">
+          <div className="p-6 space-y-4">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <p className="text-sm text-red-900">
                 Votre paiement n'a pas pu être complété. Veuillez vérifier vos

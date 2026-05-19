@@ -4,18 +4,12 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, h4 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 import {
   ArrowLeft,
   Calendar,
-  Clock,
-  Mail,
-  User,
-  Activity,
   BookOpen,
   Trophy,
-  TrendingUp,
   Loader2,
   ChevronLeft,
   ChevronRight,
@@ -290,7 +284,7 @@ export default function ApprenantProfile() {
       </div>
 
       <div>
-        <h4 className="font-semibold flex items-center justify-between">
+        <h4 className="flex items-center justify-between">
           <span>Historique des Pratiques</span>
           {response && (
             <div className="flex items-center gap-4 text-sm text-muted-foreground">

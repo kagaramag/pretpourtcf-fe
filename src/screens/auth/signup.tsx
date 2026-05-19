@@ -198,7 +198,7 @@ export function SignupForm() {
   if (!showForm) {
     return (
       <div>
-        <h3 className="text-4xl font-semibold">Créer un compte</h3>
+        <h3 className="text-4xl">Créer un compte</h3>
         <h5 className="text-sm text-gray-500 mb-6">
           Choisissez votre type de compte pour commencer
         </h5>

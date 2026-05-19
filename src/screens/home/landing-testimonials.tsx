@@ -32,10 +32,10 @@ export default function LandingTestimonials() {
     <div className="bg-gray-50 py-10 sm:py-20 md:py-14 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-4xl sm:text-4xl md:text-4xl font-semibold tracking-tighter text-primary leading-tight">
+          <h2 className="text-4xl sm:text-4xl md:text-4xl tracking-tighter  leading-tight">
             Ce que disent nos utilisateurs
           </h2>
-          <h5 className="text-base sm:text-lg">
+          <h5 className="text-base sm:text-lg text-black/60">
             Rejoignez des milliers de personnes qui ont réussi leur TCF grâce à
             notre plateforme.
           </h5>

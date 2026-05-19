@@ -472,7 +472,7 @@ function BookingPage() {
     <div className="min-h-screen pt-6 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto mt-12">
         <div className="text-center flex flex-col items-center gap-3 mb-10">
-          <h2 className="text-3xl lg:text-5xl font-semibold text-primary leading-tight">
+          <h2 className="text-3xl lg:text-5xl leading-tight">
             Réservez votre session gratuite
           </h2>
           <h4 className="max-w-lg leading-none">

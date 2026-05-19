@@ -147,8 +147,8 @@ export default function PracticeHistoryPage() {
 
   return (
     <div className="w-full">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Historique des pratiques</h1>
+      <div className="mb-2">
+        <h1 className="text-2xl">Historique des pratiques</h1>
         <p className="text-muted-foreground">
           Consultez vos résultats et suivez votre progression
         </p>
@@ -156,7 +156,7 @@ export default function PracticeHistoryPage() {
 
       {/* Statistics Cards */}
       {statistics && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 gap-2 mb-8">
           <Card>
             <BarChart className="h-4 w-4" />
             Sessions totales

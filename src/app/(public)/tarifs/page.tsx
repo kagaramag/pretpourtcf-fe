@@ -20,22 +20,22 @@ const reasons = [
   {
     title: "Tests Authentiques",
     description: "Exercices conformes au format officiel du TCF",
-    icon: <NotebookText className="h-8 w-8 text-primary" />,
+    icon: <NotebookText className="h-8 w-8" />,
   },
   {
     title: "Correction Détaillée",
     description: "Feedback immédiat pour progresser rapidement",
-    icon: <Check className="h-8 w-8 text-primary" />,
+    icon: <Check className="h-8 w-8" />,
   },
   {
     title: "Suivi de Progression",
     description: "Analysez vos résultats et identifiez vos points forts",
-    icon: <Target className="h-8 w-8 text-primary" />,
+    icon: <Target className="h-8 w-8" />,
   },
   {
     title: "Accès Flexible",
     description: "Pratiquez où vous voulez, quand vous voulez",
-    icon: <LaptopMinimal className="h-8 w-8 text-primary" />,
+    icon: <LaptopMinimal className="h-8 w-8" />,
   },
 ];
 
@@ -80,7 +80,7 @@ function TarifsPage() {
     <div className="min-h-screen">
       <div className="py-7">
         <div className="max-w-5xl w-full mx-auto">
-          <h1 className="text-xl sm:text-2xl lg:text-4xl font-semibold b-4 text-center text-primary">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl b-4 text-center text-primary">
             Plans & Tarifs
           </h1>
           <div className="bg-primary/10 p-3 mt-4 rounded-full w-fit mx-auto flex gap-2">
@@ -101,22 +101,22 @@ function TarifsPage() {
       </div>
       <div className="max-w-5xl w-full mx-auto">
         {category === "preparation" && (
-          <div className="w-full flex lg:flex-row items-start bg-[#d3f4eb] gap-2  p-4">
-            <div className="w-18 h-18">
+          <div className="w-full flex items-center bg-[#d3f4eb] gap-2 p-4">
+            <div className="w-16 h-16">
               <Image
                 src={Practice}
-                width={60}
-                height={60}
+                width={50}
+                height={50}
                 priority
                 alt="logo"
                 className="w-full mx-auto"
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-black/70">
+              <h2 className="text-2xl  text-black/70">
                 Pratiquez à votre rythme
               </h2>
-              <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+              <div className="leading-tight text-black/50 text-sm">
                 Accédez à les exercices interactifs, des examens et des
                 corrections. Progressez seul, quand vous voulez, où vous voulez.
               </div>
@@ -124,22 +124,22 @@ function TarifsPage() {
           </div>
         )}
         {category === "training" && (
-          <div className="w-full flex flex-row items-start bg-[#ece1f5] gap-2 p-4">
-            <div className="w-18 h-18">
+          <div className="w-full flex flex-row items-center bg-[#ece1f5] gap-2 p-4">
+            <div className="w-16 h-16">
               <Image
                 src={Trainer}
-                width={60}
-                height={60}
+                width={50}
+                height={50}
                 priority
                 alt="logo"
                 className="w-full mx-auto"
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-semibold text-black/70">
+              <h2 className="text-2xl f text-black/70">
                 Apprenez avec un formateur
               </h2>
-              <div className="leading-tight mb-4 text-black/50 text-sm my-2">
+              <div className="leading-tight text-gray-600 text-sm">
                 Recevez une préparation personnalisée basée sur la méthodologie
                 du TCF avec nos formateurs experts.
               </div>
@@ -180,7 +180,7 @@ function TarifsPage() {
                   )}
 
                   <h3
-                    className={`text-2xl font-semibold ${
+                    className={`text-2xl ${
                       plan.popular ? "text-white" : "text-gray-900"
                     }`}
                   >
@@ -450,7 +450,7 @@ function TarifsPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8  bg-gray-800 text-white border-none p-10 flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="flex-1 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <h2 className="text-2xl sm:text-3xl font-bold">Essai Gratuit</h2>
+            <h2 className="text-2xl sm:text-3xl">Essai Gratuit</h2>
           </div>
           <h3 className=" text-white/90 leading-none mt-2">
             Découvrez notre plateforme avec des exercices gratuits. Aucune carte
@@ -463,13 +463,13 @@ function TarifsPage() {
       </div>
 
       {/* Benefits Section */}
-      <div className="py-0 sm:py-16">
+      <div className="py-0 sm:pt-16">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-4">
-            <h2 className="text-3xl sm:text-5xl font-bold text-primary">
+            <h2 className="text-2xl sm:text-4xl">
               Pourquoi choisir notre plateforme?
             </h2>
-            <h3 className="mt-2">
+            <h3 className=" text-gray-600">
               Une préparation complète pour réussir votre Test de Connaissance
               du Français
             </h3>
@@ -478,16 +478,16 @@ function TarifsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
             {reasons.map((reason: any) => (
               <div
-                className="text-center bg-primary/10 p-6 rounded-xl py-8"
+                className="text-center bg-gray-300/30 p-6 py-8"
                 key={reason.title}
               >
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="bg-gray-300/30 w-16 h-16 text-bla rounded-full flex items-center justify-center mx-auto mb-4">
                   {reason.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl text-gray-900 mb-2">
                   {reason.title}
                 </h3>
-                <div className="text-sm">{reason.description}</div>
+                <div className="text-sm text-gray-600">{reason.description}</div>
               </div>
             ))}
           </div>
@@ -495,9 +495,9 @@ function TarifsPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="max-w-6xl  mx-auto px-4 sm:px-6 lg:px-0 py-2 sm:py-4 mb-16">
-        <div className="bg-primary rounded-3xl p-8 sm:p-12 text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-2">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-0 py-2 sm:py-4 mb-16">
+        <div className="bg-black p-8 sm:p-12 text-center">
+          <h2 className="text-3xl sm:text-4xl text-white mb-2">
             Prêt à commencer votre préparation?
           </h2>
           <p className="text-lg text-white/90 mb-4 max-w-2xl mx-auto">
@@ -506,7 +506,7 @@ function TarifsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <NavigationLink href="/compte/pratique-gratuit">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="tertiary">
                 Essai Gratuit
               </Button>
             </NavigationLink>

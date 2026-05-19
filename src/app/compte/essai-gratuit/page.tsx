@@ -72,8 +72,8 @@ function PratiqueGratuitContent() {
     <AccountLayout>
       <div className="flex flex-col gap-4">
         <div className="w-full">
-          <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
-          <div className="flex flex-row gap-2 bg-primary/10 p-2 rounded-full">
+          <h2 className="text-2xl mb-4">Essais gratuit</h2>
+          <div className="flex lg:flex-row flex-col gap-2 bg-primary/10 p-2 lg:rounded-full rounded-lg">
             {categories.map((category) => (
               <button
                 key={category.type}
@@ -116,7 +116,7 @@ function PratiqueGratuitContent() {
                     .map((practice) => (
                       <div
                         key={practice._id}
-                        className="flex items-center gap-4 px-6 py-3 bg-gray-50/30 border border-gray-100/90 cursor-pointer hover:bg-gray-50 rounded-lg"
+                        className="flex lg:flex-row flex-col items-center gap-4 px-6 py-3 bg-gray-50/30 border border-gray-100/90 cursor-pointer hover:bg-gray-50 rounded-lg"
                         onClick={() => {
                           const categorySlug = categories.find(
                             (cat) => cat.type === practice.type
@@ -129,31 +129,33 @@ function PratiqueGratuitContent() {
                         }}
                       >
                         <div className="flex-1">
-                          <h3 className="font-semibold">{practice.title}</h3>
+                          <h3>{practice.title}</h3>
+                        </div>
+                        <div className="flex-1 flex flex:flex-row flex-col items-center justify-end gap-2">
                           <div className="flex gap-4 text-sm text-gray-600">
                             <span>
                               Duration: {practice.durationMinutes} min
                             </span>
                             <span>Questions: {practice.totalQuestions}</span>
                           </div>
-                        </div>
-                        {practice.freemium ? (
-                          <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm">
-                            Free
-                          </span>
-                        ) : (
-                          <div className="w-8 h-8 bg-primary/10 text-primary flex items-center justify-center rounded">
-                            <Crown className="h-4 w-4" />
+                          {practice.freemium ? (
+                            <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm">
+                              Free
+                            </span>
+                          ) : (
+                            <div className="w-8 h-8 bg-primary/10 text-primary flex items-center justify-center rounded">
+                              <Crown className="h-4 w-4" />
+                            </div>
+                          )}
+                          <div>
+                            <Button
+                              variant={practice.freemium ? "default" : "ghost"}
+                              disabled={!practice.freemium}
+                            >
+                              <MoveRight className="h-4 w-4" />
+                              <span>Commencer</span>
+                            </Button>
                           </div>
-                        )}
-                        <div>
-                          <Button
-                            variant={practice.freemium ? "default" : "ghost"}
-                            disabled={!practice.freemium}
-                          >
-                            <MoveRight className="h-4 w-4" />
-                            <span>Commencer</span>
-                          </Button>
                         </div>
                       </div>
                     ))}
@@ -169,16 +171,18 @@ function PratiqueGratuitContent() {
 
 export default function PratiqueGratuitPage() {
   return (
-    <Suspense fallback={
-      <AccountLayout>
-        <div className="flex flex-col gap-4">
-          <div className="w-full">
-            <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
-            <div className="text-center mt-8">Chargement...</div>
+    <Suspense
+      fallback={
+        <AccountLayout>
+          <div className="flex flex-col gap-4">
+            <div className="w-full">
+              <h2 className="text-2xl font-semibold mb-4">Essais gratuit</h2>
+              <div className="text-center mt-8">Chargement...</div>
+            </div>
           </div>
-        </div>
-      </AccountLayout>
-    }>
+        </AccountLayout>
+      }
+    >
       <PratiqueGratuitContent />
     </Suspense>
   );

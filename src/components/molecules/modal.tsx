@@ -25,7 +25,7 @@ export default function Modal({
     >
       <div className="bg-black/20 backdrop-blur h-screen w-screen top-0 left-0 absolute -z-10" />
       <div
-        className={`bg-white rounded-lg p-6 ${maxWidth} w-full max-h-[90vh] overflow-y-auto m-4 absolute top-6`}
+        className={`bg-white p-6 ${maxWidth} w-full lg:max-h-[90vh] h-screen overflow-y-auto lg:m-4 absolute lg:top-6 top-0`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -36,7 +36,7 @@ export default function Modal({
         </button>
         {title && (
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">{title}</h2>
+            <h2 className="text-xl">{title}</h2>
           </div>
         )}
         {!title && (
