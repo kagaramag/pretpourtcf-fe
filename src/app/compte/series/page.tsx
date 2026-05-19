@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
@@ -92,12 +88,12 @@ export default function StreaksPage() {
       <div className="w-full">
         <div className="max-w-2xl mx-auto">
           <Card className="border-yellow-200 bg-yellow-50">
-              <CardTitle className="flex items-center gap-2">
-                <Crown className="h-6 w-6 text-yellow-600" />
-                Fonctionnalité Premium
-              </CardTitle>
-                Les séries sont réservées aux abonnés premium
-            <div className="p-6" className="space-y-4">
+            <CardTitle className="flex items-center gap-2">
+              <Crown className="h-6 w-6 text-yellow-600" />
+              Fonctionnalité Premium
+            </CardTitle>
+            Les séries sont réservées aux abonnés premium
+            <div className="p-6 space-y-4">
               <p className="text-sm text-muted-foreground">
                 Relevez le défi des séries de 7 jours! Complétez 20 exercices
                 avec au moins 90% de score et gagnez des emblème exclusives.
@@ -137,20 +133,15 @@ export default function StreaksPage() {
     <div className="w-full">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-2 justify-between">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              Mes Séries
-            </h1>
+            <h1 className="text-2xl flex items-center gap-2">Mes Séries</h1>
             <p className="text-muted-foreground">
               Maintenez votre engagement et gagnez des emblème!
             </p>
           </div>
           {eligibility?.eligible && (
-            <Button
-              onClick={() => setCreateDialogOpen(true)}
-              className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-            >
+            <Button onClick={() => setCreateDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Nouvelle série
             </Button>
@@ -236,20 +227,15 @@ export default function StreaksPage() {
             />
           ) : (
             <Card>
-              <div className="p-6" className="py-12">
+              <div className="lg:p-6 p-2">
                 <div className="text-center">
                   <Flame className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">
-                    Aucune série active
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
+                  <h3 className="text-l mb-2">Aucune série active</h3>
+                  <p className="text-gray-600 text-sm mb-4">
                     Commencez une nouvelle série pour gagner des emblème!
                   </p>
                   {eligibility?.eligible && (
-                    <Button
-                      onClick={() => setCreateDialogOpen(true)}
-                      className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                    >
+                    <Button onClick={() => setCreateDialogOpen(true)} variant="secondary">
                       <Plus className="mr-2 h-4 w-4" />
                       Démarrer une série
                     </Button>
@@ -301,7 +287,7 @@ export default function StreaksPage() {
             </>
           ) : (
             <Card>
-              <div className="p-6" className="py-12">
+              <div className="p-6 py-12">
                 <div className="text-center">
                   <TrendingUp className="h-16 w-16 mx-auto text-gray-300 mb-4" />
                   <h3 className="text-lg font-semibold mb-2">

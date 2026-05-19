@@ -23,8 +23,8 @@ export default function AccountPage() {
     return (
       <div className="flex flex-col gap-2">
         <div>
-          <h1 className="text-3xl font-bold">Mes Pratiques</h1>
-          <h4>Accédez à vos exercices TCF et suivez votre progression</h4>
+          <h1 className="text-3xl">Mes Pratiques</h1>
+          <div className="text-gray-600 text-sm">Accédez à vos exercices TCF et suivez votre progression</div>
         </div>
         {/* Active Streak Status Widget */}
         <div>
@@ -58,7 +58,7 @@ export default function AccountPage() {
             <Image src={Serie} width={80} height={96} priority alt="Serie" />
           </div>
           <div className="flex-1">
-            <h3 className="flex items-center gap-2 font-semibold text-2xl">
+            <h3 className="flex items-center gap-2 text-2xl">
               Flamme TCF – Jeu de série
             </h3>
             <h5>Pratiquez quotidiennement, maintenez votre série.</h5>

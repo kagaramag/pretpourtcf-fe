@@ -69,20 +69,7 @@ export default function Header() {
         </div>
       )} */}
       <header className="relative inset-x-0 top-0 z-50 transition-all duration-300">
-        <div className="mx-auto flex items-center gap-2 sm:gap-6 py-0.5 lg:px-0 px-2 max-w-6xl relative">
-          <div className="lg:hidden gap-1 flex">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 bg-primary text-white rounded-full"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </div>
+        <div className="mx-auto flex items-center justify-between gap-2 sm:gap-6 py-0.5 lg:px-0 px-2 max-w-6xl relative">
           <div className="w-[140px] sm:w-[180px] lg:w-[210px]">
             <Link href="/">
               <div className="w-[10px] sm:w-[180px] lg:w-[210px] hidden lg:block">
@@ -129,7 +116,7 @@ export default function Header() {
           </div>
 
           {!isLoading && isAuthenticated && (
-            <div className="lg:w-[210px] flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
+            <div className="lg:w-[210px] hidden lg:flex flex-1 items-center justify-end h-16 px-0 sm:px-0 gap-2 sm:gap-4">
               <Link href={getUserLink(user?.role)}>
                 <div className="flex items-center gap-1 sm:gap-2 bg-primary/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-primary/20 transition-colors">
                   <span className="text-xs sm:text-sm text-primary hidden sm:inline">
@@ -142,6 +129,19 @@ export default function Header() {
               </Link>
             </div>
           )}
+          <div className="lg:hidden gap-1 flex">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 bg-primary text-white rounded-full"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-1 sm:gap-1 justify-end flex-1">
               <Link href="/login">

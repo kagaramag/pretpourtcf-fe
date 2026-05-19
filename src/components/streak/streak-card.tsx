@@ -112,16 +112,16 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
       <div className="p-6 space-y-2">
         {/* Progress */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Progression</span>
-            <span className="font-semibold">
+          <div className="flex lg:flex-row flex-col items-center justify-between text-sm">
+            <span className="text-gray-600">Progression</span>
+            <span>
               {streak.completedExercises} / {streak.totalExercises} exercices
             </span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
-          <p className="text-xs text-muted-foreground text-right">
+          <div className="text-xs text-gray-600 lg:text-right text-center">
             {progressPercentage}% complété
-          </p>
+          </div>
         </div>
 
         {/* Rewards Preview */}
@@ -137,7 +137,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
                   key={index}
                   className={`lg:w-[180px] w-[130px] flex flex-col text-center items-center gap-1 lg:gap-2 p-2 rounded-xl transition-all ${
                     isEarned
-                      ? "bg-gradient-to-br from-[#4E56C0] to-[#9089fc]"
+                      ? "bg-primary"
                       : "bg-gray-100 grayscale opacity-50"
                   }`}
                 >

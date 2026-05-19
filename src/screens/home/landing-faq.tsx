@@ -61,7 +61,7 @@ export default function LandingFAQ() {
           <h5 className="text-base sm:text-lg  text-center">
             Vous avez des questions? Nous avons les réponses.
           </h5>
-          <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 rounded-2xl border border-gray-300/50">
+          <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 lg:rounded-2xl rounded-lg border border-gray-300/50">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>

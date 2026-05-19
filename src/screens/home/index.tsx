@@ -49,11 +49,11 @@ export function IndexScreen() {
         </div>
         <div className="mx-auto max-w-6xl py-6 sm:py-56 md:py-18 lg:py-24 flex flex-col lg:flex-row items-center relative">
           <div className="px-2 sm:px-0 flex-1 text-center lg:text-left">
-            <h1 className="text-3xl sm:text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-medium lg:leading-none tracking-tight pb-2">
+            <h1 className="text-2xl sm:text-2xl md:text-4xl lg:text-4xl xl:text-5xl font-medium lg:leading-none tracking-tight pb-2">
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            <h4 className="mb-4 mt-2 text-black/60 sm:text-lg md:text-md text-pretty lg:max-w-[550px]">
+            <h4 className="mb-4 mt-2 text-black/60 text-sm lg:text-lg lg:max-w-[550px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
             </h4>

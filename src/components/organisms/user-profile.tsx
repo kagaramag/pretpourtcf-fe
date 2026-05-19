@@ -33,35 +33,38 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
   ];
   return (
     <div>
-      <div className="py-3 md:py-2 bg-primary/5">
-        <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6">
+      <div className="py-3 md:py-2 bg-gray-900 text-white">
+        <div className="mx-auto max-w-6xl px-4 lg:px-0 md:px-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2">
-            <div className="w-16 h-16 sm:w-18 sm:h-18 border border-gray-100 bg-white rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
-              <UserRound className="h-6 w-6 sm:h-7 sm:w-7" />
+            <div className="w-14 h-14  bg-black rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
+              <UserRound className="h-4 w-4 sm:h-7 sm:w-7" />
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
               <div>
-                <h3 className="text-lg lg:text-2xl flex flex-col sm:flex-row sm:items-center gap-2 truncate">
+                <h3 className="text-lg lg:text-xl flex flex-col sm:flex-row sm:items-center gap-2 truncate">
                   Hello, {user?.first_name}!
                 </h3>
               </div>
-              <div className="text-sm text-gray-500 truncate hidden lg:block">
-                {user?.email}
+              <div className="flex items-center gap-4">
+                <div className="text-sm truncate hidden lg:block">
+                  {user?.email}
+                </div>
+                {user?.subscription && (
+                  <Link
+                    href="/compte/plans"
+                    className="text-sm inline-block whitespace-nowrap"
+                  >
+                    Abonnement: {user?.subscription?.plan?.name} {"("}
+                    {user?.subscription?.days_remaining} Jours{")"}
+                  </Link>
+                )}
               </div>
-              {user?.subscription && (
-                <Link href="/compte/plans">
-                  <div className="text-xs inline-block whitespace-nowrap">
-                    Abonnement: {user?.subscription?.plan?.name} {" - "}
-                    {user?.subscription?.days_remaining} Jours
-                  </div>
-                </Link>
-              )}
             </div>
             <div className="w-full sm:w-auto lg:block md:block hidden">
               <Button
                 onClick={handleLogout}
                 size={"sm"}
-                variant={"outline"}
+                variant="destructive"
                 className="w-full sm:w-auto"
               >
                 Se déconnecter
@@ -71,8 +74,8 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
         </div>
       </div>
       {user?.role === "client" && (
-        <div className="py-2 bg-primary/10 mb-2 border-b border-t border-primary/40">
-          <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6 flex flex-col sm:flex-row gap-3 sm:gap-0">
+        <div className="py-2 bg-gray-800 text-white mb-2">
+          <div className="mx-auto max-w-6xl px-4 lg:px-0 md:px-6 flex flex-col sm:flex-row gap-3 sm:gap-0">
             <div className="flex-1 overflow-x-auto">
               <ul className="flex items-center gap-3 sm:gap-5 whitespace-nowrap">
                 {navigation.map((item, idx) => (

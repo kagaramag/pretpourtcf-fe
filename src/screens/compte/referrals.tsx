@@ -5,10 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -19,7 +16,16 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Mail, UserPlus, Users, Check, Clock, X, Copy, Loader2 } from "lucide-react";
+import {
+  Mail,
+  UserPlus,
+  Users,
+  Check,
+  Clock,
+  X,
+  Copy,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { referralService, Referral } from "@/services/referral";
 import { formatDate } from "@/lib/utils";
@@ -136,8 +142,8 @@ export function ReferralsScreen() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Parrainages</h1>
-        <p className="text-muted-foreground mt-2">
+        <h1 className="text-2xl">Parrainages</h1>
+        <p className="text-gray-600 mt-2">
           Invitez vos amis à rejoindre la plateforme
         </p>
       </div>
@@ -145,26 +151,26 @@ export function ReferralsScreen() {
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-            <CardTitle className="text-sm font-medium">
-              Invitations acceptées
-            </CardTitle>
-            <UserPlus className="h-4 w-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium">
+            Invitations acceptées
+          </CardTitle>
+          <UserPlus className="h-4 w-4 text-gray-600" />
           <div>
-            <div className="text-2xl font-bold">{acceptedReferrals.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl">{acceptedReferrals.length}</div>
+            <p className="text-xs text-gray-600">
               Utilisateurs qui ont rejoint grâce à vous
             </p>
           </div>
         </Card>
 
         <Card>
-            <CardTitle className="text-sm font-medium">
-              Invitations en attente
-            </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+          <CardTitle className="text-sm font-medium">
+            Invitations en attente
+          </CardTitle>
+          <Clock className="h-4 w-4 text-gray-600" />
           <div>
             <div className="text-2xl font-bold">{pendingReferrals.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               Invitations envoyées non acceptées
             </p>
           </div>
@@ -173,11 +179,13 @@ export function ReferralsScreen() {
 
       {/* Send Invitation Form */}
       <Card>
-          <CardTitle className="flex items-center gap-2">
-            <Mail className="h-5 w-5" />
-            Envoyer une invitation
-          </CardTitle>
-            Entrez l'adresse e-mail de la personne que vous souhaitez inviter
+        <h4 className="flex items-center gap-2">
+          <Mail className="h-5 w-5" />
+          Envoyer une invitation
+        </h4>
+        <div className="text-gray-600 text-sm">
+          Entrez l'adresse e-mail de la personne que vous souhaitez inviter
+        </div>
         <div>
           <form onSubmit={handleSendInvitation} className="flex gap-2">
             <div className="flex-1">
@@ -208,17 +216,17 @@ export function ReferralsScreen() {
 
       {/* Referrals List */}
       <Card>
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Mes parrainages
-          </CardTitle>
-            Liste de toutes vos invitations
+        <h4 className="flex items-center gap-2">
+          <Users className="h-5 w-5" />
+          Mes parrainages
+        </h4>
+        <div className="text-gray-600 text-sm">
+          Liste de toutes vos invitations
+        </div>
         <div>
           <Tabs defaultValue="all" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="all">
-                Tous ({referrals.length})
-              </TabsTrigger>
+              <TabsTrigger value="all">Tous ({referrals.length})</TabsTrigger>
               <TabsTrigger value="accepted">
                 Acceptés ({acceptedReferrals.length})
               </TabsTrigger>
@@ -275,14 +283,14 @@ function ReferralsTable({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
 
   if (referrals.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div className="text-center py-8 text-gray-600">
         Aucun parrainage pour le moment
       </div>
     );
@@ -309,7 +317,7 @@ function ReferralsTable({
                     <div className="font-medium">
                       {referral.invitee.first_name} {referral.invitee.last_name}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-gray-600">
                       {referral.inviteeEmail}
                     </div>
                   </div>
@@ -318,9 +326,7 @@ function ReferralsTable({
                 )}
               </TableCell>
               <TableCell>{getStatusBadge(referral.status)}</TableCell>
-              <TableCell>
-                {formatDate(new Date(referral.createdAt))}
-              </TableCell>
+              <TableCell>{formatDate(new Date(referral.createdAt))}</TableCell>
               <TableCell>
                 {referral.acceptedAt
                   ? formatDate(new Date(referral.acceptedAt))

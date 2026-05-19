@@ -85,18 +85,18 @@ function PlansPage() {
     return (
       <div className="w-full">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">Mon abonnement</h1>
-          <h5 className="text-muted-foreground">
+          <h1 className="text-2xl">Mon abonnement</h1>
+          <h5 className="text-gray-600">
             Gérez votre abonnement et consultez les détails
           </h5>
         </div>
 
         <div className="grid gap-6 max-w-3xl">
-          <div className="p-4 border border-gray-300 rounded-2xl">
-            <h3 className="text-2xl font-semibold flex items-center justify-between">
+          <div className="lg:p-4 p-2 border border-gray-200 rounded-xl">
+            <h3 className="lg:text-2xl text-xl flex items-center justify-between">
               <span>{subscription.plan.name}</span>
-              <span className="text-sm font-normal px-3 py-1 bg-green-100 text-green-700 rounded-full">
-                Actif
+              <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                ACTIF
               </span>
             </h3>
             {subscription.plan.type === "trial"
@@ -105,8 +105,8 @@ function PlansPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Prix</p>
-                  <p className="text-lg font-semibold">
+                  <p className="text-sm text-gray-600">Prix</p>
+                  <p className="text-lg">
                     {subscription.plan.price === 0
                       ? "Gratuit"
                       : `${new Intl.NumberFormat("us-US", {
@@ -117,8 +117,8 @@ function PlansPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Durée</p>
-                  <p className="text-lg font-semibold">
+                  <p className="text-sm text-gray-600">Durée</p>
+                  <p className="text-lg">
                     {subscription.plan.duration_days} jours
                   </p>
                 </div>
@@ -127,7 +127,7 @@ function PlansPage() {
               <div className="border-t pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-600">
                       Date de début
                     </p>
                     <p className="font-medium">
@@ -135,7 +135,7 @@ function PlansPage() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Date de fin</p>
+                    <p className="text-sm text-gray-600">Date de fin</p>
                     <p className="font-medium">
                       {endDate.toLocaleDateString("fr-FR")}
                     </p>
@@ -182,10 +182,10 @@ function PlansPage() {
           </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Aucun plan disponible pour le moment.
             </p>
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-gray-600 mt-2">
               Veuillez contacter l'administrateur.
             </p>
           </div>
@@ -233,7 +233,7 @@ function PlansPage() {
                                   minimumFractionDigits: 0,
                                 }).format(plan.price_usd)}
                           </span>
-                          <span className="text-muted-foreground ml-2 text-sm">
+                          <span className="text-gray-600 ml-2 text-sm">
                             / {plan.duration_days} jours
                           </span>
                         </div>
@@ -337,10 +337,10 @@ function PlansPage() {
           </div>
         ) : formationPlans.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Aucun plan de formation disponible pour le moment.
             </p>
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-gray-600 mt-2">
               Veuillez contacter l'administrateur.
             </p>
             <p className="text-xs text-gray-400 mt-4">
@@ -350,10 +350,10 @@ function PlansPage() {
           </div>
         ) : filteredPlans.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Tous les plans de formation sont actuellement en mode essai.
             </p>
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-gray-600 mt-2">
               Veuillez contacter l'administrateur pour activer les plans
               premium.
             </p>
@@ -404,7 +404,7 @@ function PlansPage() {
                                 minimumFractionDigits: 0,
                               }).format(plan.price_usd)}
                         </span>
-                        <span className="text-muted-foreground ml-2 text-sm">
+                        <span className="text-gray-600 ml-2 text-sm">
                           /{" "}
                           {plan.training_details?.duration_days ||
                             plan.duration_days}{" "}
