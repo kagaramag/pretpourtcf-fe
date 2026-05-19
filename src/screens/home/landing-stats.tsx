@@ -1,5 +1,6 @@
 import Image from "next/image";
 import OnBlueBG from "@/assets/images/on-blue-bg.svg";
+import { Card } from "./card";
 
 const stats = [
   { id: 1, name: "Utilisateurs actifs", value: "3K+" },
@@ -24,22 +25,19 @@ export default function LandingStats() {
           </div>
           <dl className="mt-4 sm:mt-6 grid grid-cols-2 gap-2 lg:gap-8 lg:grid-cols-4">
             {stats.map((stat) => (
-              <div
-                key={stat.id}
-                className="flex flex-col items-center justify-center bg-gray-900 p-6 sm:p-8 rounded-2xl"
-              >
+              <Card key={stat.id} className="items-center justify-center">
                 <dt className="text-sm font-medium text-white/80 text-center">
                   {stat.name}
                 </dt>
                 <h3 className="mt-2 text-3xl sm:text-4xl tracking-wide text-white">
                   {stat.value}
                 </h3>
-              </div>
+              </Card>
             ))}
           </dl>
         </div>
       </div>
-      <div className="w-[1000px] h-full bottom-0 absolute right-0 left-0 z-0 mx-auto lg:block hidden opacity-50">
+      <div className="w-[1000px] h-full bottom-0 absolute right-0 left-0 z-0 mx-auto lg:block hidden opacity-20">
         <Image
           src={OnBlueBG}
           width={1000}

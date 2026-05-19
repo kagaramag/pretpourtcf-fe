@@ -94,6 +94,7 @@
 @layer base {
   body {
     @apply bg-gray-100;
+    font-family: var(--font-geist-sans), sans-serif;
   }
 
   h1,

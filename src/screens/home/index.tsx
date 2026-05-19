@@ -13,6 +13,7 @@ import LandingFAQ from "./landing-faq";
 import LandingStats from "./landing-stats";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Card } from "./card";
 
 const quickSteps = [
   {
@@ -36,7 +37,7 @@ export function IndexScreen() {
   const { user, isLoading, isAuthenticated } = useAuth();
   return (
     <>
-      <div className="relative isolate px-4 sm:px-6 pt-14 bg-gray-900 lg:px-8">
+      <div className="relative -mt-20 isolate px-4 py-20 sm:px-6 bg-gray-900 lg:px-8">
         <div className="w-full max-w-[1200px] absolute bottom-0 right-0 left-0 mx-auto -z-10 lg:block hidden ">
           <Image
             src={Hero}
@@ -53,10 +54,10 @@ export function IndexScreen() {
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            <h4 className="mb-4 mt-2 text-white/60 text-sm lg:text-lg lg:max-w-[550px]">
+            <div className="mb-4 mt-2 text-white/60 text-sm lg:text-lg lg:max-w-[550px]">
               Entraînez-vous en ligne, progressez à votre rythme, et réussissez
               votre test du premier coup
-            </h4>
+            </div>
             <div className="mt-6 flex lg:flex-row flex-col gap-2 sm:gap-x-2">
               {!isLoading && isAuthenticated ? (
                 <>
@@ -123,26 +124,23 @@ export function IndexScreen() {
             <h2 className="text-3xl sm:text-xl md:text-5xl tracking-tight leading-none text-pretty text-white">
               Etapes simples commencer
             </h2>
-            <h4 className="text-sm sm:text-lg text-white/60 leading-tight mt-2">
+            <div className="text-sm sm:text-lg text-white/60 leading-tight mt-2">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
               créez votre compte, choisissez un plan adapté à vos besoins et
               commencez à progresser à votre rythme.
-            </h4>
+            </div>
           </div>
           <div className="mx-auto mt-2 sm:mt-12 lg:mt-6 max-w-6xl w-full">
             <dl className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 w-full lg:grid-cols-3">
               {quickSteps.map((feature) => (
-                <div
-                  key={feature.name}
-                  className="flex flex-col bg-gray-900 p-4 sm:p-6 rounded-lg"
-                >
+                <Card key={feature.name}>
                   <h3 className="text-lg sm:text-xl font-semibold text-white">
                     {feature.name}
                   </h3>
                   <h5 className="mt-2 flex flex-auto flex-col text-sm sm:text-base text-white/60 leading-snug">
                     {feature.description}
                   </h5>
-                </div>
+                </Card>
               ))}
             </dl>
           </div>

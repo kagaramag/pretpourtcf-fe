@@ -57,11 +57,11 @@ export default function LandingFeatures() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter leading-none">
             Une préparation complète au TCF
           </h2>
-          <h5 className="text-sm sm:text-lg text-gray-600 leading-none mt-2">
+          <p className="text-sm sm:text-lg text-gray-600 font-light  mt-2">
             Nous mettons à votre disposition tous les outils nécessaires pour
             réussir votre test de connaissance du français. Notre plateforme est
             conçue pour vous accompagner à chaque étape.
-          </h5>
+          </p>
         </div>
         <div className="mx-auto mt-12 sm:mt-4 lg:mt-4 max-w-2xl lg:max-w-none">
           <dl className="grid max-w-xl grid-cols-1 gap-2 sm:gap-2 lg:max-w-none lg:grid-cols-3">
@@ -77,9 +77,9 @@ export default function LandingFeatures() {
                   />
                   {feature.name}
                 </h3>
-                <dd className="flex flex-auto flex-col lg:text-base text-sm text-gray-600 mt-2">
-                  <h5 className="flex-auto leading-none">{feature.description}</h5>
-                </dd>
+                <div className="flex flex-auto flex-col lg:text-sm text-sm text-gray-600 mt-2">
+                  {feature.description}
+                </div>
               </div>
             ))}
           </dl>
