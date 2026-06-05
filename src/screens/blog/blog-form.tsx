@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import {
   Loader2,
   ArrowLeft,
@@ -237,17 +231,13 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
               <Label htmlFor="status">Status</Label>
               <Select
                 value={status}
-                onValueChange={(v) => setStatus(v as BlogStatus)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="published">Published</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
-                </SelectContent>
-              </Select>
+                onChange={(v) => setStatus(v as BlogStatus)}
+                options={[
+                  { value: "draft", label: "Draft" },
+                  { value: "published", label: "Published" },
+                  { value: "archived", label: "Archived" },
+                ]}
+              />
             </div>
             <div className="space-y-2">
               <Label>Upload Cover Image</Label>

@@ -4,42 +4,19 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Select } from "@/components/ui/select";
+import { Table, Column } from "@/components/ui/table";
+import { Menu } from "@/components/ui/menu";
 import {
   Plus,
   Search,
   MoreVertical,
-  Edit,
   Loader2,
   X,
-  Trash2,
-  Eye,
 } from "lucide-react";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
@@ -159,6 +136,89 @@ function BlogScreenContent() {
     );
   };
 
+  const columns: Column<Blog>[] = [
+    {
+      key: "title",
+      header: "Title",
+      render: (blog) => (
+        <div className="max-w-[450px]">
+          <h4 className="text-lg/60 font-normal leading-none">{blog.title}</h4>
+        </div>
+      ),
+    },
+    {
+      key: "author",
+      header: "Author",
+      render: (blog) => (
+        <span>
+          {blog.written_by.first_name} {blog.written_by.last_name}
+        </span>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      render: (blog) => getStatusBadge(blog.status),
+    },
+    {
+      key: "createdAt",
+      header: "Created",
+      render: (blog) => <span>{formatDate(blog.createdAt)}</span>,
+    },
+    {
+      key: "publishedAt",
+      header: "Published",
+      render: (blog) => (
+        <span>{blog.published_at ? formatDate(blog.published_at) : "-"}</span>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      align: "right",
+      render: (blog) => (
+        <div className="text-right">
+          <Menu
+            trigger={
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            }
+            items={[
+              {
+                type: "link",
+                label: "View",
+                to: `/dashboard/blog/${blog._id}`,
+                icon: "open",
+              },
+              ...(canUpdate
+                ? [
+                    {
+                      type: "link" as const,
+                      label: "Edit",
+                      to: `/dashboard/blog/${blog._id}/edit`,
+                      icon: "edit" as const,
+                    },
+                  ]
+                : []),
+              ...(canDelete
+                ? [
+                    {
+                      type: "button" as const,
+                      label: "Delete",
+                      onClick: () => handleDelete(blog._id),
+                      icon: "dustbin" as const,
+                      variant: "danger" as const,
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -170,20 +230,18 @@ function BlogScreenContent() {
           <div>
             <Select
               value={statusFilter || "all"}
-              onValueChange={(value) =>
+              onChange={(value) =>
                 setStatusFilter(value === "all" ? "" : value)
               }
-            >
-              <SelectTrigger className="w-full sm:w-[200px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="archived">Archived</SelectItem>
-              </SelectContent>
-            </Select>
+              options={[
+                { value: "all", label: "All Statuses" },
+                { value: "draft", label: "Draft" },
+                { value: "published", label: "Published" },
+                { value: "archived", label: "Archived" },
+              ]}
+              placeholder="Status"
+              className="w-full sm:w-[200px]"
+            />
           </div>
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -203,90 +261,13 @@ function BlogScreenContent() {
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-        </div>
-      ) : blogs.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-64 text-center">
-          <p className="text-lg font-medium">No blogs found</p>
-          <p className="text-sm text-muted-foreground">
-            {hasActiveFilters
-              ? "Try adjusting your filters"
-              : "Get started by creating your first blog post"}
-          </p>
-        </div>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Author</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Published</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {blogs.map((blog) => (
-              <TableRow key={blog._id}>
-                <TableCell>
-                  <div className="max-w-[450px]">
-                    <h4 className="text-lg/60 font-normal leading-none">
-                      {blog.title}
-                    </h4>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {blog.written_by.first_name} {blog.written_by.last_name}
-                </TableCell>
-                <TableCell>{getStatusBadge(blog.status)}</TableCell>
-                <TableCell>{formatDate(blog.createdAt)}</TableCell>
-                <TableCell>
-                  {blog.published_at ? formatDate(blog.published_at) : "-"}
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/blog/${blog._id}`}>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View
-                        </Link>
-                      </DropdownMenuItem>
-                      {canUpdate && (
-                        <DropdownMenuItem asChild>
-                          <Link href={`/dashboard/blog/${blog._id}/edit`}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </Link>
-                        </DropdownMenuItem>
-                      )}
-                      {canDelete && (
-                        <DropdownMenuItem
-                          onClick={() => handleDelete(blog._id)}
-                          className="text-destructive"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
+      <Table
+        data={blogs}
+        columns={columns}
+        keyExtractor={(blog) => blog._id}
+        isLoading={isLoading}
+        emptyMessage="No blogs found"
+      />
 
       {/* Pagination */}
       {!isLoading && blogs.length > 0 && (

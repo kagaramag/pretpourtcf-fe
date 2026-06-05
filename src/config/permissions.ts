@@ -8,6 +8,7 @@ enum Features {
   ANALYTICS = "Analytics",
   PRACTICES = "Practices",
   TRANSACTIONS = "Transactions",
+  CORPORATES = "Corporates",
 }
 
 type PermissionsMap = {
@@ -58,7 +59,12 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.PRACTICES_CREATE,
     PERMISSIONS.PRACTICES_UPDATE,
     PERMISSIONS.PRACTICES_DELETE,
-    // Practices management
+    // Corporates management
+    PERMISSIONS.CORPORATES_READ,
+    PERMISSIONS.CORPORATES_CREATE,
+    PERMISSIONS.CORPORATES_UPDATE,
+    PERMISSIONS.CORPORATES_DELETE,
+    // Transactions
     PERMISSIONS.TRANSACTION_READ,
     // Analytics
     PERMISSIONS.ANALYTICS_READ,

@@ -3,24 +3,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, Calendar } from "lucide-react";
 import { promoCodeService } from "@/services/promo-code";
@@ -29,11 +17,13 @@ import { toast } from "sonner";
 import { CreatePromoCodeRequest } from "@/types/promo-code";
 
 interface CreatePromoCodeDialogProps {
-  onClose: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export default function CreatePromoCodeDialog({
-  onClose,
+  open,
+  onOpenChange,
 }: CreatePromoCodeDialogProps) {
   const queryClient = useQueryClient();
   const [selectedPlans, setSelectedPlans] = useState<string[]>([]);
@@ -48,12 +38,12 @@ export default function CreatePromoCodeDialog({
   } = useForm<CreatePromoCodeRequest>();
 
   // Fetch available plans
-  const { data: plansData } = useQuery({
+  const { data: planData } = useQuery({
     queryKey: ["subscription-plans"],
-    queryFn: () => subscriptionService.getAllPlans(),
+    queryFn: () => subscriptionService.getPublicPlans(),
   });
 
-  const plans = plansData || [];
+  const plans = planData || [];
 
   // Create mutation
   const createMutation = useMutation({
@@ -62,7 +52,7 @@ export default function CreatePromoCodeDialog({
     onSuccess: () => {
       toast.success("Code promo créé avec succès");
       queryClient.invalidateQueries({ queryKey: ["promo-codes"] });
-      onClose();
+      onOpenChange(false);
     },
     onError: (error: any) => {
       toast.error(
@@ -100,13 +90,10 @@ export default function CreatePromoCodeDialog({
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-      <DialogHeader>
-        <DialogTitle>Créer un nouveau code promo</DialogTitle>
-        <DialogDescription>
-          Créez un code de réduction pour vos utilisateurs
-        </DialogDescription>
-      </DialogHeader>
+    <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Créer un nouveau code promo" size="lg">
+      <p className="text-sm text-muted-foreground mb-4">
+        Créez un code de réduction pour vos utilisateurs
+      </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Code */}
@@ -239,17 +226,14 @@ export default function CreatePromoCodeDialog({
         <div className="space-y-2">
           <Label htmlFor="status">Statut</Label>
           <Select
-            defaultValue="active"
-            onValueChange={(value) => setValue("status", value as any)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez un statut" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="active">Actif</SelectItem>
-              <SelectItem value="inactive">Inactif</SelectItem>
-            </SelectContent>
-          </Select>
+            value={watch("status") || "active"}
+            onChange={(value) => setValue("status", value as any)}
+            options={[
+              { value: "active", label: "Actif" },
+              { value: "inactive", label: "Inactif" },
+            ]}
+            placeholder="Sélectionnez un statut"
+          />
         </div>
 
         {/* Max Uses */}
@@ -316,8 +300,8 @@ export default function CreatePromoCodeDialog({
           </div>
         </div>
 
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose}>
+        <div className="flex justify-end gap-2 pt-4">
+          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             Annuler
           </Button>
           <Button type="submit" disabled={createMutation.isPending}>
@@ -330,8 +314,8 @@ export default function CreatePromoCodeDialog({
               "Créer le code promo"
             )}
           </Button>
-        </DialogFooter>
+        </div>
       </form>
-    </DialogContent>
+    </Modal>
   );
 }

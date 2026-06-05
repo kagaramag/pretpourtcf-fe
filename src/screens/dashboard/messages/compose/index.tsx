@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
+
 import * as z from "zod";
 import { Card } from "@/components/ui/card";
 import {
@@ -14,24 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import {
   Loader2,
   CheckCircle,
@@ -264,11 +252,11 @@ export function ComposeMessage() {
           <h1 className="text-2xl font-semibold">Compose Message</h1>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/messages">Messages</Link>
+          <Button variant="outline" href="/dashboard/messages">
+            Messages
           </Button>
-          <Button variant="ghost" asChild>
-            <Link href="/dashboard/messages/templates">Templates</Link>
+          <Button variant="ghost" href="/dashboard/messages/templates">
+            Templates
           </Button>
         </div>
       </div>
@@ -290,29 +278,23 @@ export function ComposeMessage() {
                         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                       </div>
                     ) : (
-                      <Select onValueChange={handleUserSelect} value="">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a user to add..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableUsers.length === 0 ? (
-                            <div className="p-4 text-sm text-muted-foreground text-center">
-                              {users.length === 0
-                                ? "No users available"
-                                : "All users have been selected"}
-                            </div>
-                          ) : (
-                            availableUsers
-                              .filter((a) => a.role === "client")
-                              .map((user) => (
-                                <SelectItem key={user.id} value={user.id}>
-                                  {user.first_name} {user.last_name} (
-                                  {user.email})
-                                </SelectItem>
-                              ))
-                          )}
-                        </SelectContent>
-                      </Select>
+                      <Select
+                        onChange={handleUserSelect}
+                        value=""
+                        options={availableUsers
+                          .filter((a) => a.role === "client")
+                          .map((user) => ({
+                            value: user.id,
+                            label: `${user.first_name} ${user.last_name} (${user.email})`,
+                          }))}
+                        placeholder={
+                          users.length === 0
+                            ? "No users available"
+                            : availableUsers.length === 0
+                            ? "All users have been selected"
+                            : "Select a user to add..."
+                        }
+                      />
                     )}
 
                     {/* Selected Users as Badges */}
@@ -367,34 +349,23 @@ export function ComposeMessage() {
                 <FormItem>
                   <FormLabel>Email Template</FormLabel>
                   <Select
-                    onValueChange={handleTemplateChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a template" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {isLoadingTemplates ? (
-                        <div className="flex items-center justify-center p-4">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        </div>
-                      ) : templates.length === 0 ? (
-                        <div className="p-4 text-sm text-muted-foreground">
-                          No templates available
-                        </div>
-                      ) : (
-                        templates
-                          .filter((t) => t.isActive)
-                          .map((template) => (
-                            <SelectItem key={template._id} value={template._id}>
-                              {template.name}
-                            </SelectItem>
-                          ))
-                      )}
-                    </SelectContent>
-                  </Select>
+                    onChange={handleTemplateChange}
+                    value={field.value}
+                    options={templates
+                      .filter((t) => t.isActive)
+                      .map((template) => ({
+                        value: template._id,
+                        label: template.name,
+                      }))}
+                    placeholder={
+                      isLoadingTemplates
+                        ? "Loading..."
+                        : templates.length === 0
+                        ? "No templates available"
+                        : "Select a template"
+                    }
+                    disabled={isLoadingTemplates}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -517,15 +488,11 @@ export function ComposeMessage() {
         </form>
       </Form>
 
-      {/* Email Preview Dialog */}
-      <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Email Preview</DialogTitle>
-            <DialogDescription>
-              Preview of how the email will appear to recipients
-            </DialogDescription>
-          </DialogHeader>
+      {/* Email Preview Modal */}
+      <Modal isOpen={showPreview} onClose={() => setShowPreview(false)} title="Email Preview" size="xl">
+          <p className="text-muted-foreground text-sm mb-4">
+            Preview of how the email will appear to recipients
+          </p>
           {selectedTemplate && (
             <div className="space-y-4">
               <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
@@ -564,8 +531,7 @@ export function ComposeMessage() {
               )}
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+      </Modal>
     </div>
   );
 }

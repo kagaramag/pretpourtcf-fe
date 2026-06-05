@@ -2,25 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Modal } from "@/components/ui/modal";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import PhoneNumberInput from "@/components/ui/phone-input";
+import PhoneInput from "@/components/ui/phone-input";
 import { Loader2, Copy, Check } from "lucide-react";
 import { userService, CreateUserData, UpdateUserData } from "@/services/user";
 import { User } from "@/types";
@@ -48,7 +35,7 @@ export function UserFormDialog({
     last_name: "",
     email: "",
     phone: "",
-    role: "client" as "admin" | "client",
+    role: "client" as "admin" | "client" | "trainer",
   });
   const [tempPassword, setTempPassword] = useState("");
   const [copied, setCopied] = useState(false);
@@ -68,7 +55,7 @@ export function UserFormDialog({
         role:
           user.role === "super_admin"
             ? "admin"
-            : (user.role as "admin" | "client"),
+            : (user.role as "admin" | "client" | "trainer"),
       });
     } else if (!open) {
       // Reset form when dialog closes
@@ -181,179 +168,166 @@ export function UserFormDialog({
   // Show password display if temp password exists
   if (tempPassword) {
     return (
-      <Dialog open={open} onOpenChange={() => {}}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>User Created Successfully!</DialogTitle>
-            <DialogDescription>
-              Please save this temporary password. It will not be shown again.
-            </DialogDescription>
-          </DialogHeader>
+      <Modal
+        isOpen={open}
+        onClose={() => {}}
+        title="User Created Successfully!"
+        size="sm"
+        footer={
+          <Button onClick={handlePasswordAcknowledged}>
+            I've Saved the Password
+          </Button>
+        }
+      >
+        <p className="text-muted-foreground text-sm mb-4">
+          Please save this temporary password. It will not be shown again.
+        </p>
 
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label>Temporary Password</Label>
-              <div className="flex gap-2">
-                <Input value={tempPassword} readOnly className="font-mono" />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={handleCopyPassword}
-                >
-                  {copied ? (
-                    <Check className="h-4 w-4 text-green-600" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                The user will be required to change this password on first
-                login.
-              </p>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Temporary Password</Label>
+            <div className="flex gap-2">
+              <Input value={tempPassword} readOnly className="font-mono" />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleCopyPassword}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-green-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
             </div>
+            <p className="text-sm text-muted-foreground">
+              The user will be required to change this password on first
+              login.
+            </p>
           </div>
-
-          <DialogFooter>
-            <Button onClick={handlePasswordAcknowledged}>
-              I've Saved the Password
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </Modal>
     );
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === "create" ? "Add New User" : "Edit User"}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Create a new user account. A temporary password will be generated."
-              : "Update user information."}
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={mode === "create" ? "Register new user" : "Edit user"}
+      size="sm"
+    >
+      <p className="text-muted-foreground text-sm mb-4">
+        {mode === "create"
+          ? "Create a new user account. A temporary password will be generated."
+          : "Update user information."}
+      </p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="first_name">
-                  First Name <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="first_name"
-                  value={formData.first_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, first_name: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="last_name">
-                  Last Name <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="last_name"
-                  value={formData.last_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, last_name: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">
-                  Email <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="role">
-                  Role <span className="text-red-500">*</span>
-                </Label>
-                <Select
-                  value={formData.role}
-                  onValueChange={(value: "admin" | "client") =>
-                    setFormData({ ...formData, role: value })
-                  }
-                  disabled={isCurrentUserAdmin} // Admins can only create clients
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {!isCurrentUserAdmin && (
-                      <SelectItem value="admin">Admin</SelectItem>
-                    )}
-                    <SelectItem value="client">Client</SelectItem>
-                  </SelectContent>
-                </Select>
-                {isCurrentUserAdmin && (
-                  <p className="text-xs text-muted-foreground">
-                    Admins can only create clients
-                  </p>
-                )}
-              </div>
+      <form onSubmit={handleSubmit}>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="first_name">
+                First Name <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="first_name"
+                value={formData.first_name}
+                onChange={(e) =>
+                  setFormData({ ...formData, first_name: e.target.value })
+                }
+                required
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">
-                Phone
+              <Label htmlFor="last_name">
+                Last Name <span className="text-red-500">*</span>
               </Label>
-              <PhoneNumberInput
-                value={formData.phone}
-                onChange={(value) =>
-                  setFormData({ ...formData, phone: value || "" })
+              <Input
+                id="last_name"
+                value={formData.last_name}
+                onChange={(e) =>
+                  setFormData({ ...formData, last_name: e.target.value })
                 }
-                placeholder="+243 123 456 789 (optional)"
+                required
               />
             </div>
           </div>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isLoading}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {mode === "create" ? "Creating..." : "Updating..."}
-                </>
-              ) : mode === "create" ? (
-                "Create User"
-              ) : (
-                "Update User"
-              )}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">
+                Email <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="role">
+                Role <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.role}
+                onChange={(value) =>
+                  setFormData({ ...formData, role: value as "admin" | "client" | "trainer" })
+                }
+                options={[
+                  ...(!isCurrentUserAdmin ? [{ value: "admin", label: "Admin" }] : []),
+                  { value: "trainer", label: "Trainer" },
+                  { value: "client", label: "Client" },
+                ]}
+                placeholder="Select role"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone">
+              Phone
+            </Label>
+            <PhoneInput
+              value={formData.phone}
+              onChange={(value) =>
+                setFormData({ ...formData, phone: value || "" })
+              }
+              placeholder="+250 123 456 789 (optional)"
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-2 pt-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleClose}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {mode === "create" ? "Creating..." : "Updating..."}
+              </>
+            ) : mode === "create" ? (
+              "Create User"
+            ) : (
+              "Update User"
+            )}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

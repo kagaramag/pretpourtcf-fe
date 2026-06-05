@@ -23,7 +23,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { NavigationLink } from "@/components/ui/navigation-link";
@@ -278,9 +277,9 @@ const PreparationScreen = () => {
                     </div>
                   </div>
 
-                  <CardTitle className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-semibold text-2xl mb-2 group-hover:text-primary transition-colors">
                     {prep.title}
-                  </CardTitle>
+                  </h3>
                   <div className="p-6">
                     {prep.description}
                   </div>

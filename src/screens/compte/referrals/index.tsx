@@ -2,17 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Card, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card } from "@/components/ui/card";
+import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabPanel } from "@/components/molecules/Tabs";
 import {
   Search,
   UserPlus,
@@ -160,25 +153,24 @@ export default function ReferralsScreen() {
       </div>
 
       {/* Referrals List */}
-      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-        <TabsList>
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="accepted">
-            Accepted ({acceptedReferrals.length})
-          </TabsTrigger>
-          <TabsTrigger value="pending">
-            Pending ({pendingReferrals.length})
-          </TabsTrigger>
-        </TabsList>
+      <Tabs
+        tabs={[
+          { id: "all", label: "All" },
+          { id: "accepted", label: `Accepted (${acceptedReferrals.length})` },
+          { id: "pending", label: `Pending (${pendingReferrals.length})` },
+        ]}
+        activeTab={currentTab}
+        onTabChange={setCurrentTab}
+        className="w-full"
+      />
 
-        <TabsContent value={currentTab} className="mt-4">
-          <ReferralsTable
-            referrals={getReferralsForTab()}
-            isLoading={isLoading}
-            getStatusBadge={getStatusBadge}
-          />
-        </TabsContent>
-      </Tabs>
+      <TabPanel id={currentTab} activeTab={currentTab} className="mt-4">
+        <ReferralsTable
+          referrals={getReferralsForTab()}
+          isLoading={isLoading}
+          getStatusBadge={getStatusBadge}
+        />
+      </TabPanel>
     </div>
   );
 }
@@ -193,76 +185,79 @@ function ReferralsTable({
   isLoading: boolean;
   getStatusBadge: (status: string) => JSX.Element;
 }) {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (referrals.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground">
-        Aucun parrainage trouvé
-      </div>
-    );
-  }
+  const columns: Column<Referral>[] = [
+    {
+      key: "referrer",
+      header: "Parrain",
+      render: (referral) => (
+        <div>
+          <div className="font-medium">
+            {referral.referrer.first_name} {referral.referrer.last_name}
+          </div>
+          <div className="text-sm text-muted-foreground">
+            {referral.referrer.email}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "inviteeEmail",
+      header: "Email invité",
+      render: (referral) => (
+        <span className="font-medium">{referral.inviteeEmail}</span>
+      ),
+    },
+    {
+      key: "invitee",
+      header: "Invité",
+      render: (referral) =>
+        referral.invitee ? (
+          <div>
+            <div className="font-medium">
+              {referral.invitee.first_name} {referral.invitee.last_name}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {referral.invitee.email}
+            </div>
+          </div>
+        ) : (
+          <span className="text-muted-foreground">-</span>
+        ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      render: (referral) => getStatusBadge(referral.status),
+    },
+    {
+      key: "createdAt",
+      header: "Date d'invitation",
+      render: (referral) => (
+        <span>{formatDate(new Date(referral.createdAt))}</span>
+      ),
+    },
+    {
+      key: "acceptedAt",
+      header: "Date d'acceptation",
+      render: (referral) => (
+        <span>
+          {referral.acceptedAt
+            ? formatDate(new Date(referral.acceptedAt))
+            : "-"}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Parrain</TableHead>
-            <TableHead>Email invité</TableHead>
-            <TableHead>Invité</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead>Date d'invitation</TableHead>
-            <TableHead>Date d'acceptation</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {referrals.map((referral) => (
-            <TableRow key={referral.id}>
-              <TableCell>
-                <div>
-                  <div className="font-medium">
-                    {referral.referrer.first_name} {referral.referrer.last_name}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {referral.referrer.email}
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell className="font-medium">
-                {referral.inviteeEmail}
-              </TableCell>
-              <TableCell>
-                {referral.invitee ? (
-                  <div>
-                    <div className="font-medium">
-                      {referral.invitee.first_name} {referral.invitee.last_name}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {referral.invitee.email}
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </TableCell>
-              <TableCell>{getStatusBadge(referral.status)}</TableCell>
-              <TableCell>{formatDate(new Date(referral.createdAt))}</TableCell>
-              <TableCell>
-                {referral.acceptedAt
-                  ? formatDate(new Date(referral.acceptedAt))
-                  : "-"}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table
+        data={referrals}
+        columns={columns}
+        keyExtractor={(r) => r.id}
+        isLoading={isLoading}
+        emptyMessage="Aucun parrainage trouvé"
+      />
     </div>
   );
 }

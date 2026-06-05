@@ -25,13 +25,15 @@ export interface SubscriptionPlan {
   type: PlanType;
   category: PlanCategory;
   duration_days: number;
-  price: number;
+  price_rwf: number;
+  price_usd: number;
   description?: string;
   features: string[];
   is_active: boolean;
   popular: boolean;
   details: PlanDetails;
   training_details?: TrainingDetails;
+  corporateId?: string | { _id: string; name: string } | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -58,7 +60,7 @@ export const planService = {
   /**
    * Get all available subscription plans (active only)
    */
-  async getAllPlans(category?: PlanCategory): Promise<BackendApiResponse<{ plans: SubscriptionPlan[] }>> {
+  async getPublicPlans(category?: PlanCategory): Promise<BackendApiResponse<{ plans: SubscriptionPlan[] }>> {
     const params = category ? { category } : {};
     return apiClient.get("/subscriptions/plans", { params });
   },

@@ -8,7 +8,6 @@ export interface SubscriptionPlan {
   type: PlanType;
   category?: PlanCategory;
   duration_days: number;
-  price: number; // Legacy field - will be price_rwf
   price_rwf: number; // Price in Rwandan Francs
   price_usd: number; // Price in US Dollars
   description?: string;
@@ -37,7 +36,8 @@ export interface Subscription {
     name: string;
     type: PlanType;
     duration_days: number;
-    price: number;
+    price_rwf: number;
+    price_usd: number;
   };
   status: SubscriptionStatus;
   start_date: Date;
@@ -58,6 +58,12 @@ export interface User {
   lastLoginAt?: string;
   subscription?: Subscription | null;
   subscriptions?: Array<Subscription & { createdAt: string }>;
+  corporateRole?: CorporateRole | null;
+  corporate?: {
+    id: string;
+    name: string;
+    location: string;
+  } | null;
 }
 
 export interface BackendApiResponse<T> {
@@ -310,4 +316,128 @@ export interface UpdateBlogRequest {
   body?: string;
   cover_image?: string;
   status?: BlogStatus;
+}
+
+// Corporate Types
+export interface Corporate {
+  _id: string;
+  name: string;
+  location: string;
+  email?: string;
+  phone?: string;
+  maxTrainers: number;
+  maxLearners: number;
+  isActive: boolean;
+  trainerCount?: number;
+  learnerCount?: number;
+  dedicatedPlans?: Array<{
+    _id: string;
+    name: string;
+    type: string;
+    category: string;
+    duration_days: number;
+    price: number;
+    price_rwf: number;
+    price_usd: number;
+  }>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CorporatesPaginatedResponse {
+  corporates: Corporate[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
+
+export interface CreateCorporateRequest {
+  name: string;
+  location: string;
+  email?: string;
+  phone?: string;
+  maxTrainers?: number;
+  maxLearners?: number;
+}
+
+export interface UpdateCorporateRequest {
+  name?: string;
+  location?: string;
+  email?: string;
+  phone?: string;
+  maxTrainers?: number;
+  maxLearners?: number;
+  isActive?: boolean;
+}
+
+export type CorporateRole = "trainer" | "learner";
+
+// Trainer Dashboard Types
+export interface TrainerDashboardStats {
+  totalLearners: number;
+  activeSubscriptions: number;
+  expiredSubscriptions: number;
+  totalPracticeSessions: number;
+  averageScore: number;
+  totalPracticeTime: number;
+  recentActivity: TrainerRecentActivity[];
+  learnersNeedingAttention: TrainerLearnerAttention[];
+  performanceByType: TrainerPerformanceByType[];
+}
+
+export interface TrainerRecentActivity {
+  id: string;
+  learner: {
+    id: string;
+    name: string;
+  };
+  practice: {
+    title: string;
+    type: string;
+    level?: string;
+  };
+  percentageScore: number;
+  grade: "excellent" | "good" | "needs_improvement";
+  completedAt: string;
+  timeElapsedSeconds: number;
+}
+
+export interface TrainerLearnerAttention {
+  id: string;
+  name: string;
+  email: string;
+  reasons: string[];
+  lastActivity: string | null;
+  averageScore: number | null;
+}
+
+export interface TrainerPerformanceByType {
+  type: string;
+  averageScore: number;
+  totalSessions: number;
+}
+
+export interface LearnerActivity {
+  id: string;
+  practice: {
+    id: string;
+    title: string;
+    type: string;
+    level?: string;
+  };
+  completedAt: string;
+  startedAt: string;
+  totalScore: number;
+  maxPossibleScore: number;
+  percentageScore: number;
+  timeElapsedSeconds: number;
+  durationMinutes: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  grade: "excellent" | "good" | "needs_improvement";
 }

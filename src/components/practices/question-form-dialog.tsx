@@ -2,21 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Modal } from "@/components/ui/modal";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -369,18 +356,17 @@ export function QuestionFormDialog({
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === "create" ? "Create New Question" : "Edit Question"}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Add a new question to this practice exam."
-              : "Update question details."}
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={mode === "create" ? "Create New Question" : "Edit Question"}
+      size="lg"
+    >
+        <p className="text-sm text-muted-foreground">
+          {mode === "create"
+            ? "Add a new question to this practice exam."
+            : "Update question details."}
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
@@ -409,20 +395,17 @@ export function QuestionFormDialog({
                 </Label>
                 <Select
                   value={formData.type}
-                  onValueChange={(value: QuestionType) =>
-                    setFormData({ ...formData, type: value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, type: value as QuestionType })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="mcq">Multiple Choice</SelectItem>
-                    <SelectItem value="short_answer">Short Answer</SelectItem>
-                    <SelectItem value="audio">Audio Response</SelectItem>
-                    <SelectItem value="essay">Essay</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: "mcq", label: "Multiple Choice" },
+                    { value: "short_answer", label: "Short Answer" },
+                    { value: "audio", label: "Audio Response" },
+                    { value: "essay", label: "Essay" },
+                  ]}
+                  placeholder="Select type"
+                />
               </div>
             </div>
 
@@ -527,23 +510,17 @@ export function QuestionFormDialog({
                   </Label>
                   <Select
                     value={formData.correct.toString()}
-                    onValueChange={(value) =>
+                    onChange={(value) =>
                       setFormData({ ...formData, correct: parseInt(value) })
                     }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select correct answer" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {formData.options.map((option, index) =>
-                        option.trim() !== "" ? (
-                          <SelectItem key={index} value={index.toString()}>
-                            Option {index + 1}: {option}
-                          </SelectItem>
-                        ) : null
-                      )}
-                    </SelectContent>
-                  </Select>
+                    options={formData.options
+                      .map((option, index) => ({
+                        value: index.toString(),
+                        label: `Option ${index + 1}: ${option}`,
+                      }))
+                      .filter((_, index) => formData.options[index].trim() !== "")}
+                    placeholder="Select correct answer"
+                  />
                 </div>
               </div>
             )}
@@ -639,26 +616,23 @@ export function QuestionFormDialog({
                 <Label htmlFor="difficulty">Difficulty Level</Label>
                 <Select
                   value={formData.difficulty || "none"}
-                  onValueChange={(value: CEFRLevel | "none") =>
+                  onChange={(value) =>
                     setFormData({
                       ...formData,
-                      difficulty: value === "none" ? "" : value,
+                      difficulty: value === "none" ? "" : value as CEFRLevel,
                     })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Optional" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="A1">A1</SelectItem>
-                    <SelectItem value="A2">A2</SelectItem>
-                    <SelectItem value="B1">B1</SelectItem>
-                    <SelectItem value="B2">B2</SelectItem>
-                    <SelectItem value="C1">C1</SelectItem>
-                    <SelectItem value="C2">C2</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: "none", label: "None" },
+                    { value: "A1", label: "A1" },
+                    { value: "A2", label: "A2" },
+                    { value: "B1", label: "B1" },
+                    { value: "B2", label: "B2" },
+                    { value: "C1", label: "C1" },
+                    { value: "C2", label: "C2" },
+                  ]}
+                  placeholder="Optional"
+                />
               </div>
             </div>
 
@@ -826,7 +800,7 @@ export function QuestionFormDialog({
             </div>
           </div>
 
-          <DialogFooter>
+          <div className="flex justify-end gap-2 pt-4">
             <Button
               type="button"
               variant="outline"
@@ -847,9 +821,8 @@ export function QuestionFormDialog({
                 "Update Question"
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

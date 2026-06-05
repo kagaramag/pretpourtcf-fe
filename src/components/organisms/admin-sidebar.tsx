@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Logo from "@/assets/images/logo.svg";
 import Icon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
@@ -17,16 +16,12 @@ import {
   Menu,
   X,
   Flame,
-  ReceiptText,
-  BookA,
   Tag,
   UserPlus,
-  Newspaper,
   Wallet,
   Radius,
   LibraryBig,
   Notebook,
-  AlignEndVerticalIcon,
   MessageCircle,
 } from "lucide-react";
 
@@ -51,6 +46,18 @@ const menuItems: MenuItem[] = [
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
+    name: "Corporates",
+    icon: <User className="h-5 w-5" />,
+    href: "/dashboard/corporates",
+    permission: PERMISSIONS.CORPORATES_READ,
+  },
+  {
+    name: "Subscriptions",
+    icon: <Radius className="h-5 w-5" />,
+    href: ["/dashboard/subscriptions", "/dashboard/plans"],
+    permission: PERMISSIONS.FOLLOWUPS_READ,
+  },
+  {
     name: "Users",
     icon: <User className="h-5 w-5" />,
     href: "/dashboard/users",
@@ -60,18 +67,6 @@ const menuItems: MenuItem[] = [
     name: "Streaks",
     icon: <Flame className="h-5 w-5" />,
     href: "/dashboard/streaks",
-    permission: PERMISSIONS.FOLLOWUPS_READ,
-  },
-  {
-    name: "Subscriptions",
-    icon: <Radius className="h-5 w-5" />,
-    href: "/dashboard/subscriptions",
-    permission: PERMISSIONS.FOLLOWUPS_READ,
-  },
-  {
-    name: "Plans",
-    icon: <ReceiptText className="h-5 w-5" />,
-    href: "/dashboard/plans",
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {
@@ -159,33 +154,33 @@ export default function Sidebar() {
       {/* Sidebar */}
       <div
         className={cn(
-          "flex flex-col h-screen bg-white border-r border-border transition-all duration-300",
+          "flex flex-col h-screen bg-gray-900 transition-all duration-300",
           "fixed lg:relative z-40 lg:z-0",
-          isCollapsed ? "w-16" : "w-64",
+          isCollapsed ? "w-16" : "w-50",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="flex items-center justify-between px-4 border-b border-border">
+        <div className="flex items-center justify-start px-4">
           {!isCollapsed ? (
-            <div className="my-2.5 py-0.5 w-[170px] sm:w-[200px] mx-auto">
+            <div className="my-2.5 py-0.5 w-[64px] sm:w-[64px]">
               <Image
-                src={Logo}
-                width={200}
-                height={120}
+                src={Icon}
+                width={44}
+                height={44}
                 priority
                 alt="logo"
-                className="w-full mx-auto"
+                className="w-ful"
               />
             </div>
           ) : (
-            <div className="mb-5 my-3.5 w-[64px] mx-auto">
+            <div className="mb-5 my-3.5 w-[64px]">
               <Image
                 src={Icon}
-                width={64}
-                height={64}
+                width={44}
+                height={44}
                 priority
                 alt="logo"
-                className="w-[64px] mx-auto"
+                className="w-[64px]"
               />
             </div>
           )}
@@ -208,14 +203,14 @@ export default function Sidebar() {
                       "flex items-center px-3 py-2.5 rounded-full transition-colors",
                       isActive
                         ? "bg-tertiary text-primary-foreground"
-                        : "text-black hover:bg-gray-100",
+                        : "text-gray-400 hover:bg-gray-100/5",
                       isCollapsed ? "justify-center" : "gap-3"
                     )}
                     title={isCollapsed ? item.name : undefined}
                   >
                     {item.icon}
                     {!isCollapsed && (
-                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className="text-sm">{item.name}</span>
                     )}
                   </Link>
                 </li>

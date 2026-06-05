@@ -49,22 +49,25 @@ export default function ListeningPracticePage() {
   return (
     <div className="container mx-auto max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold">
-          Pratique - Compréhension Orale
-        </h1>
+        <h1 className="text-2xl">Pratique - Compréhension Orale</h1>
       </div>
 
       {practices.length === 0 ? (
         <p>Aucun exercice disponible</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
           {practices.map((practice) => (
-            <Link href={`/trainer/pratiques/co/${practice._id}`} key={practice._id}>
-              <div  className="border p-3 rounded-lg flex items-center">
-                <h2 className="text-sm font-semibold leading-none">{practice.title}</h2>
-                <div>
-                  <Button size={"sm"}>View</Button>
-                </div>
+            <Link
+              href={`/trainer/pratiques/co/${practice._id}`}
+              key={practice._id}
+            >
+              <div className="bg-gray-50 p-3 rounded-3xl flex items-center">
+                <h2 className="flex-1 text-sm leading-none">
+                  {practice.title}
+                </h2>
+                <Button size={"sm"}
+                icon="arrowRight"
+                >View</Button>
               </div>
             </Link>
           ))}

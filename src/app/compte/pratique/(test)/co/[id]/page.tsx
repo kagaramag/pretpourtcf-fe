@@ -6,7 +6,6 @@ import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
   CardContent,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -440,7 +439,7 @@ export default function PracticeSessionPage() {
             </div>
 
             <Card>
-                <CardTitle className="text-2xl">Revue des réponses</CardTitle>
+                <h3 className="font-semibold text-2xl">Revue des réponses</h3>
                   Analysez vos réponses pour mieux comprendre vos erreurs
               <div className="p-6" className="space-y-6">
                 {questionsWithAnswers.map((item, index) => (
@@ -569,9 +568,9 @@ export default function PracticeSessionPage() {
               <div className="flex justify-center mb-4">
                 {getResultIcon(sessionResult.grade)}
               </div>
-              <CardTitle className="text-3xl mb-2">
+              <h3 className="font-semibold text-3xl mb-2">
                 {sessionResult.message}
-              </CardTitle>
+              </h3>
                 Exercice terminé
             <div className="p-6" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import {
   Form,
   FormControl,
@@ -136,14 +130,10 @@ export function SendBulkEmailDialog({
   const selectedCount = form.watch("recipientIds").length;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Envoyer des e-mails en masse</DialogTitle>
-          <DialogDescription>
-            {template?.name} - Sélectionnez les destinataires
-          </DialogDescription>
-        </DialogHeader>
+    <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Envoyer des e-mails en masse" size="lg">
+        <p className="text-muted-foreground text-sm mb-4">
+          {template?.name} - Sélectionnez les destinataires
+        </p>
 
         {sendResult ? (
           <div className="space-y-4">
@@ -289,7 +279,6 @@ export function SendBulkEmailDialog({
             </form>
           </Form>
         )}
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

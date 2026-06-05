@@ -2,9 +2,9 @@ import { Messages } from "@/screens/dashboard/messages";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Modeles d'e-mails | PRET POUR TCF",
+  title: "PrêtPourTCF | Messages",
   description:
-    "Gerez les modeles d'e-mails pour la communication avec les utilisateurs",
+    "Gérez les messages et la communication avec les utilisateurs PrêtPourTCF",
 };
 
 export default function MessagesPage() {

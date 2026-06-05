@@ -62,6 +62,11 @@ export const authService = {
       localStorage.setItem("refresh_token", response.data.refresh_token);
       localStorage.setItem("user_data", JSON.stringify(response.data.user));
 
+      // Store device_id for device session tracking
+      if ((response.data as any).device_id) {
+        localStorage.setItem("device_id", (response.data as any).device_id);
+      }
+
       document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
     }
 
@@ -74,6 +79,7 @@ export const authService = {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_data");
+      localStorage.removeItem("device_id");
 
       // Clear cookies
       document.cookie =
@@ -212,4 +218,30 @@ export const authService = {
       { email }
     );
   },
+
+  // Device management
+  getMyDevices: async (): Promise<DeviceInfo[]> => {
+    const response = await apiClient.get<
+      BackendApiResponse<{ devices: DeviceInfo[] }>
+    >("/devices");
+    return response.data?.devices || [];
+  },
+
+  removeDevice: async (deviceId: string): Promise<void> => {
+    await apiClient.delete(`/devices/${deviceId}`);
+  },
+
+  logoutAllDevices: async (): Promise<void> => {
+    await apiClient.post("/devices/logout-all");
+  },
 };
+
+export interface DeviceInfo {
+  deviceId: string;
+  deviceName: string;
+  deviceType: "mobile" | "desktop" | "tablet" | "unknown";
+  ipAddress: string;
+  isActive: boolean;
+  lastActivityAt: string;
+  loginAt: string;
+}

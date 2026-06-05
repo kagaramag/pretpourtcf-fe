@@ -2,8 +2,8 @@ import PromoCodesScreen from "@/screens/promo-codes";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Codes Promo | PRET POUR TCF",
-  description: "Gérer les codes promotionnels et les réductions",
+  title: "PrêtPourTCF | Codes Promo",
+  description: "Gérez les codes promotionnels et les réductions pour les abonnements PrêtPourTCF",
 };
 
 export default function PromoCodesPage() {

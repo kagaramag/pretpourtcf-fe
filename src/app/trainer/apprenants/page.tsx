@@ -2,8 +2,8 @@ import ApprenantsScreen from "@/screens/trainer/apprenants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "apprenants | PRET POUR TCF",
-  description: "Invitez vos amis à rejoindre la plateforme",
+  title: "PrêtPourTCF | Apprenants",
+  description: "Gérez vos apprenants et suivez leur progression dans la préparation au TCF",
 };
 
 export default function ApprenantsPage() {

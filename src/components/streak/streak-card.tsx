@@ -1,7 +1,7 @@
 "use client";
 
 import { Streak, Reward } from "@/services/streak";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Flame, Trophy, Clock, Zap } from "lucide-react";

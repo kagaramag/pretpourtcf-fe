@@ -47,6 +47,7 @@ export interface ValidateReferralResponse {
       first_name: string;
       last_name: string;
     };
+    inviteeEmail?: string;
   };
 }
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import UserDetailsScreen from "@/screens/dashboard/users/user-details";
+import UserDetailsScreen from "@/screens/dashboard/users/view";
 
 export const metadata: Metadata = {
-  title: "Détails utilisateur | PRET POUR TCF",
-  description: "Consultez les détails de l'utilisateur",
+  title: "PrêtPourTCF | Détails utilisateur",
+  description: "Consultez les informations détaillées et l'activité d'un utilisateur PrêtPourTCF",
 };
 
 export default function UserDetailsPage() {

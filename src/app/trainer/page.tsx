@@ -1,5 +1,11 @@
-"use client";
+import TrainerScreen from "@/screens/trainer/home";
 
-export default function TrainerAccountPage() {
-  return <div className="container mx-auto p-6">Trainer</div>;
+export const metadata = {
+  title: "PrêtPourTCF | Entraîneur",
+  description:
+    "Gérez les entités corporate et leurs accès à la plateforme PrêtPourTCF",
+};
+
+export default function TrainerAccount() {
+  return <TrainerScreen />;
 }

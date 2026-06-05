@@ -5,17 +5,10 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card } from "@/components/ui/card";
+import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabPanel } from "@/components/molecules/Tabs";
 import {
   Mail,
   UserPlus,
@@ -38,6 +31,7 @@ export function ReferralsScreen() {
   const [referrals, setReferrals] = useState<Referral[]>([]);
   const [pendingReferrals, setPendingReferrals] = useState<Referral[]>([]);
   const [acceptedReferrals, setAcceptedReferrals] = useState<Referral[]>([]);
+  const [activeReferralTab, setActiveReferralTab] = useState("all");
 
   useEffect(() => {
     fetchReferrals();
@@ -151,9 +145,9 @@ export function ReferralsScreen() {
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardTitle className="text-sm font-medium">
+          <h3 className="font-semibold text-sm">
             Invitations acceptées
-          </CardTitle>
+          </h3>
           <UserPlus className="h-4 w-4 text-gray-600" />
           <div>
             <div className="text-2xl">{acceptedReferrals.length}</div>
@@ -164,9 +158,9 @@ export function ReferralsScreen() {
         </Card>
 
         <Card>
-          <CardTitle className="text-sm font-medium">
+          <h3 className="font-semibold text-sm">
             Invitations en attente
-          </CardTitle>
+          </h3>
           <Clock className="h-4 w-4 text-gray-600" />
           <div>
             <div className="text-2xl font-bold">{pendingReferrals.length}</div>
@@ -224,44 +218,42 @@ export function ReferralsScreen() {
           Liste de toutes vos invitations
         </div>
         <div>
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="all">Tous ({referrals.length})</TabsTrigger>
-              <TabsTrigger value="accepted">
-                Acceptés ({acceptedReferrals.length})
-              </TabsTrigger>
-              <TabsTrigger value="pending">
-                En attente ({pendingReferrals.length})
-              </TabsTrigger>
-            </TabsList>
+          <Tabs
+            tabs={[
+              { id: "all", label: `Tous (${referrals.length})` },
+              { id: "accepted", label: `Acceptés (${acceptedReferrals.length})` },
+              { id: "pending", label: `En attente (${pendingReferrals.length})` },
+            ]}
+            className="w-full"
+            onTabChange={(tabId) => setActiveReferralTab(tabId)}
+          />
 
-            <TabsContent value="all">
-              <ReferralsTable
-                referrals={referrals}
-                isLoading={isLoading}
-                getStatusBadge={getStatusBadge}
-                copyReferralLink={copyReferralLink}
-              />
-            </TabsContent>
+          <TabPanel id="all" activeTab={activeReferralTab}>
+            <ReferralsTable
+              referrals={referrals}
+              isLoading={isLoading}
+              getStatusBadge={getStatusBadge}
+              copyReferralLink={copyReferralLink}
+            />
+          </TabPanel>
 
-            <TabsContent value="accepted">
-              <ReferralsTable
-                referrals={acceptedReferrals}
-                isLoading={isLoading}
-                getStatusBadge={getStatusBadge}
-                copyReferralLink={copyReferralLink}
-              />
-            </TabsContent>
+          <TabPanel id="accepted" activeTab={activeReferralTab}>
+            <ReferralsTable
+              referrals={acceptedReferrals}
+              isLoading={isLoading}
+              getStatusBadge={getStatusBadge}
+              copyReferralLink={copyReferralLink}
+            />
+          </TabPanel>
 
-            <TabsContent value="pending">
-              <ReferralsTable
-                referrals={pendingReferrals}
-                isLoading={isLoading}
-                getStatusBadge={getStatusBadge}
-                copyReferralLink={copyReferralLink}
-              />
-            </TabsContent>
-          </Tabs>
+          <TabPanel id="pending" activeTab={activeReferralTab}>
+            <ReferralsTable
+              referrals={pendingReferrals}
+              isLoading={isLoading}
+              getStatusBadge={getStatusBadge}
+              copyReferralLink={copyReferralLink}
+            />
+          </TabPanel>
         </div>
       </Card>
     </div>
@@ -280,75 +272,74 @@ function ReferralsTable({
   getStatusBadge: (status: string) => JSX.Element;
   copyReferralLink: (token: string) => void;
 }) {
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
-      </div>
-    );
-  }
-
-  if (referrals.length === 0) {
-    return (
-      <div className="text-center py-8 text-gray-600">
-        Aucun parrainage pour le moment
-      </div>
-    );
-  }
+  const columns: Column<Referral>[] = [
+    {
+      key: "inviteeEmail",
+      header: "Email invité",
+      render: (referral) =>
+        referral.invitee ? (
+          <div>
+            <div className="font-medium">
+              {referral.invitee.first_name} {referral.invitee.last_name}
+            </div>
+            <div className="text-sm text-gray-600">
+              {referral.inviteeEmail}
+            </div>
+          </div>
+        ) : (
+          <span>{referral.inviteeEmail}</span>
+        ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      render: (referral) => getStatusBadge(referral.status),
+    },
+    {
+      key: "createdAt",
+      header: "Date d'invitation",
+      render: (referral) => (
+        <span>{formatDate(new Date(referral.createdAt))}</span>
+      ),
+    },
+    {
+      key: "acceptedAt",
+      header: "Date d'acceptation",
+      render: (referral) => (
+        <span>
+          {referral.acceptedAt
+            ? formatDate(new Date(referral.acceptedAt))
+            : "-"}
+        </span>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (referral) =>
+        referral.status === "pending" && referral.token ? (
+          <div className="text-right">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => copyReferralLink(referral.token!)}
+              title="Copier le lien d'invitation"
+            >
+              <Copy className="h-4 w-4" />
+              Copier le lien
+            </Button>
+          </div>
+        ) : null,
+    },
+  ];
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Email invité</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead>Date d'invitation</TableHead>
-            <TableHead>Date d'acceptation</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {referrals.map((referral) => (
-            <TableRow key={referral.id}>
-              <TableCell className="font-medium">
-                {referral.invitee ? (
-                  <div>
-                    <div className="font-medium">
-                      {referral.invitee.first_name} {referral.invitee.last_name}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {referral.inviteeEmail}
-                    </div>
-                  </div>
-                ) : (
-                  referral.inviteeEmail
-                )}
-              </TableCell>
-              <TableCell>{getStatusBadge(referral.status)}</TableCell>
-              <TableCell>{formatDate(new Date(referral.createdAt))}</TableCell>
-              <TableCell>
-                {referral.acceptedAt
-                  ? formatDate(new Date(referral.acceptedAt))
-                  : "-"}
-              </TableCell>
-              <TableCell className="text-right">
-                {referral.status === "pending" && referral.token && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyReferralLink(referral.token!)}
-                    title="Copier le lien d'invitation"
-                  >
-                    <Copy className="h-4 w-4" />
-                    Copier le lien
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Table
+      data={referrals}
+      columns={columns}
+      keyExtractor={(r) => r.id}
+      isLoading={isLoading}
+      emptyMessage="Aucun parrainage pour le moment"
+    />
   );
 }

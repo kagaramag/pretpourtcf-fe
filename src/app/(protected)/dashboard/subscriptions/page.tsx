@@ -1,9 +1,9 @@
-import SubscriptionScreen from "@/screens/subscriptions";
+import SubscriptionScreen from "@/screens/dashboard/subscriptions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Subscriptions | PRET POUR TCF",
-  description: "Manage your subscription plans and access to premium features",
+  title: "PrêtPourTCF | Abonnements",
+  description: "Gérez les formules d'abonnement et l'accès aux fonctionnalités premium PrêtPourTCF",
 };
 
 export default function SubscriptionsPage() {

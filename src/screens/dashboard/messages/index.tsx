@@ -2,29 +2,100 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { Card, CardTitle } from "@/components/ui/card";
+
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Table, Column } from "@/components/ui/table";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Loader2,
   Mail,
   FileText,
   Send,
   CheckCircle,
   XCircle,
-  Eye,
 } from "lucide-react";
 import { emailHistoryService } from "@/services/email-history";
 import { formatDistanceToNow } from "date-fns";
+
+type EmailHistoryItem = {
+  _id: string;
+  templateName: string;
+  recipients: { name: string }[];
+  totalRecipients: number;
+  successCount: number;
+  failureCount: number;
+  sentBy: { first_name: string; last_name: string };
+  sentAt: string;
+};
+
+const columns: Column<EmailHistoryItem>[] = [
+  {
+    key: "templateName",
+    header: "Template",
+    render: (item) => <div className="font-medium">{item.templateName}</div>,
+  },
+  {
+    key: "recipients",
+    header: "Recipients",
+    render: (item) => (
+      <div className="flex flex-col gap-1">
+        <div className="text-sm">
+          {item.recipients.slice(0, 2).map((recipient, idx) => (
+            <span key={idx}>
+              {recipient.name}
+              {idx < Math.min(item.recipients.length - 1, 1) && ", "}
+            </span>
+          ))}
+          {item.totalRecipients > 2 && (
+            <span className="text-muted-foreground">
+              {" "}+{item.totalRecipients - 2} more
+            </span>
+          )}
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: "successCount",
+    header: "Success",
+    render: (item) => (
+      <div className="flex items-center gap-2">
+        <CheckCircle className="h-4 w-4 text-green-600" />
+        <span>{item.successCount}</span>
+      </div>
+    ),
+  },
+  {
+    key: "failureCount",
+    header: "Failed",
+    render: (item) => (
+      <div className="flex items-center gap-2">
+        <XCircle className="h-4 w-4 text-red-600" />
+        <span>{item.failureCount}</span>
+      </div>
+    ),
+  },
+  {
+    key: "sentBy",
+    header: "Sent By",
+    render: (item) => (
+      <div className="text-sm">
+        {item.sentBy.first_name} {item.sentBy.last_name}
+      </div>
+    ),
+  },
+  {
+    key: "sentAt",
+    header: "Sent At",
+    render: (item) => (
+      <div className="text-sm text-muted-foreground">
+        {formatDistanceToNow(new Date(item.sentAt), {
+          addSuffix: true,
+        })}
+      </div>
+    ),
+  },
+];
 
 export function Messages() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,11 +115,6 @@ export function Messages() {
     queryFn: () => emailHistoryService.getStatistics(),
   });
 
-  const handleViewDetails = (id: string) => {
-    // You can create a detail page later if needed
-    console.log("View details:", id);
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -56,17 +122,13 @@ export function Messages() {
           <h1 className="text-2xl font-semibold">Messages</h1>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/messages/templates">
-              <FileText className="h-4 w-4 mr-2" />
-              Templates
-            </Link>
+          <Button variant="outline" href="/dashboard/messages/templates">
+            <FileText className="h-4 w-4 mr-2" />
+            Templates
           </Button>
-          <Button asChild>
-            <Link href="/dashboard/messages/compose">
-              <Send className="h-4 w-4 mr-2" />
-              Compose
-            </Link>
+          <Button href="/dashboard/messages/compose">
+            <Send className="h-4 w-4 mr-2" />
+            Compose
           </Button>
         </div>
       </div>
@@ -127,7 +189,7 @@ export function Messages() {
       {/* Email History Table */}
       <Card className="space-y-4">
         <div className="space-y-2">
-          <CardTitle>Email History</CardTitle>
+          <h3 className="font-semibold">Email History</h3>
           <p className="text-sm text-muted-foreground">
             View all sent emails and their delivery status
           </p>
@@ -135,90 +197,26 @@ export function Messages() {
 
         <Separator />
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          </div>
-        ) : !data || data.history.length === 0 ? (
-          <div className="text-center py-12">
-            <Mail className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No emails sent yet</h3>
-            <p className="text-muted-foreground mb-6">
-              Start by composing your first email to users
-            </p>
-            <Button asChild>
-              <Link href="/dashboard/messages/compose">
+        <Table<EmailHistoryItem>
+          data={data?.history ?? []}
+          columns={columns}
+          keyExtractor={(item) => item._id}
+          isLoading={isLoading}
+          emptyMessage="No emails sent yet"
+          emptyComponent={
+            <div className="text-center py-12">
+              <Mail className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No emails sent yet</h3>
+              <p className="text-muted-foreground mb-6">
+                Start by composing your first email to users
+              </p>
+              <Button href="/dashboard/messages/compose">
                 <Send className="h-4 w-4 mr-2" />
                 Compose Email
-              </Link>
-            </Button>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Template</TableHead>
-                  <TableHead>Recipients</TableHead>
-                  <TableHead>Success</TableHead>
-                  <TableHead>Failed</TableHead>
-                  <TableHead>Sent By</TableHead>
-                  <TableHead>Sent At</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.history.map((item) => (
-                  <TableRow key={item._id}>
-                    <TableCell>
-                      <div className="font-medium">{item.templateName}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-col gap-1">
-                        <div className="text-sm">
-                          {item.recipients.slice(0, 2).map((recipient, idx) => (
-                            <span key={idx}>
-                              {recipient.name}
-                              {idx < Math.min(item.recipients.length - 1, 1) && ", "}
-                            </span>
-                          ))}
-                          {item.totalRecipients > 2 && (
-                            <span className="text-muted-foreground">
-                              {" "}+{item.totalRecipients - 2} more
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span>{item.successCount}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
-                        <span>{item.failureCount}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {item.sentBy.first_name} {item.sentBy.last_name}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm text-muted-foreground">
-                        {formatDistanceToNow(new Date(item.sentAt), {
-                          addSuffix: true,
-                        })}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
+              </Button>
+            </div>
+          }
+        />
 
         {/* Pagination */}
         {data && data.pagination.totalPages > 1 && (

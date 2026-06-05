@@ -2,30 +2,15 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Select } from "@/components/ui/select";
+import { Table, Column } from "@/components/ui/table";
 import {
   Loader2,
   Flame,
   Trophy,
-  TrendingUp,
   ChevronLeft,
   ChevronRight,
   Search,
@@ -50,6 +35,91 @@ const getStatusBadge = (status: StreakStatus) => {
       return <Badge>{status}</Badge>;
   }
 };
+
+const getUserName = (userId: Streak["userId"]) => {
+  if (typeof userId === "string") return "N/A";
+  return `${userId.first_name} ${userId.last_name}`;
+};
+
+const getUserEmail = (userId: Streak["userId"]) => {
+  if (typeof userId === "string") return "N/A";
+  return userId.email;
+};
+
+const columns: Column<Streak>[] = [
+  {
+    key: "userName",
+    header: "Utilisateur",
+    render: (streak) => (
+      <span className="font-medium">{getUserName(streak.userId)}</span>
+    ),
+  },
+  {
+    key: "status",
+    header: "Statut",
+    render: (streak) => getStatusBadge(streak.status),
+  },
+  {
+    key: "progression",
+    header: "Progression",
+    render: (streak) => (
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">
+            {streak.completedExercises} / {streak.totalExercises}
+          </span>
+        </div>
+        <Progress
+          value={(streak.completedExercises / streak.totalExercises) * 100}
+          className="h-2 w-24"
+        />
+      </div>
+    ),
+  },
+  {
+    key: "currentPoints",
+    header: "Points",
+    render: (streak) => (
+      <div className="flex items-center gap-1">
+        <Trophy className="h-4 w-4 text-primary" />
+        <span className="font-semibold text-primary">{streak.currentPoints}</span>
+      </div>
+    ),
+  },
+  {
+    key: "rewards",
+    header: "Récompenses",
+    render: (streak) => (
+      <div className="flex items-center gap-1">
+        <Award className="h-4 w-4 text-orange-500" />
+        <span className="font-medium">{streak.rewards.length}</span>
+      </div>
+    ),
+  },
+  {
+    key: "startDate",
+    header: "Date début",
+    render: (streak) => (
+      <span className="text-sm">{formatDate(streak.startDate)}</span>
+    ),
+  },
+  {
+    key: "endDate",
+    header: "Date fin",
+    render: (streak) => (
+      <span className="text-sm">{formatDate(streak.endDate)}</span>
+    ),
+  },
+  {
+    key: "lastActivityAt",
+    header: "Dernière activité",
+    render: (streak) => (
+      <span className="text-sm text-muted-foreground">
+        {formatDate(streak.lastActivityAt)}
+      </span>
+    ),
+  },
+];
 
 export function StreaksScreen() {
   const [statusFilter, setStatusFilter] = useState<StreakStatus | "all">("all");
@@ -83,16 +153,6 @@ export function StreaksScreen() {
     );
   }
 
-  const getUserName = (userId: Streak["userId"]) => {
-    if (typeof userId === "string") return "N/A";
-    return `${userId.first_name} ${userId.last_name}`;
-  };
-
-  const getUserEmail = (userId: Streak["userId"]) => {
-    if (typeof userId === "string") return "N/A";
-    return userId.email;
-  };
-
   return (
     <div className="space-y-2">
       {/* Header */}
@@ -117,28 +177,29 @@ export function StreaksScreen() {
           </div>
           <Select
             value={statusFilter}
-            onValueChange={(value) => {
+            onChange={(value) => {
               setStatusFilter(value as StreakStatus | "all");
               setPage(1);
             }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrer par statut" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="active">Actif</SelectItem>
-              <SelectItem value="completed">Terminé</SelectItem>
-              <SelectItem value="burned">Brûlé</SelectItem>
-              <SelectItem value="expired">Expiré</SelectItem>
-            </SelectContent>
-          </Select>
+            options={[
+              { value: "all", label: "Tous" },
+              { value: "active", label: "Actif" },
+              { value: "completed", label: "Terminé" },
+              { value: "burned", label: "Brûlé" },
+              { value: "expired", label: "Expiré" },
+            ]}
+            placeholder="Filtrer par statut"
+            className="w-[180px]"
+          />
         </div>
       </div>
 
       {/* Streaks Table */}
-      <div>
-        {streaks.length === 0 ? (
+      <Table
+        data={streaks}
+        columns={columns}
+        keyExtractor={(s) => s._id}
+        emptyComponent={
           <div className="flex flex-col items-center justify-center py-12">
             <Flame className="h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-lg font-medium text-muted-foreground">
@@ -150,82 +211,8 @@ export function StreaksScreen() {
                 : "Les utilisateurs n'ont pas encore créé de streaks"}
             </p>
           </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Utilisateur</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead>Progression</TableHead>
-                  <TableHead>Points</TableHead>
-                  <TableHead>Récompenses</TableHead>
-                  <TableHead>Date début</TableHead>
-                  <TableHead>Date fin</TableHead>
-                  <TableHead>Dernière activité</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {streaks.map((streak) => (
-                  <TableRow key={streak._id}>
-                    <TableCell className="font-medium">
-                      {getUserName(streak.userId)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {getUserEmail(streak.userId)}
-                    </TableCell>
-                    <TableCell>{getStatusBadge(streak.status)}</TableCell>
-                    <TableCell>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium">
-                            {streak.completedExercises} /{" "}
-                            {streak.totalExercises}
-                          </span>
-                        </div>
-                        <Progress
-                          value={
-                            (streak.completedExercises /
-                              streak.totalExercises) *
-                            100
-                          }
-                          className="h-2 w-24"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Trophy className="h-4 w-4 text-primary" />
-                        <span className="font-semibold text-primary">
-                          {streak.currentPoints}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <Award className="h-4 w-4 text-orange-500" />
-                        <span className="font-medium">
-                          {streak.rewards.length}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {formatDate(streak.startDate)}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {formatDate(streak.endDate)}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(streak.lastActivityAt)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-      </div>
+        }
+      />
 
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (

@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
-    CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -29,17 +28,17 @@ function ResetPasswordForm() {
     e.preventDefault();
 
     if (!token) {
-      toast.error("Invalid or missing reset token");
+      toast.error("Jeton de réinitialisation invalide ou manquant");
       return;
     }
 
     if (password.length < 8) {
-      toast.error("Password must be at least 8 characters long");
+      toast.error("Le mot de passe doit contenir au moins 8 caractères");
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error("Les mots de passe ne correspondent pas");
       return;
     }
 
@@ -47,11 +46,11 @@ function ResetPasswordForm() {
 
     try {
       await authService.resetPassword(token, password);
-      toast.success("Password reset successfully");
+      toast.success("Mot de passe réinitialisé avec succès");
       router.push("/login");
     } catch (error: any) {
       const message =
-        error?.response?.data?.message || "Failed to reset password";
+        error?.response?.data?.message || "Échec de la réinitialisation du mot de passe";
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -64,7 +63,7 @@ function ResetPasswordForm() {
         <Card className="w-full max-w-md">
           <div>
             <Link href="/forgot-password">
-              <Button className="w-full">Request a new reset link</Button>
+              <Button className="w-full">Demander un nouveau lien de réinitialisation</Button>
             </Link>
           </div>
         </Card>
@@ -78,12 +77,12 @@ function ResetPasswordForm() {
         <div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">New password</Label>
+              <Label htmlFor="password">Nouveau mot de passe</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter new password"
+                  placeholder="Entrez le nouveau mot de passe"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -103,17 +102,17 @@ function ResetPasswordForm() {
                 </button>
               </div>
               <p className="text-xs text-muted-foreground">
-                Must be at least 8 characters long
+                Doit contenir au moins 8 caractères
               </p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm password</Label>
+              <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Re-enter new password"
+                  placeholder="Ressaisissez le nouveau mot de passe"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
@@ -134,13 +133,13 @@ function ResetPasswordForm() {
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Resetting..." : "Reset password"}
+              {isLoading ? "Réinitialisation..." : "Réinitialiser le mot de passe"}
             </Button>
 
             <Link href="/login">
               <Button variant="ghost" className="w-full">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
+                Retour à la connexion
               </Button>
             </Link>
           </form>
@@ -155,7 +154,7 @@ export default function ResetPasswordScreen() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-muted-foreground">Loading...</div>
+          <div className="text-muted-foreground">Chargement...</div>
         </div>
       }
     >

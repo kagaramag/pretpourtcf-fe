@@ -1,8 +1,8 @@
-import { PracticeDetailsScreen } from "@/screens/practices/practice-details";
+import { PracticeDetailsScreen } from "@/screens/dashboard/practices/practice-details";
 
 export const metadata = {
-  title: "Practice Details | PRET POUR TCF",
-  description: "View and manage practice questions",
+  title: "PrêtPourTCF | Détails de l'exercice",
+  description: "Consultez et gérez les questions et contenus d'un exercice TCF",
 };
 
 export default function PracticeDetailsPage() {

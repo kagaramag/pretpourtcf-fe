@@ -4,8 +4,8 @@ import AuthLayout from "@/layouts/auth";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Sign Up | PRET POUR TCF",
-  description: "Create your PRET POUR TCF account",
+  title: "PrêtPourTCF | Inscription",
+  description: "Créez votre compte PrêtPourTCF et commencez votre préparation au TCF Canada ou TCF Québec dès maintenant",
 };
 
 export default function SignupPage() {

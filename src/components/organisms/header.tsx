@@ -19,7 +19,8 @@ export default function Header() {
 
   const navigation = [
     { name: "Accueil", href: "/" },
-    { name: "Tarifs", href: "/tarifs" },
+    { name: "Examens", href: "/compte" },
+    // { name: "Tarifs", href: "/tarifs" },
   ];
 
   useEffect(() => {
@@ -34,10 +35,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleLogout = async () => {
-    await logout();
-  };
 
   const fullName = user ? `${user.first_name}`.trim() : "User";
 
@@ -68,11 +65,11 @@ export default function Header() {
           </a>
         </div>
       )} */}
-      <header className="inset-x-0 top-0 z-50 transition-all duration-300 fixed">
-        <div className="flex items-center justify-between gap-2 sm:gap-6 lg:pl-6 lg:pr-2 px-2 lg:mx-auto mx-4 my-2 max-w-6xl border border-white/10 rounded-full bg-black/60 backdrop-blur-md">
+      <header className="inset-x-0 top-0 z-50 bg-black/60 backdrop-blur-md transition-all duration-300 fixed">
+        <div className="flex items-center justify-between gap-2 sm:gap-6 px-2 lg:px-0 lg:mx-auto mx-4 my-0 py-2 max-w-7xl">
           <div className="w-[120px] sm:w-[180px] lg:w-[190px]">
             <Link href="/">
-              <div className="w-[10px] sm:w-[180px] lg:w-[190px] hidden lg:block">
+              <div className="w-2.5 sm:w-[180px] lg:w-[190px] hidden lg:block">
                 <Image
                   src={Logo}
                   width={190}
@@ -106,10 +103,10 @@ export default function Header() {
             ))}
             <Link
               href={"/book"}
-              className="text-sm pl-3 pr-1 py-1 bg-tertiary hover:bg-tertiary/70 rounded-full ml-4 flex items-center gap-1"
+              className="text-sm pl-3 pr-1 py-0.5 bg-tertiary/10 text-tertiary hover:bg-tertiary/30 rounded-full ml-4 flex items-center gap-1"
             >
               Séance gratuite
-              <span className="bg-white p-1 rounded-full">
+              <span className="bg-black p-1.5 rounded-full">
                 <Calendar className="h-3 w-3" />
               </span>
             </Link>

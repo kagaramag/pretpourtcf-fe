@@ -1,24 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { Flame, Trophy, Clock, AlertCircle, Zap, BookOpen } from "lucide-react";
 import { streakService, CreateStreakData } from "@/services/streak";
 import { practiceService } from "@/services/practice";
@@ -114,17 +101,43 @@ export function CreateStreakDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[550px]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-2xl">
-            <Flame className="h-7 w-7 text-orange-500" />
-            Démarrer une nouvelle série
-          </DialogTitle>
-          <DialogDescription>
-            Relevez le défi et gagnez des emblème exclusives!
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title="Démarrer une nouvelle série"
+      size="md"
+      footer={
+        <>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isLoading}
+          >
+            Annuler
+          </Button>
+          <Button
+            onClick={handleCreateStreak}
+            disabled={isLoading || !selectedPracticeId || loadingPractices}
+            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+          >
+            {isLoading ? (
+              <>
+                <span className="animate-spin mr-2">⏳</span>
+                Création...
+              </>
+            ) : (
+              <>
+                <Flame className="mr-2 h-4 w-4" />
+                Démarrer la série
+              </>
+            )}
+          </Button>
+        </>
+      }
+    >
+      <p className="text-muted-foreground text-sm mb-4">
+        Relevez le défi et gagnez des emblème exclusives!
+      </p>
 
         <div className="space-y-4 py-4">
           {/* Info Alert */}
@@ -144,29 +157,20 @@ export function CreateStreakDialog({
             </Label>
             <Select
               value={selectedPracticeId}
-              onValueChange={setSelectedPracticeId}
+              onChange={setSelectedPracticeId}
               disabled={loadingPractices || practices.length === 0}
-            >
-              <SelectTrigger id="practice">
-                <SelectValue
-                  placeholder={
-                    loadingPractices
-                      ? "Chargement..."
-                      : practices.length === 0
-                      ? "Aucun exercice disponible"
-                      : "Sélectionnez un exercice"
-                  }
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {practices.map((practice) => (
-                  <SelectItem key={practice._id} value={practice._id}>
-                    {practice.title} - {getPracticeTypeLabel(practice.type)}{" "}
-                    ({practice.totalQuestions} questions)
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              options={practices.map((practice) => ({
+                value: practice._id,
+                label: `${practice.title} - ${getPracticeTypeLabel(practice.type)} (${practice.totalQuestions} questions)`,
+              }))}
+              placeholder={
+                loadingPractices
+                  ? "Chargement..."
+                  : practices.length === 0
+                  ? "Aucun exercice disponible"
+                  : "Sélectionnez un exercice"
+              }
+            />
             <p className="text-xs text-muted-foreground">
               La série utilisera 20 questions de cet exercice
             </p>
@@ -231,33 +235,6 @@ export function CreateStreakDialog({
           </Alert>
         </div>
 
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={isLoading}
-          >
-            Annuler
-          </Button>
-          <Button
-            onClick={handleCreateStreak}
-            disabled={isLoading || !selectedPracticeId || loadingPractices}
-            className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-          >
-            {isLoading ? (
-              <>
-                <span className="animate-spin mr-2">⏳</span>
-                Création...
-              </>
-            ) : (
-              <>
-                <Flame className="mr-2 h-4 w-4" />
-                Démarrer la série
-              </>
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

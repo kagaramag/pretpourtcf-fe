@@ -1,8 +1,8 @@
 import BlogFormScreen from "@/screens/blog/blog-form";
 
 export const metadata = {
-  title: "New Blog Post | PRET POUR TCF",
-  description: "Create a new blog post",
+  title: "PrêtPourTCF | Nouvel article",
+  description: "Rédigez et publiez un nouvel article sur le blog PrêtPourTCF",
 };
 
 export default function NewBlogPage() {

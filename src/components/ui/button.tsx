@@ -1,71 +1,179 @@
 import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
+import Link from 'next/link'
+import { Icon, type IconName } from '@/icons'
 
 import { cn } from '@/lib/utils'
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer",
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-white hover:bg-primary/90',
-        destructive:
-          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
-        outline:
-          'bg-white border border-primary text-primary hover:bg-white/50 hover:border-primary/70 hover:text-primary',
-        secondary:
-          'bg-secondary text-white hover:bg-secondary/80',
-        tertiary:
-          'bg-tertiary text-gray-900 hover:bg-tertiary/80',
-        accent:
-          'bg-accent text-white hover:bg-accent/80',
-        ghost:
-          'bg-gray-300/20 hover:bg-gray-200/80 hover:text-black',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-9 px-4 py-2 rounded-full has-[>svg]:px-3',
-        sm: 'h-8 rounded-full gap-1.5 px-3 has-[>svg]:px-2.5',
-        lg: 'h-12 text-md font-semibold rounded-full px-6 has-[>svg]:px-4',
-        xlg: 'h-14 text-lg font-semibold rounded-full px-12 has-[>svg]:px-4',
-        icon: 'size-9',
-        'icon-sm': 'size-8',
-        'icon-lg': 'size-10',
-      },
-      block: {
-        true: 'w-full',
-        false: '',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-      block: false,
-    },
-  },
-)
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'ghost' | 'outline' | 'tertiary'
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonShape = 'default' | 'pill'
+
+// Legacy aliases for backwards compatibility with existing code
+type LegacyVariant = ButtonVariant | 'default' | 'destructive' | 'tertiary' | 'accent' | 'link'
+type LegacySize = ButtonSize | 'default' | 'icon' | 'icon-sm' | 'icon-lg'
+
+const resolveVariant = (v: LegacyVariant): ButtonVariant => {
+  if (v === 'default') return 'primary'
+  if (v === 'destructive') return 'danger'
+  if (v === 'tertiary') return 'tertiary'
+  if (v === 'accent') return 'primary'
+  if (v === 'link') return 'ghost'
+  return v
+}
+
+const resolveSizeStyles = (s: LegacySize, iconOnly: boolean): string => {
+  const legacySizeMap: Record<string, string> = {
+    default: sizes.md,
+    icon: iconOnlySizes.md,
+    'icon-sm': iconOnlySizes.sm,
+    'icon-lg': iconOnlySizes.lg,
+  }
+  if (legacySizeMap[s]) return legacySizeMap[s]
+  return iconOnly ? iconOnlySizes[s as ButtonSize] : sizes[s as ButtonSize]
+}
+
+interface ButtonProps extends React.ComponentProps<'button'> {
+  children?: React.ReactNode
+  variant?: LegacyVariant
+  size?: LegacySize
+  isLoading?: boolean
+  href?: string
+  iconOnly?: boolean
+  block?: boolean
+  icon?: IconName
+  fill?: boolean
+  shape?: ButtonShape
+  target?: '_blank' | '_self' | '_parent' | '_top'
+}
+
+const baseStyles =
+  'inline-flex items-center justify-center transition-colors focus:outline-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed'
+
+const filledVariants: Record<ButtonVariant, string> = {
+  primary: 'bg-primary text-white hover:bg-primary-500/70 border border-primary',
+  secondary:
+  'bg-gray-100 text-gray-900 hover:bg-gray-200/80 border border-gray-100',
+  tertiary: 'bg-tertiary text-black hover:bg-tertiary-500/70 border border-tertiary',
+  danger: 'bg-red-500 text-white hover:bg-red-400 border border-red-500',
+  success: 'bg-green-600 text-white hover:bg-green-700 border border-green-600',
+  ghost: 'bg-transparent hover:bg-gray-100 text-gray-700',
+  outline:
+    'bg-white border border-primary text-primary hover:border-primary hover:text-primary hover:bg-white',
+}
+
+const outlineVariants: Record<ButtonVariant, string> = {
+  primary:
+    'bg-white border border-primary-500 text-primary-700 hover:bg-primary hover:text-black',
+  secondary:
+    'bg-gray-100 border border-gray-100 text-gray-900 hover:bg-gray-200/80',
+  tertiary:
+    'bg-tertiary border border-tertiary text-black hover:bg-tertiary hover:text-white',
+  danger:
+    'bg-white border border-red-500 text-red-500 hover:bg-red-100',
+  success:
+    'bg-white border border-green-500 text-green-500 hover:bg-green-50',
+  ghost: 'bg-transparent hover:bg-gray-100 text-gray-700',
+  outline:
+    'bg-white border border-primary text-primary hover:border-primary hover:text-primary hover:bg-white',
+}
+
+const sizes: Record<ButtonSize, string> = {
+  sm: 'px-2 py-1 text-[11px] h-6',
+  md: 'lg:px-3.5 px-2 text-sm text-xs lg:h-8 h-6',
+  lg: 'px-7 h-12 text-[14px] font-semibold',
+}
+
+const iconOnlySizes: Record<ButtonSize, string> = {
+  sm: 'p-1 text-xs w-6 h-6',
+  md: 'p-2 text-sm w-8 h-8',
+  lg: 'p-3 text-lg w-12 h-12',
+}
+
+const iconSizeMap: Record<ButtonSize, number> = {
+  sm: 14,
+  md: 16,
+  lg: 20,
+}
 
 function Button({
+  children,
   className,
-  variant,
-  size,
-  block,
-  asChild = false,
+  variant = 'primary',
+  size = 'md',
+  isLoading = false,
+  disabled,
+  href,
+  iconOnly = false,
+  icon,
+  block = false,
+  fill = true,
+  shape = 'default',
+  target,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot : 'button'
+}: ButtonProps) {
+  const resolvedVariant = resolveVariant(variant)
+  const variants = fill ? filledVariants : outlineVariants
+  const sizeStyles = resolveSizeStyles(size, iconOnly)
+  const blockStyles = block ? 'w-full' : ''
+  const shapeStyles = shape === 'pill' ? 'rounded-full' : 'rounded-full'
+  const combinedClassName = cn(baseStyles, variants[resolvedVariant], sizeStyles, blockStyles, shapeStyles, className)
+  const resolvedSize: ButtonSize = (size === 'icon' || size === 'icon-sm' || size === 'default') ? (size === 'default' ? 'md' : 'sm') : size === 'icon-lg' ? 'lg' : size
+  const iconSize = iconSizeMap[resolvedSize]
+
+  const content = isLoading ? (
+    <>
+      <Icon name="loading" size={16} className="mr-2" />
+      Loading...
+    </>
+  ) : iconOnly && icon ? (
+    <Icon name={icon} size={iconSize} />
+  ) : (
+    <>
+      {icon && <Icon name={icon} size={iconSize} className="mr-2" />}
+      {children}
+    </>
+  )
+
+  if (href) {
+    const isExternal = href.startsWith('http://') || href.startsWith('https://')
+
+    if (isExternal || target === '_blank') {
+      return (
+        <a href={href} target="_blank" rel="noopener noreferrer" className={combinedClassName}>
+          {content}
+        </a>
+      )
+    }
+
+    return (
+      <Link href={href} className={combinedClassName}>
+        {content}
+      </Link>
+    )
+  }
 
   return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, block, className }))}
-      {...props}
-    />
+    <button className={combinedClassName} disabled={disabled || isLoading} {...props}>
+      {content}
+    </button>
   )
 }
 
+/**
+ * Helper to generate button class names without rendering a Button component.
+ * Used by alert-dialog, calendar, pagination, etc.
+ */
+function buttonVariants(opts?: {
+  variant?: LegacyVariant
+  size?: LegacySize | 'default'
+  className?: string
+}) {
+  const { variant = 'primary', size = 'md', className } = opts ?? {}
+  const resolved = resolveVariant(variant)
+  const sizeVal: LegacySize = size === 'default' ? 'md' : size
+  const sizeStyle = resolveSizeStyles(sizeVal, false)
+  return cn(baseStyles, filledVariants[resolved], sizeStyle, className)
+}
+
 export { Button, buttonVariants }
+export type { ButtonProps }

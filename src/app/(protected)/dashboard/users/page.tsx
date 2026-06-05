@@ -2,8 +2,8 @@ import { UsersScreen } from "@/screens/dashboard/users";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Utilisateurs | PRET POUR TCF",
-  description: "Gérez les utilisateurs et agents PRET POUR TCF",
+  title: "PrêtPourTCF | Utilisateurs",
+  description: "Gérez les utilisateurs, rôles et accès sur la plateforme PrêtPourTCF",
 };
 
 export default function UsersPage() {

@@ -32,16 +32,14 @@ const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
   };
 
   return (
-    <div className={`relative flex items-center w-full h-10 rounded-md border bg-gray-100 ring-offset-background transition-colors ${
-      error 
-        ? "border-red-500 focus-within:ring-2 focus-within:ring-red-500 focus-within:ring-offset-2" 
-        : "border-input focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
+    <div className={`relative flex items-center w-full h-10 rounded-md border bg-background px-3 transition-colors ${
+      error ? "border-red-500" : "border-input"
     } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}>
       <PhoneInput
         international
         withCountryCallingCode
-        defaultCountry="CD"
-        countries={["CD"]}
+        defaultCountry="RW"
+        countries={["RW", "CD"]}
         countryCallingCodeEditable={false}
         value={phone}
         onChange={handleChange}

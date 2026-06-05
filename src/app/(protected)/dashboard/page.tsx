@@ -2,8 +2,8 @@ import { DashboardOverview } from "@/screens/dashboard/overview";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tableau de bord | PRET POUR TCF",
-  description: "Vue d'ensemble du tableau de bord PRET POUR TCF",
+  title: "PrêtPourTCF | Tableau de bord",
+  description: "Vue d'ensemble des statistiques, utilisateurs et activités sur PrêtPourTCF",
 };
 
 export default function DashboardPage() {

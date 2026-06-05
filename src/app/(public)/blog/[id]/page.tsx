@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { blogService } from "@/services/blog";
 import { config } from "@/config";
 
+export const revalidate = 1800; // Revalidate every 30 minutes
+
 interface PublicBlogDetailPageProps {
   params: Promise<{
     id: string;
@@ -19,7 +21,7 @@ export async function generateMetadata({
     const response = await blogService.getPublishedBlogById(id);
     const blog = response.data.blog;
 
-    const title = `${blog.title} | PRET POUR TCF`;
+    const title = `PrêtPourTCF | ${blog.title}`;
     const description = blog.description || blog.title;
     const imageUrl = blog.cover_image
       ? `${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`
@@ -42,12 +44,12 @@ export async function generateMetadata({
         'apprentissage français',
         blog.title,
       ],
-      authors: [{ name: 'PRET POUR TCF' }],
+      authors: [{ name: 'PrêtPourTCF' }],
       openGraph: {
         title,
         description: metaDescription,
         url,
-        siteName: 'PRET POUR TCF',
+        siteName: 'PrêtPourTCF',
         images: [
           {
             url: imageUrl,
@@ -66,7 +68,7 @@ export async function generateMetadata({
         title,
         description: metaDescription,
         images: [imageUrl],
-        creator: '@PretPourTCF',
+        creator: '@PrêtPourTCF',
       },
       alternates: {
         canonical: url,
@@ -86,7 +88,7 @@ export async function generateMetadata({
   } catch (error) {
     // Fallback metadata if blog fetch fails
     return {
-      title: "Article | PRET POUR TCF",
+      title: "PrêtPourTCF | Article",
       description: "Lisez nos articles sur la préparation au TCF",
     };
   }

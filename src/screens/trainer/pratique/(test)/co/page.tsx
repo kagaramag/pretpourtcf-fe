@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import {
   Card,
-  CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
@@ -108,9 +107,9 @@ export default function ListeningPracticePage() {
                 <div className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="group-hover:text-primary transition-colors">
+                      <h3 className="font-semibold group-hover:text-primary transition-colors">
                         {practice.title}
-                      </CardTitle>
+                      </h3>
                       {practice.level && (
                         <span
                           className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getLevelColor(
@@ -148,10 +147,10 @@ export default function ListeningPracticePage() {
 
         <div className="mt-8">
           <Card className="border-blue-200 bg-blue-50">
-            <CardTitle className="flex items-center gap-2 text-blue-900">
+            <h3 className="font-semibold flex items-center gap-2 text-blue-900">
               <BarChart className="h-5 w-5" />
               Conseils pour réussir
-            </CardTitle>
+            </h3>
             <div className="p-6 text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
               <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>

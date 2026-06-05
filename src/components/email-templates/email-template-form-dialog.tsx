@@ -4,13 +4,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import {
   Form,
   FormControl,
@@ -156,20 +150,17 @@ export function EmailTemplateFormDialog({
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === "create"
-              ? "Créer un nouveau modèle"
-              : "Modifier le modèle"}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Créez un nouveau modèle d'e-mail pour la communication avec les utilisateurs"
-              : "Modifiez ce modèle d'e-mail"}
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={mode === "create" ? "Créer un nouveau modèle" : "Modifier le modèle"}
+      size="lg"
+    >
+        <p className="text-muted-foreground text-sm mb-4">
+          {mode === "create"
+            ? "Créez un nouveau modèle d'e-mail pour la communication avec les utilisateurs"
+            : "Modifiez ce modèle d'e-mail"}
+        </p>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -198,7 +189,7 @@ export function EmailTemplateFormDialog({
                   <FormLabel>Sujet de l&apos;e-mail</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Bienvenue sur PRET POUR TCF"
+                      placeholder="Bienvenue sur PrêtPourTCF"
                       {...field}
                     />
                   </FormControl>
@@ -334,7 +325,6 @@ export function EmailTemplateFormDialog({
             </div>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

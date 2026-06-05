@@ -4,32 +4,12 @@ import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Table, Column } from "@/components/ui/table";
+import { Menu } from "@/components/ui/menu";
 import {
   Plus,
   MoreVertical,
-  Edit,
   Loader2,
-  Trash2,
-  Eye,
-  Mail,
-  Power,
-  PowerOff,
 } from "lucide-react";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
 import { toast } from "sonner";
@@ -156,6 +136,118 @@ export function EmailTemplatesScreen() {
     });
   };
 
+  const columns: Column<EmailTemplate>[] = [
+    {
+      key: "name",
+      header: "Nom",
+      render: (template) => <span>{template.name}</span>,
+    },
+    {
+      key: "subject",
+      header: "Sujet",
+      render: (template) => (
+        <span className="max-w-[200px] truncate block">{template.subject}</span>
+      ),
+    },
+    {
+      key: "variables",
+      header: "Variables",
+      render: (template) =>
+        template.variables.length > 0 ? (
+          <div className="flex flex-wrap gap-1">
+            {template.variables.slice(0, 1).map((variable) => (
+              <Badge key={variable} variant="outline">
+                {variable}
+              </Badge>
+            ))}
+            {template.variables.length > 2 && (
+              <Badge variant="outline">
+                +{template.variables.length - 2}
+              </Badge>
+            )}
+          </div>
+        ) : (
+          <span className="text-muted-foreground text-sm">Aucune</span>
+        ),
+    },
+    {
+      key: "isActive",
+      header: "Statut",
+      render: (template) => (
+        <Badge variant={template.isActive ? "default" : "secondary"}>
+          {template.isActive ? "Actif" : "Inactif"}
+        </Badge>
+      ),
+    },
+    {
+      key: "createdBy",
+      header: "Créé par",
+      render: (template) => (
+        <div className="text-sm">
+          <div className="font-medium">
+            {template.createdBy.first_name} {template.createdBy.last_name}
+          </div>
+          <div className="text-muted-foreground">
+            {template.createdBy.email}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "createdAt",
+      header: "Date de création",
+      render: (template) => <span>{formatDate(template.createdAt)}</span>,
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (template) => (
+        <div className="text-right">
+          <Menu
+            trigger={
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            }
+            items={[
+              {
+                type: "button",
+                label: "Preview",
+                onClick: () => handlePreview(template),
+                icon: "open",
+              },
+              {
+                type: "button",
+                label: "Change",
+                onClick: () => handleEdit(template),
+                icon: "edit",
+              },
+              {
+                type: "button",
+                label: template.isActive ? "Deactivate" : "Activate",
+                onClick: () => handleToggleStatus(template),
+                icon: template.isActive ? "stop" : "validate",
+              },
+              {
+                type: "button",
+                label: "Send a message",
+                onClick: () => handleSendBulk(template),
+                icon: "email",
+              },
+              {
+                type: "button",
+                label: "Delete",
+                onClick: () => handleDelete(template._id),
+                icon: "dustbin",
+                variant: "danger",
+              },
+            ]}
+          />
+        </div>
+      ),
+    },
+  ];
+
   console.log("##", templates);
 
   return (
@@ -173,134 +265,13 @@ export function EmailTemplatesScreen() {
 
       {/* Table */}
       <div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom</TableHead>
-              <TableHead>Sujet</TableHead>
-              <TableHead>Variables</TableHead>
-              <TableHead>Statut</TableHead>
-              <TableHead>Créé par</TableHead>
-              <TableHead>Date de création</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-                </TableCell>
-              </TableRow>
-            ) : templates.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-12">
-                  <p className="text-muted-foreground">Aucun modèle trouvé</p>
-                </TableCell>
-              </TableRow>
-            ) : (
-              templates.map((template) => (
-                <TableRow key={template._id}>
-                  <TableCell>{template.name}</TableCell>
-                  <TableCell className="max-w-[200px] truncate">
-                    {template.subject}
-                  </TableCell>
-                  <TableCell>
-                    {template.variables.length > 0 ? (
-                      <div className="flex flex-wrap gap-1">
-                        {template.variables.slice(0, 1).map((variable) => (
-                          <Badge key={variable} variant="outline">
-                            {variable}
-                          </Badge>
-                        ))}
-                        {template.variables.length > 2 && (
-                          <Badge variant="outline">
-                            +{template.variables.length - 2}
-                          </Badge>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-muted-foreground text-sm">
-                        Aucune
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={template.isActive ? "default" : "secondary"}
-                    >
-                      {template.isActive ? "Actif" : "Inactif"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      <div className="font-medium">
-                        {template.createdBy.first_name}{" "}
-                        {template.createdBy.last_name}
-                      </div>
-                      <div className="text-muted-foreground">
-                        {template.createdBy.email}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{formatDate(template.createdAt)}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handlePreview(template)}
-                        >
-                          <Eye className="h-4 w-4 mr-2" />
-                          Preview
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleEdit(template)}>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Change
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleToggleStatus(template)}
-                        >
-                          {template.isActive ? (
-                            <>
-                              <PowerOff className="h-4 w-4 mr-2" />
-                              Daactivate
-                            </>
-                          ) : (
-                            <>
-                              <Power className="h-4 w-4 mr-2" />
-                              Activate
-                            </>
-                          )}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleSendBulk(template)}
-                        >
-                          <Mail className="h-4 w-4 mr-2" />
-                          Send a message
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleDelete(template._id)}
-                          className="text-destructive"
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+        <Table
+          data={templates}
+          columns={columns}
+          keyExtractor={(t) => t._id}
+          isLoading={isLoading}
+          emptyMessage="Aucun modèle trouvé"
+        />
       </div>
 
       {/* Dialogs */}

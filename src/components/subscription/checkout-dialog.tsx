@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -34,9 +34,9 @@ export function CheckoutDialog({
   // Get the price based on selected currency
   const getPrice = () => {
     if (currency === "USD") {
-      return plan.price_usd || plan.price;
+      return plan.price_usd || 0;
     }
-    return plan.price_rwf || plan.price;
+    return plan.price_rwf || 0;
   };
 
   const handlePayment = async () => {
@@ -130,14 +130,36 @@ export function CheckoutDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <h3 className="font-semibold">Finaliser votre abonnement</h3>
-          <div className="mt-3">
-            Choisissez votre méthode de paiement pour activer votre abonnement
-          </div>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title="Finaliser votre abonnement"
+      size="md"
+      footer={
+        <>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={loading}
+          >
+            Annuler
+          </Button>
+          <Button onClick={handlePayment} disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Traitement...
+              </>
+            ) : (
+              `Payer ${formatPrice(getPrice(), currency)}`
+            )}
+          </Button>
+        </>
+      }
+    >
+        <p className="text-muted-foreground">
+          Choisissez votre méthode de paiement pour activer votre abonnement
+        </p>
 
         <div className="space-y-6 py-4">
           {/* Plan Summary */}
@@ -171,7 +193,7 @@ export function CheckoutDialog({
                 <Label htmlFor="rwf" className="cursor-pointer flex-1">
                   <div className="font-medium">RWF</div>
                   <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_rwf || plan.price, "RWF")}
+                    {formatPrice(plan.price_rwf || 0, "RWF")}
                   </div>
                 </Label>
               </div>
@@ -181,7 +203,7 @@ export function CheckoutDialog({
                 <Label htmlFor="usd" className="cursor-pointer flex-1">
                   <div className="font-medium">USD</div>
                   <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_usd || plan.price, "USD")}
+                    {formatPrice(plan.price_usd || 0, "USD")}
                   </div>
                 </Label>
               </div>
@@ -250,26 +272,6 @@ export function CheckoutDialog({
           )}
         </div>
 
-        <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-            disabled={loading}
-          >
-            Annuler
-          </Button>
-          <Button onClick={handlePayment} disabled={loading}>
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Traitement...
-              </>
-            ) : (
-              `Payer ${formatPrice(getPrice(), currency)}`
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

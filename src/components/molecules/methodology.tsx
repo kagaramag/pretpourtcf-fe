@@ -131,7 +131,7 @@ export default function Methodology({ type }: MethodologyProps) {
 
   return (
     <div className="p-6 bg-[#69edcd] rounded-2xl flex flex-col gap-1">
-      <h1 className="lg:text-2xl text-lg font-bold">{content.title}</h1>
+      <h1 className="lg:text-2xl text-lg">{content.title}</h1>
       <h5 className="text-sm mb-2 max-w-3xl">{content.description}</h5>
 
       {/* Toggle button for small screens */}

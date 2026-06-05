@@ -7,12 +7,12 @@ import TCFMethod from "@/assets/images/tcf_method.svg";
 import OnBlueBG from "@/assets/images/on-blue-bg.svg";
 import TCFPhoto from "@/assets/images/tcf_photo.jpg";
 import { NavigationLink } from "@/components/ui/navigation-link";
-import LandingFeatures from "./landing-features";
-import LandingTestimonials from "./landing-testimonials";
-import LandingFAQ from "./landing-faq";
-import LandingStats from "./landing-stats";
+import LandingFeatures from "./features";
+import LandingTestimonials from "./testimonials";
+import LandingFAQ from "./faq";
+import LandingStats from "./stats";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "@/icons";
 import { Card } from "./card";
 
 const quickSteps = [
@@ -55,8 +55,9 @@ export function IndexScreen() {
               magie, 100% préparation.
             </h1>
             <div className="mb-4 mt-2 text-white/60 text-sm lg:text-lg lg:max-w-[550px]">
-              Entraînez-vous en ligne, progressez à votre rythme, et réussissez
-              votre test du premier coup
+              Entraînez-vous en ligne avec des simulations dans les conditions
+              réelles de l'examen, progressez à votre rythme et réussissez votre
+              test du premier coup
             </div>
             <div className="mt-6 flex lg:flex-row flex-col gap-2 sm:gap-x-2">
               {!isLoading && isAuthenticated ? (
@@ -68,18 +69,18 @@ export function IndexScreen() {
                     </Button>
                   </NavigationLink>
                 </>
-              ) : (
+              ) : !isLoading ? (
                 <>
                   <NavigationLink href="/signup">
                     <Button size="lg">Créer un compte</Button>
                   </NavigationLink>
                   <NavigationLink href="/compte/essai-gratuit">
-                    <Button variant={"outline"} size="lg">
+                    <Button variant={"tertiary"} size="lg">
                       Essayer gratuitement
                     </Button>
                   </NavigationLink>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="w-[373px] h-[440px] relative">
@@ -120,9 +121,9 @@ export function IndexScreen() {
       </div>
       <div className="bg-black py-16 sm:py-20 md:py-12 relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 z-10 relative">
-          <div className="mx-auto max-w-4xl lg:mx-0 text-center">
+          <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl sm:text-xl md:text-5xl tracking-tight leading-none text-pretty text-white">
-              Etapes simples commencer
+              Commencez en quelques étapes simples
             </h2>
             <div className="text-sm sm:text-lg text-white/60 leading-tight mt-2">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
@@ -157,7 +158,6 @@ export function IndexScreen() {
         </div>
       </div>
       <LandingFeatures />
-
       <LandingStats />
       <LandingTestimonials />
 
@@ -168,15 +168,16 @@ export function IndexScreen() {
       {/* CTA Section */}
       <div className="bg-primary">
         <div className="px-4 sm:px-6 py-10 sm:py-24 md:py-20 lg:px-4">
-          <div className="mx-auto max-w-5xl text-center flex flex-col gap-3">
+          <div className="mx-auto max-w-5xl text-center flex flex-col gap-2">
             <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter leading-tight text-balance text-white">
-              Prêt à améliorer votre français?
+              Prêt à réussir votre TCF?
             </h2>
-            <p className="mx-auto max-w-xl text-base sm:text-lg text-white/50 px-4">
-              Rejoignez des milliers d'apprenants qui préparent leur TCF avec
-              succès. Commencez votre préparation dès aujourd'hui.
+            <p className="mx-auto max-w-3xl text-base sm:text-lg text-white/90 px-4">
+              Préparez-vous avec des simulations réalistes, entraînez-vous dans
+              les conditions de l'examen et mettez toutes les chances de votre
+              côté pour obtenir le score visé. Commencez dès aujourd'hui.
             </p>
-            <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-2 gap-2 px-4">
+            <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-2 gap-2 px-4 mt-4">
               {!isLoading && isAuthenticated ? (
                 <>
                   <NavigationLink href="/compte">
@@ -188,12 +189,12 @@ export function IndexScreen() {
               ) : (
                 <>
                   <NavigationLink href="/signup">
-                    <Button size="lg" variant={"tertiary"}>
+                    <Button size="lg" variant={"outline"}>
                       Créer un compte
                     </Button>
                   </NavigationLink>
                   <NavigationLink href="/compte/essai-gratuit">
-                    <Button variant={"outline"} size="lg">
+                    <Button variant="tertiary" size="lg">
                       Essayer gratuitement
                     </Button>
                   </NavigationLink>

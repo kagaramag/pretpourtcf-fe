@@ -2,21 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Modal } from "@/components/ui/modal";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -155,18 +142,17 @@ export function PracticeFormDialog({
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === "create" ? "Create New Practice" : "Edit Practice"}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === "create"
-              ? "Create a new TCF practice exam."
-              : "Update practice exam information."}
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title={mode === "create" ? "Create New Practice" : "Edit Practice"}
+      size="sm"
+    >
+        <p className="text-sm text-muted-foreground">
+          {mode === "create"
+            ? "Create a new TCF practice exam."
+            : "Update practice exam information."}
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
@@ -192,43 +178,37 @@ export function PracticeFormDialog({
                 </Label>
                 <Select
                   value={formData.type}
-                  onValueChange={(value: PracticeType) =>
-                    setFormData({ ...formData, type: value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, type: value as PracticeType })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="listening">Listening</SelectItem>
-                    <SelectItem value="reading">Reading</SelectItem>
-                    <SelectItem value="writing">Writing</SelectItem>
-                    <SelectItem value="speaking">Speaking</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: "listening", label: "Listening" },
+                    { value: "reading", label: "Reading" },
+                    { value: "writing", label: "Writing" },
+                    { value: "speaking", label: "Speaking" },
+                  ]}
+                  placeholder="Select type"
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="level">CEFR Level</Label>
                 <Select
                   value={formData.level || "none"}
-                  onValueChange={(value: CEFRLevel | "none") =>
-                    setFormData({ ...formData, level: value === "none" ? "" : value })
+                  onChange={(value) =>
+                    setFormData({ ...formData, level: value === "none" ? "" : value as CEFRLevel })
                   }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Optional" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="A1">A1</SelectItem>
-                    <SelectItem value="A2">A2</SelectItem>
-                    <SelectItem value="B1">B1</SelectItem>
-                    <SelectItem value="B2">B2</SelectItem>
-                    <SelectItem value="C1">C1</SelectItem>
-                    <SelectItem value="C2">C2</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: "none", label: "None" },
+                    { value: "A1", label: "A1" },
+                    { value: "A2", label: "A2" },
+                    { value: "B1", label: "B1" },
+                    { value: "B2", label: "B2" },
+                    { value: "C1", label: "C1" },
+                    { value: "C2", label: "C2" },
+                  ]}
+                  placeholder="Optional"
+                />
               </div>
             </div>
 
@@ -277,8 +257,8 @@ export function PracticeFormDialog({
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="isActive">Active Status</Label>
-                <p className="text-xs text-muted-foreground">
-                  Make this practice available to students
+                <p className="text-xs text-gray-500">
+                  Make this practice available to learners
                 </p>
               </div>
               <Switch
@@ -293,7 +273,7 @@ export function PracticeFormDialog({
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="freemium">Freemium</Label>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-500">
                   Allow free access to this practice
                 </p>
               </div>
@@ -307,7 +287,7 @@ export function PracticeFormDialog({
             </div>
           </div>
 
-          <DialogFooter>
+          <div className="flex justify-end gap-2 pt-4">
             <Button
               type="button"
               variant="outline"
@@ -328,9 +308,8 @@ export function PracticeFormDialog({
                 "Update Practice"
               )}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

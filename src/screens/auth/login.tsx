@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
+import { Icon } from "@/icons";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -115,7 +116,7 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-muted-foreground hover:bg-gray-500"
+                className="absolute cursor-pointer rounded-lg p-1 right-1.5 top-1.5 text-muted-foreground hover:bg-gray-100"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />

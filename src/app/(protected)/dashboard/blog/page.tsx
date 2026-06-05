@@ -1,8 +1,8 @@
 import BlogScreen from "@/screens/blog";
 
 export const metadata = {
-  title: "Blog | PRET POUR TCF",
-  description: "Manage blog posts and articles",
+  title: "PrêtPourTCF | Gestion du blog",
+  description: "Gérez les articles et publications du blog PrêtPourTCF",
 };
 
 export default function BlogPage() {

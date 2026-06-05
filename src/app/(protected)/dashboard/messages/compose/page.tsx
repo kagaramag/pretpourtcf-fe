@@ -2,9 +2,9 @@ import { ComposeMessage } from "@/screens/dashboard/messages/compose";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Modeles d'e-mails | PRET POUR TCF",
+  title: "PrêtPourTCF | Composer un message",
   description:
-    "Gerez les modeles d'e-mails pour la communication avec les utilisateurs",
+    "Rédigez et envoyez un message aux utilisateurs de la plateforme PrêtPourTCF",
 };
 
 export default function ComposeMessagePage() {

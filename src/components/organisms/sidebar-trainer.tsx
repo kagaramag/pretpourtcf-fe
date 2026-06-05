@@ -163,7 +163,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                         className={classNames(
                                           isSubActive
                                             ? "bg-accent text-white"
-                                            : "text-gray-600 border border-accent/20hover:bg-gray-50 hover:text-primary",
+                                            : "text-gray-600 bg-gray-50 hover:bg-gray-50 hover:text-primary",
                                           "group flex gap-x-1 items-center rounded-full py-2 px-4 text-sm/6"
                                         )}
                                       >

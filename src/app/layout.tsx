@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
-import { Fredoka } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import { QueryProvider } from "@/providers/query";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -8,14 +8,15 @@ import { PermissionProvider } from "@/contexts/permission-context";
 import GoogleAnalytics from "@/components/analytics/google-analytics";
 import "@/styles/globals.css";
 
-const fredoka = Fredoka({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-fredoka",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
-  title: "PRET POUR TCF",
-  description: "Analytics and Recovery Management System",
+  title: "PrêtPourTCF | Préparation TCF Canada & Québec en ligne",
+  description: "Préparez votre TCF Canada ou TCF Québec avec des exercices interactifs, audio et corrigés. Suivez vos progrès et atteignez votre score idéal — 100% en ligne.",
   icons: {
     icon: "/images/favicon.png",
   },
@@ -28,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${fredoka.variable} bg-white antialiased`}>
+      <body className={`${GeistSans.variable} ${poppins.variable} bg-white antialiased`}>
           <GoogleAnalytics />
           <AuthProvider>
             <PermissionProvider>

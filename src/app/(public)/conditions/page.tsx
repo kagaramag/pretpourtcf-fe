@@ -1,4 +1,12 @@
 import PublicLayout from "@/layouts/public";
+import type { Metadata } from "next";
+
+export const dynamic = "force-static"; // Fully static — no revalidation needed
+
+export const metadata: Metadata = {
+  title: "PrêtPourTCF | Conditions Générales d'Utilisation",
+  description: "Consultez les conditions générales d'utilisation de la plateforme PrêtPourTCF",
+};
 
 export default function ConditionsGeneralesPage() {
   return (
@@ -13,7 +21,7 @@ export default function ConditionsGeneralesPage() {
         </p>
 
         <p>
-          Bienvenue sur PretPourTCF.com. En accedant a notre site, vous acceptez
+          Bienvenue sur PrêtPourTCF.com. En accedant a notre site, vous acceptez
           les presentes conditions generales d&apos;utilisation.
         </p>
 
@@ -21,7 +29,7 @@ export default function ConditionsGeneralesPage() {
           1. Presentation du site
         </h2>
         <p>
-          PretPourTCF.com est une plateforme en ligne dediee a la preparation
+          PrêtPourTCF.com est une plateforme en ligne dediee a la preparation
           aux examens TCF Canada et TCF Quebec. Nous proposons des exercices
           d&apos;entrainement, des tests blancs et des ressources pedagogiques
           pour vous aider dans votre apprentissage du francais.
@@ -29,7 +37,7 @@ export default function ConditionsGeneralesPage() {
 
         <h2 className="text-lg mt-4 mb-2">2. Avertissement</h2>
         <p>
-          PretPourTCF.com est une plateforme educative independante. Nous ne
+          PrêtPourTCF.com est une plateforme educative independante. Nous ne
           sommes <strong>ni affilies, ni approuves, ni associes</strong> a
           France Education International, Immigration, Refugies et Citoyennete
           Canada (IRCC) ou au Ministere de l&apos;Immigration, de la
@@ -62,9 +70,9 @@ export default function ConditionsGeneralesPage() {
           5. Propriete intellectuelle
         </h2>
         <p>
-          L&apos;ensemble des contenus presents sur PretPourTCF.com (textes,
+          L&apos;ensemble des contenus presents sur PrêtPourTCF.com (textes,
           exercices, enregistrements audio, graphiques) est protege par le droit
-          d&apos;auteur et reste la propriete exclusive de PretPourTCF.com.
+          d&apos;auteur et reste la propriete exclusive de PrêtPourTCF.com.
         </p>
 
         <h2 className="text-lg mt-4 mb-2">
@@ -80,7 +88,7 @@ export default function ConditionsGeneralesPage() {
           7. Limitation de responsabilite
         </h2>
         <p>
-          PretPourTCF.com fournit ses services « en l&apos;etat ». Nous ne
+          PrêtPourTCF.com fournit ses services « en l&apos;etat ». Nous ne
           garantissons pas l&apos;obtention d&apos;un niveau particulier aux
           examens officiels TCF. Notre responsabilite ne saurait etre engagee
           pour tout dommage indirect lie a l&apos;utilisation de notre
@@ -115,7 +123,7 @@ export default function ConditionsGeneralesPage() {
         <hr className="my-2" />
 
         <div className="italic text-sm">
-          En utilisant PretPourTCF.com, vous reconnaissez avoir lu et accepte
+          En utilisant PrêtPourTCF.com, vous reconnaissez avoir lu et accepte
           les presentes Conditions Generales d&apos;Utilisation.
         </div>
       </div>

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,12 +25,12 @@ export function StreakDetailsDialog({
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh]">
-        <DialogHeader>
-          <DialogTitle className="text-2xl">Détails de la série</DialogTitle>
-        </DialogHeader>
-
+    <Modal
+      isOpen={open}
+      onClose={() => onOpenChange(false)}
+      title="Détails de la série"
+      size="lg"
+    >
         <ScrollArea className="max-h-[60vh] pr-4">
           <div className="space-y-6">
             {/* Overall Progress */}
@@ -197,7 +192,6 @@ export function StreakDetailsDialog({
             )}
           </div>
         </ScrollArea>
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

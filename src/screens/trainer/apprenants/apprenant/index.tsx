@@ -2,25 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Modal } from "@/components/ui/modal";
 import { Label } from "@/components/ui/label";
 import {
   UserPlus,
@@ -163,75 +148,52 @@ export default function ApprenantScreen() {
       {/* Header */}
       <div className="flex items-center">
         <h1 className="text-3xl font-bold flex-1">Mes Apprenants</h1>
-        <Dialog open={isInviteModalOpen} onOpenChange={setIsInviteModalOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <UserPlus className="h-4 w-4 mr-2" />
-              Inviter un apprenant
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Inviter un nouvel apprenant</DialogTitle>
-              <DialogDescription>
-                Envoyez une invitation par email à un nouvel apprenant pour
-                qu'il rejoigne la plateforme.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  Email
-                </Label>
-                <div className="col-span-3 relative">
-                  <Mail className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="apprenant@example.com"
-                    value={inviteEmail}
-                    onChange={(e) => setInviteEmail(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && !isInviting) {
-                        handleInviteApprenant();
-                      }
-                    }}
-                    className="pl-8"
-                    disabled={isInviting}
-                  />
-                </div>
+        <Button onClick={() => setIsInviteModalOpen(true)}>
+          <UserPlus className="h-4 w-4 mr-2" />
+          Inviter un apprenant
+        </Button>
+        <Modal
+          isOpen={isInviteModalOpen}
+          onClose={() => setIsInviteModalOpen(false)}
+          title="Inviter un nouvel apprenant"
+          size="sm"
+          footer={
+            <>
+              <Button variant="outline" onClick={() => { setIsInviteModalOpen(false); setInviteEmail(""); }} disabled={isInviting}>Annuler</Button>
+              <Button onClick={handleInviteApprenant} disabled={isInviting || !inviteEmail.trim()}>
+                {isInviting ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Envoi en cours...</>) : (<><Send className="h-4 w-4 mr-2" />Envoyer l'invitation</>)}
+              </Button>
+            </>
+          }
+        >
+          <p className="text-muted-foreground text-sm mb-4">
+            Envoyez une invitation par email à un nouvel apprenant pour qu'il rejoigne la plateforme.
+          </p>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
+                Email
+              </Label>
+              <div className="col-span-3 relative">
+                <Mail className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="apprenant@example.com"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !isInviting) {
+                      handleInviteApprenant();
+                    }
+                  }}
+                  className="pl-8"
+                  disabled={isInviting}
+                />
               </div>
             </div>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsInviteModalOpen(false);
-                  setInviteEmail("");
-                }}
-                disabled={isInviting}
-              >
-                Annuler
-              </Button>
-              <Button
-                onClick={handleInviteApprenant}
-                disabled={isInviting || !inviteEmail.trim()}
-              >
-                {isInviting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Envoi en cours...
-                  </>
-                ) : (
-                  <>
-                    <Send className="h-4 w-4 mr-2" />
-                    Envoyer l'invitation
-                  </>
-                )}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </div>
+        </Modal>
       </div>
 
       {/* Stats Cards */}
@@ -301,66 +263,75 @@ function ReferralsTable({
     );
   }
 
+  const columns: Column<Referral>[] = [
+    {
+      key: "nom",
+      header: "Nom",
+      render: (referral) =>
+        referral.invitee ? (
+          <div>
+            <div className="font-medium">
+              {referral.invitee.first_name} {referral.invitee.last_name}
+            </div>
+          </div>
+        ) : (
+          <span className="text-muted-foreground italic">Non inscrit</span>
+        ),
+    },
+    {
+      key: "email",
+      header: "Email",
+      render: (referral) => (
+        <div className="flex items-center gap-2 font-medium">
+          <Mail className="h-4 w-4 text-muted-foreground" />
+          {referral.inviteeEmail}
+        </div>
+      ),
+    },
+    {
+      key: "status",
+      header: "Statut",
+      render: (referral) => getStatusBadge(referral.status),
+    },
+    {
+      key: "createdAt",
+      header: "Date d'invitation",
+      render: (referral) => (
+        <div className="text-sm">
+          {formatDate(new Date(referral.createdAt))}
+        </div>
+      ),
+    },
+    {
+      key: "actions",
+      header: "Actions",
+      render: (referral) =>
+        referral.status === "pending" ? (
+          <div className="text-right">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                // Copy invitation link or resend invitation
+                toast.info(
+                  "Fonctionnalité de renvoi d'invitation à venir"
+                );
+              }}
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : null,
+    },
+  ];
+
   return (
     <div className="rounded-md">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nom</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead>Date d'invitation</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {referrals.map((referral) => (
-            <TableRow key={referral.id}>
-              <TableCell>
-                {referral.invitee ? (
-                  <div>
-                    <div className="font-medium">
-                      {referral.invitee.first_name} {referral.invitee.last_name}
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-muted-foreground italic">
-                    Non inscrit
-                  </span>
-                )}
-              </TableCell>
-              <TableCell className="font-medium">
-                <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4 text-muted-foreground" />
-                  {referral.inviteeEmail}
-                </div>
-              </TableCell>
-              <TableCell>{getStatusBadge(referral.status)}</TableCell>
-              <TableCell>
-                <div className="text-sm">
-                  {formatDate(new Date(referral.createdAt))}
-                </div>
-              </TableCell>
-              <TableCell className="text-right">
-                {referral.status === "pending" && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      // Copy invitation link or resend invitation
-                      toast.info(
-                        "Fonctionnalité de renvoi d'invitation à venir"
-                      );
-                    }}
-                  >
-                    <Send className="h-4 w-4" />
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table
+        data={referrals}
+        columns={columns}
+        keyExtractor={(r) => r.id}
+      />
     </div>
   );
 }

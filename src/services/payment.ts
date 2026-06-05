@@ -2,7 +2,7 @@ import { apiClient } from "@/lib/api-client";
 import { BackendApiResponse } from "@/types";
 
 export interface InitiatePaymentRequest {
-  plan_id: string;
+  plan_id?: string;
   payment_method: "momo" | "cc" | "spenn";
   currency: "RWF" | "USD"; // User-selected currency
   payment_gateway?: "kpay" | "pesapal"; // Optional payment gateway selection

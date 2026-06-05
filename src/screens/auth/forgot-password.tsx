@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Card,
-    CardTitle,
 } from "@/components/ui/card";
 import { ArrowLeft, Mail } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +21,7 @@ export default function ForgotPasswordScreen() {
     e.preventDefault();
 
     if (!email) {
-      toast.error("Please enter your email address");
+      toast.error("Veuillez entrer votre adresse e-mail");
       return;
     }
 
@@ -31,10 +30,10 @@ export default function ForgotPasswordScreen() {
     try {
       await authService.forgotPassword(email);
       setIsSubmitted(true);
-      toast.success("Password reset instructions sent to your email");
+      toast.success("Les instructions de réinitialisation ont été envoyées à votre e-mail");
     } catch (error: any) {
       const message =
-        error?.response?.data?.message || "Failed to send reset email";
+        error?.response?.data?.message || "Échec de l'envoi de l'e-mail de réinitialisation";
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -50,22 +49,22 @@ export default function ForgotPasswordScreen() {
               <Mail className="w-8 h-8 text-green-600" />
             </div>
           </div>
-          <h3 className="text-2xl">Check your email</h3>
+          <h3 className="text-2xl">Vérifiez votre e-mail</h3>
           <div>
-            We've sent password reset instructions to <strong>{email}</strong>
+            Nous avons envoyé les instructions de réinitialisation du mot de passe à <strong>{email}</strong>
           </div>
           <div>
-            <div className="space-y-4">
-              <p className="text-sm text-muted-foreground text-center">
-                Didn't receive the email? Check your spam folder or try again.
-              </p>
+            <div className="space-y-4 mt-3">
+              <div className="text-sm text-muted-foreground">
+                Vous n'avez pas reçu l'e-mail ? Vérifiez votre dossier spam ou réessayez.
+              </div>
               <Button
                 size={"lg"}
                 variant="outline"
                 className="w-full"
                 onClick={() => setIsSubmitted(false)}
               >
-                Try another email
+                Essayer un autre e-mail
               </Button>
               <Link href="/login">
                 <Button variant="ghost" className="w-full">
@@ -81,7 +80,7 @@ export default function ForgotPasswordScreen() {
   }
 
   return (
-    <div className="lg:border border-border lg:rounded-lg lg:p-6">
+    <div>
       <div className="w-full max-w-md">
         <h3 className="text-2xl font-semibold">Mot de passe oublié?</h3>
         <div className="text-sm text-gray-500 mb-4">

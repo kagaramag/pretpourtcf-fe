@@ -2,7 +2,7 @@ export const config = {
   apiUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api",
   cloudFlarePublicUrl: process.env.CLOUDFLARE_R2_PUBLIC_URL || "https://pub-52a29c3c256446bcb8fcb5dbee9ba062.r2.dev/",
   socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000",
-  appName: "PRET POUR TCF BO",
+  appName: "PrêtPourTCF BO",
   appVersion: "1.0.0",
 };
 
@@ -89,4 +89,8 @@ export const API_ENDPOINTS = {
   // Public Blogs
   PUBLIC_BLOGS: "/public/blogs",
   PUBLIC_BLOG_DETAILS: "/public/blogs/:id",
+
+  // Corporates
+  CORPORATES: "/corporates",
+  CORPORATE_DETAILS: "/corporates/:id",
 };

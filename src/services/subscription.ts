@@ -61,13 +61,30 @@ export const subscriptionService = {
     throw new Error("Failed to fetch subscriptions");
   },
 
-  getAllPlans: async (category?: PlanCategory): Promise<SubscriptionPlan[]> => {
+  getPublicPlans: async (category?: PlanCategory): Promise<SubscriptionPlan[]> => {
     const params = category ? { category } : {};
     const response = await apiClient.get<
       BackendApiResponse<{ plans: SubscriptionPlan[] }>
-    >("/subscriptions/plans", { params });
+    >("/subscriptions/account/plans/individual", { params });
 
     return response.data?.plans || [];
+  },
+
+  getPlanById: async (id: string): Promise<SubscriptionPlan | null> => {
+    const response = await apiClient.get<
+      BackendApiResponse<{ plan: SubscriptionPlan }>
+    >(`/subscriptions/account/plans/${id}`);
+
+    return response.data?.plan || null;
+  },
+
+  getCorporatePlan: async (category?: PlanCategory): Promise<SubscriptionPlan | null> => {
+    const params = category ? { category } : {};
+    const response = await apiClient.get<
+      BackendApiResponse<{ plan: SubscriptionPlan }>
+    >("/subscriptions/account/plans/corporate", { params });
+
+    return response.data?.plan || null;
   },
 
   getMySubscription: async (): Promise<Subscription | null> => {

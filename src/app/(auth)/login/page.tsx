@@ -5,8 +5,8 @@ import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Connexion | PRET POUR TCF",
-  description: "Connectez-vous à l'application PRET POUR TCF",
+  title: "PrêtPourTCF | Connexion",
+  description: "Connectez-vous à votre compte PrêtPourTCF pour accéder à vos exercices et suivre vos progrès TCF",
 };
 
 export default function LoginPage() {

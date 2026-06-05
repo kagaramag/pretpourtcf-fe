@@ -7,10 +7,10 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { UserPlus, Search, MoreVertical, Edit, Loader2, X, Ban, CheckCircle } from "lucide-react";
+import { Select } from "@/components/ui/select";
+import { Table, Column } from "@/components/ui/table";
+import { Menu } from "@/components/ui/menu";
+import { Search, MoreVertical, Loader2, X } from "lucide-react";
 import { userService } from "@/services/user";
 import { User } from "@/types";
 import { toast } from "sonner";
@@ -168,145 +168,99 @@ function UsersScreenContent() {
     return colors[role as keyof typeof colors] || colors.client;
   };
 
-  const renderUsersTable = () => (
-    <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin mx-auto" />
-                <p className="mt-2 text-muted-foreground">Loading users...</p>
-              </TableCell>
-            </TableRow>
-          ) : users.length === 0 ? (
-            <TableRow>
-              <TableCell
-                colSpan={7}
-                className="text-center py-8 text-muted-foreground"
-              >
-                No users found
-              </TableCell>
-            </TableRow>
-          ) : (
-            users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>
-                  <Link
-                    href={`/dashboard/users/${user.id}`}
-                    className="font-medium text-blue-600 hover:text-blue-800 hover:underline focus:outline-none text-left"
-                  >
-                    {user.first_name} {user.last_name}
-                  </Link>
-                </TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone || "N/A"}</TableCell>
-                <TableCell>
-                  <Badge className={getRoleBadge(user.role)}>
-                    {user.role.replace("_", " ").charAt(0).toUpperCase() +
-                      user.role.replace("_", " ").slice(1)}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge className={getStatusColor(user.status)}>
-                    {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                  </Badge>
-                </TableCell>
-                <TableCell>{formatDate(user.createdAt)}</TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setSelectedUser(user);
-                          setFormMode("edit");
-                          setUserFormDialog(true);
-                        }}
-                      >
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit User
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      {user.status === "active" ? (
-                        <DropdownMenuItem
-                          className="text-orange-600"
-                          onClick={() => deactivateMutation.mutate(user.id)}
-                          disabled={deactivateMutation.isPending}
-                        >
-                          <Ban className="mr-2 h-4 w-4" />
-                          Deactivate User
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem
-                          className="text-green-600"
-                          onClick={() => activateMutation.mutate(user.id)}
-                          disabled={activateMutation.isPending}
-                        >
-                          <CheckCircle className="mr-2 h-4 w-4" />
-                          Activate User
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+  const columns: Column<User>[] = [
+    {
+      key: "name",
+      header: "Name",
+      render: (user) => (
+        <Link
+          href={`/dashboard/users/${user.id}`}
+          className="text-blue-600 hover:text-blue-800 hover:underline focus:outline-none text-left"
+        >
+          {user.first_name} {user.last_name}
+        </Link>
+      ),
+    },
+    {
+      key: "email",
+      header: "Email",
+      render: (user) => <div className="truncate">{user.email}</div>,
+    },
+    {
+      key: "phone",
+      header: "Phone",
+      render: (user) => <>{user.phone || "N/A"}</>,
+    },
+    {
+      key: "role",
+      header: "Role",
 
-      {/* Pagination */}
-      {!isLoading && users.length > 0 && (
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-          <div className="text-sm text-muted-foreground">
-            Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
-            {pagination.total} users
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-              }
-              disabled={!pagination.hasPrevPage}
-            >
-              Previous
+      render: (user) => (
+        <Badge className={getRoleBadge(user.role)}>
+          {user.role.replace("_", " ").charAt(0).toUpperCase() +
+            user.role.replace("_", " ").slice(1)}
+        </Badge>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      width: "w-32",
+      render: (user) => (
+        <Badge className={getStatusColor(user.status)}>
+          {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+        </Badge>
+      ),
+    },
+    {
+      key: "createdAt",
+      header: "Created",
+      width: "w-32",
+      render: (user) => <div>{formatDate(user.createdAt)}</div>,
+    },
+    {
+      key: "actions",
+      align: "right",
+      width: "w-32",
+      header: "Actions",
+      render: (user) => (
+        <Menu
+          trigger={
+            <Button variant="ghost" size="icon">
+              <MoreVertical className="h-4 w-4" />
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-              }
-              disabled={!pagination.hasNextPage}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
-    </>
-  );
+          }
+          items={[
+            {
+              type: "button",
+              label: "Edit User",
+              onClick: () => {
+                setSelectedUser(user);
+                setFormMode("edit");
+                setUserFormDialog(true);
+              },
+              icon: "edit",
+            },
+            user.status === "active"
+              ? {
+                  type: "button" as const,
+                  label: "Deactivate User",
+                  onClick: () => deactivateMutation.mutate(user.id),
+                  icon: "stop" as const,
+                  variant: "danger" as const,
+                  disabled: deactivateMutation.isPending,
+                }
+              : {
+                  type: "button" as const,
+                  label: "Activate User",
+                  onClick: () => activateMutation.mutate(user.id),
+                  icon: "validate" as const,
+                },
+          ]}
+        />
+      ),
+    },
+  ];
 
   return (
     <div className="space-y-2">
@@ -314,15 +268,13 @@ function UsersScreenContent() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Users</h1>
         <Button
-          className="gap-2"
           onClick={() => {
             setSelectedUser(null);
             setFormMode("create");
             setUserFormDialog(true);
           }}
         >
-          <UserPlus className="h-4 w-4" />
-          Add User
+          Create
         </Button>
       </div>
 
@@ -340,32 +292,28 @@ function UsersScreenContent() {
 
         <Select
           value={roleFilter || "all"}
-          onValueChange={(value) => setRoleFilter(value === "all" ? "" : value)}
-        >
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="User Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="super_admin">Super Admin</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
-            <SelectItem value="client">Client</SelectItem>
-          </SelectContent>
-        </Select>
+          onChange={(value) => setRoleFilter(value === "all" ? "" : value)}
+          options={[
+            { value: "all", label: "All Types" },
+            { value: "super_admin", label: "Super Admin" },
+            { value: "admin", label: "Admin" },
+            { value: "client", label: "Client" },
+          ]}
+          placeholder="User Type"
+          className="w-[160px]"
+        />
 
         <Select
           value={statusFilter || "all"}
-          onValueChange={(value) => setStatusFilter(value === "all" ? "" : value)}
-        >
-          <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="inactive">Inactive</SelectItem>
-          </SelectContent>
-        </Select>
+          onChange={(value) => setStatusFilter(value === "all" ? "" : value)}
+          options={[
+            { value: "all", label: "All Status" },
+            { value: "active", label: "Active" },
+            { value: "inactive", label: "Inactive" },
+          ]}
+          placeholder="Status"
+          className="w-[160px]"
+        />
 
         {hasActiveFilters && (
           <Button
@@ -381,8 +329,47 @@ function UsersScreenContent() {
       </div>
 
       {/* Users Table */}
-      <div >
-        {renderUsersTable()}
+      <div>
+        <Table
+          data={users}
+          columns={columns}
+          keyExtractor={(user) => user.id}
+          isLoading={isLoading}
+          emptyMessage="No users found"
+        />
+
+        {/* Pagination */}
+        {!isLoading && users.length > 0 && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+            <div className="text-sm text-muted-foreground">
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
+              {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
+              of {pagination.total} users
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
+                }
+                disabled={!pagination.hasPrevPage}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
+                }
+                disabled={!pagination.hasNextPage}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* User Form Dialog */}

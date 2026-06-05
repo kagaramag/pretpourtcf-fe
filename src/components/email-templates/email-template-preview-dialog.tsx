@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Modal } from "@/components/ui/modal";
+import { Tabs, TabPanel } from "@/components/molecules/Tabs";
 import { Loader2 } from "lucide-react";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
 import { toast } from "sonner";
@@ -30,6 +24,7 @@ export function EmailTemplatePreviewDialog({
     textContent: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [activePreviewTab, setActivePreviewTab] = useState("html");
 
   useEffect(() => {
     if (template && open) {
@@ -53,14 +48,10 @@ export function EmailTemplatePreviewDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange} >
-      <DialogContent className="w-full max-w-6xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Prévisualisation du modèle</DialogTitle>
-          <DialogDescription>
-            {template?.name} - Aperçu avec des données d&apos;exemple
-          </DialogDescription>
-        </DialogHeader>
+    <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Prévisualisation du modèle" size="xl">
+        <p className="text-muted-foreground text-sm mb-4">
+          {template?.name} - Aperçu avec des données d&apos;exemple
+        </p>
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
@@ -73,24 +64,26 @@ export function EmailTemplatePreviewDialog({
               <p className="text-sm bg-muted p-3 rounded">{preview.subject}</p>
             </div>
 
-            <Tabs defaultValue="html">
-              <TabsList>
-                <TabsTrigger value="html">HTML</TabsTrigger>
-                <TabsTrigger value="text">Texte</TabsTrigger>
-              </TabsList>
-              <TabsContent value="html" className="mt-4">
-                <div className="border rounded-lg p-4 bg-white">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: preview.htmlContent }}
-                  />
-                </div>
-              </TabsContent>
-              <TabsContent value="text" className="mt-4">
-                <pre className="text-sm bg-muted p-4 rounded whitespace-pre-wrap">
-                  {preview.textContent}
-                </pre>
-              </TabsContent>
-            </Tabs>
+            <Tabs
+              tabs={[
+                { id: "html", label: "HTML" },
+                { id: "text", label: "Texte" },
+              ]}
+              activeTab={activePreviewTab}
+              onTabChange={setActivePreviewTab}
+            />
+            <TabPanel id="html" activeTab={activePreviewTab} className="mt-4">
+              <div className="border rounded-lg p-4 bg-white">
+                <div
+                  dangerouslySetInnerHTML={{ __html: preview.htmlContent }}
+                />
+              </div>
+            </TabPanel>
+            <TabPanel id="text" activeTab={activePreviewTab} className="mt-4">
+              <pre className="text-sm bg-muted p-4 rounded whitespace-pre-wrap">
+                {preview.textContent}
+              </pre>
+            </TabPanel>
           </div>
         ) : (
           <div className="text-center py-12">
@@ -99,7 +92,6 @@ export function EmailTemplatePreviewDialog({
             </p>
           </div>
         )}
-      </DialogContent>
-    </Dialog>
+    </Modal>
   );
 }

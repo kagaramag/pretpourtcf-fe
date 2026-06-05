@@ -1,8 +1,8 @@
 import BlogDetailScreen from "@/screens/blog/blog-detail";
 
 export const metadata = {
-  title: "Blog Post | PRET POUR TCF",
-  description: "View blog post details",
+  title: "PrêtPourTCF | Détails de l'article",
+  description: "Consultez et modifiez les détails d'un article du blog PrêtPourTCF",
 };
 
 interface BlogDetailPageProps {

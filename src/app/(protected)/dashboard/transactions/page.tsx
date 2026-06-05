@@ -1,9 +1,9 @@
-import TransactionsScreen from "@/screens/transactions";
+import TransactionsScreen from "@/screens/dashboard/transactions";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Transactions | PRET POUR TCF",
-  description: "Gérez vos paramètres de profil",
+  title: "PrêtPourTCF | Transactions",
+  description: "Consultez l'historique des paiements et transactions sur PrêtPourTCF",
 };
 
 export default function ProfilePage() {

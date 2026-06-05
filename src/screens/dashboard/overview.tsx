@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
   BookOpen,
   FileQuestion,
@@ -143,10 +143,7 @@ export function DashboardOverview() {
   return (
     <div className="space-y-3">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <h5 className="text-muted-foreground">
-          Overview of your platform performance
-        </h5>
+        <h2 className="text-3xl tracking-tight">Dashboard</h2>
       </div>
 
       {/* Overview Cards - Grouped by Category */}
@@ -345,18 +342,18 @@ function DashboardSkeleton() {
             <Card className="border-blue-200 dark:border-blue-900">
               <div className="p-6">
                 <Skeleton className="h-5 w-20" />
-              <div className="space-y-3">
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="h-4 w-4 rounded" />
-                      <Skeleton className="h-4 w-28" />
+                <div className="space-y-3">
+                  {[...Array(2)].map((_, i) => (
+                    <div key={i} className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Skeleton className="h-4 w-4 rounded" />
+                        <Skeleton className="h-4 w-28" />
+                      </div>
+                      <Skeleton className="h-8 w-16" />
+                      <Skeleton className="h-3 w-32" />
                     </div>
-                    <Skeleton className="h-8 w-16" />
-                    <Skeleton className="h-3 w-32" />
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
               </div>
             </Card>
 

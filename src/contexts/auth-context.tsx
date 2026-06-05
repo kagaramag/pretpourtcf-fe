@@ -83,6 +83,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (token) {
         console.log("[AUTH] Initializing socket connection for user:", user.id);
         socketService.connect(token);
+
+        // Listen for force_logout (another device logged in)
+        const handleForceLogout = (data: { reason?: string }) => {
+          console.log("[AUTH] Force logout received:", data.reason);
+          toast.error(
+            data.reason ||
+              "Vous avez été déconnecté car votre compte s'est connecté sur un autre appareil."
+          );
+          authService.logout();
+          setUser(null);
+          router.push("/login");
+        };
+
+        socketService.on("force_logout", handleForceLogout);
+
+        return () => {
+          socketService.off("force_logout", handleForceLogout);
+        };
       }
     } else {
       // Disconnect socket when user logs out
@@ -96,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         socketService.disconnect();
       }
     };
-  }, [user]);
+  }, [user, router]);
 
   const logout = useCallback(async () => {
     try {

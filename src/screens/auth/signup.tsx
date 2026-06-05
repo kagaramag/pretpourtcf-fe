@@ -9,7 +9,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
 import { authService } from "@/services/auth";
 import { referralService } from "@/services/referral";
@@ -41,6 +41,7 @@ export function SignupForm() {
   const [isPending, setIsPending] = useState(false);
   const [referralToken, setReferralToken] = useState<string | null>(null);
   const [referrerName, setReferrerName] = useState<string | null>(null);
+  const [referralEmail, setReferralEmail] = useState<string | null>(null);
   const [isValidatingReferral, setIsValidatingReferral] = useState(false);
   const [selectedRole, setSelectedRole] = useState<"client" | "trainer" | null>(
     null
@@ -77,6 +78,10 @@ export function SignupForm() {
             setReferrerName(
               `${response.data.referrer.first_name} ${response.data.referrer.last_name}`
             );
+            if (response.data.inviteeEmail) {
+              setReferralEmail(response.data.inviteeEmail);
+              setValue("email", response.data.inviteeEmail);
+            }
           }
         })
         .catch(() => {
@@ -349,7 +354,13 @@ export function SignupForm() {
               Email
             </Label>
             <div className="relative">
-              <Input id="email" type="email" {...register("email")} />
+              <Input
+                id="email"
+                type="email"
+                {...register("email")}
+                disabled={!!referralEmail}
+                className={referralEmail ? "bg-muted" : ""}
+              />
             </div>
             {errors.email && (
               <p className="text-sm text-red-500">{errors.email.message}</p>

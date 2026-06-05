@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -444,9 +444,9 @@ export default function FreePracticeSessionPage() {
 
             <Card>
               <CardContent className="p-6">
-                <CardTitle className="text-2xl mb-4">
+                <h3 className="font-semibold text-2xl mb-4">
                   Revue des réponses
-                </CardTitle>
+                </h3>
                 <p className="text-muted-foreground mb-6">
                   Analysez vos réponses pour mieux comprendre vos erreurs
                 </p>
@@ -581,9 +581,9 @@ export default function FreePracticeSessionPage() {
               <div className="flex justify-center mb-4">
                 {getResultIcon(sessionResult.grade)}
               </div>
-              <CardTitle className="text-3xl mb-2 text-center">
+              <h3 className="font-semibold text-3xl mb-2 text-center">
                 {sessionResult.message}
-              </CardTitle>
+              </h3>
               <p className="text-center text-muted-foreground mb-6">
                 Exercice terminé
               </p>

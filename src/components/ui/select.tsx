@@ -1,185 +1,234 @@
 'use client'
 
-import * as React from 'react'
-import * as SelectPrimitive from '@radix-ui/react-select'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
+import { Icon } from '@/icons'
 
-import { cn } from '@/lib/utils'
-
-function Select({
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+export interface SelectOption {
+  value: string
+  label: string
 }
 
-function SelectGroup({
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Group>) {
-  return <SelectPrimitive.Group data-slot="select-group" {...props} />
+export interface SearchableSelectProps {
+  options: SelectOption[]
+  value?: string
+  onChange: (value: string) => void
+  placeholder?: string
+  className?: string
+  disabled?: boolean
+  searchPlaceholder?: string
 }
 
-function SelectValue({
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Value>) {
-  return <SelectPrimitive.Value data-slot="select-value" {...props} />
-}
+export const Select: React.FC<SearchableSelectProps> = ({
+  options,
+  value,
+  onChange,
+  placeholder = 'Select an option',
+  className = '',
+  disabled = false,
+  searchPlaceholder = 'Search...',
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filteredOptions, setFilteredOptions] = useState(options)
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 })
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const selectRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-function SelectTrigger({
-  className,
-  size = 'default',
-  children,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: 'sm' | 'default'
-}) {
+  useEffect(() => {
+    const filtered = options.filter((option) =>
+      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    setFilteredOptions(filtered)
+    setHighlightedIndex(-1)
+  }, [searchTerm, options])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus()
+      setHighlightedIndex(-1)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (highlightedIndex >= 0 && optionRefs.current[highlightedIndex]) {
+      optionRefs.current[highlightedIndex]?.scrollIntoView({
+        block: 'nearest',
+        behavior: 'smooth',
+      })
+    }
+  }, [highlightedIndex])
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!isOpen) return
+
+    const sortedOptions = [...filteredOptions].sort((a: SelectOption, b: SelectOption) => {
+      const aNum = Number(b.value)
+      const bNum = Number(a.value)
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        return aNum - bNum
+      }
+      return 0
+    })
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setHighlightedIndex((prev) =>
+          prev < sortedOptions.length - 1 ? prev + 1 : prev
+        )
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : -1))
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (highlightedIndex >= 0 && sortedOptions[highlightedIndex]) {
+          handleSelect(sortedOptions[highlightedIndex].value)
+        }
+        break
+      case 'Escape':
+        e.preventDefault()
+        setIsOpen(false)
+        setSearchTerm('')
+        break
+    }
+  }
+
+  useEffect(() => {
+    if (isOpen && selectRef.current) {
+      const rect = selectRef.current.getBoundingClientRect()
+      setDropdownPosition({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+      })
+    }
+  }, [isOpen])
+
+  const handleSelect = (selectedValue: string) => {
+    onChange(selectedValue)
+    setIsOpen(false)
+    setSearchTerm('')
+  }
+
+  const selectedOption = options.find((opt) => opt.value === value)
+
   return (
-    <SelectPrimitive.Trigger
-      data-slot="select-trigger"
-      data-size={size}
-      className={cn(
-        "bg-white border border-border data-[placeholder]:text-gray-400  focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/200 aria-invalid:border-destructive flex w-fit items-center justify-between gap-2 rounded-md px-3 py-2 text-sm whitespace-nowrap outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-  )
-}
-
-function SelectContent({
-  className,
-  children,
-  position = 'popper',
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
-  return (
-    <SelectPrimitive.Portal>
-      <SelectPrimitive.Content
-        data-slot="select-content"
-        className={cn(
-          'bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border border-border',
-          position === 'popper' &&
-            'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
-          className,
-        )}
-        position={position}
-        {...props}
+    <div ref={selectRef} className={`relative ${className}`}>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpen(!isOpen)}
+        className={`
+          w-full max-w-full flex items-center justify-between rounded-md px-3.5 py-2
+          border border-border text-sm
+          text-left
+          hover:border-gray-400 focus:outline-none focus:border-primary-500
+          ${disabled ? ' bg-gray-100/30 border-gray-200 cursor-not-allowed' : 'cursor-pointer bg-white '}
+          ${selectedOption ? 'text-gray-800' : 'text-subtle'}
+        `}
       >
-        <SelectScrollUpButton />
-        <SelectPrimitive.Viewport
-          className={cn(
-            'p-1',
-            position === 'popper' &&
-              'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1',
-          )}
-        >
-          {children}
-        </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
-      </SelectPrimitive.Content>
-    </SelectPrimitive.Portal>
+        <div className="block truncate text-sm">
+          {selectedOption ? selectedOption.label : placeholder}
+        </div>
+        <Icon
+          name="caretDown"
+          size={20}
+          className={`text-gray-200 transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
+        />
+      </button>
+      {isOpen &&
+        !disabled &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="fixed z-9999 bg-white border border-border shadow-lg"
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+              width: `${dropdownPosition.width}px`,
+            }}
+          >
+            <div className="p-2 border-b border-border ">
+              <div className="relative">
+                <Icon
+                  name="search"
+                  size={16}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-subtle"
+                />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={searchPlaceholder}
+                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-border bg-white text-gray-900 focus:outline-none focus:border-primary-500"
+                />
+              </div>
+            </div>
+            <div className="max-h-60 overflow-y-auto z-50">
+              {filteredOptions.length > 0 ? (
+                <ul className="py-1">
+                  {filteredOptions
+                    .sort((a: SelectOption, b: SelectOption) => {
+                      const aNum = Number(b.value)
+                      const bNum = Number(a.value)
+                      if (!isNaN(aNum) && !isNaN(bNum)) {
+                        return aNum - bNum
+                      }
+                      return 0
+                    })
+                    .map((option, index) => (
+                      <li key={option.value}>
+                        <button
+                          ref={(el) => { optionRefs.current[index] = el }}
+                          type="button"
+                          onClick={() => handleSelect(option.value)}
+                          onMouseEnter={() => setHighlightedIndex(index)}
+                          className={`
+                        w-full text-left px-2 py-1.5 text-xs
+                        hover:bg-gray-100 focus:bg-gray-100 focus:outline-none
+                        ${value === option.value ? 'bg-primary-50 text-primary-700' : highlightedIndex === index ? 'bg-gray-100 text-gray-900' : 'text-gray-900'}
+                      `}
+                        >
+                          {option.label}
+                        </button>
+                      </li>
+                    ))}
+                </ul>
+              ) : (
+                <div className="py-6 text-center text-sm text-subtle">
+                  No data found
+                </div>
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
+    </div>
   )
-}
-
-function SelectLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Label>) {
-  return (
-    <SelectPrimitive.Label
-      data-slot="select-label"
-      className={cn('text-gray-400 px-2 py-1.5 text-xs', className)}
-      {...props}
-    />
-  )
-}
-
-function SelectItem({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Item>) {
-  return (
-    <SelectPrimitive.Item
-      data-slot="select-item"
-      className={cn(
-        "focus:bg-tertiary [&_svg:not([class*='text-'])]:text-gray-400 relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
-        className,
-      )}
-      {...props}
-    >
-      <span className="absolute right-2 flex size-3.5 items-center justify-center">
-        <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
-        </SelectPrimitive.ItemIndicator>
-      </span>
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    </SelectPrimitive.Item>
-  )
-}
-
-function SelectSeparator({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Separator>) {
-  return (
-    <SelectPrimitive.Separator
-      data-slot="select-separator"
-      className={cn('bg-white pointer-events-none -mx-1 my-1 h-px', className)}
-      {...props}
-    />
-  )
-}
-
-function SelectScrollUpButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
-  return (
-    <SelectPrimitive.ScrollUpButton
-      data-slot="select-scroll-up-button"
-      className={cn(
-        'flex cursor-default items-center justify-center py-1',
-        className,
-      )}
-      {...props}
-    >
-      <ChevronUpIcon className="size-4" />
-    </SelectPrimitive.ScrollUpButton>
-  )
-}
-
-function SelectScrollDownButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
-  return (
-    <SelectPrimitive.ScrollDownButton
-      data-slot="select-scroll-down-button"
-      className={cn(
-        'flex cursor-default items-center justify-center py-1',
-        className,
-      )}
-      {...props}
-    >
-      <ChevronDownIcon className="size-4" />
-    </SelectPrimitive.ScrollDownButton>
-  )
-}
-
-export {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
 }
