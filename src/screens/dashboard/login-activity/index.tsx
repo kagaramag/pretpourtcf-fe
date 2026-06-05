@@ -143,7 +143,6 @@ export default function LoginActivityScreen() {
         log.user_id ? (
           <div>
             {log.user_id.first_name} {log.user_id.last_name}
-            <div className="text-muted-foreground">{log.user_id.email}</div>
           </div>
         ) : (
           <span className="text-muted-foreground">
