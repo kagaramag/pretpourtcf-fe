@@ -59,7 +59,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
             show: !isLoading && user?.subscription !== null,
           },
           {
-            name: "Abos",
+            name: "Abonnement",
             href: "/compte/plans",
             icon: "sign" as const,
             show: !isLoading && user?.subscription !== null,

@@ -4,26 +4,11 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import Icon from "@/assets/images/icon.svg";
+import AppIcon from "@/assets/images/icon.svg";
 import Image from "next/image";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS, CUSTOM_PERMISSIONS } from "@/config/permissions";
-import {
-  Home,
-  User,
-  ArrowLeftToLine,
-  ArrowRightToLine,
-  Menu,
-  X,
-  Flame,
-  Tag,
-  UserPlus,
-  Wallet,
-  Radius,
-  LibraryBig,
-  Notebook,
-  MessageCircle,
-} from "lucide-react";
+import { Icon } from "@/icons";
 
 interface MenuItem {
   name: string;
@@ -35,68 +20,74 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   {
     name: "Dashboard",
-    icon: <Home className="h-5 w-5" />,
+    icon: <Icon name="home" size={20} />,
     href: "/dashboard",
     permission: CUSTOM_PERMISSIONS.DASHBOARD_READ,
   },
   {
     name: "Practices",
-    icon: <LibraryBig className="h-5 w-5" />,
+    icon: <Icon name="write" size={20} />,
     href: "/dashboard/practices",
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
     name: "Corporates",
-    icon: <User className="h-5 w-5" />,
+    icon: <Icon name="corporate" size={20} />,
     href: "/dashboard/corporates",
     permission: PERMISSIONS.CORPORATES_READ,
   },
   {
     name: "Subscriptions",
-    icon: <Radius className="h-5 w-5" />,
+    icon: <Icon name="subscription" size={20} />,
     href: ["/dashboard/subscriptions", "/dashboard/plans"],
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {
     name: "Users",
-    icon: <User className="h-5 w-5" />,
+    icon: <Icon name="user" size={20} />,
     href: "/dashboard/users",
     permission: PERMISSIONS.USERS_READ,
   },
   {
     name: "Streaks",
-    icon: <Flame className="h-5 w-5" />,
+    icon: <Icon name="certificate" size={20} />,
     href: "/dashboard/streaks",
     permission: PERMISSIONS.FOLLOWUPS_READ,
   },
   {
     name: "Messages",
-    icon: <MessageCircle className="h-5 w-5" />,
+    icon: <Icon name="message" size={20} />,
     href: "/dashboard/messages",
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
     name: "Transactions",
-    icon: <Wallet className="h-5 w-5" />,
+    icon: <Icon name="sum" size={20} />,
     href: "/dashboard/transactions",
     permission: PERMISSIONS.TRANSACTION_READ,
   },
   {
     name: "Promo Codes",
-    icon: <Tag className="h-5 w-5" />,
+    icon: <Icon name="promo" size={20} />,
     href: "/dashboard/promo-codes",
     permission: PERMISSIONS.TRANSACTION_READ,
   },
   {
     name: "Referrals",
-    icon: <UserPlus className="h-5 w-5" />,
+    icon: <Icon name="userLine" size={20} />,
     href: "/dashboard/referrals",
     permission: PERMISSIONS.USERS_READ,
   },
   {
     name: "Blog",
-    icon: <Notebook className="h-5 w-5" />,
+    icon: <Icon name="post" size={20} />,
     href: "/dashboard/blog",
+    permission: PERMISSIONS.PRACTICES_READ,
+  },
+  {
+    name: "Login activity",
+    icon: <Icon name="report" size={20} />,
+    href: "/dashboard/login-activity",
     permission: PERMISSIONS.PRACTICES_READ,
   },
 ];
@@ -137,9 +128,9 @@ export default function Sidebar() {
         className="lg:hidden fixed top-2 left-4 z-50 p-2 bg-tertiary rounded-lg"
       >
         {isMobileOpen ? (
-          <X className="h-5 w-5" />
+          <Icon name="close" size={20} />
         ) : (
-          <Menu className="h-5 w-5" />
+          <Icon name="ellipsis" size={20} />
         )}
       </button>
 
@@ -164,7 +155,7 @@ export default function Sidebar() {
           {!isCollapsed ? (
             <div className="my-2.5 py-0.5 w-[64px] sm:w-[64px]">
               <Image
-                src={Icon}
+                src={AppIcon}
                 width={44}
                 height={44}
                 priority
@@ -175,7 +166,7 @@ export default function Sidebar() {
           ) : (
             <div className="mb-5 my-3.5 w-[64px]">
               <Image
-                src={Icon}
+                src={AppIcon}
                 width={44}
                 height={44}
                 priority
@@ -203,7 +194,7 @@ export default function Sidebar() {
                       "flex items-center px-3 py-2.5 rounded-full transition-colors",
                       isActive
                         ? "bg-tertiary text-primary-foreground"
-                        : "text-gray-400 hover:bg-gray-100/5",
+                        : "text-gray-300 hover:bg-gray-100/5",
                       isCollapsed ? "justify-center" : "gap-3"
                     )}
                     title={isCollapsed ? item.name : undefined}
@@ -226,9 +217,9 @@ export default function Sidebar() {
             )}
           >
             {isCollapsed ? (
-              <ArrowRightToLine className="h-5 w-5" />
+              <Icon name="sidebarOpen" size={20} />
             ) : (
-              <ArrowLeftToLine className="h-5 w-5" />
+              <Icon name="sidebarClose" size={20} />
             )}
           </button>
         </nav>
