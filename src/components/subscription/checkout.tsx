@@ -25,8 +25,9 @@ export function CheckoutDialog({
   onSuccess,
 }: CheckoutDialogProps) {
   const [paymentMethod, setPaymentMethod] = useState<"momo" | "cc" | "spenn">("momo");
-  const [currency, setCurrency] = useState<"RWF" | "USD">("USD"); // Default to USD (Pesapal)
   const [msisdn, setMsisdn] = useState("");
+  // Currency is determined by payment method: momo → RWF (kpay), cc → USD (pesapal)
+  const currency: "RWF" | "USD" = paymentMethod === "momo" ? "RWF" : "USD";
   const [loading, setLoading] = useState(false);
 
   if (!plan) return null;
@@ -57,8 +58,7 @@ export function CheckoutDialog({
       const response = await paymentService.initiatePayment({
         plan_id: plan.id,
         payment_method: paymentMethod,
-        currency: currency,
-        payment_gateway: "pesapal", // Use Pesapal as default gateway
+        currency: paymentMethod === "momo" ? "RWF" : "USD",
         msisdn: msisdn ? `250${msisdn.substring(1)}` : undefined,
       });
 
@@ -180,35 +180,6 @@ export function CheckoutDialog({
             </div>
           </div>
 
-          {/* Currency Selection */}
-          <div className="space-y-3 hidden">
-            <Label className="text-base">Devise</Label>
-            <RadioGroup
-              value={currency}
-              onValueChange={(value) => setCurrency(value as "RWF" | "USD")}
-              className="flex gap-4"
-            >
-              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 flex-1">
-                <RadioGroupItem value="RWF" id="rwf" />
-                <Label htmlFor="rwf" className="cursor-pointer flex-1">
-                  <div className="font-medium">RWF</div>
-                  <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_rwf || 0, "RWF")}
-                  </div>
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50 flex-1">
-                <RadioGroupItem value="USD" id="usd" />
-                <Label htmlFor="usd" className="cursor-pointer flex-1">
-                  <div className="font-medium">USD</div>
-                  <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_usd || 0, "USD")}
-                  </div>
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
 
           {/* Payment Method Selection */}
           <div className="space-y-3">
