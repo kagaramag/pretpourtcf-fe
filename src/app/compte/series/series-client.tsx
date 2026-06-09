@@ -19,8 +19,10 @@ import { CreateStreakDialog } from "@/components/streak/create-streak-dialog";
 import { StreakDetailsDialog } from "@/components/streak/streak-details-dialog";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function StreaksPage() {
+  const { trackClick } = useActivityTracker();
   const [activeStreak, setActiveStreak] = useState<Streak | null>(null);
   const [streakHistory, setStreakHistory] = useState<Streak[]>([]);
   const [eligibility, setEligibility] = useState<StreakEligibility | null>(
@@ -107,7 +109,7 @@ export default function StreaksPage() {
                   exercices complétés!
                 </AlertDescription>
               </Alert>
-              <Link href="/compte/plans">
+              <Link href="/compte/plans" onClick={() => trackClick({ action: "link_clicked", label: "Passer à Premium" })}>
                 <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
                   <Crown className="mr-2 h-4 w-4" />
                   Passer à Premium
@@ -142,7 +144,7 @@ export default function StreaksPage() {
             </p>
           </div>
           {eligibility?.eligible && (
-            <Button onClick={() => setCreateDialogOpen(true)}>
+            <Button onClick={() => { trackClick({ label: "Nouvelle série" }); setCreateDialogOpen(true); }}>
               <Plus className="mr-2 h-4 w-4" />
               Nouvelle série
             </Button>
@@ -233,7 +235,7 @@ export default function StreaksPage() {
                     Commencez une nouvelle série pour gagner des emblème!
                   </p>
                   {eligibility?.eligible && (
-                    <Button onClick={() => setCreateDialogOpen(true)} variant="secondary">
+                    <Button onClick={() => { trackClick({ label: "Démarrer une série" }); setCreateDialogOpen(true); }} variant="secondary">
                       <Plus className="mr-2 h-4 w-4" />
                       Démarrer une série
                     </Button>

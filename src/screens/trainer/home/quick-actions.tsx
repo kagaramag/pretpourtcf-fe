@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/icons";
 import Link from "next/link";
 import { TrainerPerformanceByType } from "@/types";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 interface QuickActionsProps {
   performanceByType: TrainerPerformanceByType[];
@@ -24,6 +25,7 @@ const practiceTypeColors: Record<string, string> = {
 };
 
 export function QuickActions({ performanceByType }: QuickActionsProps) {
+  const { trackClick } = useActivityTracker();
   return (
     <div className="space-y-3">
       {/* Exams */}
@@ -72,7 +74,7 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
               border: "border-orange-200",
             },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="group">
+            <Link key={item.href} href={item.href} className="group" onClick={() => trackClick({ action: "link_clicked", label: item.title })}>
               <div
                 className={`relative overflow-hidden rounded-2xl bg-white border ${item.border} p-4 transition-all duration-200 hover:shadow-md`}
               >
@@ -107,13 +109,13 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
       <div className="border border-border bg-white p-4 rounded-2xl">
         <h3 className="text-lg mb-3">Actions rapides</h3>
         <div className="flex flex-col gap-2">
-          <Link href="/trainer/apprenants">
+          <Link href="/trainer/apprenants" onClick={() => trackClick({ action: "link_clicked", label: "Voir mes apprenants" })}>
             <Button variant="outline" className="w-full justify-start gap-2">
               <Icon name="user" size={16} />
               Voir mes apprenants
             </Button>
           </Link>
-          <Link href="/trainer/apprenants?invite=true">
+          <Link href="/trainer/apprenants?invite=true" onClick={() => trackClick({ action: "link_clicked", label: "Inviter un apprenant" })}>
             <Button variant="outline" className="w-full justify-start gap-2">
               <Icon name="plus" size={16} />
               Inviter un apprenant

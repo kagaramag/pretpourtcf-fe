@@ -265,7 +265,7 @@ export function Table<T>({
                 className={`
               ${columnBorders ? `divide-x divide-border` : ''}
               ${compact ? 'text-[10px]' : 'text-sm'}
-              ${customRowColor || (striped && index % 2 === 1 ? `bg-gray-200/40` : '')}
+              ${customRowColor || (striped && index % 2 === 1 ? `bg-gray-200/20` : '')}
                 ${hoverable ? 'hover:bg-gray-50/90 transition-colors' : ''}
                 ${onRowClick ? 'cursor-pointer' : ''}
                 block mb-4 border border-border md:table-row md:mb-0 md:border-0

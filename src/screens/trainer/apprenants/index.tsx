@@ -12,9 +12,11 @@ import { corporateService } from "@/services/corporate";
 import { User } from "@/types";
 import { formatDate } from "@/lib/utils";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function TrainerLearnersScreen() {
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [isLoading, setIsLoading] = useState(true);
   const [learners, setLearners] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,6 +107,7 @@ export default function TrainerLearnersScreen() {
           size="sm"
           onClick={(e) => {
             e.stopPropagation();
+            trackClick({ label: "Voir profil apprenant", metadata: { learnerId: learner.id || (learner as any)._id } });
             router.push(
               `/trainer/apprenants/${learner.id || (learner as any)._id}`
             );

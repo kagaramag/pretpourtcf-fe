@@ -11,10 +11,12 @@ import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import MethodCO from "./methodology";
 import { Icon } from "@/icons";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function ListeningPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [practices, setPractices] = useState<Practice[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -112,6 +114,12 @@ export default function ListeningPracticePage() {
               <Link
                 href={`/compte/pratique/co/${practice._id}`}
                 key={practice._id}
+                onClick={() =>
+                  trackClick({
+                    action: "link_clicked",
+                    label: `Paid: CO Practice — ${practice.title}`,
+                  })
+                }
               >
                 <div className="p-4 bg-gray-50 hover:bg-gray-100 cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
                   <h2 className="text-sm flex-1 tracking-wide leading-tight">

@@ -10,9 +10,11 @@ import { SubscriptionPlan } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 function IndividualSubscription() {
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [formationPlans, setFormationPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,6 +54,7 @@ function IndividualSubscription() {
   }, []);
 
   const handleSelectPlan = (plan: SubscriptionPlan) => {
+    trackClick({ label: "Choisir ce plan", metadata: { planId: plan.id, planName: plan.name, planPrice: plan.price_usd } });
     router.push(`/compte/abonner?plan_id=${plan.id}`);
   };
 

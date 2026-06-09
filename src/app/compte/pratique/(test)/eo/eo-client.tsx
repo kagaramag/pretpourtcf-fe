@@ -16,11 +16,13 @@ import {
   Clock,
   FileText,
 } from "lucide-react";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function SpeakingPracticePage() {
   const [practicesData, setPracticesData] = useState<PracticeWithQuestions[]>(
     []
   );
+  const { trackClick } = useActivityTracker();
   const [loading, setLoading] = useState(true);
   const [expandedPractices, setExpandedPractices] = useState<Set<string>>(
     new Set()
@@ -126,7 +128,15 @@ export default function SpeakingPracticePage() {
               sera tiré au sort parmi les thèmes disponibles
             </h5>
           </div>
-          <Link href="/compte/pratique/eo/test">
+          <Link
+            href="/compte/pratique/eo/test"
+            onClick={() =>
+              trackClick({
+                action: "link_clicked",
+                label: "Paid: EO Practice — Random Test",
+              })
+            }
+          >
             <Button size={"lg"}>Lancer un test aléatoire</Button>
           </Link>
         </div>

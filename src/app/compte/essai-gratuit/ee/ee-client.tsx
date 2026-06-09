@@ -10,10 +10,12 @@ import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import MethodEE from "./methodology";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function FreeWritingPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [practices, setPractices] = useState<Practice[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -98,6 +100,12 @@ export default function FreeWritingPracticePage() {
               <Link
                 href={`/compte/essai-gratuit/ee/${practice._id}`}
                 key={practice._id}
+                onClick={() =>
+                  trackClick({
+                    action: "link_clicked",
+                    label: `Trial: EE Practice — ${practice.title}`,
+                  })
+                }
               >
                 <div className="border border-gray-400 p-4 hover:bg-primary/5 hover:border-primary hover:text-primary cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
                   <h3 className="font-semibold flex-1 tracking-wide leading-tight">

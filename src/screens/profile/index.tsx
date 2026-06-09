@@ -22,9 +22,11 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { authService, DeviceInfo } from "@/services/auth";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function ProfileScreen() {
   const { user, updateProfile, isLoading } = useAuth();
+  const { trackClick } = useActivityTracker();
 
   // Profile form state
   const [firstName, setFirstName] = useState("");
@@ -61,6 +63,7 @@ export default function ProfileScreen() {
       toast.error("Vous ne pouvez pas supprimer l'appareil actuel");
       return;
     }
+    trackClick({ label: "Supprimer appareil", metadata: { deviceId } });
     try {
       setRemovingDeviceId(deviceId);
       await authService.removeDevice(deviceId);
@@ -74,6 +77,7 @@ export default function ProfileScreen() {
   };
 
   const handleLogoutAllDevices = async () => {
+    trackClick({ label: "Déconnecter tous les appareils" });
     try {
       await authService.logoutAllDevices();
       toast.success("Déconnexion de tous les appareils réussie");
@@ -108,6 +112,7 @@ export default function ProfileScreen() {
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
+    trackClick({ action: "form_submitted", label: "Mise à jour profil" });
 
     try {
       await updateProfile({

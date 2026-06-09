@@ -28,12 +28,14 @@ import {
   Smartphone,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Icon } from "@/icons";
+import { config } from "@/config";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
 import AccountLayout from "@/layouts/account";
 
 type PaymentStatus = "form" | "processing" | "success" | "failed" | "pending";
 
-function AbonnerPageContent() {
+function Abonner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, refreshUser } = useAuth();
@@ -529,17 +531,17 @@ function AbonnerPageContent() {
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Plan</span>
+                  <span className="text-sm text-gray-600">Plan</span>
                   <span className="font-semibold">{plan.name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Montant</span>
+                  <span className="text-sm text-gray-600">Montant</span>
                   <span className="font-semibold">
                     {formatPrice(getPrice(), currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">Durée</span>
+                  <span className="text-sm text-gray-600">Durée</span>
                   <span className="font-semibold">
                     {plan.duration_days} jours
                   </span>
@@ -548,7 +550,7 @@ function AbonnerPageContent() {
             </div>
 
             <div className="text-center space-y-2">
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 Vous pouvez maintenant accéder à toutes les fonctionnalités de
                 votre abonnement.
               </p>
@@ -601,7 +603,7 @@ function AbonnerPageContent() {
 
             <div className="space-y-2">
               <p className="text-sm font-medium">Raisons possibles:</p>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                 <li>Solde insuffisant</li>
                 <li>Transaction annulée</li>
                 <li>Problème de connexion</li>
@@ -687,14 +689,14 @@ function AbonnerPageContent() {
               <Loader2 className="h-8 w-8 animate-spin text-yellow-600" />
             </div>
 
-            <p className="text-xs text-center text-muted-foreground">
+            <p className="text-xs text-center text-gray-600">
               {isMobileMoney
                 ? "Nous écoutons les mises à jour en temps réel de Mobile Money..."
                 : "Vérification en cours..."}
             </p>
           </div>
           <CardFooter className="flex flex-col gap-2">
-            <p className="text-xs text-center text-muted-foreground w-full">
+            <p className="text-xs text-center text-gray-600 w-full">
               Ne fermez pas cette page pendant le traitement
             </p>
             <Button
@@ -719,193 +721,282 @@ function AbonnerPageContent() {
 
   // Payment Form
   return (
-    <div className="container mx-auto max-w-2xl">
-      <Button
-        variant="secondary"
-        onClick={() => router.push("/compte/plans")}
-        className="mb-4"
-      >
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Retour
-      </Button>
+    <div className="container mx-auto max-w-5xl">
+      <div className="mb-5 flex items-center gap-2">
+        <Button
+          variant="secondary"
+          onClick={() => router.push("/compte/plans")}
+          icon="arrowLeft"
+          size="sm"
+        >
+          Retour
+        </Button>
+        <h3 className="text-2xl font-semibold">Finaliser votre abonnement</h3>
+      </div>
 
-      <div>
-        <h3 className="text-lg">Finaliser votre abonnement</h3>
-        <div className="mb-3">
-          Choisissez votre méthode de paiement pour activer votre abonnement
-        </div>
-        <div className="space-y-2">
-          {/* Plan Summary */}
-          <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Plan</span>
-              <span className="font-semibold">{plan.name}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Durée</span>
-              <span className="font-semibold">{plan.duration_days} jours</span>
-            </div>
-            {promoCodeApplied && discountPercentage > 0 && (
-              <>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-muted-foreground">Prix original</span>
-                  <span className="line-through text-muted-foreground">
-                    {formatPrice(getPrice(), currency)}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm text-green-600">
-                  <span>Réduction ({discountPercentage}%)</span>
-                  <span>
-                    -
-                    {formatPrice(
-                      (getPrice() * discountPercentage) / 100,
-                      currency
-                    )}
-                  </span>
-                </div>
-              </>
-            )}
-            <div className="flex justify-between items-center pt-2 border-t">
-              <span className="text-sm text-muted-foreground">Total</span>
-              <span className="text-xl font-bold text-primary">
-                {formatPrice(calculateFinalPrice(), currency)}
-              </span>
-            </div>
-          </div>
-
-          {/* Promo Code Section */}
-          <div className="space-y-3 pt-2">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Tag className="h-4 w-4" />
-              Code promo
-            </h3>
-            {!promoCodeApplied ? (
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Entrez votre code promo"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  disabled={validatingPromo}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && promoCode.trim()) {
-                      handleApplyPromoCode();
-                    }
-                  }}
-                />
-                <Button
-                  variant="secondary"
-                  onClick={handleApplyPromoCode}
-                  disabled={!promoCode.trim() || validatingPromo}
-                >
-                  {validatingPromo ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                      Validation...
-                    </>
-                  ) : (
-                    "Appliquer"
+      <div className="bg-linear-to-r from-rose-100 via-gray-50 to-teal-100 p-4 rounded-4xl">
+        <div className="bg-white rounded-3xl p-6">
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex-1">
+              {/* <div className="mb-3">
+            Choisissez votre méthode de paiement pour activer votre abonnement
+          </div> */}
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-lg">Plan {plan.name}</h2>
+                  {plan.description && (
+                    <div className="text-gray-600 mt-1">{plan.description}</div>
                   )}
-                </Button>
+                </div>
+
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center gap-3">
+                    <Icon name="check" size={20} />
+                    <span>{plan.duration_days} jours</span>
+                  </li>
+                  {plan.details.co > 0 && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Compréhension Orale: {plan.details.co} tests</span>
+                    </li>
+                  )}
+                  {plan.details.ce > 0 && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Compréhension Ecrite: {plan.details.ce} tests</span>
+                    </li>
+                  )}
+                  {plan.details.eo > 0 && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Expression Orale: {plan.details.eo} tests</span>
+                    </li>
+                  )}
+                  {plan.details.ee > 0 && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Expression Ecrite: {plan.details.ee} tests</span>
+                    </li>
+                  )}
+                  {plan.details.correction && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Correction automatique et détaillée</span>
+                    </li>
+                  )}
+                  {plan.details.history && (
+                    <li className="flex items-center gap-3">
+                      <Icon name="check" size={20} />
+                      <span>Historique des pratiques</span>
+                    </li>
+                  )}
+                  {plan.features
+                    .filter(
+                      (f) =>
+                        ![
+                          "co",
+                          "ce",
+                          "eo",
+                          "ee",
+                          "correction",
+                          "history",
+                        ].includes(f.toLowerCase())
+                    )
+                    .map((feature, idx) => (
+                      <li key={idx} className="flex items-center gap-3">
+                        <Icon
+                          name="check"
+                          size={20}
+                          className="text-green-500 shrink-0"
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                </ul>
+
+                <div className="bg-primary/5 rounded-lg p-3 text-sm text-primary">
+                  Accès à plus de 3 000 exercices pour préparer votre TCF
+                </div>
               </div>
-            ) : (
-              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
-                <div className="flex items-center gap-2">
-                  <Tag className="h-4 w-4 text-green-600" />
-                  <div>
-                    <p className="font-medium text-green-900">{promoCode}</p>
-                    <p className="text-xs text-green-700">
-                      {discountPercentage}% de réduction appliquée
-                    </p>
+            </div>
+            <div className="w-full lg:w-120 p-4 rounded-3xl border border-gray-200">
+              <div className="space-y-2">
+                {/* Plan Summary */}
+                <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Plan</span>
+                    <span>{plan.name}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600">Durée</span>
+                    <span>{plan.duration_days} jours</span>
+                  </div>
+                  {promoCodeApplied && discountPercentage > 0 && (
+                    <>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Prix original</span>
+                        <span className="line-through text-gray-600">
+                          {formatPrice(getPrice(), currency)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center text-sm text-green-600">
+                        <span>Réduction ({discountPercentage}%)</span>
+                        <span>
+                          -
+                          {formatPrice(
+                            (getPrice() * discountPercentage) / 100,
+                            currency
+                          )}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                  <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+                    <span className="text-sm text-gray-600">Total</span>
+                    <span className="text-xl text-primary">
+                      {formatPrice(calculateFinalPrice(), currency)}
+                    </span>
                   </div>
                 </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleRemovePromoCode}
-                  className="h-8 w-8 p-0"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
-          </div>
 
-          {/* Currency Selection */}
-          <div className="space-y-3 hidden">
-            <Label className="text-base">Devise</Label>
-            <RadioGroup
-              value={currency}
-              onValueChange={(value) => setCurrency(value as "RWF" | "USD")}
-              className="grid grid-cols-2 gap-4"
-            >
-              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
-                <RadioGroupItem value="RWF" id="rwf" />
-                <Label htmlFor="rwf" className="cursor-pointer flex-1">
-                  {/* <div className="font-medium">RWF</div> */}
-                  <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_rwf || 0, "RWF")}
-                  </div>
-                </Label>
-              </div>
-
-              <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
-                <RadioGroupItem value="USD" id="usd" />
-                <Label htmlFor="usd" className="cursor-pointer flex-1">
-                  {/* <div className="font-medium">USD</div> */}
-                  <div className="text-sm text-muted-foreground">
-                    {formatPrice(plan.price_usd || 0, "USD")}
-                  </div>
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          {/* Payment Method Selection - Only show if price > 0 */}
-          {calculateFinalPrice() > 0 && (
-            <div className="space-y-3">
-              <h4>Méthode de paiement</h4>
-              <RadioGroup
-                value={paymentMethod}
-                onValueChange={(value) =>
-                  setPaymentMethod(value as "momo" | "cc" | "spenn")
-                }
-              >
-                <div
-                  className={`flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50 ${paymentMethod === "cc" ? "border-primary bg-primary/5" : ""}`}
-                >
-                  <RadioGroupItem value="cc" id="cc" />
-                  <Label
-                    htmlFor="cc"
-                    className="flex items-center gap-2 cursor-pointer flex-1"
-                  >
-                    <CreditCard className="h-5 w-5" />
-                    <div className="flex-1">Carte bancaire</div>
-                    <div className="text-sm text-muted-foreground flex items-center gap-1">
-                      <Image
-                        src={Visa}
-                        width={32}
-                        height={12}
-                        priority
-                        alt="Visa"
+                {/* Promo Code Section */}
+                <div className="space-y-3 pt-2">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    Code promo
+                  </h3>
+                  {!promoCodeApplied ? (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Entrez votre code promo"
+                        value={promoCode}
+                        onChange={(e) =>
+                          setPromoCode(e.target.value.toUpperCase())
+                        }
+                        disabled={validatingPromo}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && promoCode.trim()) {
+                            handleApplyPromoCode();
+                          }
+                        }}
                       />
-                      <Image
-                        src={Mastercard}
-                        width={32}
-                        height={12}
-                        priority
-                        alt="Mastercard"
-                      />
-                      <Image
-                        src={Amex}
-                        width={32}
-                        height={12}
-                        priority
-                        alt="Amex"
-                      />
+                      <Button
+                        onClick={handleApplyPromoCode}
+                        disabled={!promoCode.trim() || validatingPromo}
+                      >
+                        {validatingPromo ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            Validation...
+                          </>
+                        ) : (
+                          "Appliquer"
+                        )}
+                      </Button>
                     </div>
-                  </Label>
+                  ) : (
+                    <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg p-3">
+                      <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-green-600" />
+                        <div>
+                          <p className="font-medium text-green-900">
+                            {promoCode}
+                          </p>
+                          <p className="text-xs text-green-700">
+                            {discountPercentage}% de réduction appliquée
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRemovePromoCode}
+                        className="h-8 w-8 p-0"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
+
+                {/* Currency Selection */}
+                <div className="space-y-3 hidden">
+                  <Label className="text-base">Devise</Label>
+                  <RadioGroup
+                    value={currency}
+                    onValueChange={(value) =>
+                      setCurrency(value as "RWF" | "USD")
+                    }
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                      <RadioGroupItem value="RWF" id="rwf" />
+                      <Label htmlFor="rwf" className="cursor-pointer flex-1">
+                        {/* <div className="font-medium">RWF</div> */}
+                        <div className="text-sm text-gray-600">
+                          {formatPrice(plan.price_rwf || 0, "RWF")}
+                        </div>
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center space-x-3 border rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                      <RadioGroupItem value="USD" id="usd" />
+                      <Label htmlFor="usd" className="cursor-pointer flex-1">
+                        {/* <div className="font-medium">USD</div> */}
+                        <div className="text-sm text-gray-600">
+                          {formatPrice(plan.price_usd || 0, "USD")}
+                        </div>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Payment Method Selection - Only show if price > 0 */}
+                {calculateFinalPrice() > 0 && (
+                  <div className="space-y-3">
+                    <h4>Méthode de paiement</h4>
+                    <RadioGroup
+                      value={paymentMethod}
+                      onValueChange={(value) =>
+                        setPaymentMethod(value as "momo" | "cc" | "spenn")
+                      }
+                    >
+                      <div
+                        className={`flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-gray-50 ${paymentMethod === "cc" ? "border-primary bg-primary/5" : ""}`}
+                      >
+                        <RadioGroupItem value="cc" id="cc" />
+                        <Label
+                          htmlFor="cc"
+                          className="flex items-center gap-2 cursor-pointer flex-1"
+                        >
+                          <CreditCard className="h-5 w-5" />
+                          <div className="flex-1">Carte bancaire</div>
+                          <div className="text-sm text-gray-600 flex items-center gap-1">
+                            <Image
+                              src={Visa}
+                              width={32}
+                              height={12}
+                              priority
+                              alt="Visa"
+                            />
+                            <Image
+                              src={Mastercard}
+                              width={32}
+                              height={12}
+                              priority
+                              alt="Mastercard"
+                            />
+                            <Image
+                              src={Amex}
+                              width={32}
+                              height={12}
+                              priority
+                              alt="Amex"
+                            />
+                          </div>
+                        </Label>
+                      </div>
+                      {/* Mobile Money - temporarily disabled
                 <div
                   className={`flex items-center space-x-3 border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 ${paymentMethod === "momo" ? "border-primary bg-primary/5" : ""}`}
                 >
@@ -928,9 +1019,10 @@ function AbonnerPageContent() {
                     </div>
                   </Label>
                 </div>
-              </RadioGroup>
+                */}
+                    </RadioGroup>
 
-              {/* Phone Number Input for Mobile Money */}
+                    {/* Phone Number Input for Mobile Money - temporarily disabled
               {paymentMethod === "momo" && (
                 <div className="space-y-2">
                   <Label htmlFor="msisdn">Numéro de téléphone</Label>
@@ -942,34 +1034,67 @@ function AbonnerPageContent() {
                     onChange={(e) => setMsisdn(e.target.value)}
                     maxLength={10}
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-gray-600">
                     Entrez votre numéro MTN Mobile Money pour recevoir la
                     demande de paiement
                   </p>
                 </div>
               )}
+              */}
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2 my-3">
+                <Button
+                  onClick={handlePayment}
+                  disabled={loading}
+                  size={"lg"}
+                  block
+                  variant="tertiary"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Traitement...
+                    </>
+                  ) : calculateFinalPrice() === 0 ? (
+                    "Activer l'abonnement gratuitement"
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      <Icon name="verified" size={18} />
+                      Payer {formatPrice(calculateFinalPrice(), currency)}
+                    </span>
+                  )}
+                </Button>
+              </div>
+              <div className="text-xs text-green-600 text-center flex items-center justify-center gap-1">
+                <Icon name="verified" size={14} />
+                Paiement sécurisé et chiffré
+              </div>
+
+              <div className="border-t border-gray-100 pt-4 mt-2">
+                <p className="text-sm text-gray-500 mb-2">
+                  Besoin d&apos;un autre moyen de paiement ou d&apos;aide ?
+                </p>
+                <div className="space-y-1.5 text-sm">
+                  <a
+                    href={`mailto:${config.contactEmail}`}
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary"
+                  >
+                    <Icon name="email" size={16} />
+                    {config.contactEmail}
+                  </a>
+                  <a
+                    href={`tel:${config.contactPhone.replace(/\s/g, "")}`}
+                    className="flex items-center gap-2 text-gray-600 hover:text-primary"
+                  >
+                    <Icon name="phone" size={16} />
+                    {config.contactPhone}
+                  </a>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-        <div className="flex gap-2 my-3">
-          <Button
-            onClick={handlePayment}
-            disabled={loading}
-            size={"lg"}
-            block
-            variant="tertiary"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Traitement...
-              </>
-            ) : calculateFinalPrice() === 0 ? (
-              "Activer l'abonnement gratuitement"
-            ) : (
-              `Payer ${formatPrice(calculateFinalPrice(), currency)}`
-            )}
-          </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -986,7 +1111,7 @@ export default function AbonnerPage() {
           </div>
         }
       >
-        <AbonnerPageContent />
+        <Abonner />
       </Suspense>
     </AccountLayout>
   );

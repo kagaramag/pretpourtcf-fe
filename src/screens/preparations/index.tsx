@@ -26,8 +26,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { NavigationLink } from "@/components/ui/navigation-link";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 const PreparationScreen = () => {
+  const { trackClick } = useActivityTracker();
   const preparations = [
     {
       id: 1,
@@ -466,7 +468,7 @@ const PreparationScreen = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <NavigationLink href="/compte/inscription">
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={() => trackClick({ label: "Essai Gratuit 3 Jours", metadata: { source: "preparations-cta" } })}>
                 <Sparkles className="mr-2 w-4 h-4" />
                 Essai Gratuit 3 Jours
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />

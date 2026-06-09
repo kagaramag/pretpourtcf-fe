@@ -18,6 +18,7 @@ import {
 } from "@/services/auth";
 import { toast } from "sonner";
 import { socketService } from "@/lib/socket";
+import apiClient from "@/lib/api-client";
 
 interface AuthContextType {
   user: User | null;
@@ -119,6 +120,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(async () => {
     try {
       setIsLoading(true);
+      // Track logout before clearing tokens (needs auth)
+      try {
+        await apiClient.post("/analytics/track", {
+          action: "logout",
+          category: "auth",
+          metadata: { timestamp: new Date().toISOString() },
+        });
+      } catch {
+        // Don't block logout if tracking fails
+      }
       await authService.logout();
       setUser(null);
       router.push("/");

@@ -4,6 +4,9 @@ export const config = {
   socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000",
   appName: "PrêtPourTCF BO",
   appVersion: "1.0.0",
+  liveTrackerDays: parseInt(process.env.NEXT_PUBLIC_LIVE_TRACKER_DAYS || "3", 10),
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@pretpourtcf.com",
+  contactPhone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "+250 788 000 000",
 };
 
 export const API_ENDPOINTS = {
@@ -26,6 +29,7 @@ export const API_ENDPOINTS = {
   ANALYTICS_BY_CLIENT: "/analytics/by-client",
   ANALYTICS_BY_DATE: "/analytics/by-date",
   ANALYTICS_EXPORT: "/analytics/export",
+  ANALYTICS_USER_ACTIVITY: "/analytics/user-activity",
 
   // Payments
   PAYMENTS: "/payments",

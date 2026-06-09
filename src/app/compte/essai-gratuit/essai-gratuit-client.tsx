@@ -6,6 +6,7 @@ import { Practice, PracticeType } from "@/types";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BookOpen, MoveRight, Crown } from "lucide-react";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 type PracticeCategory = {
   type: PracticeType;
@@ -21,6 +22,7 @@ const categories: PracticeCategory[] = [
 ];
 
 function PratiqueGratuitContent() {
+  const { trackClick } = useActivityTracker();
   const [selectedCategory, setSelectedCategory] = useState<PracticeType | null>(
     null
   );
@@ -77,7 +79,16 @@ function PratiqueGratuitContent() {
             {categories.map((category) => (
               <button
                 key={category.type}
-                onClick={() => handleCategoryClick(category.type)}
+                onClick={() => {
+                  trackClick({
+                    label: `Trial: ${category.label}`,
+                    metadata: {
+                      source: "essai-gratuit",
+                      practiceType: category.slug,
+                    },
+                  });
+                  handleCategoryClick(category.type);
+                }}
                 className={`px-4 py-2 text-left rounded-full transition-colors cursor-pointer ${
                   selectedCategory === category.type
                     ? "bg-primary text-white"
@@ -122,6 +133,15 @@ function PratiqueGratuitContent() {
                             (cat) => cat.type === practice.type
                           )?.slug;
                           if (categorySlug) {
+                            trackClick({
+                              label: `Trial: ${practice.title}`,
+                              metadata: {
+                                practiceId: practice._id,
+                                practiceTitle: practice.title,
+                                practiceType: categorySlug,
+                                freemium: practice.freemium,
+                              },
+                            });
                             router.push(
                               `/compte/essai-gratuit/${categorySlug}/${practice._id}`
                             );

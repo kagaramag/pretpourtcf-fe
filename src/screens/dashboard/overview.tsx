@@ -18,6 +18,7 @@ import { usePlansStats } from "@/hooks/usePlans";
 import { useStreaksStats } from "@/hooks/useStreaks";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
+import { LiveTracker } from "@/components/organisms/live-tracker";
 
 export function DashboardOverview() {
   const { data: stats, isLoading, error } = useDashboardStats();
@@ -148,6 +149,11 @@ export function DashboardOverview() {
 
       {/* Overview Cards - Grouped by Category */}
       <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
+        <div className="w-full md:max-w-[350px] lg:max-w-[420px] space-y-4">
+          <div className="p-4 border border-border bg-white rounded-2xl">
+            <LiveTracker />
+          </div>
+        </div>
         <div className="flex-1 flex gap-3 flex-col">
           {/* Grouped Stats Cards */}
           <div className="flex lg:flex-row flex-col gap-2">
@@ -178,6 +184,24 @@ export function DashboardOverview() {
               </div>
             )}
 
+            {/* Additional Stats - Total Users */}
+            {additionalStats.length > 0 && (
+              <div className="w-full lg:w-2/12 grid gap-3 md:grid-cols-1 lg:grid-cols-3 border border-border bg-white p-4 rounded-2xl">
+                {additionalStats.map((stat) => {
+                  return (
+                    <div key={stat.title}>
+                      <h3 className="text-sm font-medium">Users</h3>
+                      <div>
+                        <div className="text-2xl font-bold">{stat.value}</div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {stat.change}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             {/* Streaks Group */}
             {streakStatsDisplay.length > 0 && (
               <div className="w-full lg:w-5/12 border border-border  bg-white p-4 rounded-2xl">
@@ -203,118 +227,104 @@ export function DashboardOverview() {
                 </div>
               </div>
             )}
-            {/* Additional Stats - Total Users */}
-            {additionalStats.length > 0 && (
-              <div className="w-full lg:w-2/12 grid gap-3 md:grid-cols-1 lg:grid-cols-3 border border-border bg-white p-4 rounded-2xl">
-                {additionalStats.map((stat) => {
-                  return (
-                    <div key={stat.title}>
-                      <h3 className="text-sm font-medium">Users</h3>
-                      <div>
-                        <div className="text-2xl font-bold">{stat.value}</div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {stat.change}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
           </div>
-          <div className="flex flex-row w-full gap-3 p-4 border border-border bg-white rounded-2xl">
-            {/* Subscriptions & Plans Group */}
-            {subscriptionStats.length > 0 && (
-              <div className="flex-1">
-                <h3 className="text-xl">Subscriptions & Plans</h3>
-                <div className="space-y-3 flex flex-col lg:flex-row">
-                  {subscriptionStats.map((stat) => {
-                    return (
-                      <div
-                        key={stat.title}
-                        className="space-y-1 flex-1 py-4 rounded-2xl"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-muted-foreground">
-                              {stat.title}
-                            </span>
+          <div className="flex lg:flex-row flex-col gap-2">
+            <div className="flex-1  space-y-2">
+              <div className="flex flex-row w-full gap-3 p-4 border border-border bg-white rounded-2xl">
+                {/* Subscriptions & Plans Group */}
+                {subscriptionStats.length > 0 && (
+                  <div className="flex-1">
+                    <h3>Subscriptions & Plans</h3>
+                    <div className="space-y-3 flex flex-col lg:flex-row">
+                      {subscriptionStats.map((stat) => {
+                        return (
+                          <div
+                            key={stat.title}
+                            className="space-y-1 flex-1 py-4 rounded-2xl"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-muted-foreground">
+                                  {stat.title}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="text-2xl">
+                              {stat.value}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {stat.change}
+                            </p>
                           </div>
-                        </div>
-                        <div className="text-2xl font-bold">{stat.value}</div>
-                        <p className="text-xs text-muted-foreground">
-                          {stat.change}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          <div>
-            {/* Practice Session Insights Card */}
-            <div className="col-span-3 p-4 border border-border bg-white rounded-2xl">
-              <h5 className="h5">Practice sessions</h5>
-              <div className="space-y-2 divide-y divide-divide">
-                {sessionStats.map((stat) => {
-                  return (
-                    <div
-                      key={stat.label}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">
-                          {stat.label}
+              <div className="">
+                {/* Practice Session Insights Card */}
+                <div className="col-span-3 p-4 border border-border bg-white rounded-2xl">
+                  <h5>Practice sessions</h5>
+                  <div className="space-y-2 divide-y divide-divide mt-2">
+                    {sessionStats.map((stat) => {
+                      return (
+                        <div
+                          key={stat.label}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="text-sm flex items-center gap-2">
+                            {stat.label}
+                          </div>
+                          <span className="text-lg">
+                            {stat.value}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm flex items-center gap-2">
+                          Average Score
+                        </div>
+                        <span className="text-lg text-primary">
+                          {stats.practiceSessionInsights.averageScore}%
                         </span>
                       </div>
-                      <span className="text-lg font-bold">{stat.value}</span>
                     </div>
-                  );
-                })}
-                <div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Average Score</span>
-                    <span className="text-lg font-bold text-primary">
-                      {stats.practiceSessionInsights.averageScore}%
-                    </span>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="w-full  md:max-w-[350px] lg:max-w-[420px]">
-          <div className="col-span-4 p-4 border border-border bg-white rounded-2xl">
-            <h4 className="mb-4 text-lg">Recent users</h4>
-            <div className="space-y-4">
-              {stats.recentUsers.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No users registered yet
-                </p>
-              ) : (
-                stats.recentUsers.map((user) => (
-                  <div key={user._id} className="flex items-center">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10">
-                      <Users className="h-4 w-4" />
+
+            <div className="col-span-4 p-4 border border-border bg-white rounded-2xl lg:w-[340px] ">
+              <h4 className="mb-4">Recent users</h4>
+              <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
+                {stats.recentUsers.length === 0 ? (
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    No users registered yet
+                  </p>
+                ) : (
+                  stats.recentUsers.map((user) => (
+                    <div key={user._id} className="flex items-center py-2">
+                      <div className="space-y-1 flex-1">
+                        <div className="text-sm leading-none">
+                          {user.first_name} {user.last_name}
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {user.email}
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        {formatDistanceToNow(new Date(user.createdAt), {
+                          addSuffix: true,
+                        })}
+                      </div>
                     </div>
-                    <div className="ml-4 space-y-1 flex-1">
-                      <p className="text-sm font-medium leading-none">
-                        {user.first_name} {user.last_name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(user.createdAt), {
-                        addSuffix: true,
-                      })}
-                    </div>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>

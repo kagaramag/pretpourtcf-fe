@@ -9,10 +9,12 @@ import Link from "next/link";
 import Image from "next/image";
 import Serie from "@/assets/images/serie.svg";
 import { StreakStatusWidget } from "@/components/streak/streak-status-widget";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function AccountPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
 
   useEffect(() => {
     if (user && user.role === "client" && !user.subscription) {
@@ -76,7 +78,7 @@ export default function AccountPage() {
               border: "border-orange-200",
             },
           ].map((item) => (
-            <Link key={item.href} href={item.href} className="group">
+            <Link key={item.href} href={item.href} className="group" onClick={() => trackClick({ action: "link_clicked", label: item.title })}>
               <div
                 className={`relative overflow-hidden rounded-2xl bg-white border ${item.border} p-5 transition-all duration-200 hover:shadow-md`}
               >
@@ -125,7 +127,7 @@ export default function AccountPage() {
             </div>
           </div>
           <div className="mt-4">
-            <Link href="/compte/series">
+            <Link href="/compte/series" onClick={() => trackClick({ action: "link_clicked", label: "Gérer mes séries" })}>
               <Button variant="tertiary" size="lg">
                 Gérer mes séries
               </Button>

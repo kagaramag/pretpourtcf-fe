@@ -47,8 +47,12 @@ class ApiClient {
               const response = await this.client.post("/auth/refresh", {
                 refresh_token: refreshToken,
               });
-              const { access_token } = response.data.data;
+              const { access_token, refresh_token: new_refresh_token } =
+                response.data.data;
               this.setToken(access_token);
+              if (new_refresh_token) {
+                localStorage.setItem("refresh_token", new_refresh_token);
+              }
 
               if (originalRequest.headers) {
                 originalRequest.headers.Authorization = `Bearer ${access_token}`;

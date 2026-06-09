@@ -4,11 +4,13 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Loader2, Building2 } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
 import CorporateSubscription from "./corporate-subscription";
 import IndividualSubscription from "./individual-subscription";
 
 function PlansPage() {
+  const { trackClick } = useActivityTracker();
   const { user, refreshUser, isLoading } = useAuth();
 
   // Listen for real-time payment status updates via WebSocket
@@ -149,7 +151,7 @@ function PlansPage() {
           </div>
         </div>
         <NavigationLink href="/compte/essai-gratuit">
-          <Button variant="outline" size="lg">Essai Gratuit</Button>
+          <Button variant="outline" size="lg" onClick={() => trackClick({ label: "Essai Gratuit", metadata: { source: "plans" } })}>Essai Gratuit</Button>
         </NavigationLink>
       </div>
     </div>

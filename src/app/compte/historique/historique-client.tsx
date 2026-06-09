@@ -21,10 +21,12 @@ import { PracticeSession, Practice, SessionStatistics } from "@/types";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function PracticeHistoryPage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [sessions, setSessions] = useState<PracticeSession[]>([]);
   const [statistics, setStatistics] = useState<SessionStatistics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -269,7 +271,7 @@ export default function PracticeHistoryPage() {
                 <p className="text-muted-foreground mb-4">
                   Commencez une pratique pour voir votre historique ici
                 </p>
-                <Button onClick={() => router.push("/compte/pratique/co")}>
+                <Button onClick={() => { trackClick({ label: "Commencer une pratique" }); router.push("/compte/pratique/co"); }}>
                   Commencer une pratique
                 </Button>
               </div>

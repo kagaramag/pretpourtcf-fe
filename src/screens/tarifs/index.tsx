@@ -15,6 +15,7 @@ import {
   LaptopMinimal,
 } from "lucide-react";
 import { NavigationLink } from "@/components/ui/navigation-link";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 const reasons = [
   {
@@ -40,6 +41,7 @@ const reasons = [
 ];
 
 function TarifsPage() {
+  const { trackClick } = useActivityTracker();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<"preparation" | "training">(
@@ -437,7 +439,7 @@ function TarifsPage() {
                     )}
                   </div>
                   <NavigationLink href={`/compte/abonner?plan_id=${plan.id}`}>
-                    <Button className="w-full" variant={getButtonVariant(plan)}>
+                    <Button className="w-full" variant={getButtonVariant(plan)} onClick={() => trackClick({ label: "Choisir ce plan", metadata: { planId: plan.id, planName: plan.name, planPrice: plan.price_usd } })}>
                       Choisir ce plan
                     </Button>
                   </NavigationLink>
@@ -458,7 +460,7 @@ function TarifsPage() {
           </h3>
         </div>
         <NavigationLink href="/compte/essai-gratuit">
-          <Button size="lg">Essai Gratuit</Button>
+          <Button size="lg" onClick={() => trackClick({ label: "Essai Gratuit", metadata: { source: "tarifs-banner" } })}>Essai Gratuit</Button>
         </NavigationLink>
       </div>
 
@@ -506,7 +508,7 @@ function TarifsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <NavigationLink href="/compte/pratique-gratuit">
-              <Button size="lg" variant="tertiary">
+              <Button size="lg" variant="tertiary" onClick={() => trackClick({ label: "Essai Gratuit", metadata: { source: "tarifs-cta" } })}>
                 Essai Gratuit
               </Button>
             </NavigationLink>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AbonnerPage from "./abonner-client";
+import AbonnerPage from "./index";
 
 export const metadata: Metadata = {
   title: "PrêtPourTCF | S'abonner",

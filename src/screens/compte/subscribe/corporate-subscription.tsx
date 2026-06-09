@@ -7,9 +7,11 @@ import { SubscriptionPlan } from "@/types";
 import { toast } from "sonner";
 import { Icon } from "@/icons";
 import { Lock, Calendar } from "lucide-react";
+import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 function CorporateSubscription() {
   const router = useRouter();
+  const { trackClick } = useActivityTracker();
   const [plan, setPlan] = useState<SubscriptionPlan | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +35,7 @@ function CorporateSubscription() {
 
   const handleSelectPlan = () => {
     if (plan) {
+      trackClick({ label: "Payer et débloquer mon accès", metadata: { planId: plan.id, planName: plan.name, planPrice: plan.price_rwf } });
       router.push(`/compte/abonner?plan_id=${plan.id}`);
     }
   };
