@@ -37,7 +37,7 @@ export default function Footer() {
         </nav>
 
         {/* Social Icons */}
-        <div className="mt-8 sm:mt-10 flex justify-center gap-5 sm:gap-6">
+        {/* <div className="mt-8 sm:mt-10 flex justify-center gap-5 sm:gap-6">
           {[
             { icon: Facebook, href: "#", label: "Facebook" },
             { icon: Instagram, href: "#", label: "Instagram" },
@@ -54,7 +54,7 @@ export default function Footer() {
               <Icon className="size-5 sm:size-6" />
             </Link>
           ))}
-        </div>
+        </div> */}
 
         {/* Copyright */}
         <div className="mt-8 sm:mt-10 border-t border-white/10 pt-6 sm:pt-8">
