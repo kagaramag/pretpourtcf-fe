@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { Menu } from "lucide-react";
+import { SidebarOpen } from "@/icons";
 import Header from "@/components/organisms/header";
 import Footer from "@/components/organisms/footer";
 import ProfileCard from "@/components/organisms/user-profile";

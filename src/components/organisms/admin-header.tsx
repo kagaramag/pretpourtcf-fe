@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/auth-context";
 import { Menu, type MenuItem } from "@/components/ui/menu";
 import Link from "next/link";
-import { Globe, Bell, User } from "lucide-react";
+import { User, Bell, Globe } from "@/icons";
 import { useRouter } from "next/navigation";
 
 export default function Header() {

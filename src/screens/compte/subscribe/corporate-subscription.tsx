@@ -6,7 +6,7 @@ import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
 import { toast } from "sonner";
 import { Icon } from "@/icons";
-import { Lock, Calendar } from "lucide-react";
+import { Permission, Calendar } from "@/icons";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 function CorporateSubscription() {
@@ -58,7 +58,7 @@ function CorporateSubscription() {
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div className="min-w-60 flex-1 flex flex-row items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-tertiary">
-              <Lock className="h-[18px] w-[18px] text-black" />
+              <Permission className="h-[18px] w-[18px] text-black" />
             </div>
             <div className="flex-1 flex flex-col">
               <h3 className="text-xl font-semibold text-gray-900">

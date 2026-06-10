@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Facebook, Twitter, Instagram, Linkedin, Mail } from "lucide-react";
+import { Email, Facebook, Twitter, Instagram, Linkedin } from "@/icons";
 
 const navigation = {
   main: [

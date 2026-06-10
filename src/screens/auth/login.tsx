@@ -8,10 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loading, Open, Close, Icon } from "@/icons";
 import { useAuth } from "@/contexts/auth-context";
 import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
-import { Icon } from "@/icons";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +41,7 @@ export function LoginForm() {
       setUserEmail(data.email);
 
       // Get redirect parameter from URL
-      const redirectTo = searchParams.get('redirect');
+      const redirectTo = searchParams.get("redirect");
       await login(data, redirectTo || undefined);
     } catch (error: any) {
       const errorMessage =
@@ -92,9 +91,7 @@ export function LoginForm() {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="email">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
             <div className="relative">
               <Input id="email" type="email" {...register("email")} />
             </div>
@@ -104,9 +101,7 @@ export function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">
-              Mot de passe
-            </Label>
+            <Label htmlFor="password">Mot de passe</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -116,12 +111,12 @@ export function LoginForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute cursor-pointer rounded-lg p-1 right-1.5 top-1.5 text-muted-foreground hover:bg-gray-100"
+                className="absolute cursor-pointer rounded-lg p-1 right-1 top-1"
               >
                 {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
+                  <Icon name="eyeClosed" size={20} />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Icon name="eyeOpen" size={20} />
                 )}
               </button>
             </div>
@@ -147,7 +142,7 @@ export function LoginForm() {
           >
             {isPending ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loading className="mr-2 h-4 w-4 animate-spin" />
                 En cours...
               </>
             ) : (
@@ -158,7 +153,11 @@ export function LoginForm() {
           <p className="text-center text-sm text-muted-foreground mt-4">
             Vous n'avez pas de compte?{" "}
             <Link
-              href={searchParams.get('redirect') ? `/signup?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : '/signup'}
+              href={
+                searchParams.get("redirect")
+                  ? `/signup?redirect=${encodeURIComponent(searchParams.get("redirect")!)}`
+                  : "/signup"
+              }
               className="text-primary hover:underline"
             >
               Inscrivez-vous

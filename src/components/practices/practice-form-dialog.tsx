@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loading } from "@/icons";
 import {
   practiceService,
   CreatePracticeData,
@@ -299,7 +299,7 @@ export function PracticeFormDialog({
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   {mode === "create" ? "Creating..." : "Updating..."}
                 </>
               ) : mode === "create" ? (

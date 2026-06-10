@@ -8,7 +8,7 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
-import { Loader2, CheckCircle2, XCircle, Mail } from "lucide-react";
+import { Loading, Verified, Remove, Email } from "@/icons";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -66,7 +66,7 @@ function VerifyEmailContent() {
           {status === "loading" && (
             <>
               <div className="flex justify-center">
-                <Loader2 className="h-16 w-16 animate-spin text-primary" />
+                <Loading className="h-16 w-16 animate-spin text-primary" />
               </div>
               <p className="text-center text-muted-foreground">
                 Veuillez patienter pendant que nous vérifions votre email...
@@ -78,7 +78,7 @@ function VerifyEmailContent() {
             <>
               <div className="flex justify-center">
                 <div className="rounded-full bg-green-100 p-3">
-                  <CheckCircle2 className="h-16 w-16 text-green-600" />
+                  <Verified className="h-16 w-16 text-green-600" />
                 </div>
               </div>
               <div className="space-y-2 text-center">
@@ -102,7 +102,7 @@ function VerifyEmailContent() {
             <>
               <div className="flex justify-center">
                 <div className="rounded-full bg-red-100 p-3">
-                  <XCircle className="h-16 w-16 text-red-600" />
+                  <Remove className="h-16 w-16 text-red-600" />
                 </div>
               </div>
               <div className="space-y-2 text-center">
@@ -141,7 +141,7 @@ export default function VerifyEmailPage() {
           <Card className="w-full max-w-md">
             <div className="p-6" className="flex flex-col items-center space-y-6">
               <div className="flex justify-center">
-                <Loader2 className="h-16 w-16 animate-spin text-primary" />
+                <Loading className="h-16 w-16 animate-spin text-primary" />
               </div>
               <p className="text-center text-muted-foreground">
                 Veuillez patienter pendant que nous vérifions votre email...

@@ -21,16 +21,14 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Modal } from "@/components/ui/modal";
 import {
-  Loader2,
-  CheckCircle,
-  XCircle,
-  Mail,
-  Users,
+  Loading,
+  Verified,
+  Remove,
+  Email,
+  Close,
+  Open,
   FileText,
-  Send,
-  X,
-  Eye,
-} from "lucide-react";
+} from "@/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
@@ -175,7 +173,7 @@ export function ComposeMessage() {
         <Card className="space-y-4">
           <div className="space-y-2">
             <h5 className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600" />
+              <Verified className="h-5 w-5 text-green-600" />
               Email Sending Results
             </h5>
             <p className="text-sm text-muted-foreground">
@@ -212,9 +210,9 @@ export function ComposeMessage() {
                 className="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border"
               >
                 {result.success ? (
-                  <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+                  <Verified className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                 ) : (
-                  <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                  <Remove className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
                 )}
                 <span className="text-sm flex-1 font-medium">
                   {result.email}
@@ -275,7 +273,7 @@ export function ComposeMessage() {
                   <div className="space-y-3">
                     {isLoadingUsers ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                        <Loading className="h-6 w-6 animate-spin text-muted-foreground" />
                       </div>
                     ) : (
                       <Select
@@ -325,7 +323,7 @@ export function ComposeMessage() {
                                 className="h-5 w-5 p-0 hover:bg-black/50"
                                 onClick={() => handleRemoveUser(user.id)}
                               >
-                                <X className="h-3 w-3" />
+                                <Close className="h-3 w-3" />
                               </Button>
                             </Badge>
                           ))}
@@ -387,7 +385,7 @@ export function ComposeMessage() {
                     onClick={() => setShowPreview(true)}
                     className="flex items-center gap-2"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Open className="h-4 w-4" />
                     Preview Full Email
                   </Button>
                 </div>
@@ -448,7 +446,7 @@ export function ComposeMessage() {
 
             {selectedUsers.length > 0 && watchedTemplateId && (
               <Alert>
-                <Mail className="h-4 w-4" />
+                <Email className="h-4 w-4" />
                 <AlertDescription>
                   You are about to send{" "}
                   <strong>{selectedTemplate?.name}</strong> to{" "}

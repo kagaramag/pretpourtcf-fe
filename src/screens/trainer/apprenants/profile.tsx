@@ -4,19 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Calendar,
-  BookOpen,
-  Trophy,
-  Loader2,
-  ChevronLeft,
-  ChevronRight,
-  Timer,
-  Target,
-  Award,
-  Users,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Read, Loading, User, Trophy, CaretLeft, CaretRight, Clock as Timer, Target, Certificate } from "@/icons";
 import { toast } from "sonner";
 import { corporateService } from "@/services/corporate";
 import { useAuth } from "@/contexts/auth-context";
@@ -128,7 +116,7 @@ export default function ApprenantProfile() {
   if (isLoading && !activityData) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -136,7 +124,7 @@ export default function ApprenantProfile() {
   if (!activityData) {
     return (
       <div className="text-center py-12">
-        <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+        <User className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
         <p className="text-muted-foreground">Profil non trouvé</p>
         <Button
           variant="link"
@@ -219,7 +207,7 @@ export default function ApprenantProfile() {
         <div>
           {isLoading ? (
             <div className="flex justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
             </div>
           ) : practices.length > 0 ? (
             <div className="space-y-4">
@@ -238,12 +226,12 @@ export default function ApprenantProfile() {
                           {formatTime(session.timeElapsedSeconds)}
                         </span>
                         <span>
-                          <BookOpen className="inline h-3 w-3 mr-1" />
+                          <Read className="inline h-3 w-3 mr-1" />
                           {session.correctAnswers}/{session.totalQuestions}{" "}
                           correctes
                         </span>
                         <span>
-                          <Award className="inline h-3 w-3 mr-1" />
+                          <Certificate className="inline h-3 w-3 mr-1" />
                           {session.totalScore} points
                         </span>
                       </div>
@@ -293,7 +281,7 @@ export default function ApprenantProfile() {
                       onClick={() => setCurrentPage(currentPage - 1)}
                       disabled={currentPage === 1}
                     >
-                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      <CaretLeft className="h-4 w-4 mr-1" />
                       Précédent
                     </Button>
                     <Button
@@ -303,7 +291,7 @@ export default function ApprenantProfile() {
                       disabled={currentPage >= pagination.totalPages}
                     >
                       Suivant
-                      <ChevronRight className="h-4 w-4 ml-1" />
+                      <CaretRight className="h-4 w-4 ml-1" />
                     </Button>
                   </div>
                 </div>

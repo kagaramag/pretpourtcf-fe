@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import {
-  FileText,
-  ChevronRight,
-} from "lucide-react";
+import { ArrowRight, FileText } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -115,7 +112,7 @@ export default function FreeReadingPracticePage() {
                     {practice.title}
                   </h3>
                   <div className="w-6 h-6">
-                    <ChevronRight className="h-6 w-6" />
+                    <ArrowRight className="h-6 w-6" />
                   </div>
                 </div>
               </Link>

@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
 import { Menu } from "@/components/ui/menu";
-import { Search, MoreVertical, Loader2, X } from "lucide-react";
+import { Search, Ellipsis, Loading, Close } from "@/icons";
 import { userService } from "@/services/user";
 import { User } from "@/types";
 import { toast } from "sonner";
@@ -227,7 +227,7 @@ function UsersScreenContent() {
         <Menu
           trigger={
             <Button variant="ghost" size="icon">
-              <MoreVertical className="h-4 w-4" />
+              <Ellipsis className="h-4 w-4" />
             </Button>
           }
           items={[
@@ -322,7 +322,7 @@ function UsersScreenContent() {
             onClick={clearFilters}
             className="gap-2"
           >
-            <X className="h-4 w-4" />
+            <Close className="h-4 w-4" />
             Clear Filters
           </Button>
         )}
@@ -389,7 +389,7 @@ export function UsersScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

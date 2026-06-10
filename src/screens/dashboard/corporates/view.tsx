@@ -8,13 +8,13 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
-  MapPin,
   Calendar,
-  Building2,
-  Mail,
+  Corporate,
+  Email,
   Phone,
-  CreditCard,
-} from "lucide-react";
+  Subscription,
+  MapPin,
+} from "@/icons";
 import { format } from "date-fns";
 import { Tabs, TabPanel, Tab } from "@/components/molecules/Tabs";
 import { useState } from "react";
@@ -67,7 +67,7 @@ export default function CorporateDetailsScreen() {
       <div className="p-8">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg border border-border p-12 text-center">
-            <Building2 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <Corporate className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-500 mb-4">
               {error
                 ? "Error loading corporate details"
@@ -135,7 +135,7 @@ export default function CorporateDetailsScreen() {
                   <div>
                     <h5 className="text-sm text-gray-500">Email</h5>
                     <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4 text-gray-400" />
+                      <Email className="h-4 w-4 text-gray-400" />
                       <p className="text-sm">{corporate.email}</p>
                     </div>
                   </div>
@@ -268,7 +268,7 @@ export default function CorporateDetailsScreen() {
               </div>
             ) : (
               <div className="text-center py-8 text-gray-500">
-                <CreditCard className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                <Subscription className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                 <p>No active subscription</p>
                 <p className="text-sm mt-1">
                   Create a subscription plan for this corporate

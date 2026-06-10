@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Streak } from "@/services/streak";
-import { CheckCircle2, Circle, Trophy, Clock } from "lucide-react";
+import { Verified, Clock, CircleIcon, Trophy } from "@/icons";
 
 interface StreakDetailsDialogProps {
   open: boolean;
@@ -61,9 +61,9 @@ export function StreakDetailsDialog({
                     }`}
                   >
                     {exercise.completed ? (
-                      <CheckCircle2 className="h-5 w-5 text-green-600" />
+                      <Verified className="h-5 w-5 text-green-600" />
                     ) : (
-                      <Circle className="h-5 w-5 text-muted-foreground" />
+                      <CircleIcon className="h-5 w-5 text-muted-foreground" />
                     )}
                     <div className="flex-1">
                       <p className="font-medium text-sm">

@@ -16,17 +16,7 @@ import Mastercard from "@/assets/images/mastercard.svg";
 import Amex from "@/assets/images/amex.svg";
 import Momo from "@/assets/images/mtn-momo.jpg";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Loader2,
-  CreditCard,
-  CheckCircle2,
-  XCircle,
-  Clock,
-  ArrowLeft,
-  Tag,
-  X,
-  Smartphone,
-} from "lucide-react";
+import { Loading, Subscription, Clock, ArrowLeft, Close, Verified, XCircle, Tag, Smartphone } from "@/icons";
 import { toast } from "sonner";
 import { Icon } from "@/icons";
 import { config } from "@/config";
@@ -507,7 +497,7 @@ function Abonner() {
   if (!plan) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loading className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -518,7 +508,7 @@ function Abonner() {
       <div className="container">
         <div>
           <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <CheckCircle2 className="h-10 w-10 text-green-600" />
+            <Verified className="h-10 w-10 text-green-600" />
           </div>
           <div className="text-center">
             <h3 className="text-2xl font-semibold text-green-700">
@@ -686,7 +676,7 @@ function Abonner() {
             </div>
 
             <div className="flex justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-yellow-600" />
+              <Loading className="h-8 w-8 animate-spin text-yellow-600" />
             </div>
 
             <p className="text-xs text-center text-gray-600">
@@ -885,7 +875,7 @@ function Abonner() {
                       >
                         {validatingPromo ? (
                           <>
-                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            <Loading className="h-4 w-4 animate-spin mr-2" />
                             Validation...
                           </>
                         ) : (
@@ -913,7 +903,7 @@ function Abonner() {
                         onClick={handleRemovePromoCode}
                         className="h-8 w-8 p-0"
                       >
-                        <X className="h-4 w-4" />
+                        <Close className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
@@ -969,7 +959,7 @@ function Abonner() {
                           htmlFor="cc"
                           className="flex items-center gap-2 cursor-pointer flex-1"
                         >
-                          <CreditCard className="h-5 w-5" />
+                          <Subscription className="h-5 w-5" />
                           <div className="flex-1">Carte bancaire</div>
                           <div className="text-sm text-gray-600 flex items-center gap-1">
                             <Image
@@ -1054,7 +1044,7 @@ function Abonner() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loading className="mr-2 h-4 w-4 animate-spin" />
                       Traitement...
                     </>
                   ) : calculateFinalPrice() === 0 ? (
@@ -1107,7 +1097,7 @@ export default function AbonnerPage() {
       <Suspense
         fallback={
           <div className="flex justify-center items-center min-h-screen">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loading className="h-8 w-8 animate-spin text-primary" />
           </div>
         }
       >

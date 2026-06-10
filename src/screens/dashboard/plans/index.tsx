@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, Column } from "@/components/ui/table";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
-import { Loader2, Crown, Check, X, Plus, Pencil } from "lucide-react";
+import { Loading, Certificate, Check, Close, Plus, Edit } from "@/icons";
 import { planService, SubscriptionPlan, PlanCategory } from "@/services/plan";
 import { PlanDialog } from "./plan-dialog";
 
@@ -38,7 +38,7 @@ export function PlansScreen() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loading className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -141,7 +141,7 @@ export function PlansScreen() {
           </Badge>
         ) : (
           <Badge variant="secondary">
-            <X className="h-3 w-3 mr-1" />
+            <Close className="h-3 w-3 mr-1" />
             Inactif
           </Badge>
         ),
@@ -152,7 +152,7 @@ export function PlansScreen() {
       render: (plan) =>
         plan.popular ? (
           <Badge className="bg-orange-500">
-            <Crown className="h-3 w-3 mr-1" />
+            <Certificate className="h-3 w-3 mr-1" />
             Populaire
           </Badge>
         ) : (
@@ -168,7 +168,7 @@ export function PlansScreen() {
           size="sm"
           onClick={() => handleEditPlan(plan)}
         >
-          <Pencil className="h-4 w-4" />
+          <Edit className="h-4 w-4" />
         </Button>
       ),
     },
@@ -220,7 +220,7 @@ export function PlansScreen() {
           </Badge>
         ) : (
           <Badge variant="secondary">
-            <X className="h-3 w-3 mr-1" />
+            <Close className="h-3 w-3 mr-1" />
             Inactif
           </Badge>
         ),
@@ -231,7 +231,7 @@ export function PlansScreen() {
       render: (plan) =>
         plan.popular ? (
           <Badge className="bg-orange-500">
-            <Crown className="h-3 w-3 mr-1" />
+            <Certificate className="h-3 w-3 mr-1" />
             Populaire
           </Badge>
         ) : (
@@ -247,7 +247,7 @@ export function PlansScreen() {
           size="sm"
           onClick={() => handleEditPlan(plan)}
         >
-          <Pencil className="h-4 w-4" />
+          <Edit className="h-4 w-4" />
         </Button>
       ),
     },

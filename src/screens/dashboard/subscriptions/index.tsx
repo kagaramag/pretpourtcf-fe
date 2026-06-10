@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
-import { Loader2, Plus } from "lucide-react";
+import { Loading, Plus } from "@/icons";
 import { SubscriptionPlan } from "@/services/plan";
 import { PlanDialog } from "@/screens/dashboard/plans/plan-dialog";
 import { SubscriptionsTab } from "./subscriptions";
@@ -82,7 +82,7 @@ export default function SubscriptionScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

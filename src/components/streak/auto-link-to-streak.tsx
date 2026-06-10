@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Flame, Trophy, Zap, CheckCircle } from "lucide-react";
+import { Verified, Flame, Trophy, Zap } from "@/icons";
 import { streakService } from "@/services/streak";
 import { toast } from "sonner";
 
@@ -103,7 +103,7 @@ export function AutoLinkToStreak({
   if (linked && exerciseNumber) {
     return (
       <Alert className="border-green-200 bg-white">
-        <CheckCircle className="h-4 w-4 text-green-600" />
+        <Verified className="h-4 w-4 text-green-600" />
         <AlertDescription className="space-y-2">
           <div className="flex items-center gap-2 font-semibold text-green-900">
             <Flame className="h-5 w-5 text-orange-500" />

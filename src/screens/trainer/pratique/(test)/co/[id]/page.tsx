@@ -6,18 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  EyeClosed,
-  Trophy,
-  XCircle,
-  RotateCcw,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-} from "lucide-react";
+import { Clock, Open, Verified, Trophy, XCircle, CaretLeft, CaretRight, EyeClosed, RotateCcw } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { questionService } from "@/services/question";
 import {
@@ -308,7 +297,7 @@ export default function PracticeSessionPage() {
                 className="gap-2"
               >
                 {showCorrectAnswer ? (
-                  <Eye className="h-4 w-4" />
+                  <Open className="h-4 w-4" />
                 ) : (
                   <EyeClosed className="h-4 w-4" />
                 )}
@@ -352,7 +341,7 @@ export default function PracticeSessionPage() {
                         </div>
                         <span className="flex-1">{option}</span>
                         {isCorrectAnswer && (
-                          <CheckCircle2 className="h-5 w-5 text-green-600" />
+                          <Verified className="h-5 w-5 text-green-600" />
                         )}
                       </div>
                     </button>
@@ -369,7 +358,7 @@ export default function PracticeSessionPage() {
                 size="lg"
                 className="gap-2"
               >
-                <ChevronLeft className="h-4 w-4" />
+                <CaretLeft className="h-4 w-4" />
                 Précédente
               </Button>
               <Button
@@ -383,7 +372,7 @@ export default function PracticeSessionPage() {
                   : currentQuestionIndex === questions.length - 1
                     ? "Terminer l'exercice"
                     : "Suivante"}
-                <ChevronRight className="h-4 w-4" />
+                <CaretRight className="h-4 w-4" />
               </Button>
             </div>
           </div>

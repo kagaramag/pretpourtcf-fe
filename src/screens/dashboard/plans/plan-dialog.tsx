@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
+import { Loading } from "@/icons";
 import {
   planService,
   SubscriptionPlan,
@@ -568,7 +568,7 @@ export function PlanDialog({
             Annuler
           </Button>
           <Button type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loading className="mr-2 h-4 w-4 animate-spin" />}
             {plan ? "Mettre à jour" : "Créer"}
           </Button>
         </div>

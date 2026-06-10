@@ -74,7 +74,7 @@ const menuItems: MenuItem[] = [
   },
   {
     name: "Referrals",
-    icon: <Icon name="userLine" size={20} />,
+    icon: <Icon name="user" size={20} />,
     href: "/dashboard/referrals",
     permission: PERMISSIONS.USERS_READ,
   },

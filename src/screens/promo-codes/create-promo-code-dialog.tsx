@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Calendar } from "lucide-react";
+import { Loading, Calendar } from "@/icons";
 import { promoCodeService } from "@/services/promo-code";
 import { subscriptionService } from "@/services/subscription";
 import { toast } from "sonner";
@@ -307,7 +307,7 @@ export default function CreatePromoCodeDialog({
           <Button type="submit" disabled={createMutation.isPending}>
             {createMutation.isPending ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loading className="mr-2 h-4 w-4 animate-spin" />
                 Création...
               </>
             ) : (

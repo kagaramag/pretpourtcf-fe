@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { Headphones, Play } from "lucide-react";
+import { Listen, Play } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -85,7 +85,7 @@ export default function FreeListeningPracticePage() {
 
         {practices.length === 0 ? (
           <div>
-            <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
+            <Listen className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice gratuit disponible
             </h3>

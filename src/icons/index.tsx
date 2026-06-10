@@ -67,6 +67,50 @@ import Certificate from "@/assets/icons/Certificate";
 import Subscription from "@/assets/icons/Subscription";
 import Promo from "@/assets/icons/Promo";
 import Corporate from "@/assets/icons/Corporate";
+import Facebook from "@/assets/icons/Facebook";
+import Twitter from "@/assets/icons/Twitter";
+import Instagram from "@/assets/icons/Instagram";
+import Linkedin from "@/assets/icons/Linkedin";
+import Globe from "@/assets/icons/Globe";
+import Flame from "@/assets/icons/Flame";
+import Trophy from "@/assets/icons/Trophy";
+import Zap from "@/assets/icons/Zap";
+import Star from "@/assets/icons/Star";
+import Sparkles from "@/assets/icons/Sparkles";
+import Brain from "@/assets/icons/Brain";
+import DollarSign from "@/assets/icons/DollarSign";
+import ReceiptText from "@/assets/icons/ReceiptText";
+import Tag from "@/assets/icons/Tag";
+import TrendingUp from "@/assets/icons/TrendingUp";
+import FileText from "@/assets/icons/FileText";
+import FileQuestion from "@/assets/icons/FileQuestion";
+import Volume from "@/assets/icons/Volume";
+import ImageIcon from "@/assets/icons/ImageIcon";
+import Save from "@/assets/icons/Save";
+import Trash from "@/assets/icons/Trash";
+import CaretLeft from "@/assets/icons/CaretLeft";
+import CaretRight from "@/assets/icons/CaretRight";
+import RotateCcw from "@/assets/icons/RotateCcw";
+import Send from "@/assets/icons/Send";
+import Pause from "@/assets/icons/Pause";
+import CircleIcon from "@/assets/icons/CircleIcon";
+import XCircle from "@/assets/icons/XCircle";
+import UserPlus from "@/assets/icons/UserPlus";
+import UserGroup from "@/assets/icons/UserGroup";
+import Monitor from "@/assets/icons/Monitor";
+import Smartphone from "@/assets/icons/Smartphone";
+import Tablet from "@/assets/icons/Tablet";
+import Laptop from "@/assets/icons/Laptop";
+import MapPin from "@/assets/icons/MapPin";
+import Activity from "@/assets/icons/Activity";
+import MessageSquare from "@/assets/icons/MessageSquare";
+import EyeClosed from "@/assets/icons/EyeClosed";
+import EyeOpen from "@/assets/icons/EyeOpen";
+import History from "@/assets/icons/History";
+import Notebook from "@/assets/icons/Notebook";
+import ChevronUp from "@/assets/icons/ChevronUp";
+import List from "@/assets/icons/List";
+import Premium from "@/assets/icons/Premium";
 
 type IconComponent = React.FC<React.SVGProps<SVGSVGElement>>;
 
@@ -138,6 +182,50 @@ const icons = {
   subscription: Subscription,
   promo: Promo,
   corporate: Corporate,
+  facebook: Facebook,
+  twitter: Twitter,
+  instagram: Instagram,
+  linkedin: Linkedin,
+  globe: Globe,
+  flame: Flame,
+  trophy: Trophy,
+  zap: Zap,
+  star: Star,
+  sparkles: Sparkles,
+  brain: Brain,
+  dollarSign: DollarSign,
+  receiptText: ReceiptText,
+  tag: Tag,
+  trendingUp: TrendingUp,
+  fileText: FileText,
+  fileQuestion: FileQuestion,
+  volume: Volume,
+  imageIcon: ImageIcon,
+  save: Save,
+  trash: Trash,
+  caretLeft: CaretLeft,
+  caretRight: CaretRight,
+  rotateCcw: RotateCcw,
+  send: Send,
+  pause: Pause,
+  circleIcon: CircleIcon,
+  xCircle: XCircle,
+  userPlus: UserPlus,
+  userGroup: UserGroup,
+  monitor: Monitor,
+  smartphone: Smartphone,
+  tablet: Tablet,
+  laptop: Laptop,
+  mapPin: MapPin,
+  activity: Activity,
+  messageSquare: MessageSquare,
+  eyeClosed: EyeClosed,
+  history: History,
+  notebook: Notebook,
+  chevronUp: ChevronUp,
+  list: List,
+  eyeOpen: EyeOpen,
+  premium: Premium,
 } as const satisfies Record<string, IconComponent>;
 
 export type IconName = keyof typeof icons;
@@ -250,6 +338,50 @@ export {
   Subscription,
   Promo,
   Corporate,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Globe,
+  Flame,
+  Trophy,
+  Zap,
+  Star,
+  Sparkles,
+  Brain,
+  DollarSign,
+  ReceiptText,
+  Tag,
+  TrendingUp,
+  FileText,
+  FileQuestion,
+  Volume,
+  ImageIcon,
+  Save,
+  Trash,
+  CaretLeft,
+  CaretRight,
+  RotateCcw,
+  Send,
+  Pause,
+  CircleIcon,
+  XCircle,
+  UserPlus,
+  UserGroup,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Laptop,
+  MapPin,
+  Activity,
+  MessageSquare,
+  EyeClosed,
+  History,
+  Notebook,
+  ChevronUp,
+  List,
+  EyeOpen,
+  Premium,
 };
 
 export const iconNames = Object.keys(icons) as IconName[];

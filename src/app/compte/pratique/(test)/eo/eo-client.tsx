@@ -9,13 +9,7 @@ import { practiceService } from "@/services/practice";
 import { PracticeWithQuestions } from "@/types";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import {
-  ChevronDown,
-  ChevronUp,
-  MessageSquare,
-  Clock,
-  FileText,
-} from "lucide-react";
+import { CaretDown, Clock, ChevronUp, MessageSquare, FileText } from "@/icons";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function SpeakingPracticePage() {
@@ -197,7 +191,7 @@ export default function SpeakingPracticePage() {
                           {isExpanded ? (
                             <ChevronUp className="h-6 w-6 text-gray-600" />
                           ) : (
-                            <ChevronDown className="h-6 w-6 text-gray-600" />
+                            <CaretDown className="h-6 w-6 text-gray-600" />
                           )}
                         </div>
                       </div>

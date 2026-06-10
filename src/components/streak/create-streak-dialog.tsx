@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { Flame, Trophy, Clock, AlertCircle, Zap, BookOpen } from "lucide-react";
+import { Clock, Info, Read, Flame, Trophy, Zap } from "@/icons";
 import { streakService, CreateStreakData } from "@/services/streak";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
@@ -142,7 +142,7 @@ export function CreateStreakDialog({
         <div className="space-y-4 py-4">
           {/* Info Alert */}
           <Alert className="border-blue-200 bg-blue-50">
-            <AlertCircle className="h-4 w-4 text-blue-600" />
+            <Info className="h-4 w-4 text-blue-600" />
             <AlertDescription className="text-sm text-blue-900">
               Fonctionnalité premium uniquement. Vous devez avoir un abonnement
               actif pour créer une série.
@@ -152,7 +152,7 @@ export function CreateStreakDialog({
           {/* Practice Selection */}
           <div className="space-y-2">
             <Label htmlFor="practice" className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4" />
+              <Read className="h-4 w-4" />
               Choisir un exercice
             </Label>
             <Select
@@ -226,7 +226,7 @@ export function CreateStreakDialog({
 
           {/* Warning */}
           <Alert variant="destructive" className="border-red-200 bg-red-50">
-            <AlertCircle className="h-4 w-4" />
+            <Info className="h-4 w-4" />
             <AlertDescription className="text-sm">
               <strong>Attention:</strong> Vous ne pouvez avoir qu'une seule
               série active à la fois. Si vous ne complétez pas d'exercice dans

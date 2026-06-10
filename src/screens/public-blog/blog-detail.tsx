@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { Loading, ArrowLeft, Calendar, User, Clock } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -47,7 +47,7 @@ export default function PublicBlogDetailScreen({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }

@@ -1,17 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/auth-context";
-import {
-  User,
-  ReceiptText,
-  History,
-  List,
-  UserPlus,
-  Flame,
-  Crown,
-  LogOut,
-  Home,
-} from "lucide-react";
+import { User, Home, Certificate, Logout, ReceiptText, History, UserPlus, Flame, List, Subscription } from "@/icons";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -37,7 +27,7 @@ export default function LearnerNavigation({
   const navigation = [
     { name: "Accueil", href: "/", icon: Home },
     { name: "Mon compte", href: "/compte", icon: User },
-    { name: "Abonnements", href: "/compte/plans", icon: List },
+    { name: "Abonnements", href: "/compte/plans", icon: Subscription },
     {
       name: "Historique",
       href: "/compte/historique",
@@ -57,7 +47,7 @@ export default function LearnerNavigation({
     {
       name: "Se déconnecter",
       href: "#",
-      icon: LogOut,
+      icon: Logout,
       isLogout: true,
     },
   ];
@@ -105,7 +95,7 @@ export default function LearnerNavigation({
                       />
                       <span className="flex-1 flex items-center gap-x-2">
                         {item.name}
-                        <Crown className="size-4 text-amber-500" />
+                        <Certificate className="size-4 text-amber-500" />
                       </span>
                     </div>
                   ) : item.isLogout ? (

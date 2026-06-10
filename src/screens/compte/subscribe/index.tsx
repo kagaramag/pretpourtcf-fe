@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import { Loader2, Building2 } from "lucide-react";
+import { Loading, Corporate } from "@/icons";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
@@ -24,7 +24,7 @@ function PlansPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loading className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -48,7 +48,7 @@ function PlansPage() {
           {user?.corporate && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <Building2 className="h-5 w-5 text-blue-600" />
+                <Corporate className="h-5 w-5 text-blue-600" />
                 <div className="flex-1">
                   <p className="font-medium text-blue-900">
                     {user.corporate.name}

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { PenTool, ChevronRight } from "lucide-react";
+import { Write, ArrowRight } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -85,7 +85,7 @@ export default function FreeWritingPracticePage() {
 
         {practices.length === 0 ? (
           <div>
-            <PenTool className="h-16 w-16 text-muted-foreground mb-4" />
+            <Write className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice gratuit disponible
             </h3>
@@ -112,7 +112,7 @@ export default function FreeWritingPracticePage() {
                     {practice.title}
                   </h3>
                   <div className="w-6 h-6">
-                    <ChevronRight className="h-6 w-6" />
+                    <ArrowRight className="h-6 w-6" />
                   </div>
                 </div>
               </Link>

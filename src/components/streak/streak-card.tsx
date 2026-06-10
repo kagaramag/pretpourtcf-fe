@@ -4,7 +4,7 @@ import { Streak, Reward } from "@/services/streak";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Flame, Trophy, Clock, Zap } from "lucide-react";
+import { Clock, Flame, Trophy, Zap } from "@/icons";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 

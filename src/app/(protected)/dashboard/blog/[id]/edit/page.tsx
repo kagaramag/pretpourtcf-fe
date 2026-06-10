@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import BlogFormScreen from "@/screens/blog/blog-form";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
-import { Loader2 } from "lucide-react";
+import { Loading } from "@/icons";
 import { toast } from "sonner";
 
 export default function EditBlogPage() {
@@ -32,7 +32,7 @@ export default function EditBlogPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }

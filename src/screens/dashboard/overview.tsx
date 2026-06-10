@@ -2,17 +2,17 @@
 
 import { Card } from "@/components/ui/card";
 import {
-  BookOpen,
-  FileQuestion,
-  Users,
-  CreditCard,
-  Activity,
-  CheckCircle2,
+  Read,
+  User,
+  Subscription,
   Clock,
-  Crown,
+  Certificate,
+  Verified,
+  FileQuestion,
+  Activity,
   Flame,
   Trophy,
-} from "lucide-react";
+} from "@/icons";
 import { useDashboardStats } from "@/hooks/useDashboard";
 import { usePlansStats } from "@/hooks/usePlans";
 import { useStreaksStats } from "@/hooks/useStreaks";
@@ -53,7 +53,7 @@ export function DashboardOverview() {
       title: "Practices",
       value: stats.totalPractices.toLocaleString(),
       change: "Available for learners",
-      icon: BookOpen,
+      icon: Read,
       color: "text-blue-500",
     },
     {
@@ -72,21 +72,21 @@ export function DashboardOverview() {
           title: "Active Subscriptions",
           value: stats.subscriptions.active.toLocaleString(),
           change: `${stats.subscriptions.total} total`,
-          icon: CreditCard,
+          icon: Subscription,
           color: "text-purple-500",
         },
         {
           title: "Total Plans",
           value: plansData.stats.total,
           change: `${plansData.stats.active} active`,
-          icon: Crown,
+          icon: Certificate,
           color: "text-purple-500",
         },
         {
           title: "Premium Plans",
           value: plansData.stats.premium,
           change: "Premium subscriptions",
-          icon: Crown,
+          icon: Certificate,
           color: "text-purple-500",
         },
       ]
@@ -118,7 +118,7 @@ export function DashboardOverview() {
       title: "Total Users",
       value: stats.totalUsers.toLocaleString(),
       change: "Registered users",
-      icon: Users,
+      icon: User,
       color: "text-muted-foreground",
     },
   ];
@@ -132,7 +132,7 @@ export function DashboardOverview() {
     {
       label: "Completed",
       value: stats.practiceSessionInsights.completed,
-      icon: CheckCircle2,
+      icon: Verified,
     },
     {
       label: "In Progress",

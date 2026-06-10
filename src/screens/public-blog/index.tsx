@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Loader2, Calendar, User } from "lucide-react";
+import { Search, Loading, Calendar, User } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -100,7 +100,7 @@ function PublicBlogScreenContent() {
         {/* Blog Grid */}
         {isLoading ? (
           <div className="flex items-center justify-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : blogs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-center">
@@ -184,7 +184,7 @@ function PublicBlogScreenContent() {
 
 export default function PublicBlogScreen() {
   return (
-    <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin" />}>
+    <Suspense fallback={<Loading className="h-8 w-8 animate-spin" />}>
       <PublicBlogScreenContent />
     </Suspense>
   );

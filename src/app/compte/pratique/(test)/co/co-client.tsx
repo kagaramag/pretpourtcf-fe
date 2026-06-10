@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { BarChart, Headphones } from "lucide-react";
+import { ChartView, Listen } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -99,7 +99,7 @@ export default function ListeningPracticePage() {
 
         {practices.length === 0 ? (
           <div>
-            <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
+            <Listen className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice disponible
             </h3>
@@ -137,7 +137,7 @@ export default function ListeningPracticePage() {
         <div className="mt-8">
           <div className="p-4 border border-border bg-blue-50">
             <h3 className="flex items-center gap-2 text-blue-900">
-              <BarChart className="h-5 w-5" />
+              <ChartView className="h-5 w-5" />
               Conseils pour réussir
             </h3>
             <div className="text-sm text-blue-800 space-y-2">

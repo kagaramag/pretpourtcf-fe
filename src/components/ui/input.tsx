@@ -9,7 +9,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
         type={type}
         data-slot="input"
         className={cn(
-          'bg-white file:bg-gray-200 placeholder:text-gray-700 selection:text-gray-500 border-border h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base  outline-none file:inline-flex file:h-7 file:border-0 file:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+          'bg-white autofill:shadow-[inset_0_0_0px_1000px_rgb(255,255,255)] autofill:[-webkit-text-fill-color:inherit] file:bg-gray-200 placeholder:text-gray-700 selection:text-gray-500 border-border h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base  outline-none file:inline-flex file:h-7 file:border-0 file:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
           className,
         )}
         ref={ref}

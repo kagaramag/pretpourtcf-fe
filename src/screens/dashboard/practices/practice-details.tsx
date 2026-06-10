@@ -13,13 +13,13 @@ import { Modal } from "@/components/ui/modal";
 import {
   ArrowLeft,
   Plus,
-  MoreVertical,
-  Loader2,
+  Ellipsis,
+  Loading,
   Clock,
   FileQuestion,
-  Volume2,
-  Image as ImageIcon,
-} from "lucide-react";
+  Volume,
+  ImageIcon,
+} from "@/icons";
 import { practiceService } from "@/services/practice";
 import { questionService } from "@/services/question";
 import { Practice, PracticeQuestion } from "@/types";
@@ -227,7 +227,7 @@ function PracticeDetailsContent() {
         <div className="flex gap-2">
           {question.media?.audio && (
             <div className="flex items-center gap-1">
-              <Volume2 className="h-4 w-4 text-blue-600" />
+              <Volume className="h-4 w-4 text-blue-600" />
               <a
                 href={question.media.audio}
                 target="_blank"
@@ -279,7 +279,7 @@ function PracticeDetailsContent() {
           <Menu
             trigger={
               <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
+                <Ellipsis className="h-4 w-4" />
               </Button>
             }
             items={[
@@ -319,7 +319,7 @@ function PracticeDetailsContent() {
   if (isLoadingPractice) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -636,7 +636,7 @@ export function PracticeDetailsScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

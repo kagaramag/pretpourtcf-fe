@@ -8,12 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Table, Column } from "@/components/ui/table";
 import {
-  Mail,
+  Email,
+  Verified,
+  Remove,
   FileText,
-  Send,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+} from "@/icons";
 import { emailHistoryService } from "@/services/email-history";
 import { formatDistanceToNow } from "date-fns";
 
@@ -60,7 +59,7 @@ const columns: Column<EmailHistoryItem>[] = [
     header: "Success",
     render: (item) => (
       <div className="flex items-center gap-2">
-        <CheckCircle className="h-4 w-4 text-green-600" />
+        <Verified className="h-4 w-4 text-green-600" />
         <span>{item.successCount}</span>
       </div>
     ),
@@ -70,7 +69,7 @@ const columns: Column<EmailHistoryItem>[] = [
     header: "Failed",
     render: (item) => (
       <div className="flex items-center gap-2">
-        <XCircle className="h-4 w-4 text-red-600" />
+        <Remove className="h-4 w-4 text-red-600" />
         <span>{item.failureCount}</span>
       </div>
     ),
@@ -127,7 +126,7 @@ export function Messages() {
             Templates
           </Button>
           <Button href="/dashboard/messages/compose">
-            <Send className="h-4 w-4 mr-2" />
+            <Email className="h-4 w-4 mr-2" />
             Compose
           </Button>
         </div>
@@ -139,7 +138,7 @@ export function Messages() {
           <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
-                <Mail className="h-5 w-5" />
+                <Email className="h-5 w-5" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Emails</p>
@@ -151,7 +150,7 @@ export function Messages() {
           <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
-                <Send className="h-5 w-5 " />
+                <Email className="h-5 w-5 " />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Recipients</p>
@@ -163,7 +162,7 @@ export function Messages() {
           <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100 rounded-lg">
-                <CheckCircle className="h-5 w-5" />
+                <Verified className="h-5 w-5" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Successful</p>
@@ -175,7 +174,7 @@ export function Messages() {
           <Card className="lg:p-4">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-gray-100  rounded-lg">
-                <XCircle className="h-5 w-5 " />
+                <Remove className="h-5 w-5 " />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Failed</p>
@@ -205,13 +204,13 @@ export function Messages() {
           emptyMessage="No emails sent yet"
           emptyComponent={
             <div className="text-center py-12">
-              <Mail className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <Email className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">No emails sent yet</h3>
               <p className="text-muted-foreground mb-6">
                 Start by composing your first email to users
               </p>
               <Button href="/dashboard/messages/compose">
-                <Send className="h-4 w-4 mr-2" />
+                <Email className="h-4 w-4 mr-2" />
                 Compose Email
               </Button>
             </div>

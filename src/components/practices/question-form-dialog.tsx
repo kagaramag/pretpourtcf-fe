@@ -8,17 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Loader2,
-  Plus,
-  X,
-  Volume2,
-  Image as ImageIcon,
-  Upload,
-  Trash,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Loading, Plus, Close, Upload, Open, Volume, ImageIcon, Trash } from "@/icons";
 import MDEditor, { commands } from "@uiw/react-md-editor";
 import ReactMarkdown from "react-markdown";
 import {
@@ -498,7 +488,7 @@ export function QuestionFormDialog({
                           size="icon"
                           onClick={() => handleRemoveOption(index)}
                         >
-                          <X className="h-4 w-4" />
+                          <Close className="h-4 w-4" />
                         </Button>
                       )}
                     </div>
@@ -538,12 +528,12 @@ export function QuestionFormDialog({
                   >
                     {showAnswerPreview ? (
                       <>
-                        <EyeOff className="h-4 w-4" />
+                        <Close className="h-4 w-4" />
                         Hide Preview
                       </>
                     ) : (
                       <>
-                        <Eye className="h-4 w-4" />
+                        <Open className="h-4 w-4" />
                         Show Preview
                       </>
                     )}
@@ -652,13 +642,13 @@ export function QuestionFormDialog({
                   {/* Audio Upload */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Volume2 className="h-4 w-4 text-blue-600" />
+                      <Volume className="h-4 w-4 text-blue-600" />
                       <Label>Audio File</Label>
                     </div>
 
                     {formData.audioUrl ? (
                       <div className="flex items-center gap-2 p-3 border rounded-lg bg-blue-50">
-                        <Volume2 className="h-4 w-4 text-blue-600" />
+                        <Volume className="h-4 w-4 text-blue-600" />
                         <div className="flex-1">
                           <p className="text-sm font-medium">Audio uploaded</p>
                           <a
@@ -698,7 +688,7 @@ export function QuestionFormDialog({
                         >
                           {isUploadingAudio ? (
                             <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              <Loading className="mr-2 h-4 w-4 animate-spin" />
                               Uploading...
                             </>
                           ) : (
@@ -764,7 +754,7 @@ export function QuestionFormDialog({
                         >
                           {isUploadingImage ? (
                             <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              <Loading className="mr-2 h-4 w-4 animate-spin" />
                               Uploading...
                             </>
                           ) : (
@@ -812,7 +802,7 @@ export function QuestionFormDialog({
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   {mode === "create" ? "Creating..." : "Updating..."}
                 </>
               ) : mode === "create" ? (

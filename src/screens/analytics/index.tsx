@@ -3,14 +3,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  TrendingUp,
-  Users,
-  DollarSign,
-  AlertCircle,
-  Calendar,
-  Download,
-} from "lucide-react";
+import { User, Info, Calendar, Download, TrendingUp, DollarSign } from "@/icons";
 import { formatCurrency } from "@/lib/utils";
 import { dummyAnalyticsOverview, dummyAgentAnalytics } from "@/utils/dummyData";
 import {

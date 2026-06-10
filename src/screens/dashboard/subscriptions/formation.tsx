@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, Column } from "@/components/ui/table";
-import { Pencil } from "lucide-react";
+import { Edit } from "@/icons";
 import { planService, SubscriptionPlan } from "@/services/plan";
 
 interface FormationTabProps {
@@ -93,7 +93,7 @@ export function FormationTab({ onEditPlan }: FormationTabProps) {
       header: "Actions",
       render: (plan) => (
         <Button variant="ghost" size="sm" onClick={() => onEditPlan(plan)}>
-          <Pencil className="h-4 w-4" />
+          <Edit className="h-4 w-4" />
         </Button>
       ),
     },

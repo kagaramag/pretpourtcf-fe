@@ -1,5 +1,4 @@
-import { CreditCard, BookOpen } from "lucide-react";
-import { Profile, ChartView } from "@/icons";
+import { Profile, ChartView, Subscription, Read } from "@/icons";
 
 const steps = [
   {
@@ -12,13 +11,13 @@ const steps = [
     name: "Choisissez votre plan",
     description:
       "Sélectionnez l'abonnement qui correspond à votre objectif et à votre durée de préparation.",
-    icon: CreditCard,
+    icon: Subscription,
   },
   {
     name: "Commencez à pratiquer",
     description:
       "Accédez immédiatement à tous les tests et exercices. Entraînez-vous quand vous voulez, où que vous soyez.",
-    icon: BookOpen,
+    icon: Read,
   },
   {
     name: "Suivez vos progrès",

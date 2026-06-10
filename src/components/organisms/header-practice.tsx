@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/auth-context";
-import { X } from "lucide-react";
+import { Close } from "@/icons";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/icon.svg";
 import Image from "next/image";
@@ -51,7 +51,7 @@ export default function Header({ title, onClose }: HeaderPracticeProps) {
             className="cursor-pointer hover:bg-gray-100 p-1.5 rounded-lg"
             onClick={onClose}
           >
-            <X className="h-8 w-8" />
+            <Close className="h-8 w-8" />
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Flame, Clock, Trophy } from "lucide-react";
+import { Clock, Flame, Trophy } from "@/icons";
 import { streakService, Streak } from "@/services/streak";
 import Link from "next/link";
 

@@ -6,15 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
-import {
-  Search,
-  UserPlus,
-  Users,
-  Check,
-  Clock,
-  X,
-  Loader2,
-} from "lucide-react";
+import { Search, Check, Clock, Close, Loading, UserPlus, UserGroup } from "@/icons";
 import { toast } from "sonner";
 import { referralService, Referral } from "@/services/referral";
 import { formatDate } from "@/lib/utils";
@@ -87,7 +79,7 @@ export default function ReferralsScreen() {
       case "expired":
         return (
           <Badge variant="destructive">
-            <X className="h-3 w-3 mr-1" />
+            <Close className="h-3 w-3 mr-1" />
             Expiré
           </Badge>
         );

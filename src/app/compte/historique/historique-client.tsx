@@ -6,16 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, Column } from "@/components/ui/table";
-import {
-  BarChart,
-  Calendar,
-  Clock,
-  Trophy,
-  TrendingUp,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-} from "lucide-react";
+import { ChartView, Calendar, Clock, Verified, Info, Trophy, TrendingUp, XCircle } from "@/icons";
 import { practiceSessionService } from "@/services/practice-session";
 import { PracticeSession, Practice, SessionStatistics } from "@/types";
 import { toast } from "sonner";
@@ -71,7 +62,7 @@ export default function PracticeHistoryPage() {
       { icon: any; label: string; className: string }
     > = {
       completed: {
-        icon: CheckCircle2,
+        icon: Verified,
         label: "Complété",
         className: "bg-green-100 text-green-800",
       },
@@ -81,7 +72,7 @@ export default function PracticeHistoryPage() {
         className: "bg-red-100 text-red-800",
       },
       in_progress: {
-        icon: AlertCircle,
+        icon: Info,
         label: "En cours",
         className: "bg-yellow-100 text-yellow-800",
       },
@@ -212,7 +203,7 @@ export default function PracticeHistoryPage() {
       {statistics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:gap-4 gap-2 mb-8">
           <Card>
-            <BarChart className="h-4 w-4" />
+            <ChartView className="h-4 w-4" />
             Sessions totales
             <div className="p-6">
               <p className="text-3xl font-bold">{statistics.totalSessions}</p>
@@ -264,7 +255,7 @@ export default function PracticeHistoryPage() {
             emptyMessage="Aucune session trouvée"
             emptyComponent={
               <div className="text-center py-12">
-                <BarChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <ChartView className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
                   Aucune session trouvée
                 </h3>

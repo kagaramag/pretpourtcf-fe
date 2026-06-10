@@ -8,9 +8,9 @@ import { Table, Column } from "@/components/ui/table";
 import { Menu } from "@/components/ui/menu";
 import {
   Plus,
-  MoreVertical,
-  Loader2,
-} from "lucide-react";
+  Ellipsis,
+  Loading,
+} from "@/icons";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
 import { toast } from "sonner";
 import { EmailTemplateFormDialog } from "@/components/email-templates/email-template-form-dialog";
@@ -206,7 +206,7 @@ export function EmailTemplatesScreen() {
           <Menu
             trigger={
               <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
+                <Ellipsis className="h-4 w-4" />
               </Button>
             }
             items={[
@@ -312,7 +312,7 @@ export function EmailTemplatesScreen() {
             >
               {deleteMutation.isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loading className="h-4 w-4 mr-2 animate-spin" />
                   Suppression...
                 </>
               ) : (

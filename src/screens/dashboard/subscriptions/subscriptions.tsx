@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
-import { Search, X } from "lucide-react";
+import { Search, Close } from "@/icons";
 import { subscriptionService } from "@/services/subscription";
 import { toast } from "sonner";
 
@@ -203,7 +203,7 @@ export function SubscriptionsTab() {
             onClick={clearFilters}
             className="gap-2"
           >
-            <X className="h-4 w-4" />
+            <Close className="h-4 w-4" />
             Clear Filters
           </Button>
         )}

@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  User,
-  ReceiptText,
-  History,
-  List,
-  UserPlus,
-  Flame,
-  ChevronDown,
-  X,
-} from "lucide-react";
+import { User, Close, CaretDown, ReceiptText, History, Flame, List } from "@/icons";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
@@ -102,7 +93,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             aria-label="Close menu"
           >
-            <X className="h-6 w-6" />
+            <Close className="h-6 w-6" />
           </button>
         </div>
 
@@ -141,7 +132,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                                 {item.name}
                               </span>
                               {item.name !== "Pratiques" && (
-                                <ChevronDown
+                                <CaretDown
                                   className={classNames(
                                     "size-3 transition-transform",
                                     isExpanded ? "rotate-180" : ""

@@ -11,13 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
 import { Menu } from "@/components/ui/menu";
-import {
-  Plus,
-  Search,
-  MoreVertical,
-  Loader2,
-  X,
-} from "lucide-react";
+import { Plus, Search, Ellipsis, Loading, Close } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -181,7 +175,7 @@ function BlogScreenContent() {
           <Menu
             trigger={
               <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
+                <Ellipsis className="h-4 w-4" />
               </Button>
             }
             items={[
@@ -307,7 +301,7 @@ function BlogScreenContent() {
 
 export default function BlogScreen() {
   return (
-    <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin" />}>
+    <Suspense fallback={<Loading className="h-8 w-8 animate-spin" />}>
       <BlogScreenContent />
     </Suspense>
   );

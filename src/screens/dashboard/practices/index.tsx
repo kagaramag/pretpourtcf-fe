@@ -13,12 +13,12 @@ import { Menu } from "@/components/ui/menu";
 import {
   Plus,
   Search,
-  MoreVertical,
-  Loader2,
-  X,
+  Ellipsis,
+  Loading,
+  Close,
   Clock,
   FileQuestion,
-} from "lucide-react";
+} from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -245,7 +245,7 @@ function PracticesScreenContent() {
         <Menu
           trigger={
             <Button variant="ghost" size="icon">
-              <MoreVertical className="h-4 w-4" />
+              <Ellipsis className="h-4 w-4" />
             </Button>
           }
           items={[
@@ -350,7 +350,7 @@ function PracticesScreenContent() {
               onClick={clearFilters}
               className="gap-2"
             >
-              <X className="h-4 w-4" />
+              <Close className="h-4 w-4" />
               Clear Filters
             </Button>
           )}
@@ -427,7 +427,7 @@ export function PracticesScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PratiqueGratuitPage from "./essai-gratuit-client";
+import PratiqueGratuitPage from "@/screens/compte/free-trial";
 
 export const metadata: Metadata = {
   title: "PrêtPourTCF | Essai gratuit",

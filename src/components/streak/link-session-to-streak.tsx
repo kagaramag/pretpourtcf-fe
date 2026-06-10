@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Flame, Trophy, Zap } from "lucide-react";
+import { Flame, Trophy, Zap } from "@/icons";
 import { streakService } from "@/services/streak";
 import { toast } from "sonner";
 

@@ -2,7 +2,7 @@ import { LoginForm } from "@/screens/auth/login";
 import type { Metadata } from "next";
 import AuthLayout from "@/layouts/auth";
 import { Suspense } from "react";
-import { Loader2 } from "lucide-react";
+import { Loading } from "@/icons";
 
 export const metadata: Metadata = {
   title: "PrêtPourTCF | Connexion",
@@ -15,7 +15,7 @@ export default function LoginPage() {
       <Suspense
         fallback={
           <div className="flex justify-center items-center min-h-[400px]">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loading className="h-8 w-8 animate-spin text-primary" />
           </div>
         }
       >

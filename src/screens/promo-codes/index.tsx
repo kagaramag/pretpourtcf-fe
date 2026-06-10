@@ -17,15 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Select } from "@/components/ui/select";
-import {
-  Loader2,
-  Plus,
-  Tag,
-  Trash2,
-  Calendar,
-  Users,
-  TrendingUp,
-} from "lucide-react";
+import { Loading, Plus, Dustbin, Calendar, User, Tag, TrendingUp } from "@/icons";
 import { promoCodeService } from "@/services/promo-code";
 import { toast } from "sonner";
 import { PromoCode } from "@/types/promo-code";
@@ -226,7 +218,7 @@ function PromoCodesScreenContent() {
             size="sm"
             onClick={() => handleDelete(promoCode)}
           >
-            <Trash2 className="h-4 w-4 text-red-600" />
+            <Dustbin className="h-4 w-4 text-red-600" />
           </Button>
         </div>
       ),
@@ -287,7 +279,7 @@ function PromoCodesScreenContent() {
                 {promoCodes.reduce((acc, pc) => acc + pc.current_uses, 0)}
               </p>
             </div>
-            <Users className="h-8 w-8 text-muted-foreground" />
+            <User className="h-8 w-8 text-muted-foreground" />
           </div>
         </Card>
       </div>
@@ -335,7 +327,7 @@ function PromoCodesScreenContent() {
             >
               {deleteMutation.isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   Suppression...
                 </>
               ) : (
@@ -354,7 +346,7 @@ export default function PromoCodesScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

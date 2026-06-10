@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { X } from "lucide-react";
+import { Close } from "@/icons";
 
 interface ModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function Modal({
           onClick={onClose}
           className="bg-white cursor-pointer p-4 rounded-full text-gray-500 hover:text-gray-700 text-2xl font-bold absolute top-2 right-2"
         >
-          <X className="h-5 w-5 flex-shrink-0 mt-0.5" />
+          <Close className="h-5 w-5 flex-shrink-0 mt-0.5" />
         </button>
         {title && (
           <div className="flex justify-between items-center mb-4">

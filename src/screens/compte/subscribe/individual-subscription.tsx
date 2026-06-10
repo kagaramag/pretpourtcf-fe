@@ -8,7 +8,7 @@ import Practice from "@/assets/images/practice.svg";
 import { subscriptionService } from "@/services/subscription";
 import { SubscriptionPlan } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loading } from "@/icons";
 import { toast } from "sonner";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 
@@ -272,7 +272,7 @@ function IndividualSubscription() {
           </div>
           {loading ? (
             <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loading className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : plans.length === 0 ? (
             <div className="text-center py-12">
@@ -342,7 +342,7 @@ function IndividualSubscription() {
         </div> */}
           {formationLoading ? (
             <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <Loading className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : formationPlans.length === 0 ? (
             <div className="text-center py-12">

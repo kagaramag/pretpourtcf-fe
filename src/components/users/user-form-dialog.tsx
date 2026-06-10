@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PhoneInput from "@/components/ui/phone-input";
-import { Loader2, Copy, Check } from "lucide-react";
+import { Loading, Copy, Check } from "@/icons";
 import { userService, CreateUserData, UpdateUserData } from "@/services/user";
 import { User } from "@/types";
 import { toast } from "sonner";
@@ -317,7 +317,7 @@ export function UserFormDialog({
           <Button type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loading className="mr-2 h-4 w-4 animate-spin" />
                 {mode === "create" ? "Creating..." : "Updating..."}
               </>
             ) : mode === "create" ? (

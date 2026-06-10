@@ -11,10 +11,10 @@ import { Modal } from "@/components/ui/modal";
 import { Menu } from "@/components/ui/menu";
 import {
   Search,
-  MoreVertical,
+  Ellipsis,
   Plus,
-  Loader2,
-} from "lucide-react";
+  Loading,
+} from "@/icons";
 import { corporateService } from "@/services/corporate";
 import { userService, UserQueryParams } from "@/services/user";
 import { User } from "@/types";
@@ -208,7 +208,7 @@ export default function CorporateTrainersScreen({
         <Menu
           trigger={
             <Button variant="ghost" size="icon">
-              <MoreVertical className="h-4 w-4" />
+              <Ellipsis className="h-4 w-4" />
             </Button>
           }
           items={[
@@ -311,7 +311,7 @@ export default function CorporateTrainersScreen({
           <div className="max-h-[400px] overflow-y-auto space-y-2">
             {isLoadingAvailable ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loading className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : availableTrainers.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
@@ -341,7 +341,7 @@ export default function CorporateTrainersScreen({
                     disabled={assigningId === getUserId(trainer as any)}
                   >
                     {assigningId === getUserId(trainer as any) ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loading className="h-4 w-4 animate-spin" />
                     ) : (
                       "Assign"
                     )}

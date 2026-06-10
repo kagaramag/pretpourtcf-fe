@@ -7,13 +7,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Trainer from "@/assets/images/trainer.svg";
 import Practice from "@/assets/images/practice.svg";
-import {
-  Check,
-  Loader2,
-  NotebookText,
-  Target,
-  LaptopMinimal,
-} from "lucide-react";
+import { Check, Loading, Notebook, Laptop } from "@/icons";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 
@@ -21,7 +15,7 @@ const reasons = [
   {
     title: "Tests Authentiques",
     description: "Exercices conformes au format officiel du TCF",
-    icon: <NotebookText className="h-8 w-8" />,
+    icon: <Notebook className="h-8 w-8" />,
   },
   {
     title: "Correction Détaillée",
@@ -31,12 +25,12 @@ const reasons = [
   {
     title: "Suivi de Progression",
     description: "Analysez vos résultats et identifiez vos points forts",
-    icon: <Target className="h-8 w-8" />,
+    icon: <Check className="h-8 w-8" />,
   },
   {
     title: "Accès Flexible",
     description: "Pratiquez où vous voulez, quand vous voulez",
-    icon: <LaptopMinimal className="h-8 w-8" />,
+    icon: <Laptop className="h-8 w-8" />,
   },
 ];
 
@@ -154,7 +148,7 @@ function TarifsPage() {
       <div className="max-w-5xl w-full mx-auto px-4 sm:px-3 lg:px-0 py-8 sm:py-12">
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <Loading className="h-12 w-12 animate-spin text-primary" />
           </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-20">

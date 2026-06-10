@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/organisms/header-practice";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Clock, Loader2, Mic, Square, Play, Pause, Check } from "lucide-react";
+import { Clock, Loading, Speak, Stop, Play, Check, Pause } from "@/icons";
 import ReactMarkdown from "react-markdown";
 import { questionService } from "@/services/question";
 import { PracticeQuestion } from "@/types";
@@ -406,7 +406,7 @@ export default function SpeakingPracticeSessionPage() {
                 <Button size="lg" onClick={handleStart} disabled={loading}>
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loading className="mr-2 h-4 w-4 animate-spin" />
                       Chargement...
                     </>
                   ) : (
@@ -464,7 +464,7 @@ export default function SpeakingPracticeSessionPage() {
                               isRecording || audioRecordings[1].url !== null
                             }
                           >
-                            <Mic className="h-4 w-4" />
+                            <Speak className="h-4 w-4" />
                             Enregistrer
                           </Button>
                         ) : (
@@ -496,7 +496,7 @@ export default function SpeakingPracticeSessionPage() {
                               variant="destructive"
                               className="gap-2"
                             >
-                              <Square className="h-4 w-4" />
+                              <Stop className="h-4 w-4" />
                               Arrêter
                             </Button>
                           </>
@@ -555,7 +555,7 @@ export default function SpeakingPracticeSessionPage() {
                                 audioRecordings[2].url !== null
                               }
                             >
-                              <Mic className="h-4 w-4" />
+                              <Speak className="h-4 w-4" />
                               Enregistrer
                             </Button>
                           ) : (
@@ -587,7 +587,7 @@ export default function SpeakingPracticeSessionPage() {
                                 variant="destructive"
                                 className="gap-2"
                               >
-                                <Square className="h-4 w-4" />
+                                <Stop className="h-4 w-4" />
                                 Arrêter
                               </Button>
                             </>
@@ -642,7 +642,7 @@ export default function SpeakingPracticeSessionPage() {
                                 audioRecordings[3].url !== null
                               }
                             >
-                              <Mic className="h-4 w-4" />
+                              <Speak className="h-4 w-4" />
                               Enregistrer
                             </Button>
                           ) : (
@@ -674,7 +674,7 @@ export default function SpeakingPracticeSessionPage() {
                                 variant="destructive"
                                 className="gap-2"
                               >
-                                <Square className="h-4 w-4" />
+                                <Stop className="h-4 w-4" />
                                 Arrêter
                               </Button>
                             </>
@@ -797,7 +797,7 @@ export default function SpeakingPracticeSessionPage() {
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loading className="mr-2 h-4 w-4 animate-spin" />
                       Chargement...
                     </>
                   ) : (

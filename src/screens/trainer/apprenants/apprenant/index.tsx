@@ -7,16 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { Label } from "@/components/ui/label";
-import {
-  UserPlus,
-  Users,
-  Check,
-  Clock,
-  X,
-  Loader2,
-  Mail,
-  Send,
-} from "lucide-react";
+import { User, Check, Clock, Close, Loading, Email, UserPlus, Send } from "@/icons";
 import { toast } from "sonner";
 import { referralService, Referral } from "@/services/referral";
 import { formatDate } from "@/lib/utils";
@@ -123,7 +114,7 @@ export default function ApprenantScreen() {
       case "expired":
         return (
           <Badge variant="destructive">
-            <X className="h-3 w-3 mr-1" />
+            <Close className="h-3 w-3 mr-1" />
             Expiré
           </Badge>
         );
@@ -161,7 +152,7 @@ export default function ApprenantScreen() {
             <>
               <Button variant="outline" onClick={() => { setIsInviteModalOpen(false); setInviteEmail(""); }} disabled={isInviting}>Annuler</Button>
               <Button onClick={handleInviteApprenant} disabled={isInviting || !inviteEmail.trim()}>
-                {isInviting ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Envoi en cours...</>) : (<><Send className="h-4 w-4 mr-2" />Envoyer l'invitation</>)}
+                {isInviting ? (<><Loading className="h-4 w-4 mr-2 animate-spin" />Envoi en cours...</>) : (<><Send className="h-4 w-4 mr-2" />Envoyer l'invitation</>)}
               </Button>
             </>
           }
@@ -175,7 +166,7 @@ export default function ApprenantScreen() {
                 Email
               </Label>
               <div className="col-span-3 relative">
-                <Mail className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Email className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
@@ -200,7 +191,7 @@ export default function ApprenantScreen() {
       <div className="grid gap-4 md:grid-cols-3">
         <div className="border p-3 flex items-center">
           <div className="text-sm font-medium flex-1">
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <User className="h-4 w-4 text-muted-foreground" />
             <div>Total des invitations</div>
           </div>
           <div className="text-2xl font-bold">{referrals.length}</div>
@@ -246,7 +237,7 @@ function ReferralsTable({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -283,7 +274,7 @@ function ReferralsTable({
       header: "Email",
       render: (referral) => (
         <div className="flex items-center gap-2 font-medium">
-          <Mail className="h-4 w-4 text-muted-foreground" />
+          <Email className="h-4 w-4 text-muted-foreground" />
           {referral.inviteeEmail}
         </div>
       ),

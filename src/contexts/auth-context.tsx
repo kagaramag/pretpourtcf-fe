@@ -118,27 +118,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user, router]);
 
   const logout = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      // Track logout before clearing tokens (needs auth)
-      try {
-        await apiClient.post("/analytics/track", {
-          action: "logout",
-          category: "auth",
-          metadata: { timestamp: new Date().toISOString() },
-        });
-      } catch {
-        // Don't block logout if tracking fails
-      }
-      await authService.logout();
-      setUser(null);
-      router.push("/");
-    } catch (error) {
-      toast.error("Logout failed");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [router]);
+    // Track before clearing tokens (needs auth header)
+    apiClient.post("/analytics/track", {
+      action: "logout",
+      category: "auth",
+      metadata: { timestamp: new Date().toISOString() },
+    }).catch(() => {});
+
+    // Clear tokens/cookies synchronously so middleware sees logged-out state
+    await authService.logout();
+
+    // Clear UI state
+    setUser(null);
+
+    // Hard redirect to /login — ensures no stale page content flashes
+    window.location.href = "/login";
+  }, []);
 
   const refreshUser = useCallback(async () => {
     try {

@@ -7,7 +7,7 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, BarChart, Headphones, Play } from "lucide-react";
+import { Read, Clock, ChartView, Listen, Play } from "@/icons";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
@@ -75,7 +75,7 @@ export default function ListeningPracticePage() {
       <div className="container mx-auto  max-w-6xl">
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <Headphones className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />
+            <Listen className="lg:h-8 lg:w-8 w-6 h-6 text-primary" />
             <h1 className="lg:text-3xl text-xl font-bold">Compréhension Orale (CO)</h1>
           </div>
           <p className="text-muted-foreground">
@@ -87,7 +87,7 @@ export default function ListeningPracticePage() {
         {practices.length === 0 ? (
           <Card>
             <div className="p-6 flex flex-col items-center justify-center py-12">
-              <Headphones className="h-16 w-16 text-muted-foreground mb-4" />
+              <Listen className="h-16 w-16 text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucun exercice disponible
               </h3>
@@ -128,7 +128,7 @@ export default function ListeningPracticePage() {
                       <span>{practice.durationMinutes} min</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <BookOpen className="h-4 w-4" />
+                      <Read className="h-4 w-4" />
                       <span>{practice.totalQuestions} questions</span>
                     </div>
                 </div>
@@ -148,7 +148,7 @@ export default function ListeningPracticePage() {
         <div className="mt-8">
           <Card className="border-blue-200 bg-blue-50">
             <h3 className="font-semibold flex items-center gap-2 text-blue-900">
-              <BarChart className="h-5 w-5" />
+              <ChartView className="h-5 w-5" />
               Conseils pour réussir
             </h3>
             <div className="p-6 text-sm text-blue-800 space-y-2">

@@ -1,12 +1,11 @@
-import { BookOpen, Award, Target, Users } from "lucide-react";
-import { Clock, ChartView } from "@/icons";
+import { Read, Certificate, Check, User, Clock, ChartView } from "@/icons";
 
 const features = [
   {
     name: "Tests réalistes",
     description:
       "Entraînez-vous avec des tests qui reproduisent fidèlement les conditions réelles du TCF.",
-    icon: BookOpen,
+    icon: Read,
     iconBg: "bg-primary/15",
     iconColor: "text-primary",
     barColor: "bg-primary",
@@ -24,7 +23,7 @@ const features = [
     name: "Certification officielle",
     description:
       "Préparez-vous pour tous les niveaux du CECR, de A1 à C2, avec nos exercices adaptés.",
-    icon: Award,
+    icon: Certificate,
     iconBg: "bg-accent/15",
     iconColor: "text-accent",
     barColor: "bg-accent",
@@ -42,7 +41,7 @@ const features = [
     name: "Exercices ciblés",
     description:
       "Compréhension orale, écrite, expression orale et écrite - toutes les sections du TCF.",
-    icon: Target,
+    icon: Check,
     iconBg: "bg-green-100",
     iconColor: "text-green-600",
     barColor: "bg-green-500",
@@ -51,7 +50,7 @@ const features = [
     name: "Communauté active",
     description:
       "Rejoignez des milliers d'apprenants qui préparent leur TCF avec succès.",
-    icon: Users,
+    icon: User,
     iconBg: "bg-blue-100",
     iconColor: "text-blue-600",
     barColor: "bg-blue-500",

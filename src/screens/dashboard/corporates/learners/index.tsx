@@ -11,10 +11,10 @@ import { Modal } from "@/components/ui/modal";
 import { Menu } from "@/components/ui/menu";
 import {
   Search,
-  MoreVertical,
+  Ellipsis,
   Plus,
-  Loader2,
-} from "lucide-react";
+  Loading,
+} from "@/icons";
 import { corporateService } from "@/services/corporate";
 import { userService, UserQueryParams } from "@/services/user";
 import { User } from "@/types";
@@ -208,7 +208,7 @@ export default function CorporateLearnersScreen({
         <Menu
           trigger={
             <Button variant="ghost" size="icon">
-              <MoreVertical className="h-4 w-4" />
+              <Ellipsis className="h-4 w-4" />
             </Button>
           }
           items={[
@@ -318,7 +318,7 @@ export default function CorporateLearnersScreen({
           <div className="max-h-[400px] overflow-y-auto space-y-2">
             {isLoadingAvailable ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loading className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : availableLearners.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
@@ -348,7 +348,7 @@ export default function CorporateLearnersScreen({
                     disabled={addingId === getUserId(learner as any)}
                   >
                     {addingId === getUserId(learner as any) ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loading className="h-4 w-4 animate-spin" />
                     ) : (
                       "Add"
                     )}

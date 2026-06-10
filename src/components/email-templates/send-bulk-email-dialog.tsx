@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Loading, Verified, Remove } from "@/icons";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
@@ -156,9 +156,9 @@ export function SendBulkEmailDialog({
                   className="flex items-center gap-2 p-2 rounded bg-muted/50"
                 >
                   {result.success ? (
-                    <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+                    <Verified className="h-4 w-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                   ) : (
-                    <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+                    <Remove className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
                   )}
                   <span className="text-sm flex-1">{result.email}</span>
                   {result.error && (
@@ -211,7 +211,7 @@ export function SendBulkEmailDialog({
 
                     {isLoadingUsers ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin" />
+                        <Loading className="h-6 w-6 animate-spin" />
                       </div>
                     ) : (
                       <div className="max-h-80 overflow-y-auto border rounded-lg p-4 space-y-3">
@@ -268,7 +268,7 @@ export function SendBulkEmailDialog({
                 <Button type="submit" disabled={sendMutation.isPending}>
                   {sendMutation.isPending ? (
                     <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      <Loading className="h-4 w-4 mr-2 animate-spin" />
                       Envoi en cours...
                     </>
                   ) : (

@@ -8,13 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import {
-  Loader2,
-  ArrowLeft,
-  Save,
-  Trash,
-  ImageIcon,
-} from "lucide-react";
+import { Loading, ArrowLeft, Save, Trash, ImageIcon } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog, BlogStatus } from "@/types";
 import { toast } from "sonner";
@@ -283,7 +277,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
                   />
                   {isUploading && (
                     <p className="text-sm text-gray-400">
-                      <Loader2 className="inline h-4 w-4 animate-spin mr-2" />
+                      <Loading className="inline h-4 w-4 animate-spin mr-2" />
                       Uploading image...
                     </p>
                   )}
@@ -320,7 +314,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   {isEditMode ? "Updating..." : "Creating..."}
                 </>
               ) : (

@@ -11,15 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
 import {
-  Search,
-  Loader2,
-  X,
-  User,
-  CreditCard,
+  Loading,
   DollarSign,
-  Receipt,
+  ReceiptText,
   Tag,
-} from "lucide-react";
+} from "@/icons";
 import { paymentService } from "@/services/payment";
 import { toast } from "sonner";
 
@@ -299,7 +295,7 @@ export default function TransactionsScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }
     >

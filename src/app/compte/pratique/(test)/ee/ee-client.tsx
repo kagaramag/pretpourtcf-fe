@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { PenTool } from "lucide-react";
+import { Write } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { Icon } from "@/icons";
@@ -97,7 +97,7 @@ export default function WritingPracticePage() {
         <div className="mt-6">
           {practices.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <PenTool className="h-16 w-16 text-muted-foreground mb-4" />
+              <Write className="h-16 w-16 text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucun exercice disponible
               </h3>

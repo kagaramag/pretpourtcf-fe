@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, Column } from "@/components/ui/table";
-import { Pencil } from "lucide-react";
+import { Edit } from "@/icons";
 import { planService, SubscriptionPlan } from "@/services/plan";
 
 interface PratiquesTabProps {

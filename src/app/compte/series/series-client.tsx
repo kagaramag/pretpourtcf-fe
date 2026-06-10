@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Flame,
-  Trophy,
-  TrendingUp,
-  AlertCircle,
-  Plus,
-  Crown,
-} from "lucide-react";
+import { Info, Plus, Certificate, Flame, Trophy, TrendingUp } from "@/icons";
 import { streakService, Streak, StreakEligibility } from "@/services/streak";
 import { StreakCard } from "@/components/streak/streak-card";
 import { CreateStreakDialog } from "@/components/streak/create-streak-dialog";
@@ -92,7 +85,7 @@ export default function StreaksPage() {
         <div className="max-w-2xl mx-auto">
           <Card className="border-yellow-200 bg-yellow-50">
             <h3 className="font-semibold flex items-center gap-2">
-              <Crown className="h-6 w-6 text-yellow-600" />
+              <Certificate className="h-6 w-6 text-yellow-600" />
               Fonctionnalité Premium
             </h3>
             Les séries sont réservées aux abonnés premium
@@ -111,7 +104,7 @@ export default function StreaksPage() {
               </Alert>
               <Link href="/compte/plans" onClick={() => trackClick({ action: "link_clicked", label: "Passer à Premium" })}>
                 <Button className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600">
-                  <Crown className="mr-2 h-4 w-4" />
+                  <Certificate className="mr-2 h-4 w-4" />
                   Passer à Premium
                 </Button>
               </Link>
@@ -155,7 +148,7 @@ export default function StreaksPage() {
       {/* Eligibility Alert */}
       {/* {!eligibility?.eligible && (
         <Alert className="mb-2">
-          <AlertCircle className="h-4 w-4" />
+          <Info className="h-4 w-4" />
           <AlertDescription>{eligibility?.message}</AlertDescription>
         </Alert>
       )} */}

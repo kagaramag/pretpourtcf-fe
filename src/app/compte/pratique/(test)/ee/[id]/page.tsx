@@ -5,13 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  AlertCircle,
-  XCircle,
-  Clock,
-  ChevronRight,
-  Loader2,
-} from "lucide-react";
+import { Info, Clock, ArrowRight, Loading, XCircle } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { questionService } from "@/services/question";
 import { practiceSessionService } from "@/services/practice-session";
@@ -279,7 +273,7 @@ export default function WritingPracticeSessionPage() {
         />
         <div className="container mx-auto p-6">
           <div className="flex justify-center items-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <Loading className="h-8 w-8 animate-spin text-primary" />
           </div>
         </div>
       </PracticeLayout>
@@ -314,7 +308,7 @@ export default function WritingPracticeSessionPage() {
         <div className="container mx-auto p-6">
           <Card>
             <div className="p-6" className="flex flex-col items-center justify-center py-12">
-              <AlertCircle className="h-16 w-16 text-yellow-500 mb-4" />
+              <Info className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Cet exercice doit contenir exactement 3 questions
               </h3>
@@ -487,13 +481,13 @@ export default function WritingPracticeSessionPage() {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loading className="mr-2 h-4 w-4 animate-spin" />
                 Soumission...
               </>
             ) : currentQuestionIndex < 2 ? (
               <>
                 Suivant
-                <ChevronRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </>
             ) : (
               "Terminer le test"

@@ -2,24 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  BookOpen,
-  PenTool,
-  Headphones,
-  Mic,
-  CheckCircle,
-  Users,
-  Trophy,
-  Clock,
-  Target,
-  Star,
-  ArrowRight,
-  Sparkles,
-  Brain,
-  MessageSquare,
-  FileText,
-  Volume2,
-} from "lucide-react";
+import { Read, Listen, Speak, Verified, User, Clock, Check, ArrowRight, Write, Trophy, Star, Sparkles, Brain, MessageSquare, FileText, Volume } from "@/icons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,7 +17,7 @@ const PreparationScreen = () => {
     {
       id: 1,
       title: "Compréhension Écrite",
-      icon: BookOpen,
+      icon: Read,
       color: "bg-blue-500",
       bgGradient:
         "bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30",
@@ -60,7 +43,7 @@ const PreparationScreen = () => {
     {
       id: 2,
       title: "Expression écrite",
-      icon: PenTool,
+      icon: Write,
       color: "bg-purple-500",
       bgGradient:
         "bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30",
@@ -86,7 +69,7 @@ const PreparationScreen = () => {
     {
       id: 3,
       title: "Compréhension Orale",
-      icon: Headphones,
+      icon: Listen,
       color: "bg-emerald-500",
       bgGradient:
         "bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30",
@@ -112,7 +95,7 @@ const PreparationScreen = () => {
     {
       id: 4,
       title: "Expression Orale",
-      icon: Mic,
+      icon: Speak,
       color: "bg-orange-500",
       bgGradient:
         "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/30 dark:to-red-950/30",
@@ -138,7 +121,7 @@ const PreparationScreen = () => {
 
   const benefits = [
     {
-      icon: Target,
+      icon: Check,
       title: "Objectifs Personnalisés",
       description:
         "Des parcours adaptés à votre niveau et vos objectifs spécifiques",
@@ -150,7 +133,7 @@ const PreparationScreen = () => {
         "Approche basée sur les sciences cognitives pour une mémorisation optimale",
     },
     {
-      icon: Users,
+      icon: User,
       title: "Communauté Active",
       description: "Échangez avec d'autres apprenants et progressez ensemble",
     },
@@ -301,7 +284,7 @@ const PreparationScreen = () => {
                     {/* Skills Section */}
                     <div>
                       <h4 className="font-semibold mb-3 flex items-center gap-2">
-                        <Target className="w-4 h-4 text-primary" />
+                        <Check className="w-4 h-4 text-primary" />
                         Compétences développées
                       </h4>
                       <ul className="space-y-2">
@@ -310,7 +293,7 @@ const PreparationScreen = () => {
                             key={idx}
                             className="flex items-start gap-2 text-sm"
                           >
-                            <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                            <Verified className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
                             <span>{skill}</span>
                           </li>
                         ))}

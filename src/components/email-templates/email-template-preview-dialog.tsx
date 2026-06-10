@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
-import { Loader2 } from "lucide-react";
+import { Loading } from "@/icons";
 import { emailTemplateService, EmailTemplate } from "@/services/email-template";
 import { toast } from "sonner";
 
@@ -55,7 +55,7 @@ export function EmailTemplatePreviewDialog({
 
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin" />
+            <Loading className="h-8 w-8 animate-spin" />
           </div>
         ) : preview ? (
           <div className="space-y-4">

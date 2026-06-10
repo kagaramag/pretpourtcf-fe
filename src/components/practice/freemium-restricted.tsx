@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle } from "lucide-react";
+import { Info } from "@/icons";
 import PracticeLayout from "@/layouts/practice";
 import Header from "@/components/organisms/header-practice";
 
@@ -32,7 +32,7 @@ export function FreemiumRestricted({ categorySlug }: FreemiumRestrictedProps) {
       <div className="container mx-auto lg:p-6 p-2 max-w-xl">
         <div>
           <div className="flex flex-col items-center justify-center py-12">
-            <AlertCircle className="h-16 w-16 text-orange-500 mb-4" />
+            <Info className="h-16 w-16 text-orange-500 mb-4" />
             <h3 className="text-2xl mb-2 text-center">
               Cet exercice n&apos;est pas disponible en essai gratuit
             </h3>

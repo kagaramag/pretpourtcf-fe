@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import {
   Card,
 } from "@/components/ui/card";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Email } from "@/icons";
 import Link from "next/link";
 import { toast } from "sonner";
 import { authService } from "@/services/auth";
@@ -46,7 +46,7 @@ export default function ForgotPasswordScreen() {
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-4">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <Mail className="w-8 h-8 text-green-600" />
+              <Email className="w-8 h-8 text-green-600" />
             </div>
           </div>
           <h3 className="text-2xl">Vérifiez votre e-mail</h3>

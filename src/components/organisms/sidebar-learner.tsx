@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Close } from "@/icons";
 import LearnerNavigation from "@/components/molecules/learner-navigation";
 
 // Mon compte, Pratiques, abonnements, Historique, Series, Parrainages,
@@ -45,7 +45,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
             aria-label="Close menu"
           >
-            <X className="h-6 w-6" />
+            <Close className="h-6 w-6" />
           </button>
         </div>
 

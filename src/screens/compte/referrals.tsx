@@ -9,16 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabPanel } from "@/components/molecules/Tabs";
-import {
-  Mail,
-  UserPlus,
-  Users,
-  Check,
-  Clock,
-  X,
-  Copy,
-  Loader2,
-} from "lucide-react";
+import { Email, Check, Clock, Close, Loading, Copy, UserPlus, UserGroup } from "@/icons";
 import { toast } from "sonner";
 import { referralService, Referral } from "@/services/referral";
 import { formatDate } from "@/lib/utils";
@@ -123,7 +114,7 @@ export function ReferralsScreen() {
       case "expired":
         return (
           <Badge variant="destructive">
-            <X className="h-3 w-3 mr-1" />
+            <Close className="h-3 w-3 mr-1" />
             Expiré
           </Badge>
         );
@@ -174,7 +165,7 @@ export function ReferralsScreen() {
       {/* Send Invitation Form */}
       <Card>
         <h4 className="flex items-center gap-2">
-          <Mail className="h-5 w-5" />
+          <Email className="h-5 w-5" />
           Envoyer une invitation
         </h4>
         <div className="text-gray-600 text-sm">
@@ -194,12 +185,12 @@ export function ReferralsScreen() {
             <Button type="submit" disabled={isSending}>
               {isSending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   Envoi...
                 </>
               ) : (
                 <>
-                  <Mail className="mr-2 h-4 w-4" />
+                  <Email className="mr-2 h-4 w-4" />
                   Envoyer
                 </>
               )}
@@ -211,7 +202,7 @@ export function ReferralsScreen() {
       {/* Referrals List */}
       <Card>
         <h4 className="flex items-center gap-2">
-          <Users className="h-5 w-5" />
+          <UserGroup className="h-5 w-5" />
           Mes parrainages
         </h4>
         <div className="text-gray-600 text-sm">

@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import { Calendar, Menu, X, UserRound } from "lucide-react";
+import { Icon } from "@/icons";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/logo_white.svg";
-import Icon from "@/assets/images/icon.svg";
+import IconLogo from "@/assets/images/icon.svg";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -81,7 +82,7 @@ export default function Header() {
               </div>
               <div className="w-[46px] sm:w-[46px] lg:w-[46px] lg:hidden p-0.5">
                 <Image
-                  src={Icon}
+                  src={IconLogo}
                   width={36}
                   height={36}
                   priority
@@ -107,20 +108,20 @@ export default function Header() {
             >
               Séance gratuite
               <span className="bg-black p-1.5 rounded-full">
-                <Calendar className="h-3 w-3" />
+                <Icon name="calendar" size="16" />
               </span>
             </Link>
           </div>
 
           {!isLoading && isAuthenticated && (
-            <div className="lg:w-[210px] hidden lg:flex flex-1 items-center justify-end py-2 px-0 sm:px-0 gap-2 sm:gap-4">
+            <div className="lg:w-[210px] hidden lg:flex flex-1 items-center justify-end py-1 px-0 sm:px-0 gap-2 sm:gap-4">
               <Link href={getUserLink(user?.role)}>
-                <div className="flex items-center gap-1 sm:gap-2 bg-white/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-1 cursor-pointer hover:bg-white/20 transition-colors">
+                <div className="flex items-center gap-1 sm:gap-2 bg-white/10 rounded-full sm:pl-4 pl-0 lg:pr-1 lg:py-0.5 cursor-pointer hover:bg-white/20 transition-colors">
                   <span className="text-xs sm:text-sm text-white hidden sm:inline">
-                    Mon compte
+                    {user?.first_name}
                   </span>
-                  <div className="w-9 h-9 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center">
-                    <UserRound className="lg:h-3 lg:w-3 sm:h-4 sm:w-4 text-white" />
+                  <div className="w-8 h-8 sm:w-8 sm:h-8 bg-tertiary rounded-full flex items-center justify-center">
+                    <Icon name="user" size="18" />
                   </div>
                 </div>
               </Link>
@@ -133,9 +134,9 @@ export default function Header() {
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
+                <Icon name="close" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Icon name="sidebarOpen" />
               )}
             </button>
           </div>

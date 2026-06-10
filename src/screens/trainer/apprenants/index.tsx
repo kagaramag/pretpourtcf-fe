@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Table, Column } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Loader2, Eye, Search } from "lucide-react";
+import { User as UserIcon, Loading, Open, Search } from "@/icons";
 import { toast } from "sonner";
 import { corporateService } from "@/services/corporate";
 import { User } from "@/types";
@@ -114,7 +114,7 @@ export default function TrainerLearnersScreen() {
           }}
           title="Voir le profil"
         >
-          <Eye className="h-4 w-4" />
+          <Open className="h-4 w-4" />
         </Button>
       ),
     },
@@ -123,7 +123,7 @@ export default function TrainerLearnersScreen() {
   if (isLoading && learners.length === 0) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default function TrainerLearnersScreen() {
       {/* Table */}
       {learners.length === 0 && !isLoading ? (
         <div className="text-center py-12 text-muted-foreground">
-          <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+          <UserIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
           <p className="text-lg font-medium mb-2">Aucun apprenant</p>
           <p className="text-sm">
             Les apprenants seront affichés ici une fois ajoutés par

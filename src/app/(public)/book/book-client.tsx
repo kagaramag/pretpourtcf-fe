@@ -9,14 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
 import { toast } from "sonner";
-import {
-  Calendar,
-  Clock,
-  Loader2,
-  CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Calendar, Clock, Loading, Verified, ArrowRight, CaretLeft } from "@/icons";
 import apiClient from "@/lib/api-client";
 import { API_ENDPOINTS } from "@/config";
 import { cn } from "@/lib/utils";
@@ -432,7 +425,7 @@ function BookingPage() {
         <div className="max-w-3xl mx-auto mt-6">
           <div className="text-center p-12">
             <div className="flex justify-center">
-              <CheckCircle2 className="w-20 h-20 text-green-500" />
+              <Verified className="w-20 h-20 text-green-500" />
             </div>
             <div>
               <h2 className="text-3xl font-bold mb-4">
@@ -507,7 +500,7 @@ function BookingPage() {
                   disabled={currentWeekOffset === 0}
                   className="gap-2"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <CaretLeft className="w-4 h-4" />
                 </Button>
                 <h2 className="text-xl font-semibold">{getWeekLabel()}</h2>
                 <Button
@@ -516,7 +509,7 @@ function BookingPage() {
                   disabled={currentWeekOffset >= 1}
                   className="gap-2"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
 
@@ -754,7 +747,7 @@ function BookingPage() {
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loading className="w-4 h-4 animate-spin" />
                           Réservation en cours...
                         </>
                       ) : (
@@ -774,21 +767,21 @@ function BookingPage() {
               <div>
                 <div className="space-y-1 pt-2 pb-6 grid grid-cols-2 gap-1 justify-center">
                   <div className="flex items-start gap-3 bg-tertiary/30 rounded-2xl p-3 flex-1">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                    <Verified className="w-5 h-5 text-primary" />
                     <p className="text-sm">
                       Session personnalisée de 30 minutes
                     </p>
                   </div>
                   <div className="flex items-start gap-3 bg-tertiary/30 rounded-2xl p-3 flex-1">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                    <Verified className="w-5 h-5 text-primary" />
                     <p className="text-sm">Conseils adaptés à votre niveau</p>
                   </div>
                   <div className="flex items-start gap-3 bg-tertiary/30 rounded-2xl p-3 flex-1">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                    <Verified className="w-5 h-5 text-primary" />
                     <p className="text-sm">Réponses à toutes vos questions</p>
                   </div>
                   <div className="flex items-start gap-3 bg-tertiary/30 rounded-2xl p-3 flex-1">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
+                    <Verified className="w-5 h-5 text-primary" />
                     <p className="text-sm">Plan d'étude sur mesure</p>
                   </div>
                 </div>

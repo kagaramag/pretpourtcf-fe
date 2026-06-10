@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Mail, Phone, Send, Loader2 } from "lucide-react";
+import { Email, Phone, Loading } from "@/icons";
 import apiClient from "@/lib/api-client";
 import { API_ENDPOINTS } from "@/config";
 
@@ -203,12 +203,12 @@ function ContactPage() {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loading className="w-4 h-4 animate-spin" />
                       Envoi...
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
+                      <Email className="w-4 h-4" />
                       Envoyer
                     </>
                   )}

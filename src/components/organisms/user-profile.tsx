@@ -18,7 +18,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
     : user?.role === "trainer"
       ? [
           { name: "Examens", href: "/trainer", icon: "certificate" as const, show: true },
-          { name: "Apprenants", href: "/trainer/apprenants", icon: "userLine" as const, show: true },
+          { name: "Apprenants", href: "/trainer/apprenants", icon: "userGroup" as const, show: true },
           {
             name: "Compréhension Orale",
             href: "/trainer/pratiques/co",
@@ -46,7 +46,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
           {
             name: "My profile",
             href: "/trainer/profile",
-            icon: "write" as const,
+            icon: "user" as const,
             show: true,
           },
         ]
@@ -61,7 +61,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
           {
             name: "Abonnement",
             href: "/compte/plans",
-            icon: "sign" as const,
+            icon: "subscription" as const,
             show: !isLoading && user?.subscription !== null,
           },
           {
@@ -70,8 +70,8 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
             icon: "chartView" as const,
             show: !isLoading && user?.subscription !== null,
           },
-          { name: "Invites", href: "/compte/parrainages", icon: "userLine" as const, show: true },
-          { name: "My profile", href: "/compte/profile", icon: "userLine" as const, show: true },
+          { name: "Invites", href: "/compte/parrainages", icon: "userGroup" as const, show: true },
+          { name: "My profile", href: "/compte/profile", icon: "user" as const, show: true },
         ];
   return (
     <div>
@@ -79,7 +79,7 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
         <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 sm:gap-2">
             <div className="w-14 h-14  bg-black rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
-              <Icon name="userLine" className="h-6 w-6 sm:h-8 sm:w-8" />
+              <Icon name="user" className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
               <div>
@@ -133,13 +133,13 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
       {navigation.length > 0 && (
         <div className="bg-gray-800 pt-2 text-white mb-2">
           <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6 flex flex-col sm:flex-row gap-3 sm:gap-0">
-            <ul className="flex items-center gap-1 sm:gap-2 whitespace-nowrap">
+            <ul className="flex items-center sm:gap-2 whitespace-nowrap">
               {navigation.map((item, idx) => (
                 <li key={idx}>
                   {item.show ? (
                     <Link
                       href={item.href}
-                      className={`text-sm py-1.5 px-2.5 border-b-4 transition-colors flex items-center gap-1.5 ${
+                      className={`text-sm py-1.5 px-2 border-b-4 transition-colors flex items-center gap-1.5 ${
                         isActive(item.href)
                           ? "border-tertiary bg-tertiary/10"
                           : "border-none"

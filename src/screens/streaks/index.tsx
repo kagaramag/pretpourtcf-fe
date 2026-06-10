@@ -7,15 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
-import {
-  Loader2,
-  Flame,
-  Trophy,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  Award,
-} from "lucide-react";
+import { Loading, ArrowRight, Search, Certificate, Flame, Trophy, CaretLeft } from "@/icons";
 import { streakService, Streak, StreakStatus } from "@/services/streak";
 import { formatDate } from "@/lib/date-utils";
 import { Progress } from "@/components/ui/progress";
@@ -91,7 +83,7 @@ const columns: Column<Streak>[] = [
     header: "Récompenses",
     render: (streak) => (
       <div className="flex items-center gap-1">
-        <Award className="h-4 w-4 text-orange-500" />
+        <Certificate className="h-4 w-4 text-orange-500" />
         <span className="font-medium">{streak.rewards.length}</span>
       </div>
     ),
@@ -148,7 +140,7 @@ export function StreaksScreen() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loading className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -228,7 +220,7 @@ export function StreaksScreen() {
               onClick={() => setPage(page - 1)}
               disabled={!pagination.hasPrevPage}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <CaretLeft className="h-4 w-4" />
               Précédent
             </Button>
             <Button
@@ -238,7 +230,7 @@ export function StreaksScreen() {
               disabled={!pagination.hasNextPage}
             >
               Suivant
-              <ChevronRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </div>

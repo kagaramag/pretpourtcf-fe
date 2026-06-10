@@ -9,17 +9,7 @@ import PhoneNumberInput from "@/components/ui/phone-input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  User,
-  Mail,
-  Phone,
-  Shield,
-  Monitor,
-  Smartphone,
-  Tablet,
-  Trash2,
-  LogOut,
-} from "lucide-react";
+import { User, Email, Phone, Dustbin, Monitor, Smartphone, Tablet } from "@/icons";
 import { toast } from "sonner";
 import { authService, DeviceInfo } from "@/services/auth";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
@@ -324,7 +314,7 @@ export default function ProfileScreen() {
                           disabled={removingDeviceId === device.deviceId}
                           className="text-red-500 hover:text-red-700 hover:bg-red-50"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Dustbin className="w-4 h-4" />
                         </Button>
                       )}
                     </div>

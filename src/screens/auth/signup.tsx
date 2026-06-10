@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Loader2, Eye, EyeOff, Mail, UserPlus } from "lucide-react";
+import { Loading, Open, Close, Email, Plus } from "@/icons";
 import { authService } from "@/services/auth";
 import { referralService } from "@/services/referral";
 import { toast } from "sonner";
@@ -158,7 +158,7 @@ export function SignupForm() {
       <div>
         <div className="flex justify-center mb-2">
           <div className="rounded-full bg-tertiary/20 p-7">
-            <Mail className="h-12 w-12 text-tertiary" />
+            <Email className="h-12 w-12 text-tertiary" />
           </div>
         </div>
         <h5 className="text-2xl text-center mb-4">Vérifiez votre email</h5>
@@ -211,7 +211,7 @@ export function SignupForm() {
         {/* Referral indicator */}
         {referrerName && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-            <UserPlus className="h-5 w-5 text-blue-600 mt-0.5" />
+            <Plus className="h-5 w-5 text-blue-600 mt-0.5" />
             <div>
               <p className="text-sm text-blue-800 font-medium">
                 Invitation de {referrerName}
@@ -295,7 +295,7 @@ export function SignupForm() {
       {/* Referral indicator */}
       {referrerName && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-          <UserPlus className="h-5 w-5 text-blue-600 mt-0.5" />
+          <Plus className="h-5 w-5 text-blue-600 mt-0.5" />
           <div>
             <p className="text-sm text-blue-800 font-medium">
               Invitation de {referrerName}
@@ -403,9 +403,9 @@ export function SignupForm() {
                 className="absolute right-3 top-3 text-muted-foreground hover:bg-gray-500"
               >
                 {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
+                  <Close className="h-4 w-4" />
                 ) : (
-                  <Eye className="h-4 w-4" />
+                  <Open className="h-4 w-4" />
                 )}
               </button>
             </div>
@@ -423,7 +423,7 @@ export function SignupForm() {
             >
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loading className="mr-2 h-4 w-4 animate-spin" />
                   En cours...
                 </>
               ) : (
