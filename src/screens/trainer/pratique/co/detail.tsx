@@ -8,6 +8,9 @@ import { toast } from "sonner";
 import { config } from "@/config";
 import AudioPlayer from "@/components/organisms/player";
 import { Practice, PracticeQuestion } from "@/types";
+import { Icon } from "@/icons";
+import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown";
 
 export default function TrainerCODetailScreen() {
   const params = useParams();
@@ -26,7 +29,8 @@ export default function TrainerCODetailScreen() {
     try {
       setLoading(true);
 
-      const practiceResponse = await practiceService.getPracticeById(practiceId);
+      const practiceResponse =
+        await practiceService.getPracticeById(practiceId);
       const practiceData = practiceResponse.data.practice;
       setPractice(practiceData);
 
@@ -39,9 +43,7 @@ export default function TrainerCODetailScreen() {
       setQuestions(questionsData);
     } catch (error: any) {
       console.error("Error fetching data:", error);
-      toast.error(
-        error.response?.data?.message || "Erreur lors du chargement"
-      );
+      toast.error(error.response?.data?.message || "Erreur lors du chargement");
     } finally {
       setLoading(false);
     }
@@ -73,7 +75,7 @@ export default function TrainerCODetailScreen() {
   return (
     <div className="container mx-auto max-w-4xl p-6">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-2">{practice.title}</h1>
+        <h1 className="text-2xl font-semibold mb-2">{practice.title}</h1>
         <p className="text-gray-600">Questions et Réponses</p>
       </div>
 
@@ -82,7 +84,10 @@ export default function TrainerCODetailScreen() {
       ) : (
         <div className="space-y-6">
           {questions.map((question, index) => (
-            <div key={question._id} className="border p-4 rounded-lg bg-white">
+            <div
+              key={question._id}
+              className="border border-gray-200 p-4 rounded-lg bg-white"
+            >
               <div className="mb-4">
                 <h3 className="font-semibold text-lg mb-2">
                   Question {question.number || index + 1}
@@ -90,19 +95,20 @@ export default function TrainerCODetailScreen() {
 
                 {question.media?.image && (
                   <div className="mb-4">
-                    <button
+                    <Button
+                      size="sm"
+                      variant="outline"
                       onClick={() =>
                         setShowImages((prev) => ({
                           ...prev,
                           [question._id]: !prev[question._id],
                         }))
                       }
-                      className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 mb-2"
                     >
                       {showImages[question._id]
                         ? "Masquer l'image"
                         : "Afficher l'image"}
-                    </button>
+                    </Button>
                     {showImages[question._id] && (
                       <div className="mt-2">
                         <img
@@ -123,7 +129,7 @@ export default function TrainerCODetailScreen() {
                   </div>
                 )}
 
-                <p className="mb-4">{question.text}</p>
+                <div className="mb-4"><ReactMarkdown>{question.text}</ReactMarkdown></div>
               </div>
 
               {question.options && question.options.length > 0 && (
@@ -144,10 +150,13 @@ export default function TrainerCODetailScreen() {
                           <span className="font-medium">
                             {String.fromCharCode(65 + optIndex)}.
                           </span>
-                          <span>{option}</span>
+                          <div className="flex-1">{option}</div>
                           {isCorrect && (
-                            <span className="ml-auto text-green-600">
-                              ✓ Réponse correcte
+                            <span className="flex items-center gap-1 text-green-600">
+                              <Icon name="check" />
+                              <span className="ml-auto  font-normal">
+                                Réponse correcte
+                              </span>
                             </span>
                           )}
                         </div>

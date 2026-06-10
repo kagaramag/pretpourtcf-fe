@@ -170,24 +170,21 @@ function PracticeDetailsContent() {
     {
       key: "number",
       header: "No.",
+      width: "w-8",
       render: (question) => <span>{question.number}</span>,
     },
     {
       key: "type",
       header: "Type",
-      render: (question) => (
-        <Badge variant="outline">
-          {getQuestionTypeLabel(question.type)}
-        </Badge>
-      ),
+      width: "w-32",
+      render: (question) => getQuestionTypeLabel(question.type),
     },
     {
       key: "text",
       header: "Question",
-      width: "max-w-[220px]",
       render: (question) => (
         <div>
-          <p className="truncate">{question.text}</p>
+          <div className="text-wrap prose prose-sm max-w-none line-clamp-3"><ReactMarkdown>{question.text}</ReactMarkdown></div>
           {question.tags && question.tags.length > 0 && (
             <div className="flex gap-1 mt-1">
               {question.tags.slice(0, 3).map((tag, idx) => (
@@ -206,23 +203,13 @@ function PracticeDetailsContent() {
     {
       key: "score",
       header: "Score",
+      width: "w-22",
       render: (question) => <span>{question.score} pts</span>,
-    },
-    {
-      key: "difficulty",
-      header: "Difficulty",
-      render: (question) =>
-        question.difficulty ? (
-          <Badge className={getLevelColor(question.difficulty)}>
-            {question.difficulty}
-          </Badge>
-        ) : (
-          <span className="text-muted-foreground text-sm">N/A</span>
-        ),
     },
     {
       key: "media",
       header: "Media",
+      width: "w-36",
       render: (question) => (
         <div className="flex gap-2">
           {question.media?.audio && (
@@ -261,13 +248,15 @@ function PracticeDetailsContent() {
     },
     {
       key: "actions",
-      header: "Actions",
+      header: "",
       align: "right",
+      width: "w-36",
       render: (question) => (
         <div className="text-right flex items-center justify-end gap-2">
           <div className="flex items-center gap-1">
             <Button
-              variant="ghost"
+              variant="secondary"
+              size="sm"
               onClick={() => {
                 setPreviewQuestion(question);
                 setPreviewDialog(true);
@@ -337,14 +326,13 @@ function PracticeDetailsContent() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <Button
-          variant="ghost"
-          size="icon"
+          variant="secondary"
           onClick={() => router.push("/dashboard/practices")}
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
+          icon="arrowLeft"
+          iconOnly
+        />
         <div className="flex-1">
-          <h1 className="text-3xl font-bold">{practice.title}</h1>
+          <h1 className="text-xl font-semibold">{practice.title}</h1>
         </div>
         {canCreate && (
           <Button
@@ -362,124 +350,118 @@ function PracticeDetailsContent() {
       </div>
 
       {/* Practice Info Card */}
-      <Card>
-        <div>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Type</p>
-              <Badge className={getTypeColor(practice.type)}>
-                {practice.type.charAt(0).toUpperCase() + practice.type.slice(1)}
-              </Badge>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Level</p>
-              {practice.level ? (
-                <Badge className={getLevelColor(practice.level)}>
-                  {practice.level}
-                </Badge>
-              ) : (
-                <span className="text-sm">N/A</span>
-              )}
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Duration</p>
-              <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">
-                  {practice.durationMinutes} min
-                </span>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Total Questions</p>
-              <div className="flex items-center gap-1">
-                <FileQuestion className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">{practice.totalQuestions}</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Status</p>
-              <Badge
-                className={
-                  practice.isActive
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-800"
-                }
-              >
-                {practice.isActive ? "Active" : "Inactive"}
-              </Badge>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Actual Questions</p>
-              <span className="text-sm font-medium">{pagination.total}</span>
+      <div className="bg-white rounded-xl p-4">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+          <div>
+            <p className="text-sm text-gray-600">Type</p>
+            <div className="uppercase text-sm">
+              {practice.type.charAt(0).toUpperCase() + practice.type.slice(1)}
             </div>
           </div>
+          <div>
+            <p className="text-sm text-gray-600">Level</p>
+            {practice.level ? (
+              <Badge className={getLevelColor(practice.level)}>
+                {practice.level}
+              </Badge>
+            ) : (
+              <span className="text-sm">N/A</span>
+            )}
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Duration</p>
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4 text-gray-600" />
+              <span className="text-sm">{practice.durationMinutes} min</span>
+            </div>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Total Questions</p>
+            <div className="flex items-center gap-1">
+              <FileQuestion className="h-4 w-4 text-gray-600" />
+              <span className="text-sm">{practice.totalQuestions}</span>
+            </div>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Status</p>
+            <Badge
+              className={
+                practice.isActive
+                  ? "bg-green-100 text-green-800"
+                  : "bg-gray-100 text-gray-800"
+              }
+            >
+              {practice.isActive ? "Active" : "Inactive"}
+            </Badge>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Actual Questions</p>
+            <span className="text-sm">{pagination.total}</span>
+          </div>
         </div>
-      </Card>
+      </div>
 
       {/* Questions List */}
-      <Card>
-        <div>
-          <Table
-            data={questions}
-            columns={columns}
-            keyExtractor={(q) => q._id}
-            isLoading={isLoadingQuestions}
-            emptyMessage="No questions yet"
-            emptyComponent={
-              <div className="text-center py-8 text-muted-foreground">
-                <FileQuestion className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                <p>No questions yet</p>
-                {canCreate && (
-                  <Button
-                    variant="link"
-                    onClick={() => {
-                      setSelectedQuestion(null);
-                      setFormMode("create");
-                      setQuestionFormDialog(true);
-                    }}
-                  >
-                    Add your first question
-                  </Button>
-                )}
-              </div>
-            }
-          />
-
-          {/* Pagination */}
-          {!isLoadingQuestions && questions.length > 0 && (
-            <div className="flex items-center justify-between mt-4 pt-4 border-t">
-              <div className="text-sm text-muted-foreground">
-                Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-                {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
-                of {pagination.total} questions
-              </div>
-              <div className="flex gap-2">
+      <div>
+        <Table
+          data={questions}
+          columns={columns}
+          keyExtractor={(q) => q._id}
+          isLoading={isLoadingQuestions}
+          emptyMessage="No questions yet"
+          emptyComponent={
+            <div className="text-center py-8 text-muted-foreground">
+              <FileQuestion className="h-12 w-12 mx-auto mb-2 opacity-50" />
+              <p>No questions yet</p>
+              {canCreate && (
                 <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-                  }
-                  disabled={!pagination.hasPrevPage}
+                  variant="link"
+                  onClick={() => {
+                    setSelectedQuestion(null);
+                    setFormMode("create");
+                    setQuestionFormDialog(true);
+                  }}
                 >
-                  Previous
+                  Add your first question
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-                  }
-                  disabled={!pagination.hasNextPage}
-                >
-                  Next
-                </Button>
-              </div>
+              )}
             </div>
-          )}
-        </div>
-      </Card>
+          }
+        />
+
+        {/* Pagination */}
+        {!isLoadingQuestions && questions.length > 0 && (
+          <div className="flex items-center justify-between mt-4 pt-4">
+            <div className="text-sm text-muted-foreground">
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
+              {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
+              of {pagination.total} questions
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
+                }
+                disabled={!pagination.hasPrevPage}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
+                }
+                disabled={!pagination.hasNextPage}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Question Form Dialog */}
       <QuestionFormDialog
@@ -493,139 +475,143 @@ function PracticeDetailsContent() {
       />
 
       {/* Question Preview Modal */}
-      <Modal isOpen={previewDialog} onClose={() => setPreviewDialog(false)} title="Question Preview" size="lg">
-          {previewQuestion && (
-            <div className="space-y-4">
-              {/* Question Number and Type */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline">#{previewQuestion.number}</Badge>
-                  <Badge variant="outline">
-                    {getQuestionTypeLabel(previewQuestion.type)}
-                  </Badge>
-                </div>
+      <Modal
+        isOpen={previewDialog}
+        onClose={() => setPreviewDialog(false)}
+        title="Question Preview"
+        size="lg"
+      >
+        {previewQuestion && (
+          <div className="space-y-4">
+            {/* Question Number and Type */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">#{previewQuestion.number}</Badge>
+                <Badge variant="outline">
+                  {getQuestionTypeLabel(previewQuestion.type)}
+                </Badge>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  Score: {previewQuestion.score} pts
+                </span>
+              </div>
+              {previewQuestion.difficulty && (
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">
-                    Score: {previewQuestion.score} pts
+                    <span className="text-sm text-muted-foreground mb-1">
+                      Difficulty
+                    </span>{" "}
+                    <Badge
+                      className={getLevelColor(previewQuestion.difficulty)}
+                    >
+                      {previewQuestion.difficulty}
+                    </Badge>
                   </span>
                 </div>
-                {previewQuestion.difficulty && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      <span className="text-sm text-muted-foreground mb-1">
-                        Difficulty
-                      </span>{" "}
-                      <Badge
-                        className={getLevelColor(previewQuestion.difficulty)}
-                      >
-                        {previewQuestion.difficulty}
-                      </Badge>
-                    </span>
-                  </div>
-                )}
-              </div>
+              )}
+            </div>
 
-              {/* Question Text */}
-              <div>
-                <div className="text-sm text-muted-foreground">Question</div>
-                {previewQuestion?.text && (
-                  <div>
-                    <ReactMarkdown>{previewQuestion.text}</ReactMarkdown>
-                  </div>
-                )}
-              </div>
-
-              {/* Media */}
-              {(previewQuestion.media?.audio ||
-                previewQuestion.media?.image) && (
+            {/* Question Text */}
+            <div>
+              <div className="text-sm text-muted-foreground">Question</div>
+              {previewQuestion?.text && (
                 <div>
-                  <div className="space-y-2">
-                    {previewQuestion.media.image && (
-                      <div>
-                        <img
-                          src={`${config.cloudFlarePublicUrl}practices/images/${previewQuestion.media.image}`}
-                          alt="Question media"
-                          className="w-full rounded-md"
-                        />
-                      </div>
-                    )}
-                    {previewQuestion.media.audio && (
-                      <div className="flex items-center">
-                        <AudioPlayer
-                          src={`${config.cloudFlarePublicUrl}practices/audio/${previewQuestion.media.audio}`}
-                        />
-                      </div>
-                    )}
-                  </div>
+                  <ReactMarkdown>{previewQuestion.text}</ReactMarkdown>
                 </div>
               )}
+            </div>
 
-              {/* Options (for MCQ) */}
-              {previewQuestion.type === "mcq" &&
-                previewQuestion.options &&
-                previewQuestion.options.length > 0 && (
-                  <div>
-                    <p className="text-sm text-muted-foreground">Options</p>
-                    <div className="space-y-2">
-                      {previewQuestion.options.map((option, index) => (
-                        <div
-                          key={index}
-                          className={`p-3 border rounded-md ${
-                            previewQuestion.correct === index
-                              ? "bg-green-50 border-green-300"
-                              : ""
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-sm">
-                              {String.fromCharCode(65 + index)}.
-                            </span>
-                            <span>{option}</span>
-                            {previewQuestion.correct === index && (
-                              <Badge className="ml-auto bg-green-600">
-                                Correct Answer
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+            {/* Media */}
+            {(previewQuestion.media?.audio || previewQuestion.media?.image) && (
+              <div>
+                <div className="space-y-2">
+                  {previewQuestion.media.image && (
+                    <div>
+                      <img
+                        src={`${config.cloudFlarePublicUrl}practices/images/${previewQuestion.media.image}`}
+                        alt="Question media"
+                        className="w-full rounded-md"
+                      />
                     </div>
-                  </div>
-                )}
+                  )}
+                  {previewQuestion.media.audio && (
+                    <div className="flex items-center">
+                      <AudioPlayer
+                        src={`${config.cloudFlarePublicUrl}practices/audio/${previewQuestion.media.audio}`}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
-              {/* Tags */}
-              {previewQuestion.tags && previewQuestion.tags.length > 0 && (
+            {/* Options (for MCQ) */}
+            {previewQuestion.type === "mcq" &&
+              previewQuestion.options &&
+              previewQuestion.options.length > 0 && (
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">Tags</p>
-                  <div className="flex flex-wrap gap-2">
-                    {previewQuestion.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary">
-                        {tag}
-                      </Badge>
+                  <p className="text-sm text-muted-foreground">Options</p>
+                  <div className="space-y-2">
+                    {previewQuestion.options.map((option, index) => (
+                      <div
+                        key={index}
+                        className={`p-3 border rounded-md ${
+                          previewQuestion.correct === index
+                            ? "bg-green-50 border-green-300"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-sm">
+                            {String.fromCharCode(65 + index)}.
+                          </span>
+                          <span className="prose prose-sm max-w-none"><ReactMarkdown>{option}</ReactMarkdown></span>
+                          {previewQuestion.correct === index && (
+                            <Badge className="ml-auto bg-green-600">
+                              Correct Answer
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Metadata */}
-              <div className="pt-4 border-t">
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Created</p>
-                    <p className="font-medium">
-                      {formatDate(previewQuestion.createdAt)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Last Updated</p>
-                    <p className="font-medium">
-                      {formatDate(previewQuestion.updatedAt)}
-                    </p>
-                  </div>
+            {/* Tags */}
+            {previewQuestion.tags && previewQuestion.tags.length > 0 && (
+              <div>
+                <p className="text-sm text-muted-foreground mb-2">Tags</p>
+                <div className="flex flex-wrap gap-2">
+                  {previewQuestion.tags.map((tag, index) => (
+                    <Badge key={index} variant="secondary">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Metadata */}
+            <div className="pt-4 border-t">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Created</p>
+                  <p className="font-medium">
+                    {formatDate(previewQuestion.createdAt)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Last Updated</p>
+                  <p className="font-medium">
+                    {formatDate(previewQuestion.updatedAt)}
+                  </p>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
       </Modal>
     </div>
   );

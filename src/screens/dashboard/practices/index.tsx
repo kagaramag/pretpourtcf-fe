@@ -185,40 +185,26 @@ function PracticesScreenContent() {
     {
       key: "type",
       header: "Type",
-      render: (practice) => (
-        <Badge className={getTypeColor(practice.type)}>
-          {practice.type.charAt(0).toUpperCase() + practice.type.slice(1)}
-        </Badge>
-      ),
-    },
-    {
-      key: "level",
-      header: "Level",
+      width: "w-32",
       render: (practice) =>
-        practice.level ? (
-          <Badge className={getLevelColor(practice.level)}>
-            {practice.level}
-          </Badge>
-        ) : (
-          <span className="text-muted-foreground text-sm">N/A</span>
-        ),
+        practice.type.charAt(0).toUpperCase() + practice.type.slice(1),
     },
     {
       key: "durationMinutes",
       header: "Duration",
+      width: "w-24",
       render: (practice) => (
         <div className="flex items-center gap-1 text-sm">
-          <Clock className="h-3 w-3 text-muted-foreground" />
-          {practice.durationMinutes} min
+          {practice.durationMinutes} mins
         </div>
       ),
     },
     {
       key: "totalQuestions",
       header: "Questions",
+      width: "w-24",
       render: (practice) => (
         <div className="flex items-center gap-1 text-sm">
-          <FileQuestion className="h-3 w-3 text-muted-foreground" />
           {practice.totalQuestions}
         </div>
       ),
@@ -226,6 +212,7 @@ function PracticesScreenContent() {
     {
       key: "isActive",
       header: "Status",
+      width: "w-24",
       render: (practice) => (
         <Badge
           className={
@@ -241,6 +228,8 @@ function PracticesScreenContent() {
     {
       key: "actions",
       header: "Actions",
+      align: "right",
+      width: "w-32",
       render: (practice) => (
         <Menu
           trigger={
@@ -375,6 +364,7 @@ function PracticesScreenContent() {
         keyExtractor={(p) => p._id}
         isLoading={isLoading}
         emptyMessage="No practices found"
+        striped
       />
 
       {/* Pagination */}

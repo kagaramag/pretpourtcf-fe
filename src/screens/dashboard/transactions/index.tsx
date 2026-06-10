@@ -102,6 +102,8 @@ function TransactionsScreenContent() {
       momo: "Mobile Money",
       cc: "Credit Card",
       // spenn: "Spenn",
+      admin_offer: "Admin (Gratuit)",
+      admin_manual: "Admin (Manuel)",
     };
     return methods[method] || method.toUpperCase();
   };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface MethodologyStep {
   title: string;
@@ -53,19 +54,19 @@ const methodologyContent: Record<TestType, MethodologyContent> = {
     steps: [
       {
         title: "Avant l'audio",
-        description: "Lire rapidement les questions pour savoir quoi écouter",
+        description: "Lisez rapidement les questions pour savoir quoi écouter.",
       },
       {
         title: "Pendant l'audio",
-        description: "Lire rapidement les questions pour savoir quoi écouter",
+        description: "Concentrez vous sur les mots clés mentionnés",
       },
       {
-        title: "Répondre immédiatement",
-        description: "Lire rapidement les questions pour savoir quoi écouter",
+        title: "Réponse rapide",
+        description: "Répondez dès la fin de l'écoute, ne revenez pas en arrière.",
       },
       {
         title: "Conseil pratique",
-        description: "S'entraîner avec des audios pour habituer l'oreille.",
+        description: "Entraînez vous avec des audios pour habituer l'oreille.",
       },
     ],
   },
@@ -130,30 +131,30 @@ export default function Methodology({ type }: MethodologyProps) {
   const content = methodologyContent[type];
 
   return (
-    <div className="p-6 bg-[#69edcd] rounded-2xl flex flex-col gap-1">
-      <h1 className="lg:text-2xl text-lg">{content.title}</h1>
-      <h5 className="text-sm mb-2 max-w-3xl">{content.description}</h5>
+    <div className="p-4 bg-linear-to-r from-rose-100 via-gray-50 to-teal-100 rounded-4xl">
+      <div className="p-6 bg-white rounded-3xl flex flex-col gap-1">
+        <h1 className="lg:text-2xl text-lg">{content.title}</h1>
+        <div className="text-sm mb-2 max-w-4xl text-gray-600">{content.description}</div>
 
-      {/* Toggle button for small screens */}
-      <button
-        onClick={() => setShowSteps(!showSteps)}
-        className="lg:hidden mb-2 px-4 py-1.5 bg-[#53d7b6] rounded-lg font-medium hover:bg-[#3fc09f] transition-colors"
-      >
-        {showSteps ? "Masquer les étapes" : "Voir les étapes"}
-      </button>
+        <Button
+          onClick={() => setShowSteps(!showSteps)}
+          className="lg:hidden mb-2 px-4 py-1.5 bg-[#53d7b6] rounded-lg font-medium hover:bg-[#3fc09f] transition-colors"
+        >
+          {showSteps ? "Masquer les étapes" : "Voir les étapes"}
+        </Button>
 
-      {/* Steps - hidden on small screens by default, always visible on large screens */}
-      <div
-        className={`${
-          showSteps ? "flex" : "hidden"
-        } lg:grid flex-col lg:grid-cols-4 gap-3`}
-      >
-        {content.steps.map((step, index) => (
-          <div key={index} className="p-3 bg-[#53d7b6] rounded-xl">
-            <h4>{step.title}</h4>
-            <div className="text-black/80 text-sm">{step.description}</div>
-          </div>
-        ))}
+        <div
+          className={`${
+            showSteps ? "flex" : "hidden"
+          } lg:grid flex-col lg:grid-cols-4 gap-2`}
+        >
+          {content.steps.map((step, index) => (
+            <div key={index} className="p-3 bg-gray-100 rounded-xl">
+              <h4>{step.title}</h4>
+              <div className="text-gray-800 text-xs mt-2">{step.description}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ function SubscriptionsScreenContent() {
     <div className="space-y-2">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Subscriptions & Tarifs</h1>
+        <h1 className="text-2xl">Subscriptions & Tarifs</h1>
         {(activeTab === "preparation" || activeTab === "training") && (
           <Button onClick={handleCreatePlan} icon="plus" iconOnly />
         )}

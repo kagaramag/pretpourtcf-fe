@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${poppins.variable} bg-white antialiased`}>
+      <body className={`${GeistSans.variable} ${poppins.variable} bg-white antialiased overflow-x-hidden`}>
           <GoogleAnalytics />
           <AuthProvider>
             <PermissionProvider>

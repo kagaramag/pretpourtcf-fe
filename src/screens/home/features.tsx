@@ -60,7 +60,7 @@ const features = [
 export default function LandingFeatures() {
   return (
     <div className="bg-white py-12 sm:py-20 md:py-24 lg:py-16">
-      <div className="mx-auto max-w-6xl sm:px-6 lg:px-0">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 lg:px-0">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-base">
             Tout ce dont vous avez besoin
@@ -74,7 +74,7 @@ export default function LandingFeatures() {
             conçue pour vous accompagner à chaque étape.
           </p>
         </div>
-        <div className="mt-12 sm:mt-4 lg:mt-4">
+        <div className="mt-8 sm:mt-4 lg:mt-4 px-2 sm:px-12">
           <dl className="grid max-w-xl grid-cols-1 gap-4 sm:gap-4 lg:max-w-none lg:grid-cols-3">
             {features.map((feature) => (
               <div

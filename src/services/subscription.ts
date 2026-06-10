@@ -5,6 +5,12 @@ export interface SubscribeData {
   plan_id: string;
 }
 
+export interface AdminOfferData {
+  user_id: string;
+  plan_id: string;
+  payment_type: "free" | "manual_payment";
+}
+
 export interface UserSubscription {
   id: string;
   user: {
@@ -109,5 +115,13 @@ export const subscriptionService = {
 
   cancelSubscription: async (): Promise<void> => {
     await apiClient.post<BackendApiResponse<any>>("/subscriptions/cancel");
+  },
+
+  adminOfferSubscription: async (data: AdminOfferData): Promise<any> => {
+    const response = await apiClient.post<BackendApiResponse<any>>(
+      "/subscriptions/admin/offer",
+      data
+    );
+    return response.data;
   },
 };

@@ -7,6 +7,7 @@ import { questionService } from "@/services/question";
 import { toast } from "sonner";
 import { config } from "@/config";
 import { Practice, PracticeQuestion } from "@/types";
+import ReactMarkdown from "react-markdown";
 
 export default function TrainerEEDetailScreen() {
   const params = useParams();
@@ -116,7 +117,7 @@ export default function TrainerEEDetailScreen() {
                   </div>
                 )}
 
-                <p className="mb-4">{question.text}</p>
+                <div className="mb-4"><ReactMarkdown>{question.text}</ReactMarkdown></div>
 
                 {/* Writing-specific: show instructions for the trainer */}
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">

@@ -6,12 +6,15 @@ import { useAuth } from "@/contexts/auth-context";
 import { Write } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
-import { Icon } from "@/icons";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import Link from "next/link";
 import MethodEE from "./methodology";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ee")!;
 
 export default function WritingPracticePage() {
   const { user } = useAuth();
@@ -85,10 +88,10 @@ export default function WritingPracticePage() {
           <div className="flex items-center gap-3 mb-2">
             <h1 className="lg:text-3xl text-xl font-bold">Expression écrite</h1>
           </div>
-          <h5>
+          <div className="text-sm text-gray-600">
             Choisissez un exercice d&apos;expression écrite pour pratiquer votre
             rédaction et votre grammaire
-          </h5>
+          </div>
         </div>
         <MethodEE />
 
@@ -109,25 +112,18 @@ export default function WritingPracticePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {practices.map((practice) => (
-                <Link
-                  href={`/compte/pratique/ee/${practice._id}`}
+                <PracticeTask
                   key={practice._id}
+                  practice={practice}
+                  category={category}
+                  href={`/compte/pratique/ee/${practice._id}`}
                   onClick={() =>
                     trackClick({
                       action: "link_clicked",
                       label: `Paid: EE Practice — ${practice.title}`,
                     })
                   }
-                >
-                  <div className="p-4 bg-gray-50 hover:bg-gray-100 cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
-                    <h2 className="text-sm flex-1 tracking-wide leading-tight">
-                      {practice.title}
-                    </h2>
-                    <div className="w-6 h-6">
-                      <Icon name="play" />
-                    </div>
-                  </div>
-                </Link>
+                />
               ))}
             </div>
           )}

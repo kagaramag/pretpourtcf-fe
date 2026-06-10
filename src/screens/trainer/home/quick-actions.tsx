@@ -5,6 +5,10 @@ import { Icon } from "@/icons";
 import Link from "next/link";
 import { TrainerPerformanceByType } from "@/types";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import {
+  PRACTICE_CATEGORIES,
+  PracticeCategoryCard,
+} from "@/components/molecules/practice-category";
 
 interface QuickActionsProps {
   performanceByType: TrainerPerformanceByType[];
@@ -32,76 +36,14 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
       <div className="">
         {/* <h3 className="text-lg mb-3">Simulations des exams</h3> */}
         <div className="grid grid-cols-1 gap-3">
-          {[
-            {
-              href: "/trainer/pratiques/co",
-              icon: "listen" as const,
-              title: "Compréhension orale",
-              description: "Tendez l'oreille — chaque son compte",
-              color: "bg-primary",
-              iconBg: "bg-primary/70",
-              iconColor: "text-white",
-              border: "border-primary/30",
-            },
-            {
-              href: "/trainer/pratiques/ce",
-              icon: "read" as const,
-              title: "Compréhension écrite",
-              description: "Décodez les mots, maîtrisez le sens",
-              color: "bg-secondary",
-              iconBg: "bg-secondary/70",
-              iconColor: "text-white",
-              border: "border-secondary/30",
-            },
-            {
-              href: "/trainer/pratiques/eo",
-              icon: "speak" as const,
-              title: "Expression orale",
-              description: "Prenez la parole avec assurance",
-              color: "bg-accent",
-              iconBg: "bg-accent",
-              iconColor: "text-white",
-              border: "border-accent/30",
-            },
-            {
-              href: "/trainer/pratiques/ee",
-              icon: "write" as const,
-              title: "Expression écrite",
-              description: "Transformez vos idées en mots justes",
-              color: "bg-orange-400",
-              iconBg: "bg-orange-500",
-              iconColor: "text-white",
-              border: "border-orange-200",
-            },
-          ].map((item) => (
-            <Link key={item.href} href={item.href} className="group" onClick={() => trackClick({ action: "link_clicked", label: item.title })}>
-              <div
-                className={`relative overflow-hidden rounded-2xl bg-white border ${item.border} p-4 transition-all duration-200 hover:shadow-md`}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white ${item.iconBg}`}
-                  >
-                    <Icon name={item.icon} size={16} color={item.iconColor} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-gray-900 text-sm">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <div className="shrink-0 mt-1 transition-transform group-hover:translate-x-1">
-                    <Icon
-                      name="arrowRight"
-                      size={16}
-                      className="text-gray-400"
-                    />
-                  </div>
-                </div>
-                <div
-                  className={`absolute bottom-0 left-0 h-1 w-full ${item.color}`}
-                />
-              </div>
-            </Link>
+          {PRACTICE_CATEGORIES.map((category) => (
+            <PracticeCategoryCard
+              key={category.slug}
+              category={category}
+              variant="compact"
+              href={`/trainer/pratiques/${category.slug}`}
+              onClick={() => trackClick({ action: "link_clicked", label: category.label })}
+            />
           ))}
         </div>
       </div>

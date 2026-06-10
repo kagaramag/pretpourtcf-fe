@@ -77,8 +77,8 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
     <div>
       <div className="pb-4 pt-22 bg-gray-900 text-white">
         <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 sm:gap-2">
-            <div className="w-14 h-14  bg-black rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2">
+            <div className="w-14 h-14 bg-black rounded-full items-center justify-center flex-shrink-0 hidden sm:flex">
               <Icon name="user" className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
             <div className="flex-1 min-w-0 w-full sm:w-auto">
@@ -96,34 +96,34 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                   </div>
                 )}
               </div>
-              <div className="flex items-center space-x-2 text-gray-400">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-gray-400">
                 {user?.corporate ? (
-                  <div className="text-sm truncate hidden lg:block">
+                  <div className="text-sm truncate hidden sm:block">
                     {user?.corporate.name} - {user?.corporate?.location}
                   </div>
                 ) : (
-                  <div className="text-sm truncate hidden lg:block">
+                  <div className="text-sm truncate hidden sm:block">
                     {user?.email}
                   </div>
                 )}
                 {user?.subscription && (
                   <Link
                     href="/compte/plans"
-                    className="text-sm inline-block whitespace-nowrap"
+                    className="text-xs sm:text-sm inline-block whitespace-nowrap"
                   >
                     Abonnement: {user?.subscription?.plan?.name} {"("}
                     {user?.subscription?.days_remaining} Jours{")"}
                   </Link>
                 )}
                 {!user?.subscription && user?.role === "client" && (
-                  <div className="py-1 text-sm rounded-full whitespace-nowrap self-start sm:self-auto">
+                  <div className="py-1 text-xs sm:text-sm rounded-full whitespace-nowrap">
                     Plan: Mode gratuit
                   </div>
                 )}
               </div>
             </div>
-            <div className="w-full sm:w-auto lg:block md:block hidden">
-              <Button onClick={handleLogout} variant="danger">
+            <div className="w-full sm:w-auto hidden lg:block">
+              <Button onClick={handleLogout} variant="danger" className="w-full sm:w-auto">
                 Se déconnecter
               </Button>
             </div>
@@ -132,25 +132,25 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
       </div>
       {navigation.length > 0 && (
         <div className="bg-gray-800 pt-2 text-white mb-2">
-          <div className="mx-auto max-w-5xl px-4 lg:px-0 md:px-6 flex flex-col sm:flex-row gap-3 sm:gap-0">
-            <ul className="flex items-center sm:gap-2 whitespace-nowrap">
+          <div className="mx-auto max-w-5xl">
+            <ul className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
               {navigation.map((item, idx) => (
                 <li key={idx}>
                   {item.show ? (
                     <Link
                       href={item.href}
-                      className={`text-sm py-1.5 px-2 border-b-4 transition-colors flex items-center gap-1.5 ${
+                      className={`text-sm py-2 sm:py-1.5 px-2 border-l-4 sm:border-l-0 sm:border-b-4 transition-colors flex items-center gap-1.5 ${
                         isActive(item.href)
                           ? "border-tertiary bg-tertiary/10"
-                          : "border-none"
+                          : "border-transparent sm:border-gray-800"
                       }`}
                     >
-                      {item.icon && <Icon name={item.icon} size={16} />}
+                      {item.icon && <Icon name={item.icon} size={16} className="hidden sm:block" />}
                       {item.name}
                     </Link>
                   ) : (
-                    <span className="text-sm text-gray-200/70 flex items-center gap-1.5">
-                      {item.icon && <Icon name={item.icon} size={16} />}
+                    <span className="text-sm text-gray-200/70 flex items-center gap-1.5 py-2 sm:py-1.5 px-3">
+                      {item.icon && <Icon name={item.icon} size={16} className="hidden sm:block" />}
                       {item.name}
                     </span>
                   )}

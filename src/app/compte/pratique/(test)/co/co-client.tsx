@@ -10,8 +10,11 @@ import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import MethodCO from "./methodology";
-import { Icon } from "@/icons";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "co")!;
 
 export default function ListeningPracticePage() {
   const { user } = useAuth();
@@ -83,18 +86,18 @@ export default function ListeningPracticePage() {
         </div>
         <div className="mb-4">
           <div className="flex items-center gap-3">
-            <h1 className="lg:text-3xl text-xl font-bold">
+            <h1 className="lg:text-2xl text-xl font-semibold">
               Compréhension Orale
             </h1>
           </div>
-          <h5>
+          <div className="text-sm text-gray-600">
             Choisissez un exercice d&apos;écoute pour pratiquer votre
             compréhension orale
-          </h5>
+          </div>
         </div>
         <MethodCO />
         <div>
-          <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques</h1>
+          <h1 className="lg:text-2xl text-xl font-semibold my-4">Pratiques</h1>
         </div>
 
         {practices.length === 0 ? (
@@ -111,25 +114,18 @@ export default function ListeningPracticePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {practices.map((practice) => (
-              <Link
-                href={`/compte/pratique/co/${practice._id}`}
+              <PracticeTask
                 key={practice._id}
+                practice={practice}
+                category={category}
+                href={`/compte/pratique/co/${practice._id}`}
                 onClick={() =>
                   trackClick({
                     action: "link_clicked",
                     label: `Paid: CO Practice — ${practice.title}`,
                   })
                 }
-              >
-                <div className="p-4 bg-gray-50 hover:bg-gray-100 cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
-                  <h2 className="text-sm flex-1 tracking-wide leading-tight">
-                    {practice.title}
-                  </h2>
-                  <div className="w-6 h-6">
-                    <Icon name="play" />
-                  </div>
-                </div>
-              </Link>
+              />
             ))}
           </div>
         )}

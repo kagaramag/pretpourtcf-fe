@@ -11,6 +11,7 @@ import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
 import { Search, Close } from "@/icons";
 import { subscriptionService } from "@/services/subscription";
+import { OfferSubscriptionModal } from "./offer-subscription-modal";
 import { toast } from "sonner";
 
 type Subscription = any;
@@ -19,6 +20,7 @@ export function SubscriptionsTab() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [offerModalOpen, setOfferModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search") || ""
   );
@@ -113,9 +115,12 @@ export function SubscriptionsTab() {
       key: "user",
       header: "User",
       render: (subscription) => (
-        <div className="flex items-center gap-2">
+        <button
+          className="text-left text-primary hover:underline cursor-pointer"
+          onClick={() => router.push(`/dashboard/users/${subscription.user.id}`)}
+        >
           {subscription.user.first_name} {subscription.user.last_name}
-        </div>
+        </button>
       ),
     },
     {
@@ -207,6 +212,16 @@ export function SubscriptionsTab() {
             Clear Filters
           </Button>
         )}
+
+        <div className="ml-auto">
+          <Button
+            iconOnly
+            icon="plus"
+            size="sm"
+            variant="primary"
+            onClick={() => setOfferModalOpen(true)}
+          />
+        </div>
       </div>
 
       <div>
@@ -260,6 +275,10 @@ export function SubscriptionsTab() {
           </div>
         )}
       </div>
+      <OfferSubscriptionModal
+        isOpen={offerModalOpen}
+        onClose={() => setOfferModalOpen(false)}
+      />
     </div>
   );
 }

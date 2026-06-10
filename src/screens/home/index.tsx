@@ -63,7 +63,7 @@ export function IndexScreen() {
               {!isLoading && isAuthenticated ? (
                 <>
                   <NavigationLink href="/compte">
-                    <Button size="lg">
+                    <Button size="lg" variant="tertiary">
                       Mon compte
                       <ArrowRight className="mx-2 h-4 w-4" />
                     </Button>
@@ -83,8 +83,8 @@ export function IndexScreen() {
               ) : null}
             </div>
           </div>
-          <div className="w-[373px] h-[440px] relative">
-            <div className="sm:w-[373px] sm:h-[440px] w-[360px] h-[300px] top-0 absolute right-0 bottom-0">
+          <div className="w-[250px] h-[300px] sm:w-[300px] sm:h-[360px] md:w-[373px] md:h-[440px] relative">
+            <div className="w-full h-[250px] sm:h-[300px] md:h-[300px] top-0 absolute right-0 bottom-0">
               <Image
                 src={TCFMethod}
                 width={373}

@@ -36,7 +36,7 @@ export default function TrainerScreen() {
   return (
     <div className="space-y-3">
       <div>
-        <h2 className="text-3xl tracking-tight">Tableau de bord</h2>
+        <h2 className="lg:text-3xl text-lg tracking-tight">Tableau de bord</h2>
       </div>
 
       <StatsCards stats={stats} />

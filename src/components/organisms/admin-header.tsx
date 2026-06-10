@@ -1,9 +1,9 @@
 "use client";
 
 import { useAuth } from "@/contexts/auth-context";
-import { Menu, type MenuItem } from "@/components/ui/menu";
+import { Menu } from "@/components/ui/menu";
 import Link from "next/link";
-import { User, Bell, Globe } from "@/icons";
+import { User, Bell, Open } from "@/icons";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
@@ -25,7 +25,7 @@ export default function Header() {
           href="/"
           className="w-8 h-8 sm:w-10 sm:h-10 bg-tertiary rounded-full flex items-center justify-center transition-colors"
         >
-          <Globe className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
+          <Open className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
         </Link>
         <Menu
           trigger={

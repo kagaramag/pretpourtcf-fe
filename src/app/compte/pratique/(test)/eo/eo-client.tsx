@@ -105,8 +105,8 @@ export default function SpeakingPracticePage() {
           </Link>
         </div>
         <div className="mb-4">
-          <h1 className="lg:text-3xl text-xl">Expression Orale</h1>
-          <div className="text-gray-500">
+          <h1 className="lg:text-2xl text-xl">Expression Orale</h1>
+          <div className="text-sm text-gray-600">
             Choisissez un exercice d&apos;expression orale pour pratiquer votre
             expression et prononciation
           </div>
@@ -114,7 +114,7 @@ export default function SpeakingPracticePage() {
         <MethodEO />
         <div className="mt-6 flex flex-col justify-center items-center gap-4 border-2 border-dashed border-tertiary rounded-lg p-6 bg-tertiary/10 text-center">
           <div>
-            <h4 className="text-xl font-semibold">
+            <h4 className="text-xl">
               Prêt pour un test aléatoire ?
             </h4>
             <h5 className="max-w-md">
@@ -137,7 +137,7 @@ export default function SpeakingPracticePage() {
 
         {/* Display Speaking Practices with Questions */}
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Pratiques disponibles</h2>
+          <h2 className="text-xl font-semibold mb-4">Pratiques disponibles</h2>
 
           {filteredPractices.length === 0 ? (
             <div className="text-center py-8">

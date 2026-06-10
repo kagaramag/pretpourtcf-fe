@@ -11,6 +11,10 @@ import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import MethodCE from "./methodology";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ce")!;
 
 export default function ReadingPracticePage() {
   const { user } = useAuth();
@@ -82,18 +86,18 @@ export default function ReadingPracticePage() {
         </div>
         <div className="mb-4">
           <div className="flex items-center gap-3">
-            <h1 className="lg:text-3xl text-xl font-bold">
+            <h1 className="lg:text-2xl text-xl font-semibold">
               Compréhension écrite
             </h1>
           </div>
-          <h5>
+          <div className="text-sm text-gray-600">
             Choisissez un exercice de lecture pour pratiquer votre compréhension
             écrite
-          </h5>
+          </div>
         </div>
         <MethodCE />
         <div>
-          <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques</h1>
+          <h1 className="lg:text-2xl text-xl font-semibold my-4">Pratiques</h1>
         </div>
 
         {practices.length === 0 ? (
@@ -108,27 +112,20 @@ export default function ReadingPracticePage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {practices.map((practice) => (
-              <Link
-                href={`/compte/pratique/ce/${practice._id}`}
+              <PracticeTask
                 key={practice._id}
+                practice={practice}
+                category={category}
+                href={`/compte/pratique/ce/${practice._id}`}
                 onClick={() =>
                   trackClick({
                     action: "link_clicked",
                     label: `Paid: CE Practice — ${practice.title}`,
                   })
                 }
-              >
-                <div className="border border-gray-400 p-4 hover:bg-primary/5 hover:border-primary hover:text-primary cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
-                  <h3 className="font-semibold flex-1 tracking-wide leading-tight">
-                    {practice.title}
-                  </h3>
-                  <div className="w-6 h-6">
-                    <ArrowRight className="h-6 w-6" />
-                  </div>
-                </div>
-              </Link>
+              />
             ))}
           </div>
         )}

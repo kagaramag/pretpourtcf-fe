@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { config } from "@/config";
 import AudioPlayer from "@/components/organisms/player";
 import { Practice, PracticeQuestion } from "@/types";
+import { Button } from "@/components/ui/button";
+import ReactMarkdown from "react-markdown";
 
 export default function TrainerEODetailScreen() {
   const params = useParams();
@@ -26,7 +28,8 @@ export default function TrainerEODetailScreen() {
     try {
       setLoading(true);
 
-      const practiceResponse = await practiceService.getPracticeById(practiceId);
+      const practiceResponse =
+        await practiceService.getPracticeById(practiceId);
       const practiceData = practiceResponse.data.practice;
       setPractice(practiceData);
 
@@ -39,9 +42,7 @@ export default function TrainerEODetailScreen() {
       setQuestions(questionsData);
     } catch (error: any) {
       console.error("Error fetching data:", error);
-      toast.error(
-        error.response?.data?.message || "Erreur lors du chargement"
-      );
+      toast.error(error.response?.data?.message || "Erreur lors du chargement");
     } finally {
       setLoading(false);
     }
@@ -72,37 +73,43 @@ export default function TrainerEODetailScreen() {
 
   return (
     <div className="container mx-auto max-w-4xl p-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-2">{practice.title}</h1>
-        <p className="text-gray-600">Questions et Réponses - Expression Orale</p>
+      <div className="mb-4">
+        <h1 className="text-2xl font-semibold mb-2">{practice.title}</h1>
+        <p className="text-gray-600">
+          Questions et Réponses - Expression Orale
+        </p>
       </div>
 
       {questions.length === 0 ? (
         <p>Aucune question disponible pour cet exercice</p>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {questions.map((question, index) => (
-            <div key={question._id} className="border p-4 rounded-lg bg-white">
-              <div className="mb-4">
-                <h3 className="font-semibold text-lg mb-2">
+            <div
+              key={question._id}
+              className="border border-gray-200 p-4 rounded-lg bg-white"
+            >
+              <div>
+                <h3 className="font-semibold text-base">
                   Question {question.number || index + 1}
                 </h3>
 
                 {question.media?.image && (
                   <div className="mb-4">
-                    <button
+                    <Button
+                      size="sm"
+                      variant="outline"
                       onClick={() =>
                         setShowImages((prev) => ({
                           ...prev,
                           [question._id]: !prev[question._id],
                         }))
                       }
-                      className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 mb-2"
                     >
                       {showImages[question._id]
                         ? "Masquer l'image"
                         : "Afficher l'image"}
-                    </button>
+                    </Button>
                     {showImages[question._id] && (
                       <div className="mt-2">
                         <img
@@ -123,31 +130,12 @@ export default function TrainerEODetailScreen() {
                   </div>
                 )}
 
-                <p className="mb-4">{question.text}</p>
-
-                {question.type === "essay" ||
-                !question.options ||
-                question.options.length === 0 ? (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                    <p className="text-sm text-blue-900 font-medium mb-2">
-                      Instructions pour l&apos;expression orale:
-                    </p>
-                    <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
-                      <li>Cette question nécessite une réponse orale</li>
-                      <li>
-                        L&apos;étudiant doit structurer sa réponse de manière
-                        logique
-                      </li>
-                      <li>Temps de préparation recommandé: 1-2 minutes</li>
-                      <li>Durée de la réponse: 2-3 minutes</li>
-                    </ul>
-                  </div>
-                ) : null}
+                <div><ReactMarkdown>{question.text}</ReactMarkdown></div>
               </div>
 
               {question.options && question.options.length > 0 && (
                 <div className="space-y-2">
-                  <p className="font-medium mb-2">Options:</p>
+                  <div className="font-medium mb-2">Options:</div>
                   {question.options.map((option: string, optIndex: number) => {
                     const isCorrect = question.correct === optIndex;
                     return (
@@ -190,7 +178,17 @@ export default function TrainerEODetailScreen() {
           ))}
         </div>
       )}
-
+      <div className="bg-blue-50 border border-blue-200 mt-4 rounded-2xl p-4 mb-4">
+        <p className="text-sm text-blue-900 font-medium mb-2">
+          Instructions pour l&apos;expression orale:
+        </p>
+        <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+          <li>Cette question nécessite une réponse orale</li>
+          <li>L&apos;étudiant doit structurer sa réponse de manière logique</li>
+          <li>Temps de préparation recommandé: 1-2 minutes</li>
+          <li>Durée de la réponse: 2-3 minutes</li>
+        </ul>
+      </div>
       <div className="mt-8 text-center">
         <a
           href="/trainer/pratiques/eo"

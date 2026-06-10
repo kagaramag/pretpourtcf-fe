@@ -4,13 +4,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { Write, ArrowRight } from "@/icons";
+import { Write } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
 import MethodEE from "./methodology";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ee")!;
 
 export default function FreeWritingPracticePage() {
   const { user } = useAuth();
@@ -97,25 +101,18 @@ export default function FreeWritingPracticePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
             {practices.map((practice) => (
-              <Link
-                href={`/compte/essai-gratuit/ee/${practice._id}`}
+              <PracticeTask
                 key={practice._id}
+                practice={practice}
+                category={category}
+                href={`/compte/essai-gratuit/ee/${practice._id}`}
                 onClick={() =>
                   trackClick({
                     action: "link_clicked",
                     label: `Trial: EE Practice — ${practice.title}`,
                   })
                 }
-              >
-                <div className="border border-gray-400 p-4 hover:bg-primary/5 hover:border-primary hover:text-primary cursor-pointer flex flex-row items-center gap-3 rounded-2xl">
-                  <h3 className="font-semibold flex-1 tracking-wide leading-tight">
-                    {practice.title}
-                  </h3>
-                  <div className="w-6 h-6">
-                    <ArrowRight className="h-6 w-6" />
-                  </div>
-                </div>
-              </Link>
+              />
             ))}
           </div>
         )}

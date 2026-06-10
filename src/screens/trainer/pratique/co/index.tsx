@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { practiceService } from "@/services/practice";
 import { toast } from "sonner";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Practice } from "@/types";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "co")!;
 
 export default function TrainerCOListScreen() {
   const [practices, setPractices] = useState<Practice[]>([]);
@@ -58,19 +60,13 @@ export default function TrainerCOListScreen() {
       ) : (
         <div className="grid grid-cols-1 gap-2">
           {practices.map((practice) => (
-            <Link
-              href={`/trainer/pratiques/co/${practice._id}`}
+            <PracticeTask
               key={practice._id}
-            >
-              <div className="border p-3 rounded-lg flex items-center">
-                <h2 className="flex-1 text-sm font-semibold leading-none">
-                  {practice.title}
-                </h2>
-                <div>
-                  <Button icon="arrowRight">View</Button>
-                </div>
-              </div>
-            </Link>
+              practice={practice}
+              variant="trainer"
+              category={category}
+              href={`/trainer/pratiques/co/${practice._id}`}
+            />
           ))}
         </div>
       )}
