@@ -85,9 +85,9 @@ const menuItems: MenuItem[] = [
     permission: PERMISSIONS.PRACTICES_READ,
   },
   {
-    name: "Login activity",
+    name: "Logs",
     icon: <Icon name="report" size={20} />,
-    href: "/dashboard/login-activity",
+    href: "/dashboard/logs",
     permission: PERMISSIONS.PRACTICES_READ,
   },
 ];

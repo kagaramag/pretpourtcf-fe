@@ -1,4 +1,4 @@
-import LoginActivityScreen from "@/screens/dashboard/login-activity";
+import LoginActivityScreen from "@/screens/dashboard/logs";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
