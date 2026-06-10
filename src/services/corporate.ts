@@ -191,6 +191,47 @@ export const corporateService = {
     return await apiClient.get(url);
   },
 
+  // ─── Learner Session Answers ────────────────────────────────────────
+
+  getLearnerSessionAnswers: async (
+    corporateId: string,
+    learnerId: string,
+    sessionId: string
+  ): Promise<
+    BackendApiResponse<{
+      session: {
+        id: string;
+        practice: { id: string; title: string; type: string; level?: string };
+        totalScore: number;
+        maxPossibleScore: number;
+        percentageScore: number;
+        timeElapsedSeconds: number;
+        completedAt: string;
+      };
+      answers: Array<{
+        questionId: string;
+        questionNumber: number;
+        selectedAnswer?: number;
+        textAnswer?: string;
+        isCorrect: boolean;
+        pointsEarned: number;
+        question: {
+          number: number;
+          type: "mcq" | "short_answer" | "audio" | "essay";
+          text: string;
+          options?: string[];
+          correct?: number;
+          answer?: string;
+          score: number;
+          media?: { audio?: string; image?: string };
+        } | null;
+      }>;
+    }>
+  > => {
+    const url = `${API_ENDPOINTS.CORPORATES}/${corporateId}/learners/${learnerId}/sessions/${sessionId}/answers`;
+    return await apiClient.get(url);
+  },
+
   // ─── Trainer: my dashboard ────────────────────────────────────────
 
   getMyDashboard: async (): Promise<BackendApiResponse<TrainerDashboardStats>> => {

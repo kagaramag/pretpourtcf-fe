@@ -84,7 +84,7 @@ export default function AccountPage() {
               >
                 <div className="flex items-start gap-4">
                   <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${item.iconBg}`}
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-white ${item.iconBg}`}
                   >
                     <Icon name={item.icon} size={24} color={item.iconColor} />
                   </div>

@@ -393,7 +393,7 @@ export default function PracticeSessionPage() {
         <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <XCircle className="h-16 w-16 text-red-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
@@ -430,7 +430,7 @@ export default function PracticeSessionPage() {
             <Card>
                 <h3 className="font-semibold text-2xl">Revue des réponses</h3>
                   Analysez vos réponses pour mieux comprendre vos erreurs
-              <div className="p-6" className="space-y-6">
+              <div className="p-6 space-y-6">
                 {questionsWithAnswers.map((item, index) => (
                   <Card
                     key={item.question._id}
@@ -460,7 +460,7 @@ export default function PracticeSessionPage() {
                           )}
                         </div>
                       </div>
-                    <div className="p-6" className="space-y-4">
+                    <div className="p-6 space-y-4">
                       {/* Question media */}
                       {item.question.media?.image && (
                         <div className="flex justify-center">
@@ -561,10 +561,10 @@ export default function PracticeSessionPage() {
                 {sessionResult.message}
               </h3>
                 Exercice terminé
-            <div className="p-6" className="space-y-6">
+            <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Score</p>
                     <p className="text-3xl font-bold">
                       {sessionResult.totalScore}/
@@ -573,7 +573,7 @@ export default function PracticeSessionPage() {
                   </div>
                 </Card>
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">
                       Pourcentage
                     </p>
@@ -583,7 +583,7 @@ export default function PracticeSessionPage() {
                   </div>
                 </Card>
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Temps</p>
                     <p className="text-3xl font-bold">
                       {formatTime(sessionResult.timeElapsedSeconds)}
@@ -645,7 +645,7 @@ export default function PracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <Info className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucune question disponible

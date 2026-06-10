@@ -10,7 +10,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Clock, Loading, Speak, Stop, Play, Check, Pause } from "@/icons";
 import ReactMarkdown from "react-markdown";
 import { questionService } from "@/services/question";
-import { PracticeQuestion } from "@/types";
+import { practiceSessionService } from "@/services/practice-session";
+import { PracticeQuestion, PracticeSession } from "@/types";
 import { toast } from "sonner";
 
 type TacheType = 1 | 2 | 3;
@@ -31,6 +32,9 @@ export default function SpeakingPracticeSessionPage() {
   const [loading, setLoading] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
+  const [session, setSession] = useState<PracticeSession | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [totalTimeElapsed, setTotalTimeElapsed] = useState(0);
   const [fetchedQuestionIds, setFetchedQuestionIds] = useState<Set<string>>(
     new Set()
   );
@@ -62,6 +66,7 @@ export default function SpeakingPracticeSessionPage() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const totalTimerRef = useRef<NodeJS.Timeout | null>(null);
   const audioElementsRef = useRef<Record<TacheType, HTMLAudioElement | null>>({
     1: null,
     2: null,
@@ -106,6 +111,9 @@ export default function SpeakingPracticeSessionPage() {
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
       }
+      if (totalTimerRef.current) {
+        clearInterval(totalTimerRef.current);
+      }
       if (
         mediaRecorderRef.current &&
         mediaRecorderRef.current.state !== "inactive"
@@ -117,6 +125,7 @@ export default function SpeakingPracticeSessionPage() {
 
   const onClose = () => {
     cleanupAudioRecordings();
+    if (totalTimerRef.current) clearInterval(totalTimerRef.current);
     router.push("/compte/pratique/eo");
   };
 
@@ -326,6 +335,19 @@ export default function SpeakingPracticeSessionPage() {
         return;
       }
 
+      // Start a practice session to track this activity
+      const sessionResponse = await practiceSessionService.startSession({
+        practiceId: TACHE_2_ID,
+      });
+      setSession(sessionResponse.data.session);
+
+      // Start total elapsed timer
+      setTotalTimeElapsed(0);
+      if (totalTimerRef.current) clearInterval(totalTimerRef.current);
+      totalTimerRef.current = setInterval(() => {
+        setTotalTimeElapsed((prev) => prev + 1);
+      }, 1000);
+
       setQuestions(selectedQuestions);
       setFetchedQuestionIds(newFetchedIds);
       setHasStarted(true);
@@ -343,6 +365,32 @@ export default function SpeakingPracticeSessionPage() {
   const handleStart = () => {
     fetchPractice();
     cleanupAudioRecordings(); // Cleanup any previous recordings when starting new session
+  };
+
+  const handleFinalSubmit = async () => {
+    if (isSubmitting || !session) return;
+
+    try {
+      setIsSubmitting(true);
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      if (totalTimerRef.current) clearInterval(totalTimerRef.current);
+
+      await practiceSessionService.completeSession({
+        sessionId: session._id,
+        timeElapsedSeconds: totalTimeElapsed,
+      });
+
+      toast.success("Test soumis avec succès!");
+      cleanupAudioRecordings();
+      router.push("/compte/historique");
+    } catch (error: any) {
+      console.error("Error submitting session:", error);
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la soumission"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isRecording = activeRecordingTache !== null;
@@ -420,7 +468,7 @@ export default function SpeakingPracticeSessionPage() {
               <Alert>
                 <AlertDescription>
                   Utilisez les contrôles d&apos;enregistrement pour chaque
-                  tâche. Les enregistrements ne sont pas sauvegardés.
+                  tâche. Terminez le test pour enregistrer votre activité.
                 </AlertDescription>
               </Alert>
 
@@ -459,12 +507,11 @@ export default function SpeakingPracticeSessionPage() {
                             onClick={() => startRecording(1)}
                             size="sm"
                             className="gap-2"
-                            variant={"tertiary"}
                             disabled={
                               isRecording || audioRecordings[1].url !== null
                             }
                           >
-                            <Speak className="h-4 w-4" />
+                            <Play className="h-4 w-4" />
                             Enregistrer
                           </Button>
                         ) : (
@@ -548,14 +595,13 @@ export default function SpeakingPracticeSessionPage() {
                               onClick={() => startRecording(2)}
                               size="sm"
                               className="gap-2"
-                              variant={"tertiary"}
                               disabled={
                                 isRecording ||
                                 !audioRecordings[1].url ||
                                 audioRecordings[2].url !== null
                               }
                             >
-                              <Speak className="h-4 w-4" />
+                              <Play className="h-4 w-4" />
                               Enregistrer
                             </Button>
                           ) : (
@@ -635,14 +681,13 @@ export default function SpeakingPracticeSessionPage() {
                               onClick={() => startRecording(3)}
                               size="sm"
                               className="gap-2"
-                              variant={"tertiary"}
                               disabled={
                                 isRecording ||
                                 !audioRecordings[2].url ||
                                 audioRecordings[3].url !== null
                               }
                             >
-                              <Speak className="h-4 w-4" />
+                              <Play className="h-4 w-4" />
                               Enregistrer
                             </Button>
                           ) : (
@@ -788,7 +833,23 @@ export default function SpeakingPracticeSessionPage() {
                 </div>
               )}
 
-              <div className="flex justify-center mt-4">
+              <div className="flex justify-center gap-3 mt-4">
+                {allRecordingsComplete && (
+                  <Button
+                    size="lg"
+                    onClick={handleFinalSubmit}
+                    disabled={isSubmitting || isRecording}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loading className="mr-2 h-4 w-4 animate-spin" />
+                        Soumission...
+                      </>
+                    ) : (
+                      "Terminer le test"
+                    )}
+                  </Button>
+                )}
                 <Button
                   size="lg"
                   onClick={handleStart}

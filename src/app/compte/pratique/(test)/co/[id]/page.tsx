@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Info, Verified, Clock, ArrowRight, Open, EyeClosed, Trophy, XCircle, RotateCcw, CaretLeft } from "@/icons";
+import {
+  Info,
+  Verified,
+  Clock,
+  ArrowRight,
+  Open,
+  Trophy,
+  XCircle,
+  RotateCcw,
+  CaretLeft,
+} from "@/icons";
 import { practiceService } from "@/services/practice";
 import { questionService } from "@/services/question";
 import { practiceSessionService } from "@/services/practice-session";
@@ -56,7 +63,6 @@ export default function PracticeSessionPage() {
       isCorrect: boolean;
     }>
   >([]);
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -393,7 +399,9 @@ export default function PracticeSessionPage() {
         <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div
+              className="flex p-6 flex-col items-center justify-center py-12"
+            >
               <XCircle className="h-16 w-16 text-red-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
@@ -428,9 +436,9 @@ export default function PracticeSessionPage() {
             </div>
 
             <Card>
-                <h3 className="font-semibold text-2xl">Revue des réponses</h3>
-                  Analysez vos réponses pour mieux comprendre vos erreurs
-              <div className="p-6" className="space-y-6">
+              <h3 className="font-semibold text-2xl">Revue des réponses</h3>
+              Analysez vos réponses pour mieux comprendre vos erreurs
+              <div className="p-6 space-y-6">
                 {questionsWithAnswers.map((item, index) => (
                   <Card
                     key={item.question._id}
@@ -440,27 +448,27 @@ export default function PracticeSessionPage() {
                         : "border-red-200 bg-red-50/50"
                     }`}
                   >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="text-xl">
-                            Question {item?.question?.number}
-                          </div>
-                        </div>
-                        <div className="text-sm font-semibold">
-                          {item.isCorrect ? (
-                            <div className="flex items-center gap-1">
-                              <Verified className="h-5 w-5 text-green-600" />
-                              <span className="text-green-600">Correct</span>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-1">
-                              <XCircle className="h-5 w-5 text-red-600" />
-                              <span className="text-red-600">Incorrect</span>
-                            </div>
-                          )}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="text-xl">
+                          Question {item?.question?.number}
                         </div>
                       </div>
-                    <div className="p-6" className="space-y-4">
+                      <div className="text-sm font-semibold">
+                        {item.isCorrect ? (
+                          <div className="flex items-center gap-1">
+                            <Verified className="h-5 w-5 text-green-600" />
+                            <span className="text-green-600">Correct</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1">
+                            <XCircle className="h-5 w-5 text-red-600" />
+                            <span className="text-red-600">Incorrect</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6 space-y-4">
                       {/* Question media */}
                       {item.question.media?.image && (
                         <div className="flex justify-center">
@@ -554,17 +562,17 @@ export default function PracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6 max-w-4xl">
           <Card className={`border-2 ${getResultColor(sessionResult.grade)}`}>
-              <div className="flex justify-center mb-4">
-                {getResultIcon(sessionResult.grade)}
-              </div>
-              <h3 className="font-semibold text-3xl mb-2">
-                {sessionResult.message}
-              </h3>
-                Exercice terminé
-            <div className="p-6" className="space-y-6">
+            <div className="flex justify-center mb-4">
+              {getResultIcon(sessionResult.grade)}
+            </div>
+            <h3 className="font-semibold text-3xl mb-2">
+              {sessionResult.message}
+            </h3>
+            Exercice terminé
+            <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Score</p>
                     <p className="text-3xl font-bold">
                       {sessionResult.totalScore}/
@@ -573,7 +581,7 @@ export default function PracticeSessionPage() {
                   </div>
                 </Card>
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">
                       Pourcentage
                     </p>
@@ -583,7 +591,7 @@ export default function PracticeSessionPage() {
                   </div>
                 </Card>
                 <Card>
-                  <div className="p-6" className="pt-6 text-center">
+                  <div className="p-6 pt-6 text-center">
                     <p className="text-sm text-muted-foreground mb-2">Temps</p>
                     <p className="text-3xl font-bold">
                       {formatTime(sessionResult.timeElapsedSeconds)}
@@ -645,7 +653,7 @@ export default function PracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <Info className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucune question disponible
@@ -714,26 +722,13 @@ export default function PracticeSessionPage() {
 
             {/* Question text */}
             <div className="flex">
-              <div className="text-sm flex-1">{currentQuestion.text}</div>
-              <Button
-                onClick={() => setShowCorrectAnswer(!showCorrectAnswer)}
-                variant="outline"
-                size="sm"
-                className="gap-2"
-              >
-                {showCorrectAnswer ? (
-                  <Open className="h-4 w-4" />
-                ) : (
-                  <EyeClosed className="h-4 w-4" />
-                )}
-              </Button>
+              <div className="flex-1">{currentQuestion.text}</div>
             </div>
             {/* Answer options */}
             {currentQuestion.options && currentQuestion.options.length > 0 && (
               <div className="space-y-1">
                 {currentQuestion.options.map((option, index) => {
                   const isCorrectAnswer =
-                    showCorrectAnswer &&
                     currentQuestion.correct !== undefined &&
                     currentQuestion.correct === index;
 

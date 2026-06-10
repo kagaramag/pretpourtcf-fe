@@ -286,7 +286,7 @@ export default function WritingPracticeSessionPage() {
         <Header title="Exercice introuvable" onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <XCircle className="h-16 w-16 text-red-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Exercice introuvable
@@ -307,7 +307,7 @@ export default function WritingPracticeSessionPage() {
         <Header title={practice.title} onClose={onClose} />
         <div className="container mx-auto p-6">
           <Card>
-            <div className="p-6" className="flex flex-col items-center justify-center py-12">
+            <div className="p-6 flex flex-col items-center justify-center py-12">
               <Info className="h-16 w-16 text-yellow-500 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Cet exercice doit contenir exactement 3 questions

@@ -6,7 +6,16 @@ import { useAuth } from "@/contexts/auth-context";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, Column } from "@/components/ui/table";
-import { ChartView, Calendar, Clock, Verified, Info, Trophy, TrendingUp, XCircle } from "@/icons";
+import {
+  ChartView,
+  Calendar,
+  Clock,
+  Verified,
+  Info,
+  Trophy,
+  TrendingUp,
+  XCircle,
+} from "@/icons";
 import { practiceSessionService } from "@/services/practice-session";
 import { PracticeSession, Practice, SessionStatistics } from "@/types";
 import { toast } from "sonner";
@@ -135,46 +144,45 @@ export default function PracticeHistoryPage() {
       },
     },
     {
-      key: "date",
-      header: "Date",
-      render: (session) => (
-        <div className="flex items-center gap-2 text-sm">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
-          {format(new Date(session.createdAt), "dd MMM yyyy", { locale: fr })}
-        </div>
-      ),
-    },
-    {
       key: "statut",
       header: "Statut",
+      width: "w-28",
       render: (session) => getStatusBadge(session.status),
     },
     {
       key: "score",
       header: "Score",
+      width: "w-36",
       render: (session) => (
         <div>
-          <div className="font-semibold">
-            {session.totalScore}/{session.maxPossibleScore}
-          </div>
-          <div className="text-xs text-muted-foreground">
-            {session.percentageScore}%
-          </div>
+          {session.totalScore}/{session.maxPossibleScore}(
+          {session.percentageScore}%)
         </div>
       ),
     },
     {
       key: "note",
       header: "Note",
+      width: "w-28",
       render: (session) => getGradeBadge(session.percentageScore),
     },
     {
       key: "duree",
       header: "Durée",
+      width: "w-28",
       render: (session) => (
         <div className="flex items-center gap-1 text-sm">
-          <Clock className="h-4 w-4 text-muted-foreground" />
           {formatDuration(session.timeElapsedSeconds)}
+        </div>
+      ),
+    },
+    {
+      key: "date",
+      header: "Date",
+      width: "w-32",
+      render: (session) => (
+        <div className="flex items-center gap-2 text-sm">
+          {format(new Date(session.createdAt), "dd MMM yyyy", { locale: fr })}
         </div>
       ),
     },
@@ -262,7 +270,12 @@ export default function PracticeHistoryPage() {
                 <p className="text-muted-foreground mb-4">
                   Commencez une pratique pour voir votre historique ici
                 </p>
-                <Button onClick={() => { trackClick({ label: "Commencer une pratique" }); router.push("/compte/pratique/co"); }}>
+                <Button
+                  onClick={() => {
+                    trackClick({ label: "Commencer une pratique" });
+                    router.push("/compte/pratique/co");
+                  }}
+                >
                   Commencer une pratique
                 </Button>
               </div>

@@ -23,7 +23,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
         <div className="flex flex-row">
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
-              <Icon name="user" size={16} color="#3b82f6" />
+              <Icon name="user" size={18} color="#3b82f6" />
               <span className="text-sm font-medium text-muted-foreground">
                 Total
               </span>
@@ -33,7 +33,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
           </div>
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
-              <Icon name="validate" size={16} color="#22c55e" />
+              <Icon name="subscription" size={18} color="#22c55e" />
               <span className="text-sm font-medium text-muted-foreground">
                 Abonnés
               </span>

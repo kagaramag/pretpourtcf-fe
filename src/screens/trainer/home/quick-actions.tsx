@@ -80,7 +80,7 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${item.iconBg}`}
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white ${item.iconBg}`}
                   >
                     <Icon name={item.icon} size={16} color={item.iconColor} />
                   </div>

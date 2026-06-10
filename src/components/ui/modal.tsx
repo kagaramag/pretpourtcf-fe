@@ -96,12 +96,12 @@ export function Modal({
         onClick={handleBackdropClick}
       />
       <div
-        className={`bg-white absolute ${size === 'full' ? 'top-0 h-full' : 'top-10'} shadow-xl w-full ${sizeClasses[size]} mx-4 transition-all duration-200 ${
+        className={`bg-white absolute ${size === 'full' ? 'top-0 bottom-0' : 'top-10 max-h-[calc(100vh-5rem)]'} flex flex-col shadow-xl w-full ${sizeClasses[size]} mx-4 transition-all duration-200 ${
           isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-12'
         }`}
       >
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 shadow-sm">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50 shadow-sm shrink-0">
             {title && <h2 className="text-base">{title}</h2>}
             {showCloseButton && (
               <button
@@ -114,15 +114,11 @@ export function Modal({
             )}
           </div>
         )}
-        <div
-          className={`px-6  py-4 overflow-auto
-          ${footer !== undefined ? 'max-h-[calc(100vh-280px)]' : 'max-h-[calc(100vh-70px)]'}
-          `}
-        >
+        <div className="px-6 py-4 overflow-auto flex-1 min-h-0">
           {children}
         </div>
         {footer && (
-          <div className="px-6 py-2 border-t border-border flex justify-end gap-2">{footer}</div>
+          <div className="px-6 py-2 border-t border-border flex justify-end gap-2 shrink-0">{footer}</div>
         )}
       </div>
     </div>
