@@ -101,7 +101,7 @@ function IndividualSubscription() {
                       minimumFractionDigits: 0,
                     }).format(plan.price_usd)}
               </span>
-              <span className="text-gray-600 ml-2 text-sm">
+              <span className="ml-2 text-sm">
                 / {plan.duration_days} jours
               </span>
             </div>
