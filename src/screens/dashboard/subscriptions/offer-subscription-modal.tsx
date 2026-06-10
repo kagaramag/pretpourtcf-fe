@@ -54,9 +54,13 @@ export function OfferSubscriptionModal({
     enabled: isOpen,
   });
 
-  const activePlans: SubscriptionPlan[] = (plansData?.data?.plans || []).filter(
-    (p: SubscriptionPlan) => p.is_active
-  );
+  const activePlans: SubscriptionPlan[] = (plansData?.data?.plans || [])
+    .filter((p: SubscriptionPlan) => p.is_active)
+    .sort((a: SubscriptionPlan, b: SubscriptionPlan) => {
+      const catCompare = (a.category || "").localeCompare(b.category || "");
+      if (catCompare !== 0) return catCompare;
+      return (b.price_rwf || 0) - (a.price_rwf || 0);
+    });
 
   const selectedPlan = activePlans.find((p) => p._id === selectedPlanId);
 
