@@ -72,7 +72,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         <div className="flex items-center justify-center flex-col h-screen relative">
           <div className="mx-auto w-sm lg:px-0 px-6">{children}</div>
           <div className="mt-6  lg:px-0 px-10">
-            <p className="text-center text-xs text-muted-foreground px-2">
+            <p className="text-center text-xs text-gray-600 px-2">
               En vous connectant, vous acceptez nos{" "}
               <Link href="/conditions" className="text-primary hover:underline" target="_blank">
                 Conditions d'utilisation

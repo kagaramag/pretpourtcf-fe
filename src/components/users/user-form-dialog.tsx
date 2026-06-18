@@ -179,7 +179,7 @@ export function UserFormDialog({
           </Button>
         }
       >
-        <p className="text-muted-foreground text-sm mb-4">
+        <p className="text-gray-600 text-sm mb-4">
           Please save this temporary password. It will not be shown again.
         </p>
 
@@ -201,7 +201,7 @@ export function UserFormDialog({
                 )}
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               The user will be required to change this password on first
               login.
             </p>
@@ -218,7 +218,7 @@ export function UserFormDialog({
       title={mode === "create" ? "Register new user" : "Edit user"}
       size="sm"
     >
-      <p className="text-muted-foreground text-sm mb-4">
+      <p className="text-gray-600 text-sm mb-4">
         {mode === "create"
           ? "Create a new user account. A temporary password will be generated."
           : "Update user information."}

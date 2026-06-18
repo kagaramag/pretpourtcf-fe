@@ -44,35 +44,35 @@ export default function LoginActivityScreen() {
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="check" size={16} className="text-green-600" />
-              <span className="text-xs text-muted-foreground">Connexions</span>
+              <span className="text-xs text-gray-600">Connexions</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.totalLogins}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="close" size={16} className="text-red-600" />
-              <span className="text-xs text-muted-foreground">Echecs</span>
+              <span className="text-xs text-gray-600">Echecs</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.failedLogins}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="info" size={16} className="text-orange-600" />
-              <span className="text-xs text-muted-foreground">Suspects</span>
+              <span className="text-xs text-gray-600">Suspects</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.suspiciousLogins}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="remove" size={16} className="text-blue-600" />
-              <span className="text-xs text-muted-foreground">Revoquees</span>
+              <span className="text-xs text-gray-600">Revoquees</span>
             </div>
             <p className="text-2xl font-bold mt-1">{stats.sessionsRevoked}</p>
           </Card>
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="dashboard" size={16} className="text-purple-600" />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-gray-600">
                 Sessions actives
               </span>
             </div>
@@ -81,7 +81,7 @@ export default function LoginActivityScreen() {
           <Card className="p-4">
             <div className="flex items-center gap-2">
               <Icon name="info" size={16} className="text-red-600" />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-gray-600">
                 Comptes signales
               </span>
             </div>

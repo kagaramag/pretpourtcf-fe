@@ -101,7 +101,7 @@ function ResetPasswordForm() {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-600">
                 Doit contenir au moins 8 caractères
               </p>
             </div>
@@ -154,7 +154,7 @@ export default function ResetPasswordScreen() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-muted-foreground">Chargement...</div>
+          <div className="text-gray-600">Chargement...</div>
         </div>
       }
     >

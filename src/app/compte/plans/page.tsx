@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import PlansPage from "@/screens/compte/subscribe";
 
 export const metadata: Metadata = {
-  title: "PrêtPourTCF | Plans et tarifs",
-  description: "Choisissez le plan qui vous convient pour accéder aux exercices de préparation au TCF Canada et TCF Québec",
+  title: "Plans et tarifs — Abonnement préparation TCF | PrêtPourTCF",
+  description: "Comparez nos formules de préparation au TCF Canada et TCF Québec. Accès illimité aux exercices de compréhension orale, écrite, expression orale et écrite.",
 };
 
 export default function PlansServerPage() {

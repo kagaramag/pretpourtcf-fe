@@ -29,7 +29,7 @@ export function PracticeTask({
             <div
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white ${category.iconBg}`}
             >
-              <Icon name={category.icon} size={20} color={category.iconColor} />
+              <Icon name={category.icon} size={20} />
             </div>
           )}
           <div className="w-5/12 flex items-center">
@@ -47,7 +47,7 @@ export function PracticeTask({
           </div>
           <div className="w-3/12 flex flex-row items-center justify-start gap-4 text-sm">
             <span>Questions: {practice.totalQuestions}</span>
-            <span>Duration: {practice.durationMinutes} min</span>
+            <span>Durée: {practice.durationMinutes} min</span>
           </div>
           <div className="flex items-center gap-2 justify-end ml-auto">
             <Button
@@ -71,7 +71,7 @@ export function PracticeTask({
             <div
               className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white ${category.iconBg}`}
             >
-              <Icon name={category.icon} size={16} color={category.iconColor} />
+              <Icon name={category.icon} size={16} />
             </div>
           )}
           <h2 className="flex-1 text-sm leading-none">
@@ -93,7 +93,7 @@ export function PracticeTask({
           <div
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white ${category.iconBg}`}
           >
-            <Icon name={category.icon} size={20} color={category.iconColor} />
+            <Icon name={category.icon} size={20} />
           </div>
         )}
         <h3 className="flex-1 text-sm tracking-wide leading-tight">

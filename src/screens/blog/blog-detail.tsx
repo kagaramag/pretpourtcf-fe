@@ -87,7 +87,7 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
@@ -148,23 +148,23 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
       <div className="flex p-4 bg-white rounded-2xl">
         <div className="w-6/12 grid grid-cols-1 md:grid-cols-1 gap-3">
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Status</p>
+            <p className="text-sm font-medium text-gray-600">Status</p>
             <div className="mt-1">{getStatusBadge(blog.status)}</div>
           </div>
           <div>
-            <p className="text-sm font-medium text-muted-foreground">Author</p>
+            <p className="text-sm font-medium text-gray-600">Author</p>
             <p className="mt-1">
               {blog.written_by.first_name} {blog.written_by.last_name}
             </p>
           </div>
           <div>
-            <p className="text-sm font-medium text-muted-foreground">
+            <p className="text-sm font-medium text-gray-600">
               Created At
             </p>
             <p className="mt-1">{formatDate(blog.createdAt)}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-muted-foreground">
+            <p className="text-sm font-medium text-gray-600">
               Published At
             </p>
             <p className="mt-1">

@@ -26,7 +26,7 @@ export function LearnersAttention({ learners }: LearnersAttentionProps) {
       </div>
       <div className="space-y-3">
         {learners.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
+          <p className="text-sm text-gray-600 text-center py-4">
             Tous vos apprenants sont en bonne voie
           </p>
         ) : (
@@ -61,7 +61,7 @@ export function LearnersAttention({ learners }: LearnersAttentionProps) {
                 </div>
               </div>
               {learner.averageScore !== null && (
-                <span className="text-sm font-medium text-muted-foreground shrink-0">
+                <span className="text-sm font-medium text-gray-600 shrink-0">
                   {Math.round(learner.averageScore)}%
                 </span>
               )}

@@ -79,13 +79,13 @@ export default function ProfileScreen() {
   const getDeviceIcon = (type: string) => {
     switch (type) {
       case "mobile":
-        return <Smartphone className="w-5 h-5 text-muted-foreground" />;
+        return <Smartphone className="w-5 h-5 text-gray-600" />;
       case "tablet":
-        return <Tablet className="w-5 h-5 text-muted-foreground" />;
+        return <Tablet className="w-5 h-5 text-gray-600" />;
       case "desktop":
-        return <Monitor className="w-5 h-5 text-muted-foreground" />;
+        return <Monitor className="w-5 h-5 text-gray-600" />;
       default:
-        return <Monitor className="w-5 h-5 text-muted-foreground" />;
+        return <Monitor className="w-5 h-5 text-gray-600" />;
     }
   };
 
@@ -227,7 +227,7 @@ export default function ProfileScreen() {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-semibold text-lg">Mes appareils</h3>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                   Vous pouvez utiliser jusqu&apos;a 3 appareils. Un seul
                   appareil peut etre actif a la fois.
                 </p>
@@ -246,11 +246,11 @@ export default function ProfileScreen() {
             <Separator />
 
             {devicesLoading ? (
-              <div className="text-sm text-muted-foreground py-4 text-center">
+              <div className="text-sm text-gray-600 py-4 text-center">
                 Chargement des appareils...
               </div>
             ) : devices.length === 0 ? (
-              <div className="text-sm text-muted-foreground py-4 text-center">
+              <div className="text-sm text-gray-600 py-4 text-center">
                 Aucun appareil enregistre
               </div>
             ) : (
@@ -288,7 +288,7 @@ export default function ProfileScreen() {
                               </Badge>
                             )}
                           </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">
+                          <div className="text-xs text-gray-600 mt-0.5">
                             {/* {device.ipAddress && (
                               <span>IP: {device.ipAddress} &middot; </span>
                             )} */}

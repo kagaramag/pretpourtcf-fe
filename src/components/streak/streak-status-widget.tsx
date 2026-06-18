@@ -47,7 +47,7 @@ export function StreakStatusWidget() {
             <Flame className={`h-6 w-6 ${isUrgent ? "text-red-500" : "text-orange-500"} animate-pulse`} />
             <div>
               <p className="font-semibold text-sm">Série active</p>
-              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <div className="flex items-center gap-4 text-xs text-gray-600">
                 <span className="flex items-center gap-1">
                   <Trophy className="h-3 w-3" />
                   {activeStreak.completedExercises}/{activeStreak.totalExercises}

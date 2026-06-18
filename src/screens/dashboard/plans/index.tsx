@@ -77,7 +77,7 @@ export function PlansScreen() {
       render: (plan) => (
         <div className="text-sm">
           <span className="font-semibold text-primary">{plan.price_rwf?.toLocaleString()} RWF</span>
-          <span className="text-muted-foreground ml-1">/ ${plan.price_usd}</span>
+          <span className="text-gray-600 ml-1">/ ${plan.price_usd}</span>
         </div>
       ),
     },
@@ -88,25 +88,25 @@ export function PlansScreen() {
         <div className="space-y-1 text-sm">
           {plan.details.co > 0 && (
             <div>
-              <span className="text-muted-foreground">CO:</span>{" "}
+              <span className="text-gray-600">CO:</span>{" "}
               {plan.details.co}
             </div>
           )}
           {plan.details.ce > 0 && (
             <div>
-              <span className="text-muted-foreground">CE:</span>{" "}
+              <span className="text-gray-600">CE:</span>{" "}
               {plan.details.ce}
             </div>
           )}
           {plan.details.eo > 0 && (
             <div>
-              <span className="text-muted-foreground">EO:</span>{" "}
+              <span className="text-gray-600">EO:</span>{" "}
               {plan.details.eo}
             </div>
           )}
           {plan.details.ee > 0 && (
             <div>
-              <span className="text-muted-foreground">EE:</span>{" "}
+              <span className="text-gray-600">EE:</span>{" "}
               {plan.details.ee}
             </div>
           )}
@@ -156,7 +156,7 @@ export function PlansScreen() {
             Populaire
           </Badge>
         ) : (
-          <span className="text-muted-foreground text-sm">-</span>
+          <span className="text-gray-600 text-sm">-</span>
         ),
     },
     {
@@ -191,7 +191,7 @@ export function PlansScreen() {
       render: (plan) => (
         <div className="text-sm">
           <span className="font-semibold text-primary">{plan.price_rwf?.toLocaleString()} RWF</span>
-          <span className="text-muted-foreground ml-1">/ ${plan.price_usd}</span>
+          <span className="text-gray-600 ml-1">/ ${plan.price_usd}</span>
         </div>
       ),
     },
@@ -235,7 +235,7 @@ export function PlansScreen() {
             Populaire
           </Badge>
         ) : (
-          <span className="text-muted-foreground text-sm">-</span>
+          <span className="text-gray-600 text-sm">-</span>
         ),
     },
     {

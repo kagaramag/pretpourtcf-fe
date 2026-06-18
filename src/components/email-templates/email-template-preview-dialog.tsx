@@ -49,7 +49,7 @@ export function EmailTemplatePreviewDialog({
 
   return (
     <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Prévisualisation du modèle" size="xl">
-        <p className="text-muted-foreground text-sm mb-4">
+        <p className="text-gray-600 text-sm mb-4">
           {template?.name} - Aperçu avec des données d&apos;exemple
         </p>
 
@@ -87,7 +87,7 @@ export function EmailTemplatePreviewDialog({
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Aucune prévisualisation disponible
             </p>
           </div>

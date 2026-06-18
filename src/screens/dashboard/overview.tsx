@@ -119,7 +119,7 @@ export function DashboardOverview() {
       value: stats.totalUsers.toLocaleString(),
       change: "Registered users",
       icon: User,
-      color: "text-muted-foreground",
+      color: "text-gray-600",
     },
   ];
 
@@ -168,13 +168,13 @@ export function DashboardOverview() {
                       <div key={stat.title} className="flex-1 space-y-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-muted-foreground">
+                            <span className="text-sm font-medium text-gray-600">
                               {stat.title}
                             </span>
                           </div>
                         </div>
                         <div className="text-2xl font-bold">{stat.value}</div>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-600">
                           {stat.change}
                         </p>
                       </div>
@@ -193,7 +193,7 @@ export function DashboardOverview() {
                       <h3 className="text-sm font-medium">Users</h3>
                       <div>
                         <div className="text-2xl font-bold">{stat.value}</div>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-gray-600 mt-1">
                           {stat.change}
                         </p>
                       </div>
@@ -212,13 +212,13 @@ export function DashboardOverview() {
                       <div key={stat.title} className="flex-1 space-y-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-muted-foreground">
+                            <span className="text-sm font-medium text-gray-600">
                               {stat.title}
                             </span>
                           </div>
                         </div>
                         <div className="text-2xl font-bold">{stat.value}</div>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-600">
                           {stat.change}
                         </p>
                       </div>
@@ -244,7 +244,7 @@ export function DashboardOverview() {
                           >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-muted-foreground">
+                                <span className="text-sm font-medium text-gray-600">
                                   {stat.title}
                                 </span>
                               </div>
@@ -252,7 +252,7 @@ export function DashboardOverview() {
                             <div className="text-2xl">
                               {stat.value}
                             </div>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-gray-600">
                               {stat.change}
                             </p>
                           </div>
@@ -302,7 +302,7 @@ export function DashboardOverview() {
               <h4 className="mb-4">Recent users</h4>
               <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
                 {stats.recentUsers.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-4">
+                  <p className="text-sm text-gray-600 text-center py-4">
                     No users registered yet
                   </p>
                 ) : (

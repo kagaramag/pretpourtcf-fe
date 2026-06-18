@@ -9,16 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
-import { Table, Column } from "@/components/ui/table";
 import { Menu } from "@/components/ui/menu";
-import { Plus, Search, Ellipsis, Loading, Close } from "@/icons";
+import { Plus, Search, Ellipsis, Loading } from "@/icons";
 import { blogService } from "@/services/blog";
+import { config } from "@/config";
 import { Blog } from "@/types";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/date-utils";
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS } from "@/config/permissions";
-import Link from "next/link";
 
 function BlogScreenContent() {
   const router = useRouter();
@@ -130,89 +129,6 @@ function BlogScreenContent() {
     );
   };
 
-  const columns: Column<Blog>[] = [
-    {
-      key: "title",
-      header: "Title",
-      render: (blog) => (
-        <div className="max-w-[450px]">
-          <h4 className="text-lg/60 font-normal leading-none">{blog.title}</h4>
-        </div>
-      ),
-    },
-    {
-      key: "author",
-      header: "Author",
-      render: (blog) => (
-        <span>
-          {blog.written_by.first_name} {blog.written_by.last_name}
-        </span>
-      ),
-    },
-    {
-      key: "status",
-      header: "Status",
-      render: (blog) => getStatusBadge(blog.status),
-    },
-    {
-      key: "createdAt",
-      header: "Created",
-      render: (blog) => <span>{formatDate(blog.createdAt)}</span>,
-    },
-    {
-      key: "publishedAt",
-      header: "Published",
-      render: (blog) => (
-        <span>{blog.published_at ? formatDate(blog.published_at) : "-"}</span>
-      ),
-    },
-    {
-      key: "actions",
-      header: "Actions",
-      align: "right",
-      render: (blog) => (
-        <div className="text-right">
-          <Menu
-            trigger={
-              <Button variant="ghost" size="icon">
-                <Ellipsis className="h-4 w-4" />
-              </Button>
-            }
-            items={[
-              {
-                type: "link",
-                label: "View",
-                to: `/dashboard/blog/${blog._id}`,
-                icon: "open",
-              },
-              ...(canUpdate
-                ? [
-                    {
-                      type: "link" as const,
-                      label: "Edit",
-                      to: `/dashboard/blog/${blog._id}/edit`,
-                      icon: "edit" as const,
-                    },
-                  ]
-                : []),
-              ...(canDelete
-                ? [
-                    {
-                      type: "button" as const,
-                      label: "Delete",
-                      onClick: () => handleDelete(blog._id),
-                      icon: "dustbin" as const,
-                      variant: "danger" as const,
-                    },
-                  ]
-                : []),
-            ]}
-          />
-        </div>
-      ),
-    },
-  ];
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -238,7 +154,7 @@ function BlogScreenContent() {
             />
           </div>
           <div className="relative">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-600" />
             <Input
               placeholder="Search blogs..."
               value={searchQuery}
@@ -255,18 +171,86 @@ function BlogScreenContent() {
         </div>
       </div>
 
-      <Table
-        data={blogs}
-        columns={columns}
-        keyExtractor={(blog) => blog._id}
-        isLoading={isLoading}
-        emptyMessage="No blogs found"
-      />
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <Loading className="h-8 w-8 animate-spin" />
+        </div>
+      ) : blogs.length === 0 ? (
+        <p className="text-center text-gray-600 py-12">No blogs found</p>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {blogs.map((blog) => (
+            <div key={blog._id} className="overflow-hidden bg-white rounded-2xl">
+              {blog.cover_image && (
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
+                    alt={blog.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="p-3 space-y-2">
+              <div className="flex items-start justify-between">
+                <h4 className="text-lg font-normal leading-tight line-clamp-2">
+                  {blog.title}
+                </h4>
+                <Menu
+                  trigger={
+                    <Button variant="ghost" size="icon" className="shrink-0">
+                      <Ellipsis className="h-4 w-4" />
+                    </Button>
+                  }
+                  items={[
+                    {
+                      type: "link",
+                      label: "View",
+                      to: `/dashboard/blog/${blog._id}`,
+                      icon: "open",
+                    },
+                    ...(canUpdate
+                      ? [
+                          {
+                            type: "link" as const,
+                            label: "Edit",
+                            to: `/dashboard/blog/${blog._id}/edit`,
+                            icon: "edit" as const,
+                          },
+                        ]
+                      : []),
+                    ...(canDelete
+                      ? [
+                          {
+                            type: "button" as const,
+                            label: "Delete",
+                            onClick: () => handleDelete(blog._id),
+                            icon: "dustbin" as const,
+                            variant: "danger" as const,
+                          },
+                        ]
+                      : []),
+                  ]}
+                />
+              </div>
+              <p className="text-sm text-gray-600">
+                {blog.written_by.first_name} {blog.written_by.last_name}
+              </p>
+              <div className="flex items-center justify-between">
+                {getStatusBadge(blog.status)}
+                <span className="text-xs text-gray-600">
+                  {formatDate(blog.createdAt)}
+                </span>
+              </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
       {!isLoading && blogs.length > 0 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
             {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
             {pagination.total} results

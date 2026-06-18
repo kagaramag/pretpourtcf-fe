@@ -91,7 +91,7 @@ export default function CreatePromoCodeDialog({
 
   return (
     <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Créer un nouveau code promo" size="lg">
-      <p className="text-sm text-muted-foreground mb-4">
+      <p className="text-sm text-gray-600 mb-4">
         Créez un code de réduction pour vos utilisateurs
       </p>
 
@@ -164,7 +164,7 @@ export default function CreatePromoCodeDialog({
               {errors.discount_percentage.message}
             </p>
           )}
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-gray-600">
             Entrez 100 pour un abonnement gratuit (aucun paiement ne sera
             déclenché)
           </p>
@@ -177,7 +177,7 @@ export default function CreatePromoCodeDialog({
               Date de début <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
               <Input
                 id="start_date"
                 type="date"
@@ -198,7 +198,7 @@ export default function CreatePromoCodeDialog({
               Date de fin <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
               <Input
                 id="end_date"
                 type="date"
@@ -268,13 +268,13 @@ export default function CreatePromoCodeDialog({
         {/* Applicable Plans */}
         <div className="space-y-2">
           <Label>Plans applicables (optionnel)</Label>
-          <p className="text-xs text-muted-foreground mb-2">
+          <p className="text-xs text-gray-600 mb-2">
             Si aucun plan n&apos;est sélectionné, le code s&apos;appliquera à tous
             les plans
           </p>
           <div className="border rounded-lg p-4 space-y-2 max-h-40 overflow-y-auto">
             {plans.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 Aucun plan disponible
               </p>
             ) : (
@@ -290,7 +290,7 @@ export default function CreatePromoCodeDialog({
                     className="cursor-pointer flex-1"
                   >
                     <span className="font-medium">{plan.name}</span>
-                    <span className="text-xs text-muted-foreground ml-2">
+                    <span className="text-xs text-gray-600 ml-2">
                       ({plan.type})
                     </span>
                   </Label>

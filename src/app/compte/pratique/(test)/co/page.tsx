@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import ListeningPracticePage from "./co-client";
+import ListeningPracticePage from "@/screens/compte/pratique/co";
 
 export const metadata: Metadata = {
-  title: "PrêtPourTCF | Compréhension orale",
-  description: "Entraînez-vous à la compréhension orale du TCF avec des exercices audio interactifs et des corrections détaillées",
+  title: "Compréhension orale — Exercices d'écoute TCF | PrêtPourTCF",
+  description: "Entraînez-vous à la compréhension orale du TCF Canada et Québec avec des simulations audio chronométrées, corrections détaillées et score sur 699 points.",
 };
 
 export default function COServerPage() {

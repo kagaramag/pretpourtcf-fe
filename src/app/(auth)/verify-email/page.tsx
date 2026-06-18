@@ -68,7 +68,7 @@ function VerifyEmailContent() {
               <div className="flex justify-center">
                 <Loading className="h-16 w-16 animate-spin text-primary" />
               </div>
-              <p className="text-center text-muted-foreground">
+              <p className="text-center text-gray-600">
                 Veuillez patienter pendant que nous vérifions votre email...
               </p>
             </>
@@ -85,7 +85,7 @@ function VerifyEmailContent() {
                 <p className="text-lg font-medium bg-gray-500">
                   {message}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Vous allez être redirigé vers votre compte...
                 </p>
               </div>
@@ -107,7 +107,7 @@ function VerifyEmailContent() {
               </div>
               <div className="space-y-2 text-center">
                 <p className="text-lg font-medium bg-gray-500">{message}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Le lien de vérification est peut-être expiré ou invalide.
                 </p>
               </div>
@@ -143,7 +143,7 @@ export default function VerifyEmailPage() {
               <div className="flex justify-center">
                 <Loading className="h-16 w-16 animate-spin text-primary" />
               </div>
-              <p className="text-center text-muted-foreground">
+              <p className="text-center text-gray-600">
                 Veuillez patienter pendant que nous vérifions votre email...
               </p>
             </div>

@@ -241,7 +241,7 @@ function PracticeDetailsContent() {
             </div>
           )}
           {!question.media?.audio && !question.media?.image && (
-            <span className="text-muted-foreground text-sm">-</span>
+            <span className="text-gray-600 text-sm">-</span>
           )}
         </div>
       ),
@@ -308,7 +308,7 @@ function PracticeDetailsContent() {
   if (isLoadingPractice) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
@@ -316,7 +316,7 @@ function PracticeDetailsContent() {
   if (!practice) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-muted-foreground">Practice not found</p>
+        <p className="text-gray-600">Practice not found</p>
       </div>
     );
   }
@@ -395,7 +395,7 @@ function PracticeDetailsContent() {
             </Badge>
           </div>
           <div>
-            <p className="text-sm text-muted-foreground">Actual Questions</p>
+            <p className="text-sm text-gray-600">Actual Questions</p>
             <span className="text-sm">{pagination.total}</span>
           </div>
         </div>
@@ -410,7 +410,7 @@ function PracticeDetailsContent() {
           isLoading={isLoadingQuestions}
           emptyMessage="No questions yet"
           emptyComponent={
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-center py-8 text-gray-600">
               <FileQuestion className="h-12 w-12 mx-auto mb-2 opacity-50" />
               <p>No questions yet</p>
               {canCreate && (
@@ -432,7 +432,7 @@ function PracticeDetailsContent() {
         {/* Pagination */}
         {!isLoadingQuestions && questions.length > 0 && (
           <div className="flex items-center justify-between mt-4 pt-4">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
               of {pagination.total} questions
@@ -492,14 +492,14 @@ function PracticeDetailsContent() {
                 </Badge>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-600">
                   Score: {previewQuestion.score} pts
                 </span>
               </div>
               {previewQuestion.difficulty && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    <span className="text-sm text-muted-foreground mb-1">
+                  <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 mb-1">
                       Difficulty
                     </span>{" "}
                     <Badge
@@ -514,7 +514,7 @@ function PracticeDetailsContent() {
 
             {/* Question Text */}
             <div>
-              <div className="text-sm text-muted-foreground">Question</div>
+              <div className="text-sm text-gray-600">Question</div>
               {previewQuestion?.text && (
                 <div>
                   <ReactMarkdown>{previewQuestion.text}</ReactMarkdown>
@@ -551,7 +551,7 @@ function PracticeDetailsContent() {
               previewQuestion.options &&
               previewQuestion.options.length > 0 && (
                 <div>
-                  <p className="text-sm text-muted-foreground">Options</p>
+                  <p className="text-sm text-gray-600">Options</p>
                   <div className="space-y-2">
                     {previewQuestion.options.map((option, index) => (
                       <div
@@ -582,7 +582,7 @@ function PracticeDetailsContent() {
             {/* Tags */}
             {previewQuestion.tags && previewQuestion.tags.length > 0 && (
               <div>
-                <p className="text-sm text-muted-foreground mb-2">Tags</p>
+                <p className="text-sm text-gray-600 mb-2">Tags</p>
                 <div className="flex flex-wrap gap-2">
                   {previewQuestion.tags.map((tag, index) => (
                     <Badge key={index} variant="secondary">
@@ -597,13 +597,13 @@ function PracticeDetailsContent() {
             <div className="pt-4 border-t">
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-muted-foreground">Created</p>
+                  <p className="text-gray-600">Created</p>
                   <p className="font-medium">
                     {formatDate(previewQuestion.createdAt)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Last Updated</p>
+                  <p className="text-gray-600">Last Updated</p>
                   <p className="font-medium">
                     {formatDate(previewQuestion.updatedAt)}
                   </p>
@@ -622,7 +622,7 @@ export function PracticeDetailsScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-gray-600" />
         </div>
       }
     >

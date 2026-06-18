@@ -193,7 +193,7 @@ export default function Sidebar() {
                     className={cn(
                       "flex items-center px-3 py-2.5 rounded-full transition-colors",
                       isActive
-                        ? "bg-tertiary text-primary-foreground"
+                        ? "bg-tertiary"
                         : "text-gray-300 hover:bg-gray-100/5",
                       isCollapsed ? "justify-center" : "gap-3"
                     )}

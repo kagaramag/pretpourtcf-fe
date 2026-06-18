@@ -151,7 +151,7 @@ export const Select: React.FC<SearchableSelectProps> = ({
           ${selectedOption ? 'text-gray-800' : 'text-subtle'}
         `}
       >
-        <div className="block truncate text-sm">
+        <div className="block truncate text-xs">
           {selectedOption ? selectedOption.label : placeholder}
         </div>
         <Icon
@@ -186,7 +186,7 @@ export const Select: React.FC<SearchableSelectProps> = ({
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder={searchPlaceholder}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-border bg-white text-gray-900 focus:outline-none focus:border-primary-500"
+                  className="w-full pl-9 pr-3 py-1.5 text-xs border border-border bg-white text-gray-900 focus:outline-none focus:border-primary-500"
                 />
               </div>
             </div>
@@ -221,7 +221,7 @@ export const Select: React.FC<SearchableSelectProps> = ({
                     ))}
                 </ul>
               ) : (
-                <div className="py-6 text-center text-sm text-subtle">
+                <div className="py-6 text-center text-xs text-subtle">
                   No data found
                 </div>
               )}

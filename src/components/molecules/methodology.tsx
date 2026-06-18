@@ -105,7 +105,7 @@ const methodologyContent: Record<TestType, MethodologyContent> = {
       {
         title: "Avant l'épreuve",
         description:
-          "Préparer la présentation personnelle : identité, parcours, projets et motivations.",
+          "Préparer la présentation personnelle: identité, parcours, projets et motivations.",
       },
       {
         title: "Pendant la préparation",
@@ -149,7 +149,7 @@ export default function Methodology({ type }: MethodologyProps) {
           } lg:grid flex-col lg:grid-cols-4 gap-2`}
         >
           {content.steps.map((step, index) => (
-            <div key={index} className="p-3 bg-gray-100 rounded-xl">
+            <div key={index} className="p-3 bg-gray-100/20 rounded-xl border border-gray-100/70">
               <h4>{step.title}</h4>
               <div className="text-gray-800 text-xs mt-2">{step.description}</div>
             </div>

@@ -244,7 +244,7 @@ export function PlanDialog({
             ]}
           />
           {formData.corporateId && (
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               Ce plan sera visible uniquement par les apprenants de cette
               entreprise
             </p>

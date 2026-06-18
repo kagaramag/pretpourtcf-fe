@@ -2,6 +2,9 @@ import { apiClient } from "@/lib/api-client";
 import { User, BackendApiResponse, LoginResponse } from "@/types";
 import { API_ENDPOINTS } from "@/config";
 
+// Must match ACCESS_TOKEN_MAX_AGE in api-client.ts and JWT_EXPIRES_IN on the backend
+const ACCESS_TOKEN_MAX_AGE = 3600; // 1 hour in seconds
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -43,7 +46,7 @@ export const authService = {
       localStorage.setItem("refresh_token", response.data.refresh_token);
       localStorage.setItem("user_data", JSON.stringify(response.data.user));
 
-      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
+      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;
@@ -67,7 +70,7 @@ export const authService = {
         localStorage.setItem("device_id", (response.data as any).device_id);
       }
 
-      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
+      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;
@@ -206,7 +209,7 @@ export const authService = {
       localStorage.setItem("refresh_token", response.data.refresh_token);
       localStorage.setItem("user_data", JSON.stringify(response.data.user));
 
-      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=86400`;
+      document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;

@@ -4,19 +4,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { FileText } from "@/icons";
+import { Write } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
-import MethodCE from "./methodology";
+import MethodEE from "./methodology";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { PracticeTask } from "@/components/molecules/practice-task";
 import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
 
-const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ce")!;
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ee")!;
 
-export default function FreeReadingPracticePage() {
+export default function FreeWritingPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
   const { trackClick } = useActivityTracker();
@@ -24,14 +24,14 @@ export default function FreeReadingPracticePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchFreeReadingPractices();
+    fetchFreeWritingPractices();
   }, []);
 
-  const fetchFreeReadingPractices = async () => {
+  const fetchFreeWritingPractices = async () => {
     try {
       setLoading(true);
       const response = await practiceService.getAllPractices({
-        type: "reading",
+        type: "writing",
         isActive: true,
         freemium: true,
         sort: "_id",
@@ -54,7 +54,7 @@ export default function FreeReadingPracticePage() {
     return (
       <div className="container mx-auto">
         <div className="flex justify-center items-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
     );
@@ -74,27 +74,27 @@ export default function FreeReadingPracticePage() {
         <div className="mb-4">
           <div className="flex items-center gap-3">
             <h1 className="lg:text-3xl text-xl font-bold">
-              Compréhension écrite - Essai Gratuit
+              Expression Écrite - Essai Gratuit
             </h1>
           </div>
           <h5>
-            Essayez gratuitement nos exercices de lecture pour pratiquer votre compréhension
-            écrite
+            Essayez gratuitement nos exercices d&apos;écriture pour pratiquer votre
+            expression écrite
           </h5>
         </div>
-        <MethodCE />
+        <MethodEE />
         <div>
           <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques Gratuites</h1>
         </div>
 
         {practices.length === 0 ? (
           <div>
-            <FileText className="h-16 w-16 text-muted-foreground mb-4" />
+            <Write className="h-16 w-16 text-gray-600 mb-4" />
             <h3 className="text-lg font-semibold mb-2">
               Aucun exercice gratuit disponible
             </h3>
-            <div className="text-muted-foreground text-center max-w-md">
-              Il n&apos;y a pas d&apos;exercices de compréhension écrite gratuits
+            <div className="text-gray-600 text-center max-w-md">
+              Il n&apos;y a pas d&apos;exercices d&apos;expression écrite gratuits
               disponibles pour le moment.
             </div>
           </div>
@@ -105,11 +105,11 @@ export default function FreeReadingPracticePage() {
                 key={practice._id}
                 practice={practice}
                 category={category}
-                href={`/compte/essai-gratuit/ce/${practice._id}`}
+                href={`/compte/essai-gratuit/ee/${practice._id}`}
                 onClick={() =>
                   trackClick({
                     action: "link_clicked",
-                    label: `Trial: CE Practice — ${practice.title}`,
+                    label: `Trial: EE Practice — ${practice.title}`,
                   })
                 }
               />
@@ -124,7 +124,7 @@ export default function FreeReadingPracticePage() {
             </h3>
             <div className="text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
-              <p>• Lisez attentivement chaque texte avant de répondre</p>
+              <p>• Lisez attentivement les consignes avant de commencer</p>
               <p>
                 • Vous ne pouvez pas sauter de questions, répondez dans
                 l&apos;ordre

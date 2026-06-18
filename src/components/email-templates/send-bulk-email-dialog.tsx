@@ -131,7 +131,7 @@ export function SendBulkEmailDialog({
 
   return (
     <Modal isOpen={open} onClose={() => onOpenChange(false)} title="Envoyer des e-mails en masse" size="lg">
-        <p className="text-muted-foreground text-sm mb-4">
+        <p className="text-gray-600 text-sm mb-4">
           {template?.name} - Sélectionnez les destinataires
         </p>
 
@@ -162,7 +162,7 @@ export function SendBulkEmailDialog({
                   )}
                   <span className="text-sm flex-1">{result.email}</span>
                   {result.error && (
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-600">
                       {result.error}
                     </span>
                   )}

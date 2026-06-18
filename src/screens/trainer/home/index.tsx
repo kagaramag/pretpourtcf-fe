@@ -7,6 +7,7 @@ import { RecentActivity } from "./recent-activity";
 import { LearnersAttention } from "./learners-attention";
 import { QuickActions } from "./quick-actions";
 import { DashboardSkeleton } from "./dashboard-skeleton";
+import { PageTitle } from "@/components/molecules";
 
 export default function TrainerScreen() {
   const { data: stats, isLoading, error } = useTrainerDashboard();
@@ -35,9 +36,7 @@ export default function TrainerScreen() {
 
   return (
     <div className="space-y-3">
-      <div>
-        <h2 className="lg:text-3xl text-lg tracking-tight">Tableau de bord</h2>
-      </div>
+      <PageTitle title="Tableau de bord" />
 
       <StatsCards stats={stats} />
 

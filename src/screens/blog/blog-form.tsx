@@ -17,6 +17,7 @@ import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import { uploadService } from "@/services/upload";
 import { config } from "@/config";
+import { PageWrapper } from "@/components/molecules/page-wrapper";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
@@ -164,17 +165,17 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="space-y-2">
-      {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => router.push("/dashboard/blog")}
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
+    <PageWrapper
+      showBack
+      title={isEditMode ? "Edit Blog Post" : "New Blog Post"}
+      description={
+        isEditMode ? "Update your blog post details" : "Create a new blog post"
+      }
+    >
+      <div className="space-y-2">
+        {/* Header */}
+        <div className="flex items-center gap-4">
+          {/* <div>
           <h1 className="text-xl font-bold tracking-tight py-0 my-0">
             {isEditMode ? "Edit Blog Post" : "New Blog Post"}
           </h1>
@@ -183,150 +184,150 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
               ? "Update your blog post details"
               : "Create a new blog post"}
           </h5>
+        </div> */}
         </div>
-      </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-2 p-4 bg-white rounded-lg">
-          {/* Basic Info */}
-          <h5>Basic Information</h5>
-          <div className="space-y-2">
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-2 p-4 bg-white rounded-lg">
+            {/* Basic Info */}
+            <h5>Basic Information</h5>
             <div className="space-y-2">
-              <Label htmlFor="title">
-                Title <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="title"
-                placeholder="Enter blog title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
+              <div className="space-y-2">
+                <Label htmlFor="title">
+                  Title <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="title"
+                  placeholder="Enter blog title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="description">
+                  Description <span className="text-destructive">*</span>
+                </Label>
+                <Textarea
+                  id="description"
+                  placeholder="Enter a brief description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
+                  required
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="description">
-                Description <span className="text-destructive">*</span>
-              </Label>
-              <Textarea
-                id="description"
-                placeholder="Enter a brief description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                value={status}
-                onChange={(v) => setStatus(v as BlogStatus)}
-                options={[
-                  { value: "draft", label: "Draft" },
-                  { value: "published", label: "Published" },
-                  { value: "archived", label: "Archived" },
-                ]}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Upload Cover Image</Label>
-              {coverImage ? (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 p-2 border rounded-lg bg-green-50">
-                    <ImageIcon className="h-4 w-4 text-green-600" />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium">Image uploaded</p>
-                      <a
-                        href={`${config.cloudFlarePublicUrl}${coverImage}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-green-600 hover:underline"
+            <div className="flex items-center gap-2">
+              <div className="space-y-2">
+                <Select
+                  value={status}
+                  onChange={(v) => setStatus(v as BlogStatus)}
+                  options={[
+                    { value: "draft", label: "Draft" },
+                    { value: "published", label: "Published" },
+                    { value: "archived", label: "Archived" },
+                  ]}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Upload Cover Image</Label>
+                {coverImage ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-2 border rounded-lg bg-green-50">
+                      <ImageIcon className="h-4 w-4 text-green-600" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">Image uploaded</p>
+                        <a
+                          href={`${config.cloudFlarePublicUrl}practices/images/${coverImage}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-green-600 hover:underline"
+                        >
+                          {imageFile?.name || coverImage}
+                        </a>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRemoveImage}
+                        disabled={isUploading}
                       >
-                        {imageFile?.name || coverImage}
-                      </a>
+                        <Trash className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleRemoveImage}
-                      disabled={isUploading}
-                    >
-                      <Trash className="h-4 w-4" />
-                    </Button>
+                    <img
+                      src={`${config.cloudFlarePublicUrl}practices/images/${coverImage}`}
+                      alt="Cover preview"
+                      className="w-full max-w-md rounded-lg border"
+                    />
                   </div>
-                  <img
-                    src={`${config.cloudFlarePublicUrl}${coverImage}`}
-                    alt="Cover preview"
-                    className="w-full max-w-md rounded-lg border"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    disabled={isUploading}
-                    className="cursor-pointer"
-                  />
-                  {isUploading && (
-                    <p className="text-sm text-gray-400">
-                      <Loading className="inline h-4 w-4 animate-spin mr-2" />
-                      Uploading image...
-                    </p>
-                  )}
-                </div>
-              )}
+                ) : (
+                  <div>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={isUploading}
+                      className="cursor-pointer"
+                    />
+                    {isUploading && (
+                      <p className="text-sm text-gray-400">
+                        <Loading className="inline h-4 w-4 animate-spin mr-2" />
+                        Uploading image...
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Body Content */}
+            <h5>
+              Content <span className="text-destructive">*</span>
+            </h5>
+            <div>
+              <div data-color-mode="light">
+                <MDEditor
+                  value={body}
+                  onChange={(val) => setBody(val || "")}
+                  minHeight={500}
+                  preview="edit"
+                />
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/dashboard/blog")}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loading className="mr-2 h-4 w-4 animate-spin" />
+                    {isEditMode ? "Updating..." : "Creating..."}
+                  </>
+                ) : (
+                  <>
+                    <Save className="mr-2 h-4 w-4" />
+                    {isEditMode ? "Update Blog" : "Create Blog"}
+                  </>
+                )}
+              </Button>
             </div>
           </div>
-
-          {/* Body Content */}
-          <h5>
-            Content <span className="text-destructive">*</span>
-          </h5>
-          <div>
-            <div data-color-mode="light">
-              <MDEditor
-                value={body}
-                onChange={(val) => setBody(val || "")}
-                minHeight={500}
-                preview="edit"
-              />
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.push("/dashboard/blog")}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loading className="mr-2 h-4 w-4 animate-spin" />
-                  {isEditMode ? "Updating..." : "Creating..."}
-                </>
-              ) : (
-                <>
-                  <Save className="mr-2 h-4 w-4" />
-                  {isEditMode ? "Update Blog" : "Create Blog"}
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </PageWrapper>
   );
 }

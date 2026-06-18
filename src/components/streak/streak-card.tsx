@@ -165,7 +165,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
           <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
             <Trophy className="h-5 w-5 text-yellow-500" />
             <div>
-              <p className="text-xs text-muted-foreground">Points</p>
+              <p className="text-xs text-gray-600">Points</p>
               <p className="text-lg font-bold">{streak.currentPoints}</p>
             </div>
           </div>
@@ -173,7 +173,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
           <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
             <Zap className="h-5 w-5 text-purple-500" />
             <div>
-              <p className="text-xs text-muted-foreground">Emblème</p>
+              <p className="text-xs text-gray-600">Emblème</p>
               <p className="text-lg font-bold">{streak.rewards.length}</p>
             </div>
           </div>
@@ -192,7 +192,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
               className={`h-5 w-5 ${hoursRemaining <= 6 ? "text-red-500" : "text-orange-500"}`}
             />
             <div className="flex-1">
-              <p className="text-xs text-muted-foreground">Temps restant</p>
+              <p className="text-xs text-gray-600">Temps restant</p>
               <p
                 className={`text-sm font-bold ${hoursRemaining <= 6 ? "text-red-700" : "text-orange-700"}`}
               >
@@ -203,7 +203,7 @@ export function StreakCard({ streak, onViewDetails }: StreakCardProps) {
         )}
 
         {/* Dates */}
-        <div className="text-xs text-muted-foreground">
+        <div className="text-xs text-gray-600">
           <div className="flex justify-between">
             <span>
               Début: {new Date(streak.startDate).toLocaleDateString("fr-FR")}

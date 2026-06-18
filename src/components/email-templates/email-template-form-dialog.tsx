@@ -156,7 +156,7 @@ export function EmailTemplateFormDialog({
       title={mode === "create" ? "Créer un nouveau modèle" : "Modifier le modèle"}
       size="lg"
     >
-        <p className="text-muted-foreground text-sm mb-4">
+        <p className="text-gray-600 text-sm mb-4">
           {mode === "create"
             ? "Créez un nouveau modèle d'e-mail pour la communication avec les utilisateurs"
             : "Modifiez ce modèle d'e-mail"}

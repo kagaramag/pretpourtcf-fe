@@ -416,7 +416,7 @@ export default function SpeakingPracticeSessionPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">Presentation</h3>
-                  <div className="flex gap-4 text-sm text-muted-foreground mt-1">
+                  <div className="flex gap-4 text-sm text-gray-600 mt-1">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />2 mins
                     </span>
@@ -429,7 +429,7 @@ export default function SpeakingPracticeSessionPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">Sujet: Poser les questions</h3>
-                  <div className="flex gap-4 text-sm text-muted-foreground mt-1">
+                  <div className="flex gap-4 text-sm text-gray-600 mt-1">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />4 mins
                     </span>
@@ -442,7 +442,7 @@ export default function SpeakingPracticeSessionPage() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-medium">Sujet de dissertation</h3>
-                  <div className="flex gap-4 text-sm text-muted-foreground mt-1">
+                  <div className="flex gap-4 text-sm text-gray-600 mt-1">
                     <span className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />4 mins
                     </span>
@@ -743,7 +743,7 @@ export default function SpeakingPracticeSessionPage() {
                   <h3 className="font-semibold text-lg mb-4 text-green-900">
                     Tous les enregistrements terminés
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-gray-600 mb-4">
                     Vous pouvez maintenant écouter vos enregistrements
                   </p>
 

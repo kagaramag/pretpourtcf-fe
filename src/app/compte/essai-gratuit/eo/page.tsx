@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import FreeSpeakingPracticePage from "./eo-client";
+import FreeSpeakingPracticePage from "@/screens/compte/essai-gratuit/eo";
 
 export const metadata: Metadata = {
-  title: "PrêtPourTCF | Essai gratuit — Expression orale",
-  description: "Essayez gratuitement un exercice d'expression orale TCF avec des conseils pour améliorer votre score",
+  title: "Essai gratuit — Expression orale TCF | PrêtPourTCF",
+  description: "Essayez gratuitement un exercice d'expression orale du TCF Canada et Québec avec sujets aléatoires, enregistrement audio et gestion du temps.",
 };
 
 export default function FreeEOServerPage() {

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import PracticeHistoryPage from "./historique-client";
+import PracticeHistoryPage from "@/screens/compte/historique";
 
 export const metadata: Metadata = {
-  title: "PrêtPourTCF | Historique",
-  description: "Consultez votre historique de pratiques et suivez votre progression dans la préparation au TCF",
+  title: "Historique des pratiques — Suivi de progression TCF | PrêtPourTCF",
+  description: "Consultez vos résultats, scores et temps de chaque session de pratique TCF. Suivez votre progression et identifiez vos points à améliorer.",
 };
 
 export default function HistoriqueServerPage() {

@@ -47,7 +47,7 @@ export default function PublicBlogDetailScreen({
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
@@ -135,12 +135,12 @@ export default function PublicBlogDetailScreen({
             </h1>
 
             {/* Description */}
-            <p className="text-lg text-muted-foreground mb-2" itemProp="description">
+            <p className="text-lg text-gray-600 mb-2" itemProp="description">
               {blog.description}
             </p>
 
             {/* Metadata */}
-            <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mb-4">
+            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 mb-4">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <time

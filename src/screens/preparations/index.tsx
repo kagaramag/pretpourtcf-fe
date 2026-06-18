@@ -175,7 +175,7 @@ const PreparationScreen = () => {
             Maîtrisez les 4 Compétences du TCF
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Découvrez notre programme de préparation complet pour exceller dans
             toutes les épreuves du Test de Connaissance du Français. Des
             méthodes éprouvées pour garantir votre succès.
@@ -205,7 +205,7 @@ const PreparationScreen = () => {
                 <div className="text-2xl md:text-3xl font-bold text-primary">
                   {stat.value}
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-600">
                   {stat.label}
                 </div>
               </motion.div>
@@ -226,7 +226,7 @@ const PreparationScreen = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Les 4 Compétences Essentielles
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Chaque module est conçu pour développer une compétence spécifique
               avec des exercices progressifs et des stratégies gagnantes.
             </p>
@@ -269,7 +269,7 @@ const PreparationScreen = () => {
                     {prep.description}
                   </div>
 
-                  <div className="flex gap-4 mt-4 text-sm text-muted-foreground">
+                  <div className="flex gap-4 mt-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       {prep.duration}
@@ -338,7 +338,7 @@ const PreparationScreen = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Pourquoi Choisir Notre Programme ?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Une approche complète et innovante pour votre réussite au TCF
             </p>
           </motion.div>
@@ -356,7 +356,7 @@ const PreparationScreen = () => {
                   <benefit.icon className="w-8 h-8 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{benefit.title}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   {benefit.description}
                 </p>
               </motion.div>
@@ -379,7 +379,7 @@ const PreparationScreen = () => {
                   <h2 className="text-3xl font-bold mb-4">
                     Votre Parcours de Réussite
                   </h2>
-                  <p className="text-lg text-muted-foreground">
+                  <p className="text-lg text-gray-600">
                     Un programme structuré pour atteindre vos objectifs
                   </p>
                 </div>
@@ -390,7 +390,7 @@ const PreparationScreen = () => {
                       1
                     </div>
                     <h3 className="font-semibold mb-2">Évaluation Initiale</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-600">
                       Test de niveau personnalisé pour identifier vos points
                       forts et axes d'amélioration
                     </p>
@@ -401,7 +401,7 @@ const PreparationScreen = () => {
                       2
                     </div>
                     <h3 className="font-semibold mb-2">Programme Adapté</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-600">
                       Exercices ciblés et progression graduelle selon votre
                       niveau et disponibilité
                     </p>
@@ -412,7 +412,7 @@ const PreparationScreen = () => {
                       3
                     </div>
                     <h3 className="font-semibold mb-2">Certification TCF</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-600">
                       Examens blancs et accompagnement jusqu'à l'obtention de
                       votre certification
                     </p>

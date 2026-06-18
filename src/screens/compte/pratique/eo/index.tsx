@@ -4,18 +4,23 @@ import { useEffect, useState } from "react";
 import AccountLayout from "@/layouts/account";
 import Link from "next/link";
 import MethodEO from "./methodology";
-import { Button } from "@/components/ui/button";
 import { practiceService } from "@/services/practice";
-import { PracticeWithQuestions } from "@/types";
+import { sequenceService } from "@/services/sequence";
+import { PracticeWithQuestions, Sequence } from "@/types";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { CaretDown, Clock, ChevronUp, MessageSquare, FileText } from "@/icons";
+import { Icon } from "@/icons";
+import { PracticeTask } from "@/components/molecules/practice-task";
+import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
+
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "eo")!;
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 
 export default function SpeakingPracticePage() {
   const [practicesData, setPracticesData] = useState<PracticeWithQuestions[]>(
     []
   );
+  const [sequences, setSequences] = useState<Sequence[]>([]);
   const { trackClick } = useActivityTracker();
   const [loading, setLoading] = useState(true);
   const [expandedPractices, setExpandedPractices] = useState<Set<string>>(
@@ -23,14 +28,18 @@ export default function SpeakingPracticePage() {
   );
 
   useEffect(() => {
-    fetchSpeakingPractices();
+    fetchData();
   }, []);
 
-  const fetchSpeakingPractices = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await practiceService.getSpeakingPracticeQuestions();
-      setPracticesData(response.data.practices);
+      const [practicesRes, sequencesRes] = await Promise.all([
+        practiceService.getSpeakingPracticeQuestions(),
+        sequenceService.getByType("speaking"),
+      ]);
+      setPracticesData(practicesRes.data.practices);
+      setSequences(sequencesRes.data.sequences);
     } catch (error: any) {
       console.error("Error fetching speaking practices:", error);
       toast.error(
@@ -86,7 +95,7 @@ export default function SpeakingPracticePage() {
       <AccountLayout>
         <div className="container mx-auto">
           <div className="flex justify-center items-center py-12">
-            <p className="text-muted-foreground">Chargement...</p>
+            <p className="text-gray-600">Chargement...</p>
           </div>
         </div>
       </AccountLayout>
@@ -112,40 +121,124 @@ export default function SpeakingPracticePage() {
           </div>
         </div>
         <MethodEO />
-        <div className="mt-6 flex flex-col justify-center items-center gap-4 border-2 border-dashed border-tertiary rounded-lg p-6 bg-tertiary/10 text-center">
-          <div>
-            <h4 className="text-xl">
-              Prêt pour un test aléatoire ?
-            </h4>
-            <h5 className="max-w-md">
-              Entraînez-vous dans les conditions réelles de l'examen: un sujet
-              sera tiré au sort parmi les thèmes disponibles
-            </h5>
+        <div className="mt-6">
+          <h2 className="text-lg font-semibold mb-3">
+            Choisissez votre mode d&apos;entraînement
+          </h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Grouped test card (recommended) — description only */}
+            <div className="relative border-2 border-purple-200 rounded-2xl p-5 bg-purple-50/30">
+              <span className="absolute -top-3 left-4 bg-purple-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                Recommandé
+              </span>
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
+                  <Icon name="list" size={24} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-base text-gray-900">
+                    Test groupé par série
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                    Pratiquez les 3 tâches dans l&apos;ordre, comme le jour de
+                    l&apos;examen. Choisissez une série ci-dessous.
+                  </p>
+                  {sequences.length > 0 && (
+                    <p className="text-xs text-purple-600 mt-2 font-medium">
+                      {sequences.length} séries disponibles
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Random test card */}
+            <Link
+              href="/compte/pratique/eo/test-aleatoire"
+              onClick={() =>
+                trackClick({
+                  action: "link_clicked",
+                  label: "Paid: EO Practice — Random Test",
+                })
+              }
+              className="group"
+            >
+              <div className="relative border border-gray-200 rounded-2xl p-5 h-full transition-all hover:shadow-md hover:border-tertiary">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-tertiary/20 text-tertiary">
+                    <Icon name="refresh" size={24} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-base text-gray-900">
+                      Test aléatoire
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                      Un sujet tiré au sort parmi les thèmes disponibles.
+                      Conditions réelles de l&apos;examen.
+                    </p>
+                  </div>
+                  <div className="shrink-0 mt-1 transition-transform group-hover:translate-x-1">
+                    <Icon
+                      name="arrowRight"
+                      size={18}
+                      className="text-gray-400"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
-          <Link
-            href="/compte/pratique/eo/test"
-            onClick={() =>
-              trackClick({
-                action: "link_clicked",
-                label: "Paid: EO Practice — Random Test",
-              })
-            }
-          >
-            <Button size={"lg"}>Lancer un test aléatoire</Button>
-          </Link>
+
+          {/* Series grid — separate full-width section */}
+          {sequences.length > 0 ? (
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                Séries disponibles
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {sequences.map((seq) => (
+                  <PracticeTask
+                    key={seq._id}
+                    category={category}
+                    practice={{
+                      _id: seq._id,
+                      title: `Série ${seq.number}`,
+                      type: "speaking",
+                      durationMinutes: 0,
+                      totalQuestions: seq.questions.length,
+                      isActive: seq.isActive,
+                      freemium: false,
+                      createdAt: seq.createdAt,
+                      updatedAt: seq.updatedAt,
+                    }}
+                    href={`/compte/pratique/eo/test/${seq.number}`}
+                    onClick={() =>
+                      trackClick({
+                        action: "link_clicked",
+                        label: `Paid: EO Practice — Séquence ${seq.number}`,
+                      })
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500 mt-6">
+              Aucune séquence disponible pour le moment.
+            </p>
+          )}
         </div>
 
         {/* Display Speaking Practices with Questions */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4">Pratiques disponibles</h2>
 
           {filteredPractices.length === 0 ? (
             <div className="text-center py-8">
-              <FileText className="h-16 w-16 text-muted-foreground mb-4 mx-auto" />
+              <FileText className="h-16 w-16 text-gray-600 mb-4 mx-auto" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucune pratique disponible
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 Les pratiques d&apos;expression orale ne sont pas encore
                 disponibles.
               </p>
@@ -161,7 +254,6 @@ export default function SpeakingPracticePage() {
                     key={practiceData.practice.id}
                     className="border-2 border-tertiary rounded-lg overflow-hidden"
                   >
-                    {/* Practice Header */}
                     <div
                       className="bg-tertiary/20 p-4 cursor-pointer hover:bg-tertiary/40 transition-colors border-b-2 border-tertiary"
                       onClick={() => togglePractice(practiceData.practice.id)}
@@ -197,7 +289,6 @@ export default function SpeakingPracticePage() {
                       </div>
                     </div>
 
-                    {/* Questions List */}
                     {isExpanded && (
                       <div className="p-4 bg-white">
                         <h4 className="font-semibold mb-3 text-gray-700">
@@ -238,7 +329,7 @@ export default function SpeakingPracticePage() {
               })}
             </div>
           )}
-        </div>
+        </div> */}
 
         <div className="mt-8">
           <div className="p-4 border border-border bg-blue-50 rounded-lg">

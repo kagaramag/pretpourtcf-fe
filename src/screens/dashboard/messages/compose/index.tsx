@@ -176,7 +176,7 @@ export function ComposeMessage() {
               <Verified className="h-5 w-5 text-green-600" />
               Email Sending Results
             </h5>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               Summary of the email delivery status
             </p>
           </div>
@@ -218,7 +218,7 @@ export function ComposeMessage() {
                   {result.email}
                 </span>
                 {result.error && (
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-gray-600">
                     {result.error}
                   </span>
                 )}
@@ -273,7 +273,7 @@ export function ComposeMessage() {
                   <div className="space-y-3">
                     {isLoadingUsers ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loading className="h-6 w-6 animate-spin text-muted-foreground" />
+                        <Loading className="h-6 w-6 animate-spin text-gray-600" />
                       </div>
                     ) : (
                       <Select
@@ -312,7 +312,7 @@ export function ComposeMessage() {
                                 <span className="font-medium">
                                   {user.first_name} {user.last_name}
                                 </span>
-                                <span className="text-xs text-muted-foreground">
+                                <span className="text-xs text-gray-600">
                                   {user.email}
                                 </span>
                               </div>
@@ -374,7 +374,7 @@ export function ComposeMessage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h4 className="font-semibold text-sm mb-1">Preview</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-600">
                       {selectedTemplate.description || "No description"}
                     </p>
                   </div>
@@ -391,14 +391,14 @@ export function ComposeMessage() {
                 </div>
                 <Separator />
                 <div>
-                  <div className="text-xs font-medium text-muted-foreground mb-1">
+                  <div className="text-xs font-medium text-gray-600 mb-1">
                     Subject:
                   </div>
                   <h3 className="font-semibold">{selectedTemplate.subject}</h3>
                 </div>
                 {selectedTemplate.variables.length > 0 && (
                   <div>
-                    <div className="text-xs font-medium text-muted-foreground mb-2">
+                    <div className="text-xs font-medium text-gray-600 mb-2">
                       Variables:
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -423,22 +423,22 @@ export function ComposeMessage() {
             <h5 className="font-semibold">Step 3: Review and Send</h5>
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 border border-border rounded-lg">
-                <div className="text-sm font-medium text-muted-foreground mb-1">
+                <div className="text-sm font-medium text-gray-600 mb-1">
                   Recipients
                 </div>
                 <div className="text-2xl font-bold">{selectedUsers.length}</div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-600 mt-1">
                   {selectedUsers.length === 1 ? "user" : "users"} selected
                 </div>
               </div>
               <div className="p-4 border border-border rounded-lg">
-                <div className="text-sm font-medium text-muted-foreground mb-1">
+                <div className="text-sm font-medium text-gray-600 mb-1">
                   Template
                 </div>
                 <div className="text-lg font-semibold truncate">
                   {selectedTemplate?.name || "Not selected"}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-600 mt-1">
                   {selectedTemplate ? "Ready to send" : "Please select"}
                 </div>
               </div>
@@ -488,14 +488,14 @@ export function ComposeMessage() {
 
       {/* Email Preview Modal */}
       <Modal isOpen={showPreview} onClose={() => setShowPreview(false)} title="Email Preview" size="xl">
-          <p className="text-muted-foreground text-sm mb-4">
+          <p className="text-gray-600 text-sm mb-4">
             Preview of how the email will appear to recipients
           </p>
           {selectedTemplate && (
             <div className="space-y-4">
               <div className="space-y-2 p-4 bg-muted/50 rounded-lg">
                 <div>
-                  <div className="text-xs font-medium text-muted-foreground">
+                  <div className="text-xs font-medium text-gray-600">
                     Subject
                   </div>
                   <div className="text-sm font-semibold">

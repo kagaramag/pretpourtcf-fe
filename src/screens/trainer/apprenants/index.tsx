@@ -76,7 +76,7 @@ export default function TrainerLearnersScreen() {
       header: "Abonnement",
       render: (learner) => {
         const endDate = learner.subscription?.end_date;
-        if (!endDate) return <span className="text-muted-foreground">-</span>;
+        if (!endDate) return <span className="text-gray-600">-</span>;
         const isExpired = new Date(endDate) < new Date();
         return (
           <div className="text-sm">
@@ -123,7 +123,7 @@ export default function TrainerLearnersScreen() {
   if (isLoading && learners.length === 0) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
@@ -139,7 +139,7 @@ export default function TrainerLearnersScreen() {
 
       {/* Search */}
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
         <Input
           placeholder="Rechercher un apprenant..."
           value={searchQuery}
@@ -150,8 +150,8 @@ export default function TrainerLearnersScreen() {
 
       {/* Table */}
       {learners.length === 0 && !isLoading ? (
-        <div className="text-center py-12 text-muted-foreground">
-          <UserIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+        <div className="text-center py-12 text-gray-600">
+          <UserIcon className="h-12 w-12 mx-auto mb-4 text-gray-600/50" />
           <p className="text-lg font-medium mb-2">Aucun apprenant</p>
           <p className="text-sm">
             Les apprenants seront affichés ici une fois ajoutés par
@@ -175,7 +175,7 @@ export default function TrainerLearnersScreen() {
           {/* Pagination */}
           {pagination.totalPages > 1 && (
             <div className="flex items-center justify-between mt-4 pt-4 border-t">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Page {pagination.page} sur {pagination.totalPages}
               </div>
               <div className="flex gap-2">

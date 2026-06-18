@@ -152,10 +152,10 @@ function TarifsPage() {
           </div>
         ) : plans.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-gray-600">
               Aucun plan disponible pour le moment.
             </p>
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-sm text-gray-600 mt-2">
               Veuillez réessayer plus tard.
             </p>
           </div>
@@ -205,7 +205,7 @@ function TarifsPage() {
                             className={
                               plan.popular
                                 ? "text-white/80 text-lg"
-                                : "text-muted-foreground text-lg"
+                                : "text-gray-600 text-lg"
                             }
                           >
                             / {plan.duration_days} jours

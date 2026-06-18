@@ -20,7 +20,7 @@ export default function TrainerLayout({ children }: AccountLayoutProps) {
       <ProfileCard />
 
       <main className="max-w-5xl w-full mx-auto pt-4 pb-8">
-        <div className="lg:p-0 p-4">{children}</div>
+        <div className="lg:p-0 p-4 min-h-[460px]">{children}</div>
       </main>
 
       <Footer />

@@ -135,7 +135,7 @@ export function CreateStreakDialog({
         </>
       }
     >
-      <p className="text-muted-foreground text-sm mb-4">
+      <p className="text-gray-600 text-sm mb-4">
         Relevez le défi et gagnez des emblème exclusives!
       </p>
 
@@ -171,7 +171,7 @@ export function CreateStreakDialog({
                   : "Sélectionnez un exercice"
               }
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               La série utilisera 20 questions de cet exercice
             </p>
           </div>
@@ -182,7 +182,7 @@ export function CreateStreakDialog({
               <Trophy className="h-5 w-5 text-yellow-500 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-sm">20 Exercices</h4>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   Complétez 20 exercices avec au moins 90% de score
                 </p>
               </div>
@@ -192,7 +192,7 @@ export function CreateStreakDialog({
               <Clock className="h-5 w-5 text-orange-500 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-sm">12 heures</h4>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   Complétez un exercice toutes les 12 heures pour maintenir
                   votre série
                 </p>
@@ -203,7 +203,7 @@ export function CreateStreakDialog({
               <Flame className="h-5 w-5 text-red-500 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-sm">7 jours</h4>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   La série dure 7 jours. Terminez tous les exercices avant
                   l'expiration
                 </p>
@@ -216,7 +216,7 @@ export function CreateStreakDialog({
                 <h4 className="font-semibold text-sm">
                   Emblème exclusives
                 </h4>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   Gagnez une récompense unique pour chaque 3 exercices
                   complétés
                 </p>

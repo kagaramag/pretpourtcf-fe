@@ -73,7 +73,7 @@ export default function Logs() {
             {log.user_id.first_name} {log.user_id.last_name}
           </div>
         ) : (
-          <span className="text-muted-foreground">
+          <span className="text-gray-600">
             {log.metadata?.email || "-"}
           </span>
         ),
@@ -135,7 +135,7 @@ export default function Logs() {
 
       {pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-600">
             Page {pagination.page} sur {pagination.totalPages} (
             {pagination.total} total)
           </span>

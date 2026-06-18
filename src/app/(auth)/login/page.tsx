@@ -1,4 +1,4 @@
-import { LoginForm } from "@/screens/auth/login";
+import { Login } from "@/screens/auth/login";
 import type { Metadata } from "next";
 import AuthLayout from "@/layouts/auth";
 import { Suspense } from "react";
@@ -19,7 +19,7 @@ export default function LoginPage() {
           </div>
         }
       >
-        <LoginForm />
+        <Login />
       </Suspense>
     </AuthLayout>
   );

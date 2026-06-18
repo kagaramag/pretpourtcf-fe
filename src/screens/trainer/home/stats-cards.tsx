@@ -24,22 +24,22 @@ export function StatsCards({ stats }: StatsCardsProps) {
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <Icon name="user" size={18} color="#3b82f6" />
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-sm font-medium text-gray-600">
                 Total
               </span>
             </div>
             <div className="text-2xl font-bold">{stats.totalLearners}</div>
-            <p className="text-xs text-muted-foreground">Apprenants assignés</p>
+            <p className="text-xs text-gray-600">Apprenants assignés</p>
           </div>
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <Icon name="subscription" size={18} color="#22c55e" />
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-sm font-medium text-gray-600">
                 Abonnés
               </span>
             </div>
             <div className="text-2xl font-bold">{stats.activeSubscriptions}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               {stats.expiredSubscriptions} expiré{stats.expiredSubscriptions > 1 ? "s" : ""}
             </p>
           </div>
@@ -53,28 +53,28 @@ export function StatsCards({ stats }: StatsCardsProps) {
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <Icon name="chartView" size={16} color="#a855f7" />
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-sm font-medium text-gray-600">
                 Sessions
               </span>
             </div>
             <div className="text-2xl font-bold">
               {stats.totalPracticeSessions}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-600">
               Moyenne: {stats.averageScore}%
             </p>
           </div>
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <Icon name="clock" size={16} color="#f97316" />
-              <span className="text-sm font-medium text-muted-foreground">
+              <span className="text-sm font-medium text-gray-600">
                 Temps total
               </span>
             </div>
             <div className="text-2xl font-bold">
               {formatTime(stats.totalPracticeTime)}
             </div>
-            <p className="text-xs text-muted-foreground">De pratique</p>
+            <p className="text-xs text-gray-600">De pratique</p>
           </div>
         </div>
       </div>

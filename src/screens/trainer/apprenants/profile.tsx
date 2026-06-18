@@ -54,6 +54,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { formatDate } from "@/lib/utils";
 import { LearnerActivity } from "@/types";
 import AnswersContent, { SessionAnswersData } from "./apprenant/answers";
+import { PageTitle } from "@/components/molecules";
 
 interface ActivityResponse {
   learner: {
@@ -183,7 +184,10 @@ export default function ApprenantProfile() {
   if (isLoading && !activityData) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Icon name="loading" className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Icon
+          name="loading"
+          className="h-8 w-8 animate-spin text-gray-600"
+        />
       </div>
     );
   }
@@ -191,8 +195,11 @@ export default function ApprenantProfile() {
   if (!activityData) {
     return (
       <div className="text-center py-12">
-        <Icon name="user" className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
-        <p className="text-muted-foreground">Profil non trouvé</p>
+        <Icon
+          name="user"
+          className="h-12 w-12 mx-auto mb-4 text-gray-600/50"
+        />
+        <p className="text-gray-600">Profil non trouvé</p>
         <Button
           variant="link"
           onClick={() => router.push("/trainer/apprenants")}
@@ -208,21 +215,11 @@ export default function ApprenantProfile() {
   return (
     <div className="space-y-6">
       <div className="">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <Button
-            variant="secondary"
-            icon="arrowLeft"
-            iconOnly
-            onClick={() => router.push("/trainer/apprenants")}
-          />
-          <div className="flex-1">
-            <h1 className="text-xl font-semibold">
-              {learner.first_name} {learner.last_name}
-            </h1>
-            <div className="text-sm">{learner.email}</div>
-          </div>
-        </div>
+        <PageTitle
+          showBack
+          title={`${learner.first_name} ${learner.last_name}`}
+          description={learner.email}
+        />
 
         {/* Stats Cards */}
         <div className="grid gap-1 md:grid-cols-3 mt-2">
@@ -230,7 +227,7 @@ export default function ApprenantProfile() {
             <h5 className="text-sm">Sessions pratiques</h5>
             <div>
               <div className="font-semibold">{stats.totalSessions}</div>
-              <p className="text-xs text-muted-foreground">Total complété</p>
+              <p className="text-xs text-gray-600">Total complété</p>
             </div>
           </div>
           <div className="p-4 bg-gray-50 rounded-xl">
@@ -239,7 +236,7 @@ export default function ApprenantProfile() {
               <div className="font-semibold">
                 {stats.averageScore.toFixed(1)}%
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-600">
                 Sur les 12 derniers mois
               </p>
             </div>
@@ -250,7 +247,7 @@ export default function ApprenantProfile() {
               <div className="font-semibold">
                 {formatTime(stats.totalTimeSpent)}
               </div>
-              <p className="text-xs text-muted-foreground">D'entraînement</p>
+              <p className="text-xs text-gray-600">D'entraînement</p>
             </div>
           </div>
         </div>
@@ -260,7 +257,7 @@ export default function ApprenantProfile() {
         <h4 className="flex items-center justify-between">
           <span>Historique des Pratiques</span>
           {practices.length > 0 && (
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-4 text-sm text-gray-600">
               <span>
                 <Icon name="trophy" className="inline h-4 w-4 mr-1" />
                 Moyenne: {stats.averageScore.toFixed(1)}%
@@ -274,7 +271,10 @@ export default function ApprenantProfile() {
         <div>
           {isLoading ? (
             <div className="flex justify-center py-8">
-              <Icon name="loading" className="h-8 w-8 animate-spin text-muted-foreground" />
+              <Icon
+                name="loading"
+                className="h-8 w-8 animate-spin text-gray-600"
+              />
             </div>
           ) : practices.length > 0 ? (
             <div className="space-y-4">
@@ -304,26 +304,38 @@ export default function ApprenantProfile() {
                           </h4>
                           <div className="flex items-center flex-wrap gap-4 my-2 text-sm text-gray-700">
                             <span className="flex items-center">
-                              <Icon name="calendar" className="inline h-4 w-4 mr-1" />
+                              <Icon
+                                name="calendar"
+                                className="inline h-4 w-4 mr-1"
+                              />
                               <span>
                                 {formatDate(new Date(session.completedAt))}
                               </span>
                             </span>
                             <span className="flex items-center">
-                              <Icon name="clock" className="inline h-4 w-4 mr-1" />
+                              <Icon
+                                name="clock"
+                                className="inline h-4 w-4 mr-1"
+                              />
                               <span>
                                 {formatTime(session.timeElapsedSeconds)}
                               </span>
                             </span>
                             <span className="flex items-center">
-                              <Icon name="read" className="inline h-4 w-4 mr-1" />
+                              <Icon
+                                name="read"
+                                className="inline h-4 w-4 mr-1"
+                              />
                               <span>
                                 {session.correctAnswers}/
                                 {session.totalQuestions} correctes
                               </span>
                             </span>
                             <span className="flex items-center">
-                              <Icon name="certificate" className="inline h-4 w-4 mr-1" />
+                              <Icon
+                                name="certificate"
+                                className="inline h-4 w-4 mr-1"
+                              />
                               <span>{session.totalScore} points</span>
                             </span>
                           </div>
@@ -353,7 +365,7 @@ export default function ApprenantProfile() {
                           <div className="font-semibold">
                             {session.percentageScore.toFixed(0)}%
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-xs text-gray-600">
                             Résultat
                           </div>
                         </div>
@@ -379,7 +391,7 @@ export default function ApprenantProfile() {
               {/* Pagination */}
               {pagination.totalPages > 1 && (
                 <div className="flex items-center justify-between pt-4">
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-gray-600">
                     Page {pagination.page} sur {pagination.totalPages} (
                     {pagination.total} résultats)
                   </div>
@@ -407,7 +419,7 @@ export default function ApprenantProfile() {
               )}
             </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
+            <div className="text-center py-8 text-gray-600">
               Aucune pratique complétée dans les 12 derniers mois
             </div>
           )}

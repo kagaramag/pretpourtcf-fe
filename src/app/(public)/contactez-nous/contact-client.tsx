@@ -91,7 +91,7 @@ function ContactPage() {
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mb-4">
             Contactez-nous
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Vous avez des questions sur PrêtPourTCF? Nous sommes là pour vous
             aider. Envoyez-nous un message et nous vous répondrons dans les plus
             brefs délais.
@@ -126,7 +126,6 @@ function ContactPage() {
                   </label>
                   <Input
                     id="name"
-                    placeholder="Jean Dupont"
                     {...register("name")}
                     aria-invalid={!!errors.name}
                   />
@@ -144,7 +143,6 @@ function ContactPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="jean@exemple.com"
                     {...register("email")}
                     aria-invalid={!!errors.email}
                   />
@@ -162,7 +160,7 @@ function ContactPage() {
                 </label>
                 <Input
                   id="subject"
-                  placeholder="Comment pouvons-nous vous aider?"
+                  // placeholder="Comment pouvons-nous vous aider?"
                   {...register("subject")}
                   aria-invalid={!!errors.subject}
                 />
@@ -179,7 +177,7 @@ function ContactPage() {
                 </label>
                 <Textarea
                   id="message"
-                  placeholder="Parlez-nous de votre demande..."
+                  // placeholder="Parlez-nous de votre demande..."
                   className="min-h-32"
                   {...register("message")}
                   aria-invalid={!!errors.message}
@@ -191,7 +189,7 @@ function ContactPage() {
                 )}
               </div>
 
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-600">
                 Nous ne partagerons jamais vos informations avec des tiers
               </p>
               <div className="flex items-center justify-between">
@@ -220,7 +218,7 @@ function ContactPage() {
 
         {/* Additional Info */}
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             Besoin d'une assistance immédiate? Écrivez-nous directement à{" "}
             <a
               href="mailto:contact@pretpourtcf.com"

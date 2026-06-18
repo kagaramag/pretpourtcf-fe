@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -29,7 +29,7 @@ export function SubscriptionsTab() {
     searchParams.get("status") || ""
   );
   const [pagination, setPagination] = useState({
-    page: 1,
+    page: Number(searchParams.get("page")) || 1,
     limit: 10,
   });
 
@@ -64,19 +64,29 @@ export function SubscriptionsTab() {
     hasPrevPage: false,
   };
 
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  }, [debouncedSearch, statusFilter]);
+
   useEffect(() => {
     const params = new URLSearchParams();
     if (searchQuery) params.set("search", searchQuery);
     if (statusFilter) params.set("status", statusFilter);
+    if (pagination.page > 1) params.set("page", String(pagination.page));
 
     const queryString = params.toString();
-    router.push(
+    router.replace(
       `/dashboard/subscriptions${queryString ? `?${queryString}` : ""}`,
       {
         scroll: false,
       }
     );
-  }, [searchQuery, statusFilter, router]);
+  }, [searchQuery, statusFilter, pagination.page, router]);
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -181,7 +191,7 @@ export function SubscriptionsTab() {
     <div className="space-y-3">
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative w-64">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
           <Input
             placeholder="Search..."
             value={searchQuery}
@@ -217,7 +227,6 @@ export function SubscriptionsTab() {
           <Button
             iconOnly
             icon="plus"
-            size="sm"
             variant="primary"
             onClick={() => setOfferModalOpen(true)}
           />
@@ -235,7 +244,7 @@ export function SubscriptionsTab() {
 
         {!subsLoading && subscriptions.length > 0 && (
           <div className="flex items-center justify-between px-4 py-3">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Showing {(paginationData.page - 1) * paginationData.limit + 1}{" "}
               to{" "}
               {Math.min(

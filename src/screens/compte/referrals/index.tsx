@@ -107,7 +107,7 @@ export default function ReferralsScreen() {
           <h1 className="text-xl font-bold">Parrainages</h1>
         </div>
         <div className="relative">
-          <Search className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2 top-3 h-4 w-4 text-gray-600" />
           <Input
             placeholder="Rechercher par email ou nom..."
             value={search}
@@ -186,7 +186,7 @@ function ReferralsTable({
           <div className="font-medium">
             {referral.referrer.first_name} {referral.referrer.last_name}
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-gray-600">
             {referral.referrer.email}
           </div>
         </div>
@@ -208,12 +208,12 @@ function ReferralsTable({
             <div className="font-medium">
               {referral.invitee.first_name} {referral.invitee.last_name}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               {referral.invitee.email}
             </div>
           </div>
         ) : (
-          <span className="text-muted-foreground">-</span>
+          <span className="text-gray-600">-</span>
         ),
     },
     {

@@ -14,9 +14,12 @@ export type PracticeCategoryData = {
   icon: "listen" | "read" | "speak" | "write";
   color: string;
   iconBg: string;
-  iconColor: string;
+  textColor: string;
   border: string;
   selectedBg: string;
+  minutes: number;
+  itemCount: number;
+  itemLabel: string;
 };
 
 export const PRACTICE_CATEGORIES: PracticeCategoryData[] = [
@@ -28,9 +31,12 @@ export const PRACTICE_CATEGORIES: PracticeCategoryData[] = [
     icon: "listen",
     color: "bg-primary",
     iconBg: "bg-primary/70",
-    iconColor: "text-white",
+    textColor: "text-primary",
     border: "border-primary/30",
     selectedBg: "bg-primary/10",
+    minutes: 60,
+    itemCount: 39,
+    itemLabel: "questions",
   },
   {
     type: "reading",
@@ -40,9 +46,12 @@ export const PRACTICE_CATEGORIES: PracticeCategoryData[] = [
     icon: "read",
     color: "bg-secondary",
     iconBg: "bg-secondary/70",
-    iconColor: "text-white",
+    textColor: "text-secondary",
     border: "border-secondary/30",
     selectedBg: "bg-secondary/10",
+    minutes: 40,
+    itemCount: 39,
+    itemLabel: "questions",
   },
   {
     type: "speaking",
@@ -50,11 +59,14 @@ export const PRACTICE_CATEGORIES: PracticeCategoryData[] = [
     slug: "eo",
     description: "Prenez la parole avec assurance",
     icon: "speak",
-    color: "bg-accent",
-    iconBg: "bg-accent",
-    iconColor: "text-white",
-    border: "border-accent/30",
-    selectedBg: "bg-accent/10",
+    color: "bg-purple-300",
+    iconBg: "bg-purple-400",
+    textColor: "text-purple-500",
+    border: "border-purple-200/30",
+    selectedBg: "bg-purple-50/10",
+    minutes: 60,
+    itemCount: 3,
+    itemLabel: "tâches",
   },
   {
     type: "writing",
@@ -64,9 +76,12 @@ export const PRACTICE_CATEGORIES: PracticeCategoryData[] = [
     icon: "write",
     color: "bg-orange-400",
     iconBg: "bg-orange-500",
-    iconColor: "text-white",
+    textColor: "text-orange-600",
     border: "border-orange-200",
     selectedBg: "bg-orange-50",
+    minutes: 12,
+    itemCount: 3,
+    itemLabel: "tâches",
   },
 ];
 
@@ -106,7 +121,7 @@ export function PracticeCategoryCard({
           <Icon
             name={category.icon}
             size={isCompact ? 16 : 24}
-            color={category.iconColor}
+            // color={category.textColor}
           />
         </div>
         <div className="flex-1 min-w-0">
@@ -116,9 +131,21 @@ export function PracticeCategoryCard({
             {category.label}
           </h3>
           {!isCompact && (
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {category.description}
-            </p>
+            <>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {category.description}
+              </p>
+              <div className={`flex items-center gap-3 mt-2 text-xs ${category.textColor}`}>
+                <span className="flex items-center gap-1">
+                  <Icon name="clock" size={20} />
+                  {category.minutes} minutes
+                </span>
+                <span className="flex items-center gap-1">
+                  <Icon name="fileQuestion" size={20} />
+                  {category.itemCount} {category.itemLabel}
+                </span>
+              </div>
+            </>
           )}
         </div>
         <div className="shrink-0 mt-1 transition-transform group-hover:translate-x-1">

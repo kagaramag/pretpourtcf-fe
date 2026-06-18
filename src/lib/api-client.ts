@@ -1,8 +1,18 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { config } from "@/config";
 
+// Cookie max-age in seconds — should match JWT_EXPIRES_IN on the backend
+const ACCESS_TOKEN_MAX_AGE = 3600; // 1 hour
+
+// Refresh the token when 80% of its lifetime has elapsed
+const REFRESH_THRESHOLD_MS = ACCESS_TOKEN_MAX_AGE * 1000 * 0.8;
+
+type TokenRefreshListener = (newToken: string) => void;
+
 class ApiClient {
   private client: AxiosInstance;
+  private refreshTimer: ReturnType<typeof setTimeout> | null = null;
+  private tokenRefreshListeners: TokenRefreshListener[] = [];
 
   constructor() {
     this.client = axios.create({
@@ -14,6 +24,70 @@ class ApiClient {
     });
 
     this.setupInterceptors();
+  }
+
+  /** Register a callback invoked whenever the access token is refreshed */
+  onTokenRefresh(listener: TokenRefreshListener) {
+    this.tokenRefreshListeners.push(listener);
+    return () => {
+      this.tokenRefreshListeners = this.tokenRefreshListeners.filter(
+        (l) => l !== listener
+      );
+    };
+  }
+
+  /** Schedule a proactive token refresh before the access token expires */
+  scheduleTokenRefresh() {
+    this.clearRefreshTimer();
+
+    const token = this.getToken();
+    if (!token) return;
+
+    this.refreshTimer = setTimeout(() => {
+      this.performTokenRefresh();
+    }, REFRESH_THRESHOLD_MS);
+  }
+
+  /** Stop the proactive refresh timer (e.g. on logout) */
+  clearRefreshTimer() {
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+  }
+
+  private async performTokenRefresh() {
+    try {
+      const refreshToken = this.getRefreshToken();
+      if (!refreshToken) return;
+
+      const response = await this.client.post("/auth/refresh", {
+        refresh_token: refreshToken,
+      });
+
+      const { access_token, refresh_token: new_refresh_token } =
+        response.data.data;
+
+      this.setToken(access_token);
+      if (new_refresh_token) {
+        localStorage.setItem("refresh_token", new_refresh_token);
+      }
+
+      // Sync the cookie with the new token
+      document.cookie = `access_token=${access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+
+      // Notify listeners (e.g. socket reconnect)
+      this.tokenRefreshListeners.forEach((fn) => fn(access_token));
+
+      // Schedule the next refresh
+      this.scheduleTokenRefresh();
+    } catch {
+      // Refresh failed — clear everything and redirect
+      this.clearTokens();
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+    }
   }
 
   private setupInterceptors() {
@@ -53,6 +127,15 @@ class ApiClient {
               if (new_refresh_token) {
                 localStorage.setItem("refresh_token", new_refresh_token);
               }
+
+              // Sync the cookie with the new token
+              document.cookie = `access_token=${access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+
+              // Notify listeners
+              this.tokenRefreshListeners.forEach((fn) => fn(access_token));
+
+              // Restart the proactive refresh schedule
+              this.scheduleTokenRefresh();
 
               if (originalRequest.headers) {
                 originalRequest.headers.Authorization = `Bearer ${access_token}`;

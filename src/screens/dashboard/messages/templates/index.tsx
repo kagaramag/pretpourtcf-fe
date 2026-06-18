@@ -167,7 +167,7 @@ export function EmailTemplatesScreen() {
             )}
           </div>
         ) : (
-          <span className="text-muted-foreground text-sm">Aucune</span>
+          <span className="text-gray-600 text-sm">Aucune</span>
         ),
     },
     {
@@ -187,7 +187,7 @@ export function EmailTemplatesScreen() {
           <div className="font-medium">
             {template.createdBy.first_name} {template.createdBy.last_name}
           </div>
-          <div className="text-muted-foreground">
+          <div className="text-gray-600">
             {template.createdBy.email}
           </div>
         </div>
@@ -308,7 +308,7 @@ export function EmailTemplatesScreen() {
             <AlertDialogCancel>Annuler</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-destructive hover:bg-destructive/90"
             >
               {deleteMutation.isPending ? (
                 <>

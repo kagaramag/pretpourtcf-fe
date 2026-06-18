@@ -103,7 +103,7 @@ export function LinkSessionToStreak({
           <div className="flex-1 space-y-3">
             <div>
               <h3 className="font-bold text-lg">Série active détectée!</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 Voulez-vous lier cet exercice à votre série?
               </p>
             </div>

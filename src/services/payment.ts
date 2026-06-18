@@ -28,7 +28,7 @@ export interface InitiatePaymentResponse {
 }
 
 export interface Transaction {
-  id: string;
+  _id: string;
   refid: string;
   kpay_tid?: string;
   pesapal_order_tracking_id?: string;
@@ -51,7 +51,7 @@ export interface Transaction {
     price: number;
   };
   user?: {
-    id: string;
+    _id: string;
     first_name: string;
     last_name: string;
     email: string;

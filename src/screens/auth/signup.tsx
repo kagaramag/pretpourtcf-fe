@@ -400,7 +400,7 @@ export function SignupForm() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-muted-foreground hover:bg-gray-500"
+                className="absolute right-3 top-3 text-gray-600 hover:bg-gray-500"
               >
                 {showPassword ? (
                   <Close className="h-4 w-4" />

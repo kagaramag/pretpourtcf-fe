@@ -3,18 +3,23 @@ import { useState, useEffect, Suspense } from "react";
 import AccountLayout from "@/layouts/account";
 import { practiceService } from "@/services/practice";
 import { Practice, PracticeType } from "@/types";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+import { useAuth } from "@/contexts/auth-context";
 import {
   PRACTICE_CATEGORIES,
   PracticeCategoryCard,
 } from "@/components/molecules/practice-category";
 import { PracticeTask } from "@/components/molecules/practice-task";
+import { Button } from "@/components/ui/button";
 
 const categories = PRACTICE_CATEGORIES;
 
 function PratiqueGratuitScreen() {
   const { trackClick } = useActivityTracker();
+  const { user } = useAuth();
+  const router = useRouter();
+  const hasActiveSubscription = user?.subscription?.status === "active";
   const [selectedCategory, setSelectedCategory] = useState<PracticeType | null>(
     null
   );
@@ -62,6 +67,25 @@ function PratiqueGratuitScreen() {
     }
     handleCategoryClick("listening");
   }, [searchParams]);
+
+  if (hasActiveSubscription) {
+    return (
+      <AccountLayout>
+        <div className="flex flex-col items-center justify-center gap-6 py-16">
+          <h2 className="text-3xl font-semibold">
+            Vous avez un abonnement actif
+          </h2>
+          <div className="text-gray-600 text-center max-w-md">
+            Vous avez déjà accès à toutes les pratiques avec votre abonnement.
+            Accédez à vos examens pour continuer votre préparation.
+          </div>
+          <Button size="lg" onClick={() => router.push("/compte")}>
+            Accéder aux examens
+          </Button>
+        </div>
+      </AccountLayout>
+    );
+  }
 
   return (
     <AccountLayout>

@@ -1,19 +1,21 @@
 const Report = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" {...props}>
-    <defs>
-      <mask id="SVGOqCrabHq">
-        <g fill="none" stroke="#fff" strokeLinejoin="round" strokeWidth="4">
-          <path
-            fill="#555"
-            d="M39 6H9a3 3 0 0 0-3 3v30a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3Z"
-          />
-          <path strokeLinecap="round" d="m13.44 29.835l5.657-5.657l4.388 4.377L34 18" />
-          <path strokeLinecap="round" d="M26 18h8v8" />
-        </g>
-      </mask>
-    </defs>
-    <path fill="currentColor" d="M0 0h48v48H0z" mask="url(#SVGOqCrabHq)" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      d="M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22"
+      opacity=".5"
+    />
+    <path
+      fill="currentColor"
+      d="M18.75 8a.75.75 0 0 1-.75.75H6a.75.75 0 0 1 0-1.5h12a.75.75 0 0 1 .75.75m0 4a.75.75 0 0 1-.75.75H6a.75.75 0 0 1 0-1.5h12a.75.75 0 0 1 .75.75m0 4a.75.75 0 0 1-.75.75H6a.75.75 0 0 1 0-1.5h12a.75.75 0 0 1 .75.75"
+    />
   </svg>
-)
+);
 
-export default Report
+export default Report;

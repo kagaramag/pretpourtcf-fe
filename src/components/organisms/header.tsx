@@ -98,18 +98,18 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="font-semibold text-sm px-2 py-1 text-white"
+                className="text-sm px-2 py-1 text-white"
               >
                 {item.name}
               </Link>
             ))}
             <Link
-              href={"/book"}
+              href={"/contactez-nous"}
               className="text-sm pl-3 pr-1 py-0.5 bg-tertiary/10 text-tertiary hover:bg-tertiary/30 rounded-full ml-4 flex items-center gap-1"
             >
-              Séance gratuite
+              Contactez Nous
               <span className="bg-black p-1.5 rounded-full">
-                <Icon name="calendar" size="16" />
+                <Icon name="phone" size="16" />
               </span>
             </Link>
           </div>

@@ -10,14 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
-import {
-  Loading,
-  DollarSign,
-  ReceiptText,
-  Tag,
-} from "@/icons";
+import { Loading, DollarSign, ReceiptText, Tag } from "@/icons";
 import { paymentService } from "@/services/payment";
 import { toast } from "sonner";
+import { date } from "@/utils";
+import Link from "next/link";
+import { PageWrapper } from "@/components/molecules/page-wrapper";
 
 function TransactionsScreenContent() {
   const router = useRouter();
@@ -132,16 +130,22 @@ function TransactionsScreenContent() {
       header: "Client",
       render: (transaction) =>
         transaction.user ? (
-          <div className="flex items-center gap-2">
-            {transaction.user.first_name} {transaction.user.last_name}
+          <div>
+            <Link
+              className="text-blue-500 hover:underline"
+              href={`$/dashboard/users/${transaction.user._id}`}
+            >
+              {transaction.user.first_name} {transaction.user.last_name}
+            </Link>
           </div>
         ) : (
-          <span className="text-muted-foreground">N/A</span>
+          <span className="text-gray-600">N/A</span>
         ),
     },
     {
       key: "plan",
       header: "Plan",
+      width: "w-40",
       render: (transaction) => (
         <div className="flex items-center gap-2">{transaction.plan.name}</div>
       ),
@@ -149,11 +153,12 @@ function TransactionsScreenContent() {
     {
       key: "amount",
       header: "Amount",
+      width: "w-28",
       render: (transaction) => (
         <div className="flex items-center gap-1 truncate">
           <div>{formatAmount(transaction.amount, transaction.currency)}</div>
           {transaction.promo_code && transaction.original_amount && (
-            <div className="text-xs text-muted-foreground line-through">
+            <div className="text-xs text-gray-600 line-through">
               {formatAmount(transaction.original_amount, transaction.currency)}
             </div>
           )}
@@ -163,6 +168,7 @@ function TransactionsScreenContent() {
     {
       key: "payment_method",
       header: "Method",
+      width: "w-28",
       render: (transaction) => (
         <>{getPaymentMethodLabel(transaction.payment_method)}</>
       ),
@@ -170,6 +176,7 @@ function TransactionsScreenContent() {
     {
       key: "status",
       header: "Status",
+      width: "w-24",
       render: (transaction) => (
         <Badge className={getStatusColor(transaction.status)}>
           {transaction.status.charAt(0).toUpperCase() +
@@ -180,115 +187,115 @@ function TransactionsScreenContent() {
     {
       key: "refid",
       header: "Ref ID",
-      width: "w-32",
+      width: "w-56",
       render: (transaction) => (
-        <div className="font-mono text-xs truncate">
-          {transaction.refid}
-        </div>
+        <div className="font-mono text-xs truncate">{transaction.refid}</div>
       ),
     },
-    {
-      key: "kpay_tid",
-      header: "Kpay TID",
-      width: "50px",
-      render: (transaction) => (
-        <div className="font-mono text-xs text-muted-foreground">
-          {transaction.kpay_tid || "—"}
-        </div>
-      ),
-    },
+    // {
+    //   key: "kpay_tid",
+    //   header: "Kpay TID",
+    //   width: "50px",
+    //   render: (transaction) => (
+    //     <div className="font-mono text-xs text-gray-600">
+    //       {transaction.kpay_tid || "—"}
+    //     </div>
+    //   ),
+    // },
     {
       key: "created_at",
       header: "Date",
       align: "right",
+      width: "w-44",
       render: (transaction) => (
-        <div className="text-sm">{formatDate(transaction.created_at)}</div>
+        <div>
+          {date(transaction.created_at, false, "DD/MMM hh:mmA")}
+          {/* {formatDate(transaction.created_at)} */}
+        </div>
       ),
     },
   ];
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold">Transactions</h1>
-        </div>
-      </div>
+    <PageWrapper title="Transactions">
+      <div className="space-y-2">
+        <div className="space-y-2 flex items-start gap-2">
+          <div className="relative w-64">
+            <Input
+              placeholder="Search by client name or email..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <Select
+              value={statusFilter || ""}
+              onChange={(value) => setStatusFilter(value || "")}
+              options={[
+                { value: "successful", label: "Successful" },
+                { value: "pending", label: "Pending" },
+                { value: "failed", label: "Failed" },
+              ]}
+              placeholder="All Status"
+              className="w-[160px]"
+            />
 
-      <div className="space-y-2 flex items-start gap-2">
-        <div className="relative w-64">
-          <Input
-            placeholder="Search by client name or email..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
+                Clear
+              </Button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          <Select
-            value={statusFilter || ""}
-            onChange={(value) => setStatusFilter(value || "")}
-            options={[
-              { value: "successful", label: "Successful" },
-              { value: "pending", label: "Pending" },
-              { value: "failed", label: "Failed" },
-            ]}
-            placeholder="All Status"
-            className="w-[160px]"
+        <div>
+          <Table
+            data={transactions}
+            columns={columns}
+            keyExtractor={(transaction) => transaction._id}
+            isLoading={isLoading}
+            emptyMessage="No transactions found"
+            striped
           />
 
-          {hasActiveFilters && (
-            <Button variant="ghost" size="sm" onClick={clearFilters}>
-              Clear
-            </Button>
+          {/* Pagination */}
+          {!isLoading && transactions.length > 0 && (
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
+              <div className="text-sm text-gray-600">
+                Showing {(paginationData.page - 1) * paginationData.limit + 1}{" "}
+                to{" "}
+                {Math.min(
+                  paginationData.page * paginationData.limit,
+                  paginationData.total
+                )}{" "}
+                of {paginationData.total} transactions
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
+                  }
+                  disabled={!paginationData.hasPrevPage}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
+                  }
+                  disabled={!paginationData.hasNextPage}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
           )}
         </div>
       </div>
-      <div>
-        <Table
-          data={transactions}
-          columns={columns}
-          keyExtractor={(transaction) => transaction.id}
-          isLoading={isLoading}
-          emptyMessage="No transactions found"
-        />
-
-        {/* Pagination */}
-        {!isLoading && transactions.length > 0 && (
-          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-            <div className="text-sm text-muted-foreground">
-              Showing {(paginationData.page - 1) * paginationData.limit + 1} to{" "}
-              {Math.min(
-                paginationData.page * paginationData.limit,
-                paginationData.total
-              )}{" "}
-              of {paginationData.total} transactions
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-                }
-                disabled={!paginationData.hasPrevPage}
-              >
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-                }
-                disabled={!paginationData.hasNextPage}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+    </PageWrapper>
   );
 }
 
@@ -297,7 +304,7 @@ export default function TransactionsScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-gray-600" />
         </div>
       }
     >

@@ -10,15 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select } from "@/components/ui/select";
 import { Table, Column } from "@/components/ui/table";
 import { Menu } from "@/components/ui/menu";
-import {
-  Plus,
-  Search,
-  Ellipsis,
-  Loading,
-  Close,
-  Clock,
-  FileQuestion,
-} from "@/icons";
+import { Ellipsis, Loading, Close } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
@@ -26,6 +18,7 @@ import { PracticeFormDialog } from "@/components/practices/practice-form-dialog"
 import { usePermissions } from "@/contexts/permission-context";
 import { PERMISSIONS } from "@/config/permissions";
 import Link from "next/link";
+import { PageWrapper } from "@/components/molecules/page-wrapper";
 
 function PracticesScreenContent() {
   const router = useRouter();
@@ -191,7 +184,7 @@ function PracticesScreenContent() {
     },
     {
       key: "durationMinutes",
-      header: "Duration",
+      header: "Durée",
       width: "w-24",
       render: (practice) => (
         <div className="flex items-center gap-1 text-sm">
@@ -276,75 +269,10 @@ function PracticesScreenContent() {
     },
   ];
 
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl">Practices</h1>
-      </div>
-
-      <div className="space-y-1 flex items-center gap-2 flex-wrap">
-        {/* Filters */}
-        <div className="flex-1 flex items-center gap-2 flex-wrap">
-          <div className="relative w-64">
-            <Input
-              placeholder="Search practices..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <Select
-            value={typeFilter || ""}
-            onChange={(value) => setTypeFilter(value || "")}
-            options={[
-              { value: "listening", label: "Listening" },
-              { value: "reading", label: "Reading" },
-              { value: "writing", label: "Writing" },
-              { value: "speaking", label: "Speaking" },
-            ]}
-            placeholder="All Types"
-            className="w-[160px]"
-          />
-
-          <Select
-            value={levelFilter || ""}
-            onChange={(value) => setLevelFilter(value || "")}
-            options={[
-              { value: "A1", label: "A1" },
-              { value: "A2", label: "A2" },
-              { value: "B1", label: "B1" },
-              { value: "B2", label: "B2" },
-              { value: "C1", label: "C1" },
-              { value: "C2", label: "C2" },
-            ]}
-            placeholder="All Levels"
-            className="w-[160px]"
-          />
-
-          <Select
-            value={statusFilter || ""}
-            onChange={(value) => setStatusFilter(value || "")}
-            options={[
-              { value: "true", label: "Active" },
-              { value: "false", label: "Inactive" },
-            ]}
-            placeholder="All Status"
-            className="w-[160px]"
-          />
-
-          {hasActiveFilters && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearFilters}
-              className="gap-2"
-            >
-              <Close className="h-4 w-4" />
-              Clear Filters
-            </Button>
-          )}
-        </div>
-
+  const actions = () => {
+    return (
+      <div className="flex items-center gap-1">
+        <Button href="/dashboard/practices/sequences">Séquences</Button>
         {canCreate && (
           <Button
             onClick={() => {
@@ -357,58 +285,128 @@ function PracticesScreenContent() {
           />
         )}
       </div>
+    );
+  };
 
-      <Table
-        data={practices}
-        columns={columns}
-        keyExtractor={(p) => p._id}
-        isLoading={isLoading}
-        emptyMessage="No practices found"
-        striped
-      />
+  return (
+    <PageWrapper title="Practices" actions={actions()}>
+      <div className="space-y-2">
+        <div className="space-y-1 flex items-center gap-2 flex-wrap">
+          {/* Filters */}
+          <div className="flex-1 flex items-center gap-2 flex-wrap">
+            <div className="relative w-64">
+              <Input
+                placeholder="Search practices..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-      {/* Pagination */}
-      {!isLoading && practices.length > 0 && (
-        <div className="flex items-center justify-between mt-4 pt-4 border-t">
-          <div className="text-sm text-muted-foreground">
-            Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
-            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
-            {pagination.total} practices
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
-              }
-              disabled={!pagination.hasPrevPage}
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
-              }
-              disabled={!pagination.hasNextPage}
-            >
-              Next
-            </Button>
+            <Select
+              value={typeFilter || ""}
+              onChange={(value) => setTypeFilter(value || "")}
+              options={[
+                { value: "listening", label: "Listening" },
+                { value: "reading", label: "Reading" },
+                { value: "writing", label: "Writing" },
+                { value: "speaking", label: "Speaking" },
+              ]}
+              placeholder="All Types"
+              className="w-[160px]"
+            />
+
+            <Select
+              value={levelFilter || ""}
+              onChange={(value) => setLevelFilter(value || "")}
+              options={[
+                { value: "A1", label: "A1" },
+                { value: "A2", label: "A2" },
+                { value: "B1", label: "B1" },
+                { value: "B2", label: "B2" },
+                { value: "C1", label: "C1" },
+                { value: "C2", label: "C2" },
+              ]}
+              placeholder="All Levels"
+              className="w-[160px]"
+            />
+
+            <Select
+              value={statusFilter || ""}
+              onChange={(value) => setStatusFilter(value || "")}
+              options={[
+                { value: "true", label: "Active" },
+                { value: "false", label: "Inactive" },
+              ]}
+              placeholder="All Status"
+              className="w-[160px]"
+            />
+
+            {hasActiveFilters && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="gap-2"
+              >
+                <Close className="h-4 w-4" />
+                Clear Filters
+              </Button>
+            )}
           </div>
         </div>
-      )}
 
-      {/* Practice Form Dialog */}
-      <PracticeFormDialog
-        open={practiceFormDialog}
-        onOpenChange={setPracticeFormDialog}
-        mode={formMode}
-        practice={formMode === "edit" ? selectedPractice : undefined}
-        onSuccess={fetchPractices}
-      />
-    </div>
+        <Table
+          data={practices}
+          columns={columns}
+          keyExtractor={(p) => p._id}
+          isLoading={isLoading}
+          emptyMessage="No practices found"
+          striped
+        />
+
+        {/* Pagination */}
+        {!isLoading && practices.length > 0 && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t">
+            <div className="text-sm text-gray-600">
+              Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
+              {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
+              of {pagination.total} practices
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page - 1 }))
+                }
+                disabled={!pagination.hasPrevPage}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setPagination((prev) => ({ ...prev, page: prev.page + 1 }))
+                }
+                disabled={!pagination.hasNextPage}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* Practice Form Dialog */}
+        <PracticeFormDialog
+          open={practiceFormDialog}
+          onOpenChange={setPracticeFormDialog}
+          mode={formMode}
+          practice={formMode === "edit" ? selectedPractice : undefined}
+          onSuccess={fetchPractices}
+        />
+      </div>
+    </PageWrapper>
   );
 }
 
@@ -417,7 +415,7 @@ export function PracticesScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-gray-600" />
         </div>
       }
     >

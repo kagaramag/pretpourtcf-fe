@@ -106,7 +106,7 @@ const columns: Column<Streak>[] = [
     key: "lastActivityAt",
     header: "Dernière activité",
     render: (streak) => (
-      <span className="text-sm text-muted-foreground">
+      <span className="text-sm text-gray-600">
         {formatDate(streak.lastActivityAt)}
       </span>
     ),
@@ -156,7 +156,7 @@ export function StreaksScreen() {
       <div>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 max-w-md relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-600" />
             <Input
               placeholder="Rechercher par nom ou email..."
               value={searchQuery}
@@ -193,11 +193,11 @@ export function StreaksScreen() {
         keyExtractor={(s) => s._id}
         emptyComponent={
           <div className="flex flex-col items-center justify-center py-12">
-            <Flame className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-lg font-medium text-muted-foreground">
+            <Flame className="h-12 w-12 text-gray-600 mb-4" />
+            <p className="text-lg font-medium text-gray-600">
               Aucun streak trouvé
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               {statusFilter !== "all" || searchQuery
                 ? "Essayez de changer les filtres"
                 : "Les utilisateurs n'ont pas encore créé de streaks"}
@@ -209,7 +209,7 @@ export function StreaksScreen() {
       {/* Pagination */}
       {pagination && pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             Page {pagination.page} sur {pagination.totalPages} (
             {pagination.total} au total)
           </p>

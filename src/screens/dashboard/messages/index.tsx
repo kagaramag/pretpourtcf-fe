@@ -46,7 +46,7 @@ const columns: Column<EmailHistoryItem>[] = [
             </span>
           ))}
           {item.totalRecipients > 2 && (
-            <span className="text-muted-foreground">
+            <span className="text-gray-600">
               {" "}+{item.totalRecipients - 2} more
             </span>
           )}
@@ -87,7 +87,7 @@ const columns: Column<EmailHistoryItem>[] = [
     key: "sentAt",
     header: "Sent At",
     render: (item) => (
-      <div className="text-sm text-muted-foreground">
+      <div className="text-sm text-gray-600">
         {formatDistanceToNow(new Date(item.sentAt), {
           addSuffix: true,
         })}
@@ -141,7 +141,7 @@ export function Messages() {
                 <Email className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Emails</p>
+                <p className="text-sm text-gray-600">Total Emails</p>
                 <p className="text-2xl font-bold">{stats.totalEmailsSent}</p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export function Messages() {
                 <Email className="h-5 w-5 " />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Recipients</p>
+                <p className="text-sm text-gray-600">Recipients</p>
                 <p className="text-2xl font-bold">{stats.totalRecipients}</p>
               </div>
             </div>
@@ -165,7 +165,7 @@ export function Messages() {
                 <Verified className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Successful</p>
+                <p className="text-sm text-gray-600">Successful</p>
                 <p className="text-2xl font-bold">{stats.totalSuccess}</p>
               </div>
             </div>
@@ -177,7 +177,7 @@ export function Messages() {
                 <Remove className="h-5 w-5 " />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Failed</p>
+                <p className="text-sm text-gray-600">Failed</p>
                 <p className="text-2xl font-bold">{stats.totalFailures}</p>
               </div>
             </div>
@@ -189,7 +189,7 @@ export function Messages() {
       <Card className="space-y-4">
         <div className="space-y-2">
           <h3 className="font-semibold">Email History</h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-600">
             View all sent emails and their delivery status
           </p>
         </div>
@@ -204,9 +204,9 @@ export function Messages() {
           emptyMessage="No emails sent yet"
           emptyComponent={
             <div className="text-center py-12">
-              <Email className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <Email className="h-12 w-12 mx-auto text-gray-600 mb-4" />
               <h3 className="text-lg font-semibold mb-2">No emails sent yet</h3>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-gray-600 mb-6">
                 Start by composing your first email to users
               </p>
               <Button href="/dashboard/messages/compose">
@@ -220,7 +220,7 @@ export function Messages() {
         {/* Pagination */}
         {data && data.pagination.totalPages > 1 && (
           <div className="flex items-center justify-between pt-4">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Page {data.pagination.page} of {data.pagination.totalPages}
             </div>
             <div className="flex gap-2">

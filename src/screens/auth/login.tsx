@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,11 +12,10 @@ import { Loading, Icon } from "@/icons";
 import { useAuth } from "@/contexts/auth-context";
 import { loginSchema, LoginFormValues } from "@/validations/auth-schema";
 
-export function LoginForm() {
+export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState<string>("");
   const [userEmail, setUserEmail] = useState("");
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
   const [isPending, setIsPending] = useState(false);
@@ -150,7 +149,7 @@ export function LoginForm() {
             )}
           </Button>
 
-          <p className="text-center text-sm text-muted-foreground mt-4">
+          <p className="text-center text-sm text-gray-600 mt-4">
             Vous n'avez pas de compte?{" "}
             <Link
               href={

@@ -111,6 +111,7 @@ import Notebook from "@/assets/icons/Notebook";
 import ChevronUp from "@/assets/icons/ChevronUp";
 import List from "@/assets/icons/List";
 import Premium from "@/assets/icons/Premium";
+import Record from "@/assets/icons/Record";
 
 type IconComponent = React.FC<React.SVGProps<SVGSVGElement>>;
 
@@ -226,6 +227,7 @@ const icons = {
   list: List,
   eyeOpen: EyeOpen,
   premium: Premium,
+  record: Record,
 } as const satisfies Record<string, IconComponent>;
 
 export type IconName = keyof typeof icons;
@@ -382,6 +384,7 @@ export {
   List,
   EyeOpen,
   Premium,
+  Record,
 };
 
 export const iconNames = Object.keys(icons) as IconName[];

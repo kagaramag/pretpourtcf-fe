@@ -228,7 +228,7 @@ function CorporatesScreenContent() {
       {/* Filters */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
           <Input
             placeholder="Search corporates..."
             value={searchQuery}
@@ -257,7 +257,7 @@ function CorporatesScreenContent() {
         {/* Pagination */}
         {!isLoading && corporates.length > 0 && (
           <div className="flex items-center justify-between mt-4 pt-4 border-t border-border">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-gray-600">
               Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
               {Math.min(pagination.page * pagination.limit, pagination.total)}{" "}
               of {pagination.total} corporates
@@ -305,7 +305,7 @@ export function CorporatesScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-gray-600" />
         </div>
       }
     >

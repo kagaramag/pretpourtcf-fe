@@ -77,13 +77,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initAuth();
   }, []);
 
-  // Initialize socket connection when user is authenticated
+  // Initialize socket connection and proactive token refresh when user is authenticated
   useEffect(() => {
     if (user) {
       const token = authService.getToken();
       if (token) {
         console.log("[AUTH] Initializing socket connection for user:", user.id);
         socketService.connect(token);
+
+        // Start proactive token refresh so the token never silently expires
+        apiClient.scheduleTokenRefresh();
+
+        // When the token is refreshed, update the socket connection
+        const unsubscribe = apiClient.onTokenRefresh((newToken) => {
+          socketService.reconnectWithToken(newToken);
+        });
 
         // Listen for force_logout (another device logged in)
         const handleForceLogout = (data: { reason?: string }) => {
@@ -101,29 +109,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         return () => {
           socketService.off("force_logout", handleForceLogout);
+          unsubscribe();
+          apiClient.clearRefreshTimer();
         };
       }
     } else {
-      // Disconnect socket when user logs out
+      // Disconnect socket and stop refresh timer when user logs out
       console.log("[AUTH] Disconnecting socket");
       socketService.disconnect();
+      apiClient.clearRefreshTimer();
     }
 
     // Cleanup on unmount
     return () => {
       if (!user) {
         socketService.disconnect();
+        apiClient.clearRefreshTimer();
       }
     };
   }, [user, router]);
 
   const logout = useCallback(async () => {
     // Track before clearing tokens (needs auth header)
-    apiClient.post("/analytics/track", {
-      action: "logout",
-      category: "auth",
-      metadata: { timestamp: new Date().toISOString() },
-    }).catch(() => {});
+    apiClient
+      .post("/analytics/track", {
+        action: "logout",
+        category: "auth",
+        metadata: { timestamp: new Date().toISOString() },
+      })
+      .catch(() => {});
 
     // Clear tokens/cookies synchronously so middleware sees logged-out state
     await authService.logout();
@@ -155,7 +169,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const loggedInUser = response.data.user;
 
           setUser(loggedInUser);
-          console.log("loggedInUser", loggedInUser)
+          console.log("loggedInUser", loggedInUser);
 
           // Redirect based on redirectTo parameter or role
           setTimeout(() => {
@@ -165,10 +179,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               router.push("/compte");
             } else if (loggedInUser.role === "trainer") {
               router.push("/trainer");
-            } else if (loggedInUser.role === "super_admin" || loggedInUser.role === "admin") {
+            } else if (
+              loggedInUser.role === "super_admin" ||
+              loggedInUser.role === "admin"
+            ) {
               router.push("/dashboard");
+            } else {
+              router.refresh();
             }
-            router.refresh();
           }, 100);
         }
       } catch (error: any) {

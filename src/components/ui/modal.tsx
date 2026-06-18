@@ -87,7 +87,7 @@ export function Modal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center duration-200 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center  duration-200 ${
         isAnimating ? 'bg-opacity-50' : 'bg-opacity-0'
       }`}
     >
@@ -96,7 +96,7 @@ export function Modal({
         onClick={handleBackdropClick}
       />
       <div
-        className={`bg-white absolute ${size === 'full' ? 'top-0 bottom-0' : 'top-10 max-h-[calc(100vh-5rem)]'} flex flex-col shadow-xl w-full ${sizeClasses[size]} mx-4 transition-all duration-200 ${
+        className={`bg-white absolute rounded-2xl ${size === 'full' ? 'top-0 bottom-0' : 'top-10 max-h-[calc(100vh-5rem)]'} flex flex-col shadow-xl w-full ${sizeClasses[size]} mx-4 transition-all duration-200 ${
           isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-12'
         }`}
       >

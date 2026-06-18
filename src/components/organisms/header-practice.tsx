@@ -1,29 +1,24 @@
 "use client";
 
 import { useAuth } from "@/contexts/auth-context";
-import { Close } from "@/icons";
+import { Icon } from "@/icons";
 import { useRouter } from "next/navigation";
 import Logo from "@/assets/images/icon.svg";
 import Image from "next/image";
-const navigation = [
-  { name: "Accueil", href: "/" },
-  // { name: "Formations", href: "/" },
-  { name: "Plans & Tarifs", href: "/" },
-  { name: "Contact-nous", href: "/" },
-];
 
 interface HeaderPracticeProps {
   title: string;
   onClose: () => void;
+  onRefresh?: () => void;
 }
 
-export default function Header({ title, onClose }: HeaderPracticeProps) {
+export default function Header({
+  title,
+  onClose,
+  onRefresh,
+}: HeaderPracticeProps) {
   const router = useRouter();
-  const { user, isLoading, isAuthenticated, logout } = useAuth();
-
-  const handleLogout = async () => {
-    await logout();
-  };
+  const { user } = useAuth();
 
   const fullName = user ? `${user.first_name}`.trim() : "User";
 
@@ -41,17 +36,24 @@ export default function Header({ title, onClose }: HeaderPracticeProps) {
           />
         </div>
         <div className="flex-1">
-          <h1 className="lg:text-2xl text-xl lg:font-bold text-center leading-none">{title}</h1>
+          <h1 className="lg:text-2xl text-xl lg:font-bold text-center leading-none">
+            {title}
+          </h1>
         </div>
-        <div
-          className="w-[56px]"
-          onClick={onClose}
-        >
+        <div className="flex items-center gap-1">
+          {onRefresh && (
+            <button
+              className="bg-primary text-white p-2.5 cursor-pointer hover:bg-primary/80 rounded-full"
+              onClick={onRefresh}
+            >
+              <Icon name="refresh" size={20} />
+            </button>
+          )}
           <button
-            className="cursor-pointer hover:bg-gray-100 p-1.5 rounded-lg"
+            className="bg-red-600 text-white p-2.5 cursor-pointer hover:bg-red-600/80 rounded-full"
             onClick={onClose}
           >
-            <Close className="h-8 w-8" />
+            <Icon name="close" size={20} />
           </button>
         </div>
       </div>

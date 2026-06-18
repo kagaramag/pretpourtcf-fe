@@ -42,7 +42,7 @@ export function StreakDetailsDialog({
                 </span>
               </div>
               <Progress value={progressPercentage} className="h-3" />
-              <p className="text-xs text-muted-foreground text-right">
+              <p className="text-xs text-gray-600 text-right">
                 {progressPercentage}% complété
               </p>
             </div>
@@ -63,14 +63,14 @@ export function StreakDetailsDialog({
                     {exercise.completed ? (
                       <Verified className="h-5 w-5 text-green-600" />
                     ) : (
-                      <CircleIcon className="h-5 w-5 text-muted-foreground" />
+                      <CircleIcon className="h-5 w-5 text-gray-600" />
                     )}
                     <div className="flex-1">
                       <p className="font-medium text-sm">
                         Exercice {exercise.exerciseNumber}
                       </p>
                       {exercise.completed && (
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-600">
                           Score: {exercise.score}% •{" "}
                           {new Date(exercise.completedAt!).toLocaleDateString(
                             "fr-FR",
@@ -110,10 +110,10 @@ export function StreakDetailsDialog({
                       <span className="text-3xl">{reward.icon}</span>
                       <div className="flex-1">
                         <p className="font-semibold text-sm">{reward.name}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-gray-600">
                           {reward.description}
                         </p>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-gray-600 mt-1">
                           Gagné le{" "}
                           {new Date(reward.earnedAt).toLocaleDateString(
                             "fr-FR"

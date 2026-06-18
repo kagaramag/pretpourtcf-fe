@@ -148,7 +148,7 @@ export function PracticeFormDialog({
       title={mode === "create" ? "Create New Practice" : "Edit Practice"}
       size="sm"
     >
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-600">
           {mode === "create"
             ? "Create a new TCF practice exam."
             : "Update practice exam information."}

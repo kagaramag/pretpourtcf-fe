@@ -90,7 +90,7 @@ export default function StreaksPage() {
             </h3>
             Les séries sont réservées aux abonnés premium
             <div className="p-6 space-y-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 Relevez le défi des séries de 7 jours! Complétez 20 exercices
                 avec au moins 90% de score et gagnez des emblème exclusives.
               </p>
@@ -119,7 +119,7 @@ export default function StreaksPage() {
     return (
       <div className="w-full">
         <div className="flex justify-center items-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
     );
@@ -132,7 +132,7 @@ export default function StreaksPage() {
         <div className="flex flex-col lg:flex-row lg:items-center gap-2 justify-between">
           <div>
             <h1 className="text-2xl flex items-center gap-2">Mes Séries</h1>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Maintenez votre engagement et gagnez des emblème!
             </p>
           </div>
@@ -165,7 +165,7 @@ export default function StreaksPage() {
                 <p className="text-sm font-semibold">
                   {activeStreak.rewards[activeStreak.rewards.length - 1].name}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   {
                     activeStreak.rewards[activeStreak.rewards.length - 1]
                       .description
@@ -178,14 +178,14 @@ export default function StreaksPage() {
         {stats && (
           <>
             <div className="border-2 border-border rounded-lg p-3">
-              <h4 className="text-sm font-medium text-muted-foreground">
+              <h4 className="text-sm font-medium text-gray-600">
                 Total séries
               </h4>
               <p className="text-2xl font-bold">{stats.totalStreaks}</p>
             </div>
             <div className="border-2 border-border rounded-lg p-3">
               <div className="">
-                <h3 className="text-sm font-medium text-muted-foreground flex items-center gap-1">
+                <h3 className="text-sm font-medium text-gray-600 flex items-center gap-1">
                   <Trophy className="h-4 w-4 text-yellow-600" />
                   Emblèmes gagnées
                 </h3>
@@ -286,7 +286,7 @@ export default function StreaksPage() {
                   <h3 className="text-lg font-semibold mb-2">
                     Aucun historique
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     Vos séries passées apparaîtront ici
                   </p>
                 </div>

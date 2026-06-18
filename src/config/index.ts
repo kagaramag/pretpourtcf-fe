@@ -97,4 +97,7 @@ export const API_ENDPOINTS = {
   // Corporates
   CORPORATES: "/corporates",
   CORPORATE_DETAILS: "/corporates/:id",
+
+  // Sequences
+  SEQUENCES: "/sequences",
 };

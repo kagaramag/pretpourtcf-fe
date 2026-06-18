@@ -55,7 +55,7 @@ export default function ForgotPasswordScreen() {
           </div>
           <div>
             <div className="space-y-4 mt-3">
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-600">
                 Vous n'avez pas reçu l'e-mail ? Vérifiez votre dossier spam ou réessayez.
               </div>
               <Button

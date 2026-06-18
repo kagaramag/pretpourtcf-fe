@@ -74,7 +74,7 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
             {performanceByType.map((perf) => (
               <div key={perf.type} className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">
+                  <span className="text-gray-600">
                     {practiceTypeLabels[perf.type] || perf.type}
                   </span>
                   <span className="font-medium">{perf.averageScore}%</span>
@@ -85,7 +85,7 @@ export function QuickActions({ performanceByType }: QuickActionsProps) {
                     style={{ width: `${Math.min(perf.averageScore, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   {perf.totalSessions} session
                   {perf.totalSessions > 1 ? "s" : ""}
                 </p>

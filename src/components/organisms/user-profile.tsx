@@ -8,7 +8,11 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
   const { user, isLoading, logout } = useAuth();
   const pathname = usePathname();
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => {
+    if (pathname === href) return true;
+    if (href === "/trainer" || href === "/compte") return false;
+    return pathname.startsWith(href + "/");
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -139,9 +143,9 @@ export default function ProfileCard({ isOpen = true, onClose }: any) {
                   {item.show ? (
                     <Link
                       href={item.href}
-                      className={`text-sm py-2 sm:py-1.5 px-2 border-l-4 sm:border-l-0 sm:border-b-4 transition-colors flex items-center gap-1.5 ${
+                      className={`text-sm py-2 sm:py-1.5 px-1.5 border-l-4 sm:border-l-0 sm:border-b-4 transition-colors flex items-center gap-1.5 ${
                         isActive(item.href)
-                          ? "border-tertiary bg-tertiary/10"
+                          ? "border-tertiary"
                           : "border-transparent sm:border-gray-800"
                       }`}
                     >

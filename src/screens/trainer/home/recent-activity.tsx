@@ -29,7 +29,7 @@ export function RecentActivity({ activities }: RecentActivityProps) {
       <h3 className="text-lg mb-4">Activité récente</h3>
       <div className="space-y-3">
         {activities.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
+          <p className="text-sm text-gray-600 text-center py-4">
             Aucune activité récente
           </p>
         ) : (
@@ -47,14 +47,14 @@ export function RecentActivity({ activities }: RecentActivityProps) {
                   <p className="text-sm font-medium truncate">
                     {activity.learner.name}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-gray-600 truncate">
                     {activity.practice.title}
                     {activity.practice.level && ` · ${activity.practice.level}`}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <Badge variant={grade.variant}>{activity.percentageScore}%</Badge>
-                  <span className="text-xs text-muted-foreground hidden md:block">
+                  <span className="text-xs text-gray-600 hidden md:block">
                     {formatDistanceToNow(new Date(activity.completedAt), {
                       addSuffix: true,
                       locale: fr,

@@ -194,7 +194,7 @@ export function LiveTracker() {
         ) : activities.length === 0 ? (
           <div className="text-center py-6">
             <Icon name="open" className="h-8 w-8 mx-auto text-gray-300 mb-2" />
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               {isLive
                 ? `No activity in the last ${config.liveTrackerDays} day${config.liveTrackerDays > 1 ? "s" : ""}`
                 : "No recorded activity"}
@@ -297,7 +297,7 @@ export function LiveTracker() {
       {/* Footer */}
       {activities.length > 0 && (
         <div className="mt-1 pt-1">
-          <p className="text-[10px] text-muted-foreground text-center">
+          <p className="text-[10px] text-gray-600 text-center">
             {isLive ? `Last ${config.liveTrackerDays} day${config.liveTrackerDays > 1 ? "s" : ""} · Auto-refresh 5s` : "Recent activity"}{" "}
             &middot; {activities.length} event
             {activities.length > 1 ? "s" : ""}

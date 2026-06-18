@@ -72,13 +72,13 @@ function PublicBlogScreenContent() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <div className="bg-primary text-white py-8">
+      <div className="bg-primary text-white pb-8 pt-24">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">
             Blog
           </h1>
           <p className="text-xl text-center text-white/80 max-w-2xl mx-auto">
-            Découvrez nos articles, conseils et actualités sur la préparation au TCF
+            Découvrez nos articles, conseils et actualités
           </p>
         </div>
       </div>
@@ -87,7 +87,7 @@ function PublicBlogScreenContent() {
         {/* Search */}
         <div className="max-w-2xl mx-auto mb-6">
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-600" />
             <Input
               placeholder="Rechercher des articles..."
               value={searchQuery}
@@ -100,12 +100,12 @@ function PublicBlogScreenContent() {
         {/* Blog Grid */}
         {isLoading ? (
           <div className="flex items-center justify-center h-64">
-            <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+            <Loading className="h-8 w-8 animate-spin text-gray-600" />
           </div>
         ) : blogs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-center">
             <p className="text-lg font-medium">Aucun article trouvé</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-600">
               {searchQuery
                 ? "Essayez d'ajuster votre recherche"
                 : "Revenez bientôt pour découvrir nos articles"}
@@ -130,10 +130,10 @@ function PublicBlogScreenContent() {
                       <h2 className="text-xl font-bold mb-2 line-clamp-2">
                         {blog.title}
                       </h2>
-                      <p className="text-muted-foreground mb-4 line-clamp-3">
+                      <p className="text-gray-600 mb-4 line-clamp-3">
                         {blog.description}
                       </p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
                           <span>
@@ -161,7 +161,7 @@ function PublicBlogScreenContent() {
                 >
                   Précédent
                 </Button>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-600">
                   Page {pagination.page} sur {pagination.totalPages}
                 </span>
                 <Button

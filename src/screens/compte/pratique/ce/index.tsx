@@ -4,19 +4,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
-import { Listen } from "@/icons";
+import { Read, Clock, ChartView, ArrowRight, FileText } from "@/icons";
 import { practiceService } from "@/services/practice";
 import { Practice } from "@/types";
 import { toast } from "sonner";
 import AccountLayout from "@/layouts/account";
-import MethodCO from "./methodology";
+import MethodCE from "./methodology";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { PracticeTask } from "@/components/molecules/practice-task";
 import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
 
-const category = PRACTICE_CATEGORIES.find((c) => c.slug === "co")!;
+const category = PRACTICE_CATEGORIES.find((c) => c.slug === "ce")!;
 
-export default function FreeListeningPracticePage() {
+export default function ReadingPracticePage() {
   const { user } = useAuth();
   const router = useRouter();
   const { trackClick } = useActivityTracker();
@@ -24,16 +24,15 @@ export default function FreeListeningPracticePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchFreeListeningPractices();
+    fetchReadingPractices();
   }, []);
 
-  const fetchFreeListeningPractices = async () => {
+  const fetchReadingPractices = async () => {
     try {
       setLoading(true);
       const response = await practiceService.getAllPractices({
-        type: "listening",
+        type: "reading",
         isActive: true,
-        freemium: true,
         sort: "_id",
         limit: 100,
       });
@@ -50,11 +49,25 @@ export default function FreeListeningPracticePage() {
     }
   };
 
+  const getLevelColor = (level?: string) => {
+    const colors: Record<string, string> = {
+      A1: "bg-green-100 text-green-800",
+      A2: "bg-blue-100 text-blue-800",
+      B1: "bg-yellow-100 text-yellow-800",
+      B2: "bg-orange-100 text-orange-800",
+      C1: "bg-red-100 text-red-800",
+      C2: "bg-purple-100 text-purple-800",
+    };
+    return level
+      ? colors[level] || "bg-gray-100 text-gray-800"
+      : "bg-gray-100 text-gray-800";
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto">
         <div className="flex justify-center items-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
     );
@@ -73,43 +86,43 @@ export default function FreeListeningPracticePage() {
         </div>
         <div className="mb-4">
           <div className="flex items-center gap-3">
-            <h1 className="lg:text-3xl text-xl font-bold">
-              Compréhension Orale - Essai Gratuit
+            <h1 className="lg:text-2xl text-xl font-semibold">
+              Compréhension écrite
             </h1>
           </div>
-          <h5>
-            Essayez gratuitement nos exercices d&apos;écoute pour pratiquer votre
-            compréhension orale
-          </h5>
+          <div className="text-sm text-gray-600">
+            Choisissez un exercice de lecture pour pratiquer votre compréhension
+            écrite
+          </div>
         </div>
-        <MethodCO />
+        <MethodCE />
         <div>
-          <h1 className="lg:text-3xl text-xl font-bold my-4">Pratiques Gratuites</h1>
+          <h1 className="lg:text-2xl text-xl font-semibold my-4">Pratiques</h1>
         </div>
 
         {practices.length === 0 ? (
           <div>
-            <Listen className="h-16 w-16 text-muted-foreground mb-4" />
+            <FileText className="h-16 w-16 text-gray-600 mb-4" />
             <h3 className="text-lg font-semibold mb-2">
-              Aucun exercice gratuit disponible
+              Aucun exercice disponible
             </h3>
-            <div className="text-muted-foreground text-center max-w-md">
-              Il n&apos;y a pas d&apos;exercices de compréhension orale gratuits
+            <div className="text-gray-600 text-center max-w-md">
+              Il n&apos;y a pas d&apos;exercices de compréhension écrite
               disponibles pour le moment.
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {practices.map((practice) => (
               <PracticeTask
                 key={practice._id}
                 practice={practice}
                 category={category}
-                href={`/compte/essai-gratuit/co/${practice._id}`}
+                href={`/compte/pratique/ce/${practice._id}`}
                 onClick={() =>
                   trackClick({
                     action: "link_clicked",
-                    label: `Trial: CO Practice — ${practice.title}`,
+                    label: `Paid: CE Practice — ${practice.title}`,
                   })
                 }
               />
@@ -124,7 +137,7 @@ export default function FreeListeningPracticePage() {
             </h3>
             <div className="text-sm text-blue-800 space-y-2">
               <p>• Assurez-vous d&apos;avoir une bonne connexion internet</p>
-              <p>• Utilisez des écouteurs pour une meilleure qualité audio</p>
+              <p>• Lisez attentivement chaque texte avant de répondre</p>
               <p>
                 • Vous ne pouvez pas sauter de questions, répondez dans
                 l&apos;ordre

@@ -50,7 +50,7 @@ export function FormationTab({ onEditPlan }: FormationTabProps) {
       render: (plan) => (
         <div className="text-sm">
           <span>{plan.price_rwf?.toLocaleString()} RWF</span>
-          <span className="text-muted-foreground ml-1">/ ${plan.price_usd}</span>
+          <span className="text-gray-600 ml-1">/ ${plan.price_usd}</span>
         </div>
       ),
     },
@@ -85,7 +85,7 @@ export function FormationTab({ onEditPlan }: FormationTabProps) {
         plan.popular ? (
           <Badge variant="secondary">Populaire</Badge>
         ) : (
-          <span className="text-muted-foreground text-sm">-</span>
+          <span className="text-gray-600 text-sm">-</span>
         ),
     },
     {

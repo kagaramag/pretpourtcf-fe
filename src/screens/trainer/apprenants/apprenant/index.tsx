@@ -157,7 +157,7 @@ export default function ApprenantScreen() {
             </>
           }
         >
-          <p className="text-muted-foreground text-sm mb-4">
+          <p className="text-gray-600 text-sm mb-4">
             Envoyez une invitation par email à un nouvel apprenant pour qu'il rejoigne la plateforme.
           </p>
           <div className="grid gap-4 py-4">
@@ -166,7 +166,7 @@ export default function ApprenantScreen() {
                 Email
               </Label>
               <div className="col-span-3 relative">
-                <Email className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Email className="absolute left-2 top-2.5 h-4 w-4 text-gray-600" />
                 <Input
                   id="email"
                   type="email"
@@ -191,7 +191,7 @@ export default function ApprenantScreen() {
       <div className="grid gap-4 md:grid-cols-3">
         <div className="border p-3 flex items-center">
           <div className="text-sm font-medium flex-1">
-            <User className="h-4 w-4 text-muted-foreground" />
+            <User className="h-4 w-4 text-gray-600" />
             <div>Total des invitations</div>
           </div>
           <div className="text-2xl font-bold">{referrals.length}</div>
@@ -237,15 +237,15 @@ function ReferralsTable({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
 
   if (referrals.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground">
-        <UserPlus className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+      <div className="text-center py-12 text-gray-600">
+        <UserPlus className="h-12 w-12 mx-auto mb-4 text-gray-600/50" />
         <p className="text-lg font-medium mb-2">Aucun apprenant invité</p>
         <p className="text-sm">
           Commencez par inviter des apprenants en utilisant le bouton ci-dessus
@@ -266,7 +266,7 @@ function ReferralsTable({
             </div>
           </div>
         ) : (
-          <span className="text-muted-foreground italic">Non inscrit</span>
+          <span className="text-gray-600 italic">Non inscrit</span>
         ),
     },
     {
@@ -274,7 +274,7 @@ function ReferralsTable({
       header: "Email",
       render: (referral) => (
         <div className="flex items-center gap-2 font-medium">
-          <Email className="h-4 w-4 text-muted-foreground" />
+          <Email className="h-4 w-4 text-gray-600" />
           {referral.inviteeEmail}
         </div>
       ),

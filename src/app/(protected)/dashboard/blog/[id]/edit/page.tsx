@@ -32,7 +32,7 @@ export default function EditBlogPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }

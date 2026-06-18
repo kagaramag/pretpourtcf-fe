@@ -144,7 +144,7 @@ export function OfferSubscriptionModal({
           ) : (
             <div className="space-y-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
                 <Input
                   placeholder="Rechercher un client..."
                   value={userSearch}
@@ -204,7 +204,7 @@ export function OfferSubscriptionModal({
             placeholder="Choisir un plan"
           />
           {selectedPlan && (
-            <div className="mt-1 text-xs text-muted-foreground">
+            <div className="mt-1 text-xs text-gray-600">
               {selectedPlan.category} &middot; {selectedPlan.type} &middot;{" "}
               {selectedPlan.duration_days} jours
             </div>
@@ -228,12 +228,12 @@ export function OfferSubscriptionModal({
             placeholder="Type de paiement"
           />
           {paymentType === "free" && selectedPlan && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-gray-600">
               Le montant de la transaction sera 0 RWF
             </p>
           )}
           {paymentType === "manual_payment" && selectedPlan && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-gray-600">
               La transaction sera de {selectedPlan.price_rwf?.toLocaleString()}{" "}
               RWF (paiement recu hors plateforme)
             </p>

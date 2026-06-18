@@ -67,7 +67,7 @@ export default function WritingPracticePage() {
     return (
       <div className="container mx-auto">
         <div className="flex justify-center items-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
     );
@@ -100,11 +100,11 @@ export default function WritingPracticePage() {
         <div className="mt-6">
           {practices.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12">
-              <Write className="h-16 w-16 text-muted-foreground mb-4" />
+              <Write className="h-16 w-16 text-gray-600 mb-4" />
               <h3 className="text-lg font-semibold mb-2">
                 Aucun exercice disponible
               </h3>
-              <p className="text-muted-foreground text-center max-w-md">
+              <p className="text-gray-600 text-center max-w-md">
                 Il n&apos;y a pas d&apos;exercices d&apos;expression écrite
                 disponibles pour le moment.
               </p>

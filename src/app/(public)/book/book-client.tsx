@@ -431,10 +431,10 @@ function BookingPage() {
               <h2 className="text-3xl font-bold mb-4">
                 Réservation confirmée!
               </h2>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-gray-600 mb-6">
                 Votre session gratuite a été réservée avec succès.
               </p>
-              <p className="text-muted-foreground">
+              <p className="text-gray-600">
                 Un email de confirmation vous sera envoyé à l'adresse fournie
                 avec tous les détails de votre session.
               </p>
@@ -572,7 +572,7 @@ function BookingPage() {
                     {selectedDay.month}
                   </div>
                   {timeSlots.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
+                    <p className="text-center text-gray-600 py-8">
                       Aucun créneau disponible pour ce jour.
                     </p>
                   ) : (
@@ -607,7 +607,7 @@ function BookingPage() {
               <div className="animate-in fade-in slide-in-from-top-4 duration-500">
                 <div>
                   <h3 className="font-semibold mb-2">Vos informations</h3>
-                  <p className="text-sm text-muted-foreground mb-6">
+                  <p className="text-sm text-gray-600 mb-6">
                     Complétez vos informations pour finaliser la réservation
                   </p>
 
@@ -719,7 +719,7 @@ function BookingPage() {
                       <p className="text-sm font-medium mb-2">
                         Récapitulatif :
                       </p>
-                      <div className="text-sm text-muted-foreground space-y-1">
+                      <div className="text-sm text-gray-600 space-y-1">
                         <p>
                           <Calendar className="inline w-4 h-4 mr-2" />
                           {selectedDay.dayName} {selectedDay.dayNumber}{" "}
@@ -732,7 +732,7 @@ function BookingPage() {
                       </div>
                     </div>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       En réservant, vous acceptez de recevoir un email de
                       confirmation. Vos données ne seront jamais partagées avec
                       des tiers.
@@ -786,7 +786,7 @@ function BookingPage() {
                   </div>
                 </div>
                 <div className="text-center mt-12">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-600">
                     Besoin d'aide? Contactez-nous à{" "}
                     <a
                       href="mailto:contact@pretpourtcf.com"

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import ReadingPracticePage from "./ce-client";
+import ReadingPracticePage from "@/screens/compte/pratique/ce";
 
 export const metadata: Metadata = {
-  title: "PrêtPourTCF | Compréhension écrite",
-  description: "Entraînez-vous à la compréhension écrite du TCF avec des exercices de lecture et des corrections détaillées",
+  title: "Compréhension écrite — Exercices de lecture TCF | PrêtPourTCF",
+  description: "Pratiquez la compréhension écrite du TCF Canada et Québec avec des textes et QCM chronométrés, corrections détaillées et score sur 699 points.",
 };
 
 export default function CEServerPage() {

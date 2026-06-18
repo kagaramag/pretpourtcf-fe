@@ -17,7 +17,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
     <div className="min-h-screen flex flex-col">
       <Header />
       <ProfileCard />
-      <main className="max-w-5xl w-full mx-auto">
+      <main className="max-w-5xl w-full mx-auto pt-4 pb-8">
         <div className="lg:p-0 p-4">{children}</div>
       </main>
       <Footer />

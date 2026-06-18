@@ -49,9 +49,9 @@ function Switch({
         data-slot="switch-thumb"
         data-state={checked ? 'checked' : 'unchecked'}
         className={cn(
-          'bg-gray-100 dark:bg-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform',
+          'bg-gray-100 pointer-events-none block size-4 rounded-full ring-0 transition-transform',
           checked
-            ? 'translate-x-[calc(100%-2px)] dark:bg-primary-foreground'
+            ? 'translate-x-[calc(100%-2px)]'
             : 'translate-x-0',
         )}
       />

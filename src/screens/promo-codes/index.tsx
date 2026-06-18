@@ -115,7 +115,7 @@ function PromoCodesScreenContent() {
       header: "Code",
       render: (promoCode) => (
         <div className="flex items-center gap-2">
-          <Tag className="h-4 w-4 text-muted-foreground" />
+          <Tag className="h-4 w-4 text-gray-600" />
           <span className="font-mono font-semibold">{promoCode.code}</span>
         </div>
       ),
@@ -130,7 +130,7 @@ function PromoCodesScreenContent() {
           </p>
           {promoCode.applicable_plans &&
             promoCode.applicable_plans.length > 0 && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-600">
                 {promoCode.applicable_plans.length} plan(s) spécifique(s)
               </p>
             )}
@@ -151,11 +151,11 @@ function PromoCodesScreenContent() {
       header: "Période",
       render: (promoCode) => (
         <div className="text-sm">
-          <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="flex items-center gap-1 text-gray-600">
             <Calendar className="h-3 w-3" />
             <span>{formatDate(promoCode.start_date)}</span>
           </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="flex items-center gap-1 text-gray-600">
             <span>→</span>
             <span>{formatDate(promoCode.end_date)}</span>
           </div>
@@ -181,7 +181,7 @@ function PromoCodesScreenContent() {
                   }}
                 ></div>
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-gray-600">
                 {getUsagePercentage(promoCode)}%
               </span>
             </div>
@@ -243,16 +243,16 @@ function PromoCodesScreenContent() {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Total</p>
+              <p className="text-sm text-gray-600">Total</p>
               <p className="text-2xl font-bold">{promoCodes.length}</p>
             </div>
-            <Tag className="h-8 w-8 text-muted-foreground" />
+            <Tag className="h-8 w-8 text-gray-600" />
           </div>
         </Card>
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Actifs</p>
+              <p className="text-sm text-gray-600">Actifs</p>
               <p className="text-2xl font-bold text-green-600">
                 {promoCodes.filter((pc) => isActive(pc)).length}
               </p>
@@ -263,7 +263,7 @@ function PromoCodesScreenContent() {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Expirés</p>
+              <p className="text-sm text-gray-600">Expirés</p>
               <p className="text-2xl font-bold text-red-600">
                 {promoCodes.filter((pc) => isExpired(pc.end_date)).length}
               </p>
@@ -274,12 +274,12 @@ function PromoCodesScreenContent() {
         <Card>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Utilisations</p>
+              <p className="text-sm text-gray-600">Utilisations</p>
               <p className="text-2xl font-bold">
                 {promoCodes.reduce((acc, pc) => acc + pc.current_uses, 0)}
               </p>
             </div>
-            <User className="h-8 w-8 text-muted-foreground" />
+            <User className="h-8 w-8 text-gray-600" />
           </div>
         </Card>
       </div>
@@ -346,7 +346,7 @@ export default function PromoCodesScreen() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[400px]">
-          <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+          <Loading className="h-8 w-8 animate-spin text-gray-600" />
         </div>
       }
     >

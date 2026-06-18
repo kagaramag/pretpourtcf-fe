@@ -36,7 +36,7 @@ export function FreemiumRestricted({ categorySlug }: FreemiumRestrictedProps) {
             <h3 className="text-2xl mb-2 text-center">
               Cet exercice n&apos;est pas disponible en essai gratuit
             </h3>
-            <p className="text-muted-foreground text-center text-sm max-w-sm mb-6">
+            <p className="text-gray-600 text-center text-sm max-w-sm mb-6">
               Cet exercice fait partie de nos offres premium. Pour y accéder,
               veuillez souscrire à un abonnement.
             </p>

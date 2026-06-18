@@ -192,7 +192,7 @@ export default function PracticeHistoryPage() {
     return (
       <div className="w-full">
         <div className="flex justify-center items-center py-12">
-          <p className="text-muted-foreground">Chargement...</p>
+          <p className="text-gray-600">Chargement...</p>
         </div>
       </div>
     );
@@ -202,7 +202,7 @@ export default function PracticeHistoryPage() {
     <div className="w-full">
       <div className="mb-2">
         <h1 className="text-2xl">Historique des pratiques</h1>
-        <p className="text-muted-foreground">
+        <p className="text-gray-600">
           Consultez vos résultats et suivez votre progression
         </p>
       </div>
@@ -263,11 +263,11 @@ export default function PracticeHistoryPage() {
             emptyMessage="Aucune session trouvée"
             emptyComponent={
               <div className="text-center py-12">
-                <ChartView className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <ChartView className="h-16 w-16 text-gray-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">
                   Aucune session trouvée
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-gray-600 mb-4">
                   Commencez une pratique pour voir votre historique ici
                 </p>
                 <Button
@@ -285,7 +285,7 @@ export default function PracticeHistoryPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 Page {currentPage} sur {totalPages}
               </p>
               <div className="flex gap-2">

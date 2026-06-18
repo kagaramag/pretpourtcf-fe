@@ -90,7 +90,7 @@ export default function Sessions() {
 
       {pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-gray-600">
             Page {pagination.page} sur {pagination.totalPages} (
             {pagination.total} total)
           </span>

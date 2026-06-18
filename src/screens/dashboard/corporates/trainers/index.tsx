@@ -231,7 +231,7 @@ export default function CorporateTrainersScreen({
       {/* Header */}
       <div className="flex justify-between items-center">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
           <Input
             placeholder="Search trainers..."
             value={searchQuery}
@@ -257,7 +257,7 @@ export default function CorporateTrainersScreen({
       {/* Pagination */}
       {!isLoading && trainers.length > 0 && (
         <div className="flex items-center justify-between pt-4 border-t border-border">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-gray-600">
             Showing {(pagination.page - 1) * pagination.limit + 1} to{" "}
             {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
             {pagination.total} trainers
@@ -299,7 +299,7 @@ export default function CorporateTrainersScreen({
       >
         <div className="space-y-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
             <Input
               placeholder="Search trainers by name or email..."
               value={assignSearch}
@@ -311,7 +311,7 @@ export default function CorporateTrainersScreen({
           <div className="max-h-[400px] overflow-y-auto space-y-2">
             {isLoadingAvailable ? (
               <div className="flex items-center justify-center py-8">
-                <Loading className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loading className="h-6 w-6 animate-spin text-gray-600" />
               </div>
             ) : availableTrainers.length === 0 ? (
               <div className="text-center py-8 text-gray-500">

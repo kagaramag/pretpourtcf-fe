@@ -3,6 +3,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Loading } from "@/icons";
 import { config } from "@/config";
+import ReactMarkdown from "react-markdown";
+
+const categoryLabels: Record<string, string> = {
+  listening: "Compréhension Orale",
+  reading: "Compréhension Écrite",
+  speaking: "Expression Orale",
+  writing: "Expression Écrite",
+};
 
 interface SessionAnswer {
   questionId: string;
@@ -57,7 +65,7 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <Loading className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loading className="h-8 w-8 animate-spin text-gray-600" />
       </div>
     );
   }
@@ -67,9 +75,9 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
   return (
     <div className="space-y-4">
       {/* Session summary */}
-      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground pb-3 border-b">
-        <Badge variant="outline" className="uppercase">
-          {data.session.practice.type}
+      <div className="flex flex-wrap gap-4 text-sm text-gray-600 pb-3 border-b">
+        <Badge variant="outline">
+          {categoryLabels[data.session.practice.type] || data.session.practice.type}
         </Badge>
         {data.session.practice.level && (
           <Badge variant="outline">{data.session.practice.level}</Badge>
@@ -99,7 +107,7 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
               <h5 className="text-sm font-medium">
                 Question {answer.questionNumber}
                 {answer.question && (
-                  <span className="ml-2 text-xs text-muted-foreground font-normal uppercase">
+                  <span className="ml-2 text-xs text-gray-600 font-normal uppercase">
                     {answer.question.type === "mcq" && "QCM"}
                     {answer.question.type === "essay" && "Rédaction"}
                     {answer.question.type === "short_answer" && "Réponse courte"}
@@ -108,7 +116,7 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
                 )}
               </h5>
               <div className="flex items-center gap-2 shrink-0">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-gray-600">
                   {answer.pointsEarned}/{answer.question?.score ?? "?"} pts
                 </span>
                 <Badge
@@ -121,9 +129,7 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
             </div>
 
             {answer.question && (
-              <p className="text-sm mb-3 whitespace-pre-wrap">
-                {answer.question.text}
-              </p>
+              <div className="text-sm mb-3"><ReactMarkdown>{answer.question.text}</ReactMarkdown></div>
             )}
 
             {/* Audio media */}
@@ -183,12 +189,14 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
             {answer.question?.type !== "mcq" && (
               <div className="space-y-2">
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground">
+                  <span className="text-xs font-medium text-gray-600">
                     Réponse de l&apos;apprenant :
                   </span>
-                  <div className="mt-1 text-sm bg-white border rounded-lg p-3 whitespace-pre-wrap">
-                    {answer.textAnswer || (
-                      <span className="italic text-muted-foreground">
+                  <div className="mt-1 text-sm bg-white border rounded-lg p-3">
+                    {answer.textAnswer ? (
+                      <ReactMarkdown>{answer.textAnswer}</ReactMarkdown>
+                    ) : (
+                      <span className="italic text-gray-600">
                         Aucune réponse
                       </span>
                     )}
@@ -196,11 +204,11 @@ export default function AnswersContent({ loading, data }: AnswersContentProps) {
                 </div>
                 {answer.question?.answer && (
                   <div>
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="text-xs font-medium text-gray-600">
                       Réponse attendue :
                     </span>
-                    <div className="mt-1 text-sm bg-green-50 border border-green-200 rounded-lg p-3 whitespace-pre-wrap">
-                      {answer.question.answer}
+                    <div className="mt-1 text-sm bg-green-50 border border-green-200 rounded-lg p-3">
+                      <ReactMarkdown>{answer.question.answer}</ReactMarkdown>
                     </div>
                   </div>
                 )}

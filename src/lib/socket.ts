@@ -67,6 +67,22 @@ class SocketService {
   }
 
   /**
+   * Reconnect with a fresh token (called after proactive token refresh)
+   */
+  reconnectWithToken(token: string) {
+    if (!this.socket) return;
+
+    // Update the auth token for future reconnections
+    this.socket.auth = { token };
+
+    // If currently connected, disconnect and reconnect so the server
+    // picks up the new token on the next handshake
+    if (this.socket.connected) {
+      this.socket.disconnect().connect();
+    }
+  }
+
+  /**
    * Disconnect from socket server
    */
   disconnect() {

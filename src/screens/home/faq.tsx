@@ -34,11 +34,6 @@ const faqs = [
       "Cela dépend de votre niveau actuel et de votre objectif. En moyenne, nos utilisateurs s'entraînent entre 4 et 12 semaines. Avec une pratique régulière de 30 minutes par jour, la plupart constatent des progrès significatifs après 2 semaines.",
   },
   {
-    question: "Offrez-vous un remboursement?",
-    answer:
-      "Nous offrons une garantie satisfait ou remboursé de 7 jours. Si notre plateforme ne répond pas à vos attentes, contactez-nous dans les 7 jours suivant votre achat pour obtenir un remboursement complet.",
-  },
-  {
     question: "Puis-je accéder à la plateforme depuis mon téléphone?",
     answer:
       "Oui! Notre plateforme est entièrement responsive et fonctionne parfaitement sur tous les appareils: ordinateurs, tablettes et smartphones. Vous pouvez ainsi vous entraîner où que vous soyez.",

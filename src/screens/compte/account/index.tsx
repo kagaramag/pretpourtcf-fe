@@ -31,7 +31,7 @@ export default function AccountPage() {
         <div>
           <h1 className="text-3xl">Mes Pratiques</h1>
           <div className="text-gray-700 text-sm">
-            Accédez à vos exercices TCF et suivez votre progression
+            Pratiquez sur des simulations identiques à l'épreuve réelle du TCF.
           </div>
         </div>
         {/* Active Streak Status Widget */}
@@ -79,7 +79,7 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto p-6">
       <div className="flex justify-center items-center py-12">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-gray-600">Chargement...</p>
       </div>
     </div>
   );

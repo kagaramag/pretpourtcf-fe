@@ -441,3 +441,32 @@ export interface LearnerActivity {
   correctAnswers: number;
   grade: "excellent" | "good" | "needs_improvement";
 }
+
+// Practice Sequence Types
+export interface SequenceQuestion {
+  tache: number;
+  questionId: string | PracticeQuestion | null;
+  practiceId: string | Practice | null;
+}
+
+export interface Sequence {
+  _id: string;
+  type: "speaking" | "writing";
+  number: number;
+  questions: SequenceQuestion[];
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SequencesPaginatedResponse {
+  sequences: Sequence[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}

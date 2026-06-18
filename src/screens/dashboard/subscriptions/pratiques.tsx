@@ -60,7 +60,7 @@ export function PratiquesTab({ onEditPlan }: PratiquesTabProps) {
     },
     {
       key: "duration_days",
-      header: "Duration",
+      header: "Durée",
       width: "w-24",
       render: (plan) => <span>{plan.duration_days} days</span>,
     },
@@ -71,7 +71,7 @@ export function PratiquesTab({ onEditPlan }: PratiquesTabProps) {
       render: (plan) => (
         <div className="text-sm">
           <span>{plan.price_rwf?.toLocaleString()} RWF</span>
-          <span className="text-muted-foreground ml-1">/ ${plan.price_usd}</span>
+          <span className="text-gray-600 ml-1">/ ${plan.price_usd}</span>
         </div>
       ),
     },
@@ -80,7 +80,7 @@ export function PratiquesTab({ onEditPlan }: PratiquesTabProps) {
       header: "Details",
       render: (plan) => (
         <div className="text-xs space-y-1">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-gray-600">
             {plan.details.co > 0 && <span>CO: {plan.details.co}</span>}
             {plan.details.ce > 0 && <span>CE: {plan.details.ce}</span>}
             {plan.details.eo > 0 && <span>EO: {plan.details.eo}</span>}

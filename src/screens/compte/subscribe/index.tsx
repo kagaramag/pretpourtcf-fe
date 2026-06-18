@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import { Loading, Corporate } from "@/icons";
+import { Loading, Corporate, Icon } from "@/icons";
 import { NavigationLink } from "@/components/ui/navigation-link";
 import { useActivityTracker } from "@/hooks/useActivityTracker";
 import { usePaymentStatus } from "@/hooks/use-payment-status";
@@ -46,18 +46,17 @@ function PlansPage() {
 
         <div className="grid gap-6 max-w-3xl">
           {user?.corporate && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
               <div className="flex items-center gap-3">
-                <Corporate className="h-5 w-5 text-blue-600" />
-                <div className="flex-1">
-                  <p className="font-medium text-blue-900">
-                    {user.corporate.name}
-                  </p>
-                  <p className="text-sm text-blue-700">Abonnement entreprise</p>
+                <div className="h-8 w-8 p-2 bg-blue-600 text-white flex items-center justify-center rounded-full">
+                  <Icon name="corporate" size={20} />
                 </div>
-                <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                  ENTREPRISE
-                </span>
+                <div className="flex-1">
+                  <div className="font-medium text-blue-900">
+                    {user.corporate.name}
+                  </div>
+                  <div className="text-sm text-blue-700">Tarif spécial réservé aux apprenants de <b>{user.corporate.name}</b></div>
+                </div>
               </div>
             </div>
           )}
@@ -134,12 +133,7 @@ function PlansPage() {
   // No active subscription — show plan selection + free practice banner
   return (
     <div className="flex flex-col gap-6">
-
-      {user?.corporate ? (
-        <CorporateSubscription />
-      ) : (
-        <IndividualSubscription />
-      )}
+      {user?.corporate ? <CorporateSubscription /> : <IndividualSubscription />}
 
       {/* Free Practice Banner */}
       <div className="px-4 sm:px-6 lg:px-8 py-6 rounded-3xl bg-primary/10 flex flex-col md:flex-row items-center justify-between gap-10">
@@ -151,7 +145,18 @@ function PlansPage() {
           </div>
         </div>
         <NavigationLink href="/compte/essai-gratuit">
-          <Button variant="outline" size="lg" onClick={() => trackClick({ label: "Essai Gratuit", metadata: { source: "plans" } })}>Essai Gratuit</Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() =>
+              trackClick({
+                label: "Essai Gratuit",
+                metadata: { source: "plans" },
+              })
+            }
+          >
+            Essai Gratuit
+          </Button>
         </NavigationLink>
       </div>
     </div>

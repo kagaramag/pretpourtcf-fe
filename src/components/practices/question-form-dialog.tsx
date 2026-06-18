@@ -352,7 +352,7 @@ export function QuestionFormDialog({
       title={mode === "create" ? "Create New Question" : "Edit Question"}
       size="lg"
     >
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-600">
           {mode === "create"
             ? "Add a new question to this practice exam."
             : "Update question details."}
@@ -412,7 +412,7 @@ export function QuestionFormDialog({
                       {formData.answer ? (
                         <ReactMarkdown>{formData.text}</ReactMarkdown>
                       ) : (
-                        <p className="text-muted-foreground italic">-</p>
+                        <p className="text-gray-600 italic">-</p>
                       )}
                     </div>
                   ) : (
@@ -539,7 +539,7 @@ export function QuestionFormDialog({
                     )}
                   </Button>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-600">
                   Provide a sample answer for reference. Supports markdown
                   formatting (bold, italic, lists, etc.)
                 </p>
@@ -548,7 +548,7 @@ export function QuestionFormDialog({
                     {formData.answer ? (
                       <ReactMarkdown>{formData.answer}</ReactMarkdown>
                     ) : (
-                      <p className="text-muted-foreground italic">
+                      <p className="text-gray-600 italic">
                         No content to preview
                       </p>
                     )}
@@ -628,13 +628,13 @@ export function QuestionFormDialog({
 
             {/* Media Section */}
             {practice?.type !== "writing" && (
-              <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
+              <div className="space-y-3 p-4 border border-gray-100 rounded-lg bg-muted/30">
                 <div className="flex items-center gap-2">
                   <Label className="text-base font-semibold">
                     Media Attachments (Optional)
                   </Label>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-600">
                   Upload audio and/or image files for this question
                 </p>
 
@@ -700,7 +700,7 @@ export function QuestionFormDialog({
                         </Button>
                       </div>
                     )}
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       Max 10MB. Supported: MP3, WAV, OGG, AAC
                     </p>
                   </div>
@@ -766,7 +766,7 @@ export function QuestionFormDialog({
                         </Button>
                       </div>
                     )}
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-600">
                       Max 10MB. Supported: JPG, PNG, GIF, WEBP
                     </p>
                   </div>
@@ -784,7 +784,7 @@ export function QuestionFormDialog({
                 }
                 placeholder="vocab, grammar, listening (comma-separated)"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-gray-600">
                 Separate multiple tags with commas. Maximum 10 tags.
               </p>
             </div>

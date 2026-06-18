@@ -119,7 +119,7 @@ export function AutoLinkToStreak({
                 <span className="text-lg">{reward.icon}</span>
                 <div>
                   <p className="font-semibold text-xs">{reward.name}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-gray-600">
                     {reward.description}
                   </p>
                 </div>
