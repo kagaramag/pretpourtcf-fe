@@ -6,15 +6,53 @@ import Link from "next/link";
 import MethodEO from "./methodology";
 import { practiceService } from "@/services/practice";
 import { sequenceService } from "@/services/sequence";
-import { PracticeWithQuestions, Sequence } from "@/types";
+import { PracticeQuestion, PracticeWithQuestions, Sequence } from "@/types";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
-import { Icon } from "@/icons";
+import { Icon, type IconName } from "@/icons";
 import { PracticeTask } from "@/components/molecules/practice-task";
 import { PRACTICE_CATEGORIES } from "@/components/molecules/practice-category";
 
 const category = PRACTICE_CATEGORIES.find((c) => c.slug === "eo")!;
 import { useActivityTracker } from "@/hooks/useActivityTracker";
+
+type TrainingMode = "serie" | "tache";
+
+const TRAINING_MODES: Array<{
+  id: TrainingMode;
+  label: string;
+  description: string;
+  icon: IconName;
+  color: string;
+  activeClasses: string;
+  hoverClasses: string;
+}> = [
+  {
+    id: "serie",
+    label: "Groupé par série",
+    description:
+      "Pratiquez les 3 tâches dans l'ordre, comme le jour de l'examen.",
+    icon: "list",
+    color: "purple",
+    activeClasses: "border-2 border-purple-200 bg-purple-50/30",
+    hoverClasses: "border-2 border-gray-200 hover:shadow-md hover:border-purple-200",
+  },
+  {
+    id: "tache",
+    label: "Groupé par tâche",
+    description:
+      "Entraînez-vous sur une tâche spécifique (1, 2 ou 3) séparément.",
+    icon: "listView",
+    color: "blue",
+    activeClasses: "border-2 border-blue-200 bg-blue-50/30",
+    hoverClasses: "border-2 border-gray-200 hover:shadow-md hover:border-blue-200",
+  },
+];
+
+const ICON_BG: Record<string, string> = {
+  purple: "bg-purple-100 text-purple-600",
+  blue: "bg-blue-100 text-blue-600",
+};
 
 export default function SpeakingPracticePage() {
   const [practicesData, setPracticesData] = useState<PracticeWithQuestions[]>(
@@ -23,6 +61,7 @@ export default function SpeakingPracticePage() {
   const [sequences, setSequences] = useState<Sequence[]>([]);
   const { trackClick } = useActivityTracker();
   const [loading, setLoading] = useState(true);
+  const [activeMode, setActiveMode] = useState<TrainingMode>("serie");
   const [expandedPractices, setExpandedPractices] = useState<Set<string>>(
     new Set()
   );
@@ -125,33 +164,42 @@ export default function SpeakingPracticePage() {
           <h2 className="text-lg font-semibold mb-3">
             Choisissez votre mode d&apos;entraînement
           </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Grouped test card (recommended) — description only */}
-            <div className="relative border-2 border-purple-200 rounded-2xl p-5 bg-purple-50/30">
-              <span className="absolute -top-3 left-4 bg-purple-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
-                Recommandé
-              </span>
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
-                  <Icon name="list" size={24} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-base text-gray-900">
-                    Test groupé par série
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1 leading-relaxed">
-                    Pratiquez les 3 tâches dans l&apos;ordre, comme le jour de
-                    l&apos;examen. Choisissez une série ci-dessous.
-                  </p>
-                  {sequences.length > 0 && (
-                    <p className="text-xs text-purple-600 mt-2 font-medium">
-                      {sequences.length} séries disponibles
-                    </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            {TRAINING_MODES.map((mode) => {
+              const isActive = activeMode === mode.id;
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => setActiveMode(mode.id)}
+                  className={`relative text-left rounded-2xl px-4 py-3.5 cursor-pointer transition-all ${
+                    isActive ? mode.activeClasses : mode.hoverClasses
+                  }`}
+                >
+                  {isActive && mode.id === "serie" && (
+                    <span className="absolute -top-3 left-4 bg-purple-500 text-white text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      Recommandé
+                    </span>
                   )}
-                </div>
-              </div>
-            </div>
-            {/* Random test card */}
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${ICON_BG[mode.color]}`}
+                    >
+                      <Icon name={mode.icon} size={24} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-base text-gray-900">
+                        {mode.label}
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                        {mode.description}
+                      </p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+
+            {/* Random test card (link, not a tab) */}
             <Link
               href="/compte/pratique/eo/test-aleatoire"
               onClick={() =>
@@ -162,7 +210,7 @@ export default function SpeakingPracticePage() {
               }
               className="group"
             >
-              <div className="relative border border-gray-200 rounded-2xl p-5 h-full transition-all hover:shadow-md hover:border-tertiary">
+              <div className="relative border-2 border-gray-200 rounded-2xl px-4 py-3.5  transition-all hover:shadow-md hover:border-tertiary">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-tertiary/20 text-tertiary">
                     <Icon name="refresh" size={24} />
@@ -171,60 +219,172 @@ export default function SpeakingPracticePage() {
                     <h3 className="font-semibold text-base text-gray-900">
                       Test aléatoire
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                    <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                       Un sujet tiré au sort parmi les thèmes disponibles.
-                      Conditions réelles de l&apos;examen.
+                      Conditions réelles.
                     </p>
-                  </div>
-                  <div className="shrink-0 mt-1 transition-transform group-hover:translate-x-1">
-                    <Icon
-                      name="arrowRight"
-                      size={18}
-                      className="text-gray-400"
-                    />
                   </div>
                 </div>
               </div>
             </Link>
           </div>
 
-          {/* Series grid — separate full-width section */}
-          {sequences.length > 0 ? (
+          {/* Tab content: Groupé par série */}
+          {activeMode === "serie" && (
+            <>
+              {sequences.length > 0 ? (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                    Séries disponibles
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {sequences.map((seq) => (
+                      <PracticeTask
+                        key={seq._id}
+                        category={category}
+                        practice={{
+                          _id: seq._id,
+                          title: `Série ${seq.number}`,
+                          type: "speaking",
+                          durationMinutes: 0,
+                          totalQuestions: seq.questions.length,
+                          isActive: seq.isActive,
+                          freemium: false,
+                          createdAt: seq.createdAt,
+                          updatedAt: seq.updatedAt,
+                        }}
+                        href={`/compte/pratique/eo/test/${seq.number}`}
+                        onClick={() =>
+                          trackClick({
+                            action: "link_clicked",
+                            label: `Paid: EO Practice — Séquence ${seq.number}`,
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 mt-6">
+                  Aucune séquence disponible pour le moment.
+                </p>
+              )}
+            </>
+          )}
+
+          {/* Tab content: Grouper par tâche */}
+          {activeMode === "tache" && (
             <div className="mt-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                Séries disponibles
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                {sequences.map((seq) => (
-                  <PracticeTask
-                    key={seq._id}
-                    category={category}
-                    practice={{
-                      _id: seq._id,
-                      title: `Série ${seq.number}`,
-                      type: "speaking",
-                      durationMinutes: 0,
-                      totalQuestions: seq.questions.length,
-                      isActive: seq.isActive,
-                      freemium: false,
-                      createdAt: seq.createdAt,
-                      updatedAt: seq.updatedAt,
-                    }}
-                    href={`/compte/pratique/eo/test/${seq.number}`}
-                    onClick={() =>
-                      trackClick({
-                        action: "link_clicked",
-                        label: `Paid: EO Practice — Séquence ${seq.number}`,
-                      })
+              {(() => {
+                const TASK_INFO: Record<
+                  number,
+                  { title: string; description: string; duration: string }
+                > = {
+                  1: {
+                    title: "Présentation",
+                    description:
+                      "Présentez-vous et parlez de votre environnement quotidien.",
+                    duration: "2 minutes",
+                  },
+                  2: {
+                    title: "Poser des questions",
+                    description:
+                      "Posez des questions à partir d'un document pour obtenir des informations.",
+                    duration: "5 minutes 30 secondes",
+                  },
+                  3: {
+                    title: "Exprimer son opinion",
+                    description:
+                      "Donnez votre point de vue sur un sujet de société.",
+                    duration: "4 minutes 30 secondes",
+                  },
+                };
+
+                // Group questions from all sequences by tache
+                const groupedByTache: Record<
+                  number,
+                  Array<{
+                    sequenceNumber: number;
+                    question: PracticeQuestion;
+                  }>
+                > = {};
+
+                sequences.forEach((seq) => {
+                  seq.questions.forEach((sq) => {
+                    if (
+                      sq.questionId &&
+                      typeof sq.questionId === "object" &&
+                      "_id" in sq.questionId
+                    ) {
+                      if (!groupedByTache[sq.tache]) {
+                        groupedByTache[sq.tache] = [];
+                      }
+                      groupedByTache[sq.tache].push({
+                        sequenceNumber: seq.number,
+                        question: sq.questionId as PracticeQuestion,
+                      });
                     }
-                  />
-                ))}
-              </div>
+                  });
+                });
+
+                const tacheNumbers = Object.keys(TASK_INFO)
+                  .map(Number)
+                  .sort();
+
+                return (
+                  <div className="space-y-5">
+                    {tacheNumbers.map((tache) => {
+                      const info = TASK_INFO[tache];
+                      const items = groupedByTache[tache] || [];
+                      return (
+                        <div key={tache}>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 text-sm font-bold">
+                              {tache}
+                            </span>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">
+                                {info.title}
+                              </h4>
+                              <p className="text-xs text-gray-500">
+                                {info.duration}
+                              </p>
+                            </div>
+                          </div>
+                          {tache === 1 ? (
+                            <p className="ml-11 text-sm text-gray-600">
+                              Présentez-vous en 2 minutes.
+                            </p>
+                          ) : items.length > 0 ? (
+                            <ul className="ml-11 space-y-1.5">
+                              {items.map((item, idx) => (
+                                <li
+                                  key={item.question._id || idx}
+                                  className="text-sm text-gray-700 flex items-start gap-2"
+                                >
+                                  <span className="text-gray-400 mt-0.5 shrink-0">
+                                    •
+                                  </span>
+                                  <span>
+                                    <ReactMarkdown>
+                                      {item.question.text}
+                                    </ReactMarkdown>
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p className="ml-11 text-sm text-gray-400 italic">
+                              Aucun sujet disponible
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </div>
-          ) : (
-            <p className="text-sm text-gray-500 mt-6">
-              Aucune séquence disponible pour le moment.
-            </p>
           )}
         </div>
 

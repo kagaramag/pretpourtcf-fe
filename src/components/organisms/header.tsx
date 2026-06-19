@@ -128,6 +128,17 @@ export default function Header() {
               </Link>
             </div>
           )}
+
+          {isLoading && !isAuthenticated && (
+            <div className="flex justify-end lg:w-[210px]">
+              <button
+                className="p-2 bg-gray-700 text-white rounded-full"
+                aria-label="Toggle menu"
+              >
+                <Icon name="loading" size={22} />
+              </button>
+            </div>
+          )}
           <div className="lg:hidden gap-1 flex">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

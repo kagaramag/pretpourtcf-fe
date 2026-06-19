@@ -91,7 +91,7 @@ export default function TrainerEODetailScreen() {
             >
               <div>
                 <h3 className="font-semibold text-base">
-                  Question {question.number || index + 1}
+                  Sujet {question.number || index + 1}
                 </h3>
 
                 {question.media?.image && (
