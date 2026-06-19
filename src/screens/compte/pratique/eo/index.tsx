@@ -339,7 +339,7 @@ export default function SpeakingPracticePage() {
                       return (
                         <div key={tache}>
                           <div className="flex items-center gap-3 mb-2">
-                            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700 text-sm font-bold">
+                            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-tertiary border border-gray-700 text-sm font-bold">
                               {tache}
                             </span>
                             <div>
@@ -352,27 +352,27 @@ export default function SpeakingPracticePage() {
                             </div>
                           </div>
                           {tache === 1 ? (
-                            <p className="ml-11 text-sm text-gray-600">
+                            <div className="ml-11 text-sm text-gray-600">
                               Présentez-vous en 2 minutes.
-                            </p>
+                            </div>
                           ) : items.length > 0 ? (
-                            <ul className="ml-11 space-y-1.5">
+                            <div className="ml-11 space-y-1.5">
                               {items.map((item, idx) => (
-                                <li
+                                <div
                                   key={item.question._id || idx}
-                                  className="text-sm text-gray-700 flex items-start gap-2"
+                                  className="text-sm text-gray-700 flex flex-col gap-2 mb-3 p-4 border-2 border-gray-200 rounded-xl"
                                 >
-                                  <span className="text-gray-400 mt-0.5 shrink-0">
-                                    •
-                                  </span>
-                                  <span>
+                                  <div className="mt-0.5 w-20 px-1 py-0.5 border border-gray-700 bg-tertiary rounded-2xl text-center font-semibold text-sm">
+                                    Sujet {idx}
+                                  </div>
+                                  <div>
                                     <ReactMarkdown>
                                       {item.question.text}
                                     </ReactMarkdown>
-                                  </span>
-                                </li>
+                                  </div>
+                                </div>
                               ))}
-                            </ul>
+                            </div>
                           ) : (
                             <p className="ml-11 text-sm text-gray-400 italic">
                               Aucun sujet disponible
