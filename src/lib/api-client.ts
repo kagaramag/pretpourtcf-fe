@@ -178,6 +178,9 @@ class ApiClient {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_data");
+      // Also clear the cookie so middleware doesn't redirect away from /login
+      document.cookie =
+        "access_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
   }
 

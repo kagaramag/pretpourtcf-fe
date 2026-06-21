@@ -16,11 +16,10 @@ export function middleware(request: NextRequest) {
   );
 
   // If user is logged in and trying to access auth pages (login/signup)
-  // Don't redirect to home - the auth context will handle role-based redirects
-  // Just prevent access to these pages
+  // Let the client-side auth context verify the token and handle redirects
+  // This ensures invalid tokens (e.g. after secret rotation) get cleared properly
   if (token && isAuthOnlyRoute) {
-    // Let the client-side auth context handle the redirect based on role
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.next();
   }
 
   // If user is not logged in and trying to access protected routes

@@ -6,6 +6,7 @@ import { QueryProvider } from "@/providers/query";
 import { AuthProvider } from "@/contexts/auth-context";
 import { PermissionProvider } from "@/contexts/permission-context";
 import GoogleAnalytics from "@/components/analytics/google-analytics";
+import { VersionCheck } from "@/components/version-check";
 import "@/styles/globals.css";
 
 const poppins = Poppins({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${GeistSans.variable} ${poppins.variable} bg-white antialiased overflow-x-hidden`}>
           <GoogleAnalytics />
+          <VersionCheck />
           <AuthProvider>
             <PermissionProvider>
               <QueryProvider>

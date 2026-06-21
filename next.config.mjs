@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  generateBuildId: async () => {
+    return Date.now().toString();
+  },
+  env: {
+    BUILD_ID: Date.now().toString(),
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
