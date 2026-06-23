@@ -363,9 +363,9 @@ export default function SpeakingPracticePage() {
                                   className="text-sm text-gray-700 flex flex-col gap-2 mb-3 p-4 border-2 border-gray-200 rounded-xl"
                                 >
                                   <div className="mt-0.5 w-20 px-1 py-0.5 border border-gray-700 bg-tertiary rounded-2xl text-center font-semibold text-sm">
-                                    Sujet {idx}
+                                    Sujet #{idx+1}
                                   </div>
-                                  <div>
+                                  <div className="text-lg">
                                     <ReactMarkdown>
                                       {item.question.text}
                                     </ReactMarkdown>
