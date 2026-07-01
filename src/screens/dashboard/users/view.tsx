@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { userService } from "@/services/user";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,12 +11,14 @@ import { Table, Column } from "@/components/ui/table";
 import { Icon } from "@/icons";
 import { format } from "date-fns";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function UserDetailsScreen() {
   const router = useRouter();
   const params = useParams();
   const userId = params.id as string;
   const [activeTab, setActiveTab] = useState("subscriptions");
+  const queryClient = useQueryClient();
 
   // Fetch user details from backend
   const {
@@ -32,6 +34,21 @@ export default function UserDetailsScreen() {
   const user = userData?.data?.user;
   const practiceHistory = userData?.data?.practiceHistory;
   const subscriptions = userData?.data?.subscriptions || [];
+  const devices = userData?.data?.devices || [];
+
+  const terminateDeviceMutation = useMutation({
+    mutationFn: (deviceId: string) =>
+      userService.terminateDevice(userId, deviceId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", userId] });
+      toast.success("Session terminée avec succès");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la terminaison"
+      );
+    },
+  });
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -254,6 +271,93 @@ export default function UserDetailsScreen() {
     },
   ];
 
+  const getDeviceIcon = (type: string) => {
+    switch (type) {
+      case "mobile":
+        return "smartphone";
+      case "desktop":
+        return "monitor";
+      case "tablet":
+        return "tablet";
+      default:
+        return "laptop";
+    }
+  };
+
+  const deviceColumns: Column<any>[] = [
+    {
+      key: "device",
+      header: "Appareil",
+      render: (device: any) => (
+        <div className="flex items-center gap-3">
+          <Icon
+            name={getDeviceIcon(device.deviceType) as any}
+            size={20}
+            className="text-gray-500"
+          />
+          <div>
+            <p className="font-medium">{device.deviceName}</p>
+            <p className="text-xs text-gray-400">{device.deviceType}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "ipAddress",
+      header: "Adresse IP",
+      render: (device: any) => device.ipAddress || "N/A",
+      visibleOn: ["md", "lg"],
+    },
+    {
+      key: "status",
+      header: "Statut",
+      render: (device: any) => (
+        <Badge
+          className={
+            device.isActive
+              ? "bg-green-100 text-green-800"
+              : "bg-gray-100 text-gray-800"
+          }
+        >
+          {device.isActive ? "Actif" : "Inactif"}
+        </Badge>
+      ),
+    },
+    {
+      key: "loginAt",
+      header: "Connexion",
+      render: (device: any) =>
+        device.loginAt
+          ? format(new Date(device.loginAt), "dd MMM yyyy 'à' HH:mm")
+          : "N/A",
+      visibleOn: ["md", "lg"],
+    },
+    {
+      key: "lastActivityAt",
+      header: "Dernière activité",
+      render: (device: any) =>
+        device.lastActivityAt
+          ? format(new Date(device.lastActivityAt), "dd MMM yyyy 'à' HH:mm")
+          : "N/A",
+      visibleOn: ["lg"],
+    },
+    {
+      key: "actions",
+      header: "",
+      width: "w-24",
+      render: (device: any) => (
+        <Button
+          variant="destructive"
+          size="sm"
+          onClick={() => terminateDeviceMutation.mutate(device.deviceId)}
+          disabled={terminateDeviceMutation.isPending}
+        >
+          Terminer
+        </Button>
+      ),
+    },
+  ];
+
   if (isLoading) {
     return (
       <div className="p-8">
@@ -394,6 +498,10 @@ export default function UserDetailsScreen() {
                   },
                 ]
               : []),
+            {
+              id: "devices",
+              label: `Devices${devices.length > 0 ? ` (${devices.length})` : ""}`,
+            },
           ]}
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -443,6 +551,25 @@ export default function UserDetailsScreen() {
             />
           </TabPanel>
         )}
+        {/* Devices Tab Content */}
+        <TabPanel id="devices" activeTab={activeTab} className="lg:mt-6">
+          <Table
+            data={devices}
+            columns={deviceColumns}
+            keyExtractor={(device: any) => device.deviceId}
+            emptyComponent={
+              <div className="text-center py-8 text-gray-500">
+                <Icon
+                  name="smartphone"
+                  size={48}
+                  className="mx-auto mb-3 text-gray-400"
+                />
+                <p>Aucun appareil connecté</p>
+              </div>
+            }
+            hoverable
+          />
+        </TabPanel>
       </div>
     </div>
   );

@@ -67,8 +67,8 @@ export const userService = {
    */
   getUserById: async (
     id: string
-  ): Promise<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any> }>> => {
-    return await apiClient.get<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any> }>>(
+  ): Promise<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any>; devices: Array<any> }>> => {
+    return await apiClient.get<BackendApiResponse<{ user: User; practiceHistory: PracticeSession[] | null; subscriptions: Array<any>; devices: Array<any> }>>(
       `${API_ENDPOINTS.USERS}/${id}`
     );
   },
@@ -119,5 +119,12 @@ export const userService = {
     return await apiClient.patch<BackendApiResponse<{ user: User }>>(
       `${API_ENDPOINTS.USERS}/${id}/activate`
     );
+  },
+
+  /**
+   * Admin: terminate a user's device session
+   */
+  terminateDevice: async (userId: string, deviceId: string) => {
+    return await apiClient.delete(`/devices/admin/${userId}/${deviceId}`);
   },
 };
