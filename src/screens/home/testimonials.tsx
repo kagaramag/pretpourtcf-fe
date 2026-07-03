@@ -53,6 +53,9 @@ export default function LandingTestimonials() {
                 <img
                   alt={testimonial.name}
                   src={testimonial.image}
+                  loading="lazy"
+                  width={32}
+                  height={32}
                   className="h-8 w-8 rounded-full bg-gray-50"
                 />
                 <div className="text-gray-600">

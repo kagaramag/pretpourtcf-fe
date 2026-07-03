@@ -1,12 +1,3 @@
-"use client";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
 const faqs = [
   {
     question: "Qu'est-ce que le TCF?",
@@ -53,22 +44,30 @@ export default function LandingFAQ() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter text-center leading-tight">
             Questions fréquentes
           </h2>
-          <div className="text-sm sm:text-lg  text-center text-gray-600">
+          <div className="text-sm sm:text-lg text-center text-gray-600">
             Vous avez des questions? Nous avons les réponses.
           </div>
-          <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 lg:rounded-2xl rounded-lg">
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm sm:text-base text-gray-600">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+          <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 lg:rounded-2xl rounded-lg divide-y divide-gray-200">
+            {faqs.map((faq, index) => (
+              <details key={index} className="group py-4 first:pt-0 last:pb-0">
+                <summary className="flex cursor-pointer items-center justify-between gap-4 text-left text-sm font-medium text-gray-900 hover:text-primary list-none [&::-webkit-details-marker]:hidden">
+                  <span>{faq.question}</span>
+                  <svg
+                    className="h-4 w-4 shrink-0 text-gray-500 transition-transform duration-200 group-open:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <p className="mt-3 text-sm sm:text-base text-gray-600">
+                  {faq.answer}
+                </p>
+              </details>
+            ))}
           </div>
           <div className="mt-10 sm:mt-12 text-center mb-6">
             <p className="text-base text-gray-600">

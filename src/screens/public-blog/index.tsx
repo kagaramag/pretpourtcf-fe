@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Loading, Calendar, User } from "@/icons";
+import { Search, Loading, Calendar } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -13,25 +13,37 @@ import { formatDate } from "@/lib/date-utils";
 import Link from "next/link";
 import { config } from "@/config";
 
-function PublicBlogScreenContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
 
-  const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || ""
-  );
+interface PublicBlogScreenProps {
+  initialBlogs: Blog[];
+  initialPagination: Pagination;
+  initialSearch: string;
+}
+
+function PublicBlogScreenContent({
+  initialBlogs,
+  initialPagination,
+  initialSearch,
+}: PublicBlogScreenProps) {
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const debouncedSearch = useDebounce(searchQuery, 500);
 
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [pagination, setPagination] = useState({
-    page: 1,
-    limit: 9,
-    total: 0,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPrevPage: false,
-  });
+  const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+  const [isLoading, setIsLoading] = useState(false);
+  const [pagination, setPagination] = useState<Pagination>(initialPagination);
+
+  // Skip the first effect run — server already gave us the right data
+  const skipNextFetch = useRef(true);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -44,6 +56,10 @@ function PublicBlogScreenContent() {
   }, [searchQuery]);
 
   useEffect(() => {
+    if (skipNextFetch.current) {
+      skipNextFetch.current = false;
+      return;
+    }
     fetchBlogs();
   }, [pagination.page, debouncedSearch]);
 
@@ -58,10 +74,7 @@ function PublicBlogScreenContent() {
       });
 
       setBlogs(response.data.blogs);
-      setPagination({
-        ...pagination,
-        ...response.data.pagination,
-      });
+      setPagination((prev) => ({ ...prev, ...response.data.pagination }));
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to fetch blogs");
     } finally {
@@ -122,6 +135,7 @@ function PublicBlogScreenContent() {
                         <img
                           src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
                           alt={blog.title}
+                          loading="lazy"
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
                       </div>
@@ -182,10 +196,10 @@ function PublicBlogScreenContent() {
   );
 }
 
-export default function PublicBlogScreen() {
+export default function PublicBlogScreen(props: PublicBlogScreenProps) {
   return (
     <Suspense fallback={<Loading className="h-8 w-8 animate-spin" />}>
-      <PublicBlogScreenContent />
+      <PublicBlogScreenContent {...props} />
     </Suspense>
   );
 }

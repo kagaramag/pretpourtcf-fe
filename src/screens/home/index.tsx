@@ -1,19 +1,14 @@
-"use client";
-
 import Image from "next/image";
-import { useAuth } from "@/contexts/auth-context";
 import Hero from "@/assets/images/hero-bg.svg";
 import TCFMethod from "@/assets/images/tcf_method.svg";
 import OnBlueBG from "@/assets/images/on-blue-bg.svg";
 import TCFPhoto from "@/assets/images/tcf_photo.jpg";
-import { NavigationLink } from "@/components/ui/navigation-link";
 import LandingFeatures from "./features";
 import LandingTestimonials from "./testimonials";
 import LandingFAQ from "./faq";
 import LandingStats from "./stats";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "@/icons";
 import { Card } from "./card";
+import AuthCTAButtons from "./auth-cta-buttons";
 
 const quickSteps = [
   {
@@ -34,7 +29,6 @@ const quickSteps = [
 ];
 
 export function IndexScreen() {
-  const { user, isLoading, isAuthenticated } = useAuth();
   return (
     <>
       <div className="relative -mt-20 isolate px-4 py-20 sm:px-6 bg-gray-900 lg:px-8">
@@ -60,27 +54,7 @@ export function IndexScreen() {
               test du premier coup
             </div>
             <div className="mt-6 flex lg:flex-row flex-col gap-2 sm:gap-x-2">
-              {!isLoading && isAuthenticated ? (
-                <>
-                  <NavigationLink href="/compte">
-                    <Button size="lg" variant="tertiary">
-                      Mon compte
-                      <ArrowRight className="mx-2 h-4 w-4" />
-                    </Button>
-                  </NavigationLink>
-                </>
-              ) : !isLoading ? (
-                <>
-                  <NavigationLink href="/signup">
-                    <Button size="lg">Créer un compte</Button>
-                  </NavigationLink>
-                  <NavigationLink href="/compte/essai-gratuit">
-                    <Button variant={"tertiary"} size="lg">
-                      Essayer gratuitement
-                    </Button>
-                  </NavigationLink>
-                </>
-              ) : null}
+              <AuthCTAButtons />
             </div>
           </div>
           <div className="w-[250px] h-[300px] sm:w-[300px] sm:h-[360px] md:w-[373px] md:h-[440px] relative">
@@ -151,7 +125,6 @@ export function IndexScreen() {
             src={OnBlueBG}
             width={1000}
             height={400}
-            priority
             alt="lines"
             className="w-full mx-auto border"
           />
@@ -178,28 +151,7 @@ export function IndexScreen() {
               côté pour obtenir le score visé. Commencez dès aujourd'hui.
             </p>
             <div className="flex items-center lg:flex-row flex-col justify-center lg:gap-2 gap-2 px-4 mt-4">
-              {!isLoading && isAuthenticated ? (
-                <>
-                  <NavigationLink href="/compte">
-                    <Button size="lg" variant={"tertiary"}>
-                      Mon compte <ArrowRight className="mx-2 h-4 w-4" />
-                    </Button>
-                  </NavigationLink>
-                </>
-              ) : (
-                <>
-                  <NavigationLink href="/signup">
-                    <Button size="lg" variant={"outline"}>
-                      Créer un compte
-                    </Button>
-                  </NavigationLink>
-                  <NavigationLink href="/compte/essai-gratuit">
-                    <Button variant="tertiary" size="lg">
-                      Essayer gratuitement
-                    </Button>
-                  </NavigationLink>
-                </>
-              )}
+              <AuthCTAButtons signUpVariant="outline" />
             </div>
           </div>
         </div>

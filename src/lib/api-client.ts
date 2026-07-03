@@ -1,11 +1,12 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 import { config } from "@/config";
 
-// Cookie max-age in seconds — should match JWT_EXPIRES_IN on the backend
-const ACCESS_TOKEN_MAX_AGE = 3600; // 1 hour
+// Cookie max-age: keep session alive for 30 days so middleware doesn't redirect on return visits.
+// The JWT itself expires in 1h — the refresh interceptor handles silent renewal.
+const COOKIE_MAX_AGE = 30 * 24 * 3600; // 30 days in seconds
 
-// Refresh the token when 80% of its lifetime has elapsed
-const REFRESH_THRESHOLD_MS = ACCESS_TOKEN_MAX_AGE * 1000 * 0.8;
+// Refresh the token when 80% of the JWT lifetime has elapsed (JWT expires in 1h)
+const REFRESH_THRESHOLD_MS = 3600 * 1000 * 0.8; // 48 minutes
 
 type TokenRefreshListener = (newToken: string) => void;
 
@@ -74,7 +75,7 @@ class ApiClient {
       }
 
       // Sync the cookie with the new token
-      document.cookie = `access_token=${access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+      document.cookie = `access_token=${access_token}; path=/; max-age=${COOKIE_MAX_AGE}`;
 
       // Notify listeners (e.g. socket reconnect)
       this.tokenRefreshListeners.forEach((fn) => fn(access_token));
@@ -129,7 +130,7 @@ class ApiClient {
               }
 
               // Sync the cookie with the new token
-              document.cookie = `access_token=${access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+              document.cookie = `access_token=${access_token}; path=/; max-age=${COOKIE_MAX_AGE}`;
 
               // Notify listeners
               this.tokenRefreshListeners.forEach((fn) => fn(access_token));

@@ -42,8 +42,7 @@ export default function LandingStats() {
           src={OnBlueBG}
           width={1000}
           height={400}
-          priority
-          alt="lines"
+            alt="lines"
           className="w-full mx-auto"
         />
       </div>

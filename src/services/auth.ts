@@ -2,8 +2,9 @@ import { apiClient } from "@/lib/api-client";
 import { User, BackendApiResponse, LoginResponse } from "@/types";
 import { API_ENDPOINTS } from "@/config";
 
-// Must match ACCESS_TOKEN_MAX_AGE in api-client.ts and JWT_EXPIRES_IN on the backend
-const ACCESS_TOKEN_MAX_AGE = 3600; // 1 hour in seconds
+// Cookie lifetime: 30 days so the browser session survives return visits.
+// The JWT inside expires in 1h — the api-client refresh interceptor handles silent renewal.
+const ACCESS_TOKEN_MAX_AGE = 30 * 24 * 3600; // 30 days in seconds
 
 export interface LoginCredentials {
   email: string;
