@@ -24,7 +24,7 @@ function PageWrapper({
 
   return (
     <div className="space-y-2">
-      <div className="flex justify-between items-center gap-2">
+      <div className="flex flex-wrap justify-between items-center gap-2">
         {showBack && (
           <Button
             onClick={() => router.back()}

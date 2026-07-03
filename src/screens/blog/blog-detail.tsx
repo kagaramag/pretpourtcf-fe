@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Loading, ArrowLeft, Edit, Dustbin } from "@/icons";
+import { Loading, Edit, Dustbin } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -18,6 +16,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { config } from "@/config";
+import { PageWrapper } from "@/components/molecules/page-wrapper";
 
 interface BlogDetailProps {
   blogId: string;
@@ -34,7 +33,6 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Delete blog mutation
   const deleteMutation = useMutation({
     mutationFn: (id: string) => blogService.deleteBlog(id),
     onSuccess: () => {
@@ -70,18 +68,10 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const variants: Record<string, "default" | "secondary" | "outline"> = {
-      draft: "secondary",
-      published: "default",
-      archived: "outline",
-    };
-
-    return (
-      <Badge variant={variants[status] || "default"}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </Badge>
-    );
+  const statusVariants: Record<string, "default" | "secondary" | "outline"> = {
+    draft: "secondary",
+    published: "default",
+    archived: "outline",
   };
 
   if (isLoading) {
@@ -100,106 +90,109 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
     );
   }
 
-  return (
-    <div className="space-y-2">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => router.push("/dashboard/blog")}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight truncate">
-              {blog.title}
-            </h1>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          {canUpdate && (
-            <Button
-              variant="outline"
-              onClick={() => router.push(`/dashboard/blog/${blogId}/edit`)}
-            >
-              <Edit className="h-4 w-4" />
-              Edit
-            </Button>
+  const actions = (
+    <div className="flex items-center gap-2">
+      {canUpdate && (
+        <Button
+          variant="outline"
+          onClick={() => router.push(`/dashboard/blog/${blogId}/edit`)}
+        >
+          <Edit className="h-4 w-4 mr-2" />
+          Edit
+        </Button>
+      )}
+      {canDelete && (
+        <Button
+          variant="destructive"
+          onClick={handleDelete}
+          disabled={deleteMutation.isPending}
+        >
+          {deleteMutation.isPending ? (
+            <Loading className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <Dustbin className="h-4 w-4 mr-2" />
           )}
-          {canDelete && (
-            <Button
-              variant="destructive"
-              onClick={handleDelete}
-              disabled={deleteMutation.isPending}
-            >
-              {deleteMutation.isPending ? (
-                <Loading className="h-4 w-4 animate-spin" />
-              ) : (
-                <Dustbin className="h-4 w-4" />
-              )}
-              Delete
-            </Button>
-          )}
-        </div>
-      </div>
-
-      <div className="flex p-4 bg-white rounded-2xl">
-        <div className="w-6/12 grid grid-cols-1 md:grid-cols-1 gap-3">
-          <div>
-            <p className="text-sm font-medium text-gray-600">Status</p>
-            <div className="mt-1">{getStatusBadge(blog.status)}</div>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-gray-600">Author</p>
-            <p className="mt-1">
-              {blog.written_by.first_name} {blog.written_by.last_name}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-gray-600">
-              Created At
-            </p>
-            <p className="mt-1">{formatDate(blog.createdAt)}</p>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-gray-600">
-              Published At
-            </p>
-            <p className="mt-1">
-              {blog.published_at
-                ? formatDate(blog.published_at)
-                : "Not published"}
-            </p>
-          </div>
-        </div>
-        {/* Cover Image */}
-        {blog.cover_image && (
-          <div className="6/12">
-            <img
-              src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
-              alt={blog.title}
-              className="w-full max-w-2xl rounded-lg border border-border"
-            />
-          </div>
-        )}
-      </div>
-      <div className="flex p-4 bg-white rounded-2xl">
-        <h5 className="text-md">{blog.description}</h5>
-      </div>
-
-      {/* Content */}
-      <div className="flex p-4 bg-white rounded-2xl">
-        <div className="prose prose-sm max-w-none dark:prose-invert">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-          >
-            {blog.body}
-          </ReactMarkdown>
-        </div>
-      </div>
+          Delete
+        </Button>
+      )}
     </div>
+  );
+
+  return (
+    <PageWrapper showBack title="Article Page" actions={actions}>
+      <div className="grid grid-cols-[1fr_360px] gap-4">
+        {/* Left — title + content */}
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl p-4 space-y-3">
+            <h1 className="text-2xl font-semibold leading-snug">{blog.title}</h1>
+            <div className="prose prose-sm max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {blog.body}
+              </ReactMarkdown>
+            </div>
+          </div>
+        </div>
+
+        {/* Right — metadata sidebar */}
+        <div className="space-y-4">
+          {/* Slug */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Slug</p>
+            <p className="text-sm text-gray-700 break-all">{blog.slug}</p>
+          </div>
+
+          {/* Excerpt */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Excerpt</p>
+            <p className="text-sm text-gray-700 leading-relaxed">{blog.description}</p>
+          </div>
+
+          {/* Status & Date */}
+          <div className="bg-white rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Status</p>
+              <Badge variant={statusVariants[blog.status] || "default"}>
+                {blog.status.charAt(0).toUpperCase() + blog.status.slice(1)}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Date</p>
+              <p className="text-sm text-gray-700">
+                {blog.published_at ? formatDate(blog.published_at) : formatDate(blog.createdAt)}
+              </p>
+            </div>
+          </div>
+
+          {/* Cover Image */}
+          {blog.cover_image && (
+            <div className="bg-white rounded-2xl p-4 space-y-2">
+              <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Cover Image</p>
+              <img
+                src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
+                alt={blog.title}
+                className="w-full rounded-xl object-cover aspect-video"
+              />
+            </div>
+          )}
+
+          {/* Author */}
+          <div className="bg-white rounded-2xl p-4 space-y-2">
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Author</p>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600 flex-shrink-0">
+                {blog.written_by.first_name?.[0]}
+                {blog.written_by.last_name?.[0]}
+              </div>
+              <div>
+                <p className="text-sm font-medium">
+                  {blog.written_by.first_name} {blog.written_by.last_name}
+                </p>
+                <p className="text-xs text-gray-500">{blog.written_by.email}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageWrapper>
   );
 }

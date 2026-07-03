@@ -11,6 +11,7 @@ import { Blog } from "@/types";
 import { toast } from "sonner";
 import { formatDate } from "@/lib/date-utils";
 import Link from "next/link";
+import Image from "next/image";
 import { config } from "@/config";
 
 interface Pagination {
@@ -132,10 +133,11 @@ function PublicBlogScreenContent({
                   <div className="border border-border bg-white rounded-lg h-full hover:shadow-lg transition-shadow cursor-pointer">
                     {blog.cover_image && (
                       <div className="aspect-video overflow-hidden rounded-t-lg">
-                        <img
+                        <Image
                           src={`${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`}
                           alt={blog.title}
-                          loading="lazy"
+                          width={375}
+                          height={211}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
                       </div>

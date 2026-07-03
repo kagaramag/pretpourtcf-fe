@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -8,42 +8,78 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import { Loading, ArrowLeft, Save, Trash, ImageIcon } from "@/icons";
+import { Loading, Trash, ImageIcon, Globe, MessageSquare, FileText, List, Done, Info, AttachFile } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog, BlogStatus } from "@/types";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
+import { commands } from "@uiw/react-md-editor";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import { uploadService } from "@/services/upload";
-import { config } from "@/config";
-import { PageWrapper } from "@/components/molecules/page-wrapper";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
+import { config } from "@/config";
+import { PageWrapper } from "@/components/molecules/page-wrapper";
+import { useAuth } from "@/contexts/auth-context";
+
+const s = { width: 14, height: 14 };
+
+const editorCommands = [
+  commands.bold,
+  commands.italic,
+  commands.strikethrough,
+  commands.divider,
+  { ...commands.link, icon: <AttachFile style={s} /> },
+  { ...commands.quote, icon: <MessageSquare style={s} /> },
+  { ...commands.code, icon: <FileText style={s} /> },
+  { ...commands.image, icon: <ImageIcon style={s} /> },
+  commands.divider,
+  { ...commands.unorderedListCommand, icon: <List style={s} /> },
+  { ...commands.checkedListCommand, icon: <Done style={s} /> },
+  commands.divider,
+  { ...commands.help, icon: <Info style={s} /> },
+];
+
+const editorExtraCommands = [
+  { ...commands.codeEdit, icon: <FileText style={s} /> },
+  commands.codeLive,
+  { ...commands.codePreview, icon: <Globe style={s} /> },
+  commands.divider,
+  commands.fullscreen,
+];
 
 interface BlogFormProps {
   blogId?: string;
   initialData?: Blog;
 }
 
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const isEditMode = !!blogId;
 
   const [title, setTitle] = useState(initialData?.title || "");
-  const [description, setDescription] = useState(
-    initialData?.description || ""
-  );
+  const [description, setDescription] = useState(initialData?.description || "");
   const [body, setBody] = useState(initialData?.body || "");
   const [coverImage, setCoverImage] = useState(initialData?.cover_image || "");
-  const [status, setStatus] = useState<BlogStatus>(
-    initialData?.status || "draft"
-  );
+  const [status, setStatus] = useState<BlogStatus>(initialData?.status || "draft");
   const [isUploading, setIsUploading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Create blog mutation
+  const slugPreview = initialData?.slug || slugify(title);
+
   const createMutation = useMutation({
     mutationFn: (data: any) => blogService.createBlog(data),
     onSuccess: () => {
@@ -56,7 +92,6 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
     },
   });
 
-  // Update blog mutation
   const updateMutation = useMutation({
     mutationFn: (data: any) => blogService.updateBlog(blogId!, data),
     onSuccess: () => {
@@ -70,40 +105,21 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!title.trim()) {
-      toast.error("Title is required");
-      return;
-    }
-
-    if (!description.trim()) {
-      toast.error("Description is required");
-      return;
-    }
-
-    if (!body.trim()) {
-      toast.error("Body content is required");
-      return;
-    }
+  const handleSubmit = (publish?: boolean) => {
+    if (!title.trim()) { toast.error("Title is required"); return; }
+    if (!description.trim()) { toast.error("Excerpt is required"); return; }
+    if (!body.trim()) { toast.error("Content is required"); return; }
 
     const data: any = {
       title: title.trim(),
       description: description.trim(),
       body: body.trim(),
-      status,
+      status: publish ? "published" : status,
     };
 
-    // Handle cover_image: only include if it has a valid URL
-    const trimmedCoverImage = coverImage.trim();
-    if (trimmedCoverImage) {
-      data.cover_image = trimmedCoverImage;
+    if (coverImage.trim()) {
+      data.cover_image = coverImage.trim();
     }
-
-    console.log("Submitting blog data:", data);
-    console.log("Cover image state:", coverImage);
-    console.log("Trimmed cover image:", trimmedCoverImage);
 
     if (isEditMode) {
       updateMutation.mutate(data);
@@ -112,25 +128,10 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const processFile = useCallback(async (file: File) => {
+    if (!file.type.startsWith("image/")) { toast.error("Please select an image file"); return; }
+    if (file.size > 10 * 1024 * 1024) { toast.error("Image size should not exceed 10MB"); return; }
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
-      return;
-    }
-
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error("Image size should not exceed 10MB");
-      return;
-    }
-
-    setImageFile(file);
-
-    // Auto-upload
     try {
       setIsUploading(true);
       const response = await uploadService.uploadQuestionMedia({
@@ -138,195 +139,231 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
         practiceTitle: "blog-cover",
         questionNumber: undefined,
       });
-
-      console.log("Upload response:", response.data);
-
       if (response.data?.filename) {
-        console.log("Setting cover image to filename:", response.data.filename);
         setCoverImage(response.data.filename);
         toast.success("Image uploaded successfully");
       } else {
-        console.error("No filename in response:", response.data);
         toast.error("Upload succeeded but no filename received");
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Failed to upload image");
-      setImageFile(null);
     } finally {
       setIsUploading(false);
     }
+  }, []);
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
   };
 
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setCoverImage("");
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) processFile(file);
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
+  const actions = (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button
+        variant="outline"
+        onClick={() => router.push("/dashboard/blog")}
+        disabled={isSubmitting}
+      >
+        Cancel
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => handleSubmit()}
+        disabled={isSubmitting || isUploading}
+      >
+        {isSubmitting ? <Loading className="mr-2 h-4 w-4 animate-spin" /> : null}
+        Save Draft
+      </Button>
+      <Button
+        onClick={() => handleSubmit(true)}
+        disabled={isSubmitting || isUploading}
+      >
+        {isSubmitting ? <Loading className="mr-2 h-4 w-4 animate-spin" /> : null}
+        Publish
+      </Button>
+    </div>
+  );
+
   return (
     <PageWrapper
       showBack
-      title={isEditMode ? "Edit Blog Post" : "New Blog Post"}
-      description={
-        isEditMode ? "Update your blog post details" : "Create a new blog post"
-      }
+      title={isEditMode ? "Edit Article" : "Article Page"}
+      actions={actions}
     >
-      <div className="space-y-2">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          {/* <div>
-          <h1 className="text-xl font-bold tracking-tight py-0 my-0">
-            {isEditMode ? "Edit Blog Post" : "New Blog Post"}
-          </h1>
-          <h5>
-            {isEditMode
-              ? "Update your blog post details"
-              : "Create a new blog post"}
-          </h5>
-        </div> */}
-        </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-2 p-4 bg-white rounded-lg">
-            {/* Basic Info */}
-            <h5>Basic Information</h5>
-            <div className="space-y-2">
-              <div className="space-y-2">
-                <Label htmlFor="title">
-                  Title <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="title"
-                  placeholder="Enter blog title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="description">
-                  Description <span className="text-destructive">*</span>
-                </Label>
-                <Textarea
-                  id="description"
-                  placeholder="Enter a brief description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                  required
-                />
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4">
+        {/* Left — title + content */}
+        <div className="space-y-4">
+          <div className="bg-white rounded-2xl p-4 space-y-3">
+            <div className="space-y-1">
+              <Label htmlFor="title">
+                Title <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="title"
+                placeholder="Name your blog"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
 
-            <div className="flex items-center gap-2">
-              <div className="space-y-2">
-                <Select
-                  value={status}
-                  onChange={(v) => setStatus(v as BlogStatus)}
-                  options={[
-                    { value: "draft", label: "Draft" },
-                    { value: "published", label: "Published" },
-                    { value: "archived", label: "Archived" },
-                  ]}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Upload Cover Image</Label>
-                {coverImage ? (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 p-2 border rounded-lg bg-green-50">
-                      <ImageIcon className="h-4 w-4 text-green-600" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Image uploaded</p>
-                        <a
-                          href={`${config.cloudFlarePublicUrl}practices/images/${coverImage}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-green-600 hover:underline"
-                        >
-                          {imageFile?.name || coverImage}
-                        </a>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRemoveImage}
-                        disabled={isUploading}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <img
-                      src={`${config.cloudFlarePublicUrl}practices/images/${coverImage}`}
-                      alt="Cover preview"
-                      className="w-full max-w-md rounded-lg border"
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      disabled={isUploading}
-                      className="cursor-pointer"
-                    />
-                    {isUploading && (
-                      <p className="text-sm text-gray-400">
-                        <Loading className="inline h-4 w-4 animate-spin mr-2" />
-                        Uploading image...
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Body Content */}
-            <h5>
-              Content <span className="text-destructive">*</span>
-            </h5>
-            <div>
+            <div className="space-y-1">
+              <Label>
+                Content <span className="text-red-500">*</span>
+              </Label>
               <div data-color-mode="light">
                 <MDEditor
                   value={body}
                   onChange={(val) => setBody(val || "")}
-                  minHeight={500}
                   preview="edit"
+                  height="auto"
+                  commands={editorCommands}
+                  extraCommands={editorExtraCommands}
                 />
               </div>
             </div>
-
-            {/* Actions */}
-            <div className="flex justify-end gap-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push("/dashboard/blog")}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Loading className="mr-2 h-4 w-4 animate-spin" />
-                    {isEditMode ? "Updating..." : "Creating..."}
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    {isEditMode ? "Update Blog" : "Create Blog"}
-                  </>
-                )}
-              </Button>
-            </div>
           </div>
-        </form>
+        </div>
+
+        {/* Right — metadata sidebar */}
+        <div className="space-y-4">
+          {/* Slug */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <Label htmlFor="slug">Slug</Label>
+            <Input
+              id="slug"
+              value={slugPreview}
+              readOnly
+              className="text-gray-500 bg-gray-50"
+              placeholder="Auto-generated from title"
+            />
+            <p className="text-xs text-gray-400">Auto-generated from title</p>
+          </div>
+
+          {/* Excerpt */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <Label htmlFor="description">
+              Excerpt <span className="text-red-500">*</span>
+            </Label>
+            <Textarea
+              id="description"
+              placeholder="Add a short excerpt to summarize this post"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          {/* Status */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <Label>Status</Label>
+            <Select
+              value={status}
+              onChange={(v) => setStatus(v as BlogStatus)}
+              options={[
+                { value: "draft", label: "Draft" },
+                { value: "published", label: "Published" },
+                { value: "archived", label: "Archived" },
+              ]}
+              className="w-full"
+            />
+          </div>
+
+          {/* Cover Image */}
+          <div className="bg-white rounded-2xl p-4 space-y-2">
+            <Label>Cover Image</Label>
+            {coverImage ? (
+              <div className="space-y-2">
+                <img
+                  src={`${config.cloudFlarePublicUrl}practices/images/${coverImage}`}
+                  alt="Cover"
+                  className="w-full rounded-xl object-cover aspect-video"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCoverImage("")}
+                  className="w-full"
+                >
+                  <Trash className="h-4 w-4 mr-2" />
+                  Remove image
+                </Button>
+              </div>
+            ) : (
+              <div
+                className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors ${
+                  isDragging ? "border-blue-400 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                }`}
+                onDrop={handleDrop}
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {isUploading ? (
+                  <Loading className="h-8 w-8 animate-spin text-gray-400" />
+                ) : (
+                  <ImageIcon className="h-8 w-8 text-gray-300" />
+                )}
+                <p className="text-sm text-gray-500">
+                  {isUploading ? "Uploading..." : "Drag and Drop Images or"}
+                </p>
+                {!isUploading && (
+                  <button
+                    type="button"
+                    className="text-sm text-blue-500 hover:underline"
+                    onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                  >
+                    Upload Image
+                  </button>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileInput}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Author */}
+          {user && (
+            <div className="bg-white rounded-2xl p-4 space-y-2">
+              <Label>Author</Label>
+              <div className="flex items-center gap-3 p-2 border rounded-xl">
+                <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600 flex-shrink-0">
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.first_name}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <>
+                      {user.first_name?.[0]}
+                      {user.last_name?.[0]}
+                    </>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">
+                    {user.first_name} {user.last_name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </PageWrapper>
   );

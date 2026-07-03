@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
+      {
+        protocol: "https",
+        hostname: "pub-52a29c3c256446bcb8fcb5dbee9ba062.r2.dev",
+      },
     ],
     unoptimized: false,
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
