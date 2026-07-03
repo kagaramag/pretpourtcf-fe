@@ -8,27 +8,27 @@ import PublicBlogDetailScreen from "@/screens/public-blog/blog-detail";
 export const revalidate = 1800; // Revalidate every 30 minutes
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 // cache() deduplicates the fetch between generateMetadata and the page
-const getBlog = cache(async (id: string) => {
-  const response = await blogService.getPublishedBlogById(id);
+const getBlog = cache(async (slug: string) => {
+  const response = await blogService.getPublishedBlogBySlug(slug);
   return response.data.blog;
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
 
   try {
-    const blog = await getBlog(id);
+    const blog = await getBlog(slug);
 
     const title = `PrêtPourTCF | ${blog.title}`;
     const description = blog.description || blog.title;
     const imageUrl = blog.cover_image
       ? `${config.cloudFlarePublicUrl}practices/images/${blog.cover_image}`
       : `${config.cloudFlarePublicUrl}og-default.png`;
-    const url = `${process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com"}/blog/${id}`;
+    const url = `${process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com"}/blog/${slug}`;
     const metaDescription =
       description.length > 160 ? description.substring(0, 157) + "..." : description;
 
@@ -83,11 +83,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PublicBlogDetailPage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
 
   let blog;
   try {
-    blog = await getBlog(id);
+    blog = await getBlog(slug);
   } catch {
     notFound();
   }
@@ -117,7 +117,7 @@ export default async function PublicBlogDetailPage({ params }: Props) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com"}/blog/${id}`,
+      "@id": `${process.env.NEXT_PUBLIC_APP_URL || "https://pretpourtcf.com"}/blog/${slug}`,
     },
     keywords: [
       "TCF",

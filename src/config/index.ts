@@ -92,7 +92,7 @@ export const API_ENDPOINTS = {
 
   // Public Blogs
   PUBLIC_BLOGS: "/public/blogs",
-  PUBLIC_BLOG_DETAILS: "/public/blogs/:id",
+  PUBLIC_BLOG_DETAILS: "/public/blogs/:slug",
 
   // Corporates
   CORPORATES: "/corporates",

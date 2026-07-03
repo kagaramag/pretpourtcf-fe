@@ -20,9 +20,10 @@ export default function Header() {
 
   const navigation = [
     { name: "Accueil", href: "/" },
-    { name: "Examens", href: "/compte" },
     { name: "Essai gratuit", href: "/compte/essai-gratuit" },
-    // { name: "Tarifs", href: "/tarifs" },
+    { name: "Examens", href: "/compte" },
+    { name: "Tarifs", href: "/tarifs" },
+    { name: "Blog", href: "/blog" },
   ];
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function Header() {
         </div>
       )} */}
       <header className="inset-x-0 top-0 z-50 bg-black/60 backdrop-blur-md transition-all duration-300 fixed">
-        <div className="flex items-center justify-between gap-2 sm:gap-6 px-4 sm:px-6 lg:px-8 mx-auto my-0 py-2 max-w-7xl">
+        <div className="flex items-center justify-between gap-2 sm:gap-6 px-4 sm:px-6 lg:px-0 mx-auto my-0 py-2 max-w-7xl">
           <div className="w-[120px] sm:w-[180px] lg:w-[190px]">
             <Link href="/">
               <div className="w-2.5 sm:w-[180px] lg:w-[190px] hidden lg:block">

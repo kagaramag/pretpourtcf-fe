@@ -111,13 +111,13 @@ export const blogService = {
   },
 
   /**
-   * Get a single published blog by ID (Public)
+   * Get a single published blog by slug (Public)
    */
-  getPublishedBlogById: async (
-    id: string
+  getPublishedBlogBySlug: async (
+    slug: string
   ): Promise<BackendApiResponse<{ blog: Blog }>> => {
     return await apiClient.get<BackendApiResponse<{ blog: Blog }>>(
-      `${API_ENDPOINTS.PUBLIC_BLOGS}/${id}`
+      `${API_ENDPOINTS.PUBLIC_BLOGS}/${slug}`
     );
   },
 };

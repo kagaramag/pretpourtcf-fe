@@ -280,6 +280,7 @@ export interface BlogAuthor {
 export interface Blog {
   _id: string;
   title: string;
+  slug: string;
   description: string;
   body: string;
   cover_image?: string;
