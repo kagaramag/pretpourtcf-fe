@@ -43,11 +43,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const initAuth = async () => {
       try {
         const token = authService.getToken();
+        const refreshToken =
+          typeof window !== "undefined"
+            ? localStorage.getItem("refresh_token")
+            : null;
 
-        // Only proceed if we have a token
-        if (token) {
+        // Only proceed if we have at least a refresh token (access token may be expired)
+        if (token || refreshToken) {
           try {
-            // Verify token is still valid by fetching current user from API
+            // Verify token is still valid by fetching current user from API.
+            // If the access token is expired, the api-client 401 interceptor
+            // will silently refresh it using the refresh token before retrying.
             const currentUser = await authService.getCurrentUser();
             if (currentUser) {
               setUser(currentUser);
@@ -58,12 +64,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }
           } catch (error) {
             console.error("Failed to verify user:", error);
-            // Token is invalid or expired - clear everything
+            // Only logout if we truly cannot recover (refresh also failed)
             setUser(null);
             authService.logout();
           }
         } else {
-          // No token found - ensure user state is null
+          // No tokens found - ensure user state is null
           setUser(null);
         }
       } catch (error) {

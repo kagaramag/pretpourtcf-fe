@@ -48,6 +48,7 @@ export const authService = {
       localStorage.setItem("user_data", JSON.stringify(response.data.user));
 
       document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+      document.cookie = `refresh_token=1; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;
@@ -72,6 +73,7 @@ export const authService = {
       }
 
       document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+      document.cookie = `refresh_token=1; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;
@@ -87,9 +89,9 @@ export const authService = {
 
       // Clear cookies
       document.cookie =
-        "access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        "access_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:01 GMT";
       document.cookie =
-        "refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        "refresh_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     }
   },
 
@@ -211,6 +213,7 @@ export const authService = {
       localStorage.setItem("user_data", JSON.stringify(response.data.user));
 
       document.cookie = `access_token=${response.data.access_token}; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
+      document.cookie = `refresh_token=1; path=/; max-age=${ACCESS_TOKEN_MAX_AGE}`;
     }
 
     return response;

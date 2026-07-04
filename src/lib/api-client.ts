@@ -14,6 +14,7 @@ class ApiClient {
   private client: AxiosInstance;
   private refreshTimer: ReturnType<typeof setTimeout> | null = null;
   private tokenRefreshListeners: TokenRefreshListener[] = [];
+  private refreshPromise: Promise<string | null> | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -59,8 +60,26 @@ class ApiClient {
 
   private async performTokenRefresh() {
     try {
+      await this.refreshTokenOnce();
+    } catch {
+      // Refresh failed — clear everything and redirect
+      this.clearTokens();
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+    }
+  }
+
+  /**
+   * Ensures only one refresh request runs at a time. If multiple 401s fire
+   * simultaneously (common on page reload), they all await the same promise.
+   */
+  private refreshTokenOnce(): Promise<string | null> {
+    if (this.refreshPromise) return this.refreshPromise;
+
+    this.refreshPromise = (async () => {
       const refreshToken = this.getRefreshToken();
-      if (!refreshToken) return;
+      if (!refreshToken) throw new Error("No refresh token");
 
       const response = await this.client.post("/auth/refresh", {
         refresh_token: refreshToken,
@@ -74,21 +93,22 @@ class ApiClient {
         localStorage.setItem("refresh_token", new_refresh_token);
       }
 
-      // Sync the cookie with the new token
+      // Sync cookies with the new tokens
       document.cookie = `access_token=${access_token}; path=/; max-age=${COOKIE_MAX_AGE}`;
+      document.cookie = `refresh_token=1; path=/; max-age=${COOKIE_MAX_AGE}`;
 
       // Notify listeners (e.g. socket reconnect)
       this.tokenRefreshListeners.forEach((fn) => fn(access_token));
 
-      // Schedule the next refresh
+      // Restart proactive refresh schedule
       this.scheduleTokenRefresh();
-    } catch {
-      // Refresh failed — clear everything and redirect
-      this.clearTokens();
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-    }
+
+      return access_token;
+    })().finally(() => {
+      this.refreshPromise = null;
+    });
+
+    return this.refreshPromise;
   }
 
   private setupInterceptors() {
@@ -112,39 +132,20 @@ class ApiClient {
           _retry?: boolean;
         };
 
-        // Handle 401 errors
+        // Handle 401 errors — use shared refresh promise to avoid concurrent refresh calls
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
 
           try {
-            const refreshToken = this.getRefreshToken();
-            if (refreshToken) {
-              const response = await this.client.post("/auth/refresh", {
-                refresh_token: refreshToken,
-              });
-              const { access_token, refresh_token: new_refresh_token } =
-                response.data.data;
-              this.setToken(access_token);
-              if (new_refresh_token) {
-                localStorage.setItem("refresh_token", new_refresh_token);
-              }
-
-              // Sync the cookie with the new token
-              document.cookie = `access_token=${access_token}; path=/; max-age=${COOKIE_MAX_AGE}`;
-
-              // Notify listeners
-              this.tokenRefreshListeners.forEach((fn) => fn(access_token));
-
-              // Restart the proactive refresh schedule
-              this.scheduleTokenRefresh();
-
+            const newToken = await this.refreshTokenOnce();
+            if (newToken) {
               if (originalRequest.headers) {
-                originalRequest.headers.Authorization = `Bearer ${access_token}`;
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
               }
-
               return this.client(originalRequest);
             }
           } catch (refreshError) {
+            // Refresh failed — clear everything and redirect
             this.clearTokens();
             if (typeof window !== "undefined") {
               window.location.href = "/login";
@@ -179,9 +180,11 @@ class ApiClient {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_data");
-      // Also clear the cookie so middleware doesn't redirect away from /login
+      // Also clear cookies so middleware doesn't redirect away from /login
       document.cookie =
         "access_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      document.cookie =
+        "refresh_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
   }
 
