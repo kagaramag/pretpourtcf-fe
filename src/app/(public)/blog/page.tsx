@@ -1,4 +1,4 @@
-import PublicBlogScreen from "@/screens/public-blog";
+import PublicBlogScreen from "@/screens/public/blog";
 import { blogService } from "@/services/blog";
 
 export const revalidate = 1800; // Revalidate every 30 minutes

@@ -4,11 +4,21 @@ import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
-import { Loading, Trash, ImageIcon, Globe, MessageSquare, FileText, List, Done, Info, AttachFile } from "@/icons";
+import {
+  Loading,
+  Trash,
+  ImageIcon,
+  Globe,
+  MessageSquare,
+  FileText,
+  List,
+  Done,
+  Info,
+  AttachFile,
+} from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog, BlogStatus } from "@/types";
 import { toast } from "sonner";
@@ -26,6 +36,10 @@ import { useAuth } from "@/contexts/auth-context";
 const s = { width: 14, height: 14 };
 
 const editorCommands = [
+  { ...commands.heading1, icon: <span style={{ fontSize: 12, fontWeight: 700 }}>H1</span> },
+  { ...commands.heading2, icon: <span style={{ fontSize: 12, fontWeight: 700 }}>H2</span> },
+  { ...commands.heading3, icon: <span style={{ fontSize: 12, fontWeight: 700 }}>H3</span> },
+  commands.divider,
   commands.bold,
   commands.italic,
   commands.strikethrough,
@@ -70,10 +84,14 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   const isEditMode = !!blogId;
 
   const [title, setTitle] = useState(initialData?.title || "");
-  const [description, setDescription] = useState(initialData?.description || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
   const [body, setBody] = useState(initialData?.body || "");
   const [coverImage, setCoverImage] = useState(initialData?.cover_image || "");
-  const [status, setStatus] = useState<BlogStatus>(initialData?.status || "draft");
+  const [status, setStatus] = useState<BlogStatus>(
+    initialData?.status || "draft"
+  );
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,9 +124,18 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   });
 
   const handleSubmit = (publish?: boolean) => {
-    if (!title.trim()) { toast.error("Title is required"); return; }
-    if (!description.trim()) { toast.error("Excerpt is required"); return; }
-    if (!body.trim()) { toast.error("Content is required"); return; }
+    if (!title.trim()) {
+      toast.error("Title is required");
+      return;
+    }
+    if (!description.trim()) {
+      toast.error("Excerpt is required");
+      return;
+    }
+    if (!body.trim()) {
+      toast.error("Content is required");
+      return;
+    }
 
     const data: any = {
       title: title.trim(),
@@ -129,8 +156,14 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   };
 
   const processFile = useCallback(async (file: File) => {
-    if (!file.type.startsWith("image/")) { toast.error("Please select an image file"); return; }
-    if (file.size > 10 * 1024 * 1024) { toast.error("Image size should not exceed 10MB"); return; }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image size should not exceed 10MB");
+      return;
+    }
 
     try {
       setIsUploading(true);
@@ -180,14 +213,18 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
         onClick={() => handleSubmit()}
         disabled={isSubmitting || isUploading}
       >
-        {isSubmitting ? <Loading className="mr-2 h-4 w-4 animate-spin" /> : null}
+        {isSubmitting ? (
+          <Loading className="mr-2 h-4 w-4 animate-spin" />
+        ) : null}
         Save Draft
       </Button>
       <Button
         onClick={() => handleSubmit(true)}
         disabled={isSubmitting || isUploading}
       >
-        {isSubmitting ? <Loading className="mr-2 h-4 w-4 animate-spin" /> : null}
+        {isSubmitting ? (
+          <Loading className="mr-2 h-4 w-4 animate-spin" />
+        ) : null}
         Publish
       </Button>
     </div>
@@ -196,10 +233,10 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
   return (
     <PageWrapper
       showBack
-      title={isEditMode ? "Edit Article" : "Article Page"}
+      title={isEditMode ? "Edit Article" : "Write an article"}
       actions={actions}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-4 mt-4">
         {/* Left — title + content */}
         <div className="space-y-4">
           <div className="bg-white rounded-2xl p-4 space-y-3">
@@ -207,11 +244,18 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
               <Label htmlFor="title">
                 Title <span className="text-red-500">*</span>
               </Label>
-              <Input
+              <Textarea
                 id="title"
                 placeholder="Name your blog"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                rows={1}
+                className="resize-none overflow-hidden"
+                onInput={(e) => {
+                  const target = e.target as HTMLTextAreaElement;
+                  target.style.height = "auto";
+                  target.style.height = target.scrollHeight + "px";
+                }}
               />
             </div>
 
@@ -234,20 +278,7 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
         </div>
 
         {/* Right — metadata sidebar */}
-        <div className="space-y-4">
-          {/* Slug */}
-          <div className="bg-white rounded-2xl p-4 space-y-1">
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              value={slugPreview}
-              readOnly
-              className="text-gray-500 bg-gray-50"
-              placeholder="Auto-generated from title"
-            />
-            <p className="text-xs text-gray-400">Auto-generated from title</p>
-          </div>
-
+        <div className="space-y-2">
           {/* Excerpt */}
           <div className="bg-white rounded-2xl p-4 space-y-1">
             <Label htmlFor="description">
@@ -258,21 +289,6 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
               placeholder="Add a short excerpt to summarize this post"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-
-          {/* Status */}
-          <div className="bg-white rounded-2xl p-4 space-y-1">
-            <Label>Status</Label>
-            <Select
-              value={status}
-              onChange={(v) => setStatus(v as BlogStatus)}
-              options={[
-                { value: "draft", label: "Draft" },
-                { value: "published", label: "Published" },
-                { value: "archived", label: "Archived" },
-              ]}
-              className="w-full"
             />
           </div>
 
@@ -300,10 +316,15 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
             ) : (
               <div
                 className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors ${
-                  isDragging ? "border-blue-400 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                  isDragging
+                    ? "border-blue-400 bg-blue-50"
+                    : "border-gray-200 hover:border-gray-300"
                 }`}
                 onDrop={handleDrop}
-                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragging(true);
+                }}
                 onDragLeave={() => setIsDragging(false)}
                 onClick={() => fileInputRef.current?.click()}
               >
@@ -319,7 +340,10 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
                   <button
                     type="button"
                     className="text-sm text-blue-500 hover:underline"
-                    onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      fileInputRef.current?.click();
+                    }}
                   >
                     Upload Image
                   </button>
@@ -335,11 +359,32 @@ export default function BlogFormScreen({ blogId, initialData }: BlogFormProps) {
             )}
           </div>
 
+          {/* Status */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <Label>Status</Label>
+            <Select
+              value={status}
+              onChange={(v) => setStatus(v as BlogStatus)}
+              options={[
+                { value: "draft", label: "Draft" },
+                { value: "published", label: "Published" },
+                { value: "archived", label: "Archived" },
+              ]}
+              className="w-full"
+            />
+          </div>
+          {/* Slug */}
+          <div className="bg-white rounded-2xl p-4 space-y-1">
+            <Label htmlFor="slug">Slug</Label>
+            <div id="slug" className="text-gray-500 text-sm">
+              {slugPreview}
+            </div>
+          </div>
           {/* Author */}
           {user && (
             <div className="bg-white rounded-2xl p-4 space-y-2">
               <Label>Author</Label>
-              <div className="flex items-center gap-3 p-2 border rounded-xl">
+              <div className="flex items-center gap-3 p-2 border border-gray-200 rounded-xl">
                 <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-600 flex-shrink-0">
                   {user.avatar ? (
                     <img

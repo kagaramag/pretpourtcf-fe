@@ -1,4 +1,4 @@
-import BlogFormScreen from "@/screens/blog/blog-form";
+import BlogFormScreen from "@/screens/dashboard/blog/create-edit";
 
 export const metadata = {
   title: "PrêtPourTCF | Nouvel article",

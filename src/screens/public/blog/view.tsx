@@ -19,7 +19,7 @@ export default function PublicBlogDetailScreen({
 }: PublicBlogDetailProps) {
   return (
     <div className="min-h-screen mt-4 pb-8 pt-16">
-      <div className="bg-black text-white pb-8 pt-24 absolute top-0 left-0 w-full h-100 -z-10" />
+      <div className="bg-black  pb-8 pt-24 absolute top-0 left-0 w-full h-100 -z-10" />
       {/* Content */}
       <div className="max-w-6xl mx-auto px-4 lg:px-0 py-6">
         <article
@@ -77,7 +77,7 @@ export default function PublicBlogDetailScreen({
 
           {/* Article Content */}
           <div
-            className="article-body prose space-y-3 leading-relaxed prose-lg prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg"
+            className="article-body prose space-y-2 leading-relaxed prose-lg prose-slate max-w-none prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg"
             itemProp="articleBody"
           >
             <ReactMarkdown
@@ -93,7 +93,6 @@ export default function PublicBlogDetailScreen({
             </ReactMarkdown>
           </div>
 
-          <Separator className="my-8" />
 
           {/* Back Button */}
           <div className="mt-6 pb-12 text-center">

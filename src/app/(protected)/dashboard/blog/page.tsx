@@ -1,4 +1,4 @@
-import BlogScreen from "@/screens/blog";
+import BlogScreen from "@/screens/dashboard/blog";
 
 export const metadata = {
   title: "PrêtPourTCF | Gestion du blog",

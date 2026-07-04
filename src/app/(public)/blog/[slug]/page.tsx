@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { blogService } from "@/services/blog";
 import { config } from "@/config";
-import PublicBlogDetailScreen from "@/screens/public-blog/blog-detail";
+import PublicBlogDetailScreen from "@/screens/public/blog/view";
 
 export const revalidate = 1800; // Revalidate every 30 minutes
 

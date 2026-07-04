@@ -119,14 +119,22 @@ export default function BlogDetailScreen({ blogId }: BlogDetailProps) {
   );
 
   return (
-    <PageWrapper showBack title="Article Page" actions={actions}>
-      <div className="grid grid-cols-[1fr_360px] gap-4">
+    <PageWrapper showBack title="Article" actions={actions}>
+      <div className="grid grid-cols-[1fr_360px] gap-4 mt-4">
         {/* Left — title + content */}
         <div className="space-y-4">
           <div className="bg-white rounded-2xl p-4 space-y-3">
             <h1 className="text-2xl font-semibold leading-snug">{blog.title}</h1>
-            <div className="prose prose-sm max-w-none">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            <div className="article-body prose prose-sm prose-slate max-w-none prose-headings:font-bold prose-a:text-primary prose-img:rounded-lg">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  a: ({ node, ...props }) => (
+                    <a {...props} target="_blank" rel="noopener noreferrer" />
+                  ),
+                }}
+              >
                 {blog.body}
               </ReactMarkdown>
             </div>

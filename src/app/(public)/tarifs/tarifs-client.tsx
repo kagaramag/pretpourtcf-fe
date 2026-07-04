@@ -1,1 +1,1 @@
-export { default } from "@/screens/tarifs";
+export { default } from "@/screens/public/tarifs";

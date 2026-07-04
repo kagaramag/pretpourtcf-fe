@@ -1,4 +1,4 @@
-import BlogDetailScreen from "@/screens/blog/blog-detail";
+import BlogDetailScreen from "@/screens/dashboard/blog/view";
 
 export const metadata = {
   title: "PrêtPourTCF | Détails de l'article",

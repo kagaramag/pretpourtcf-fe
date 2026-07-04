@@ -81,7 +81,7 @@ export default function LandingFeatures() {
                 key={feature.name}
                 className="relative overflow-hidden flex flex-col bg-white border border-gray-200 p-6 rounded-2xl hover:shadow-md transition-all duration-200"
               >
-                <h3 className="flex items-center gap-x-3 text-lg font-bold text-gray-900">
+                <h3 className="flex items-center gap-x-3 text-lg font-semibold text-gray-900">
                   <div
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${feature.iconBg}`}
                   >
@@ -92,7 +92,7 @@ export default function LandingFeatures() {
                   </div>
                   {feature.name}
                 </h3>
-                <div className="flex flex-auto flex-col text-sm text-gray-500 mt-2">
+                <div className="flex flex-auto flex-col text-sm text-gray-700 mt-2">
                   {feature.description}
                 </div>
                 <div

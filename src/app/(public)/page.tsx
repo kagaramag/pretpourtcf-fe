@@ -1,4 +1,4 @@
-import { IndexScreen } from "@/screens/home";
+import { IndexScreen } from "@/screens/public/home";
 import type { Metadata } from "next";
 
 export const revalidate = 3600; // Revalidate every hour

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import BlogFormScreen from "@/screens/blog/blog-form";
+import BlogFormScreen from "@/screens/dashboard/blog/create-edit";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { Loading } from "@/icons";
