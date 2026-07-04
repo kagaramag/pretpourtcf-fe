@@ -33,7 +33,7 @@ export default function LandingTestimonials() {
           <h2 className="lg:text-4xl text-2xl md:text-4xl tracking-tighter leading-tight">
             Ce que disent nos utilisateurs
           </h2>
-          <div className="text-sm sm:text-lg text-gray-600">
+          <div className="text-sm sm:text-lg text-gray-700">
             Rejoignez des milliers de personnes qui ont réussi leur TCF grâce à
             notre plateforme.
           </div>
@@ -58,7 +58,7 @@ export default function LandingTestimonials() {
                   height={32}
                   className="h-8 w-8 rounded-full bg-gray-50"
                 />
-                <div className="text-gray-600">
+                <div className="text-gray-700">
                   {testimonial.name}
                 </div>
               </div>

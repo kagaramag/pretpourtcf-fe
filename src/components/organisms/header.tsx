@@ -155,8 +155,8 @@ export default function Header() {
           </div>
           {!isLoading && !isAuthenticated && (
             <div className="flex gap-1 sm:gap-1 justify-end flex-1">
-              <Link href="/login">
-                <Button variant={"tertiary"}>Se connecter</Button>
+              <Link href="/login" className="min-h-[44px] min-w-[44px] flex items-center">
+                <Button variant={"tertiary"} className="min-h-[44px]">Se connecter</Button>
               </Link>
               <Link
                 href="/signup?next=/compte/essai-gratuit&package=trial"

@@ -62,13 +62,13 @@ export default function LandingFeatures() {
     <div className="bg-white py-12 sm:py-20 md:py-24 lg:py-16">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 md:px-8 lg:px-0">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-base">
+          <p className="text-base">
             Tout ce dont vous avez besoin
-          </h2>
+          </p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter leading-none">
             Une préparation complète au TCF
           </h2>
-          <p className="text-sm sm:text-lg text-gray-600 font-light  mt-2">
+          <p className="text-sm sm:text-lg text-gray-700 font-light mt-2">
             Nous mettons à votre disposition tous les outils nécessaires pour
             réussir votre test de connaissance du français. Notre plateforme est
             conçue pour vous accompagner à chaque étape.
@@ -81,7 +81,7 @@ export default function LandingFeatures() {
                 key={feature.name}
                 className="relative overflow-hidden flex flex-col bg-white border border-gray-200 p-6 rounded-2xl hover:shadow-md transition-all duration-200"
               >
-                <h3 className="flex items-center gap-x-3 text-lg font-semibold text-gray-900">
+                <dt className="flex items-center gap-x-3 text-lg font-semibold text-gray-900">
                   <div
                     className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${feature.iconBg}`}
                   >
@@ -91,10 +91,10 @@ export default function LandingFeatures() {
                     />
                   </div>
                   {feature.name}
-                </h3>
-                <div className="flex flex-auto flex-col text-sm text-gray-700 mt-2">
+                </dt>
+                <dd className="flex flex-auto flex-col text-sm text-gray-700 mt-2">
                   {feature.description}
-                </div>
+                </dd>
                 <div
                   className={`absolute bottom-0 left-0 h-1 w-full ${feature.barColor}`}
                 />

@@ -18,7 +18,7 @@ export default function LandingStats() {
             <h2 className="lg:text-4xl text-3xl tracking-tighter text-white sm:text-4xl">
               Des résultats qui parlent d'eux-mêmes
             </h2>
-            <p className="text-base sm:text-lg text-gray-500">
+            <p className="text-base sm:text-lg text-gray-400">
               Rejoignez une communauté grandissante de candidats qui ont réussi
               leur TCF
             </p>
@@ -29,9 +29,9 @@ export default function LandingStats() {
                 <dt className="text-sm font-medium text-black/80 text-center">
                   {stat.name}
                 </dt>
-                <h3 className="mt-2 text-3xl sm:text-4xl tracking-wide text-black">
+                <dd className="mt-2 text-3xl sm:text-4xl tracking-wide text-black">
                   {stat.value}
-                </h3>
+                </dd>
               </Card>
             ))}
           </dl>

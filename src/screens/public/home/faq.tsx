@@ -44,7 +44,7 @@ export default function LandingFAQ() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl tracking-tighter text-center leading-tight">
             Questions fréquentes
           </h2>
-          <div className="text-sm sm:text-lg text-center text-gray-600">
+          <div className="text-sm sm:text-lg text-center text-gray-700">
             Vous avez des questions? Nous avons les réponses.
           </div>
           <div className="mt-2 sm:mt-4 lg:mt-4 bg-white p-4 sm:p-6 lg:rounded-2xl rounded-lg divide-y divide-gray-200">
@@ -63,14 +63,14 @@ export default function LandingFAQ() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <p className="mt-3 text-sm sm:text-base text-gray-600">
+                <p className="mt-3 text-sm sm:text-base text-gray-700">
                   {faq.answer}
                 </p>
               </details>
             ))}
           </div>
           <div className="mt-10 sm:mt-12 text-center mb-6">
-            <p className="text-base text-gray-600">
+            <p className="text-base text-gray-700">
               Vous avez d'autres questions?{" "}
               <a
                 href="/contactez-nous"

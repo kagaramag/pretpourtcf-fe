@@ -48,7 +48,7 @@ export function IndexScreen() {
               Préparez votre test TCF avec assurance. La réussite, c'est 0%
               magie, 100% préparation.
             </h1>
-            <div className="mb-4 mt-2 text-white/60 text-sm lg:text-lg lg:max-w-[550px]">
+            <div className="mb-4 mt-2 text-white/80 text-sm lg:text-lg lg:max-w-[550px]">
               Entraînez-vous en ligne avec des simulations dans les conditions
               réelles de l'examen, progressez à votre rythme et réussissez votre
               test du premier coup
@@ -99,7 +99,7 @@ export function IndexScreen() {
             <h2 className="text-3xl sm:text-xl md:text-5xl tracking-tight leading-none text-pretty text-white">
               Commencez en quelques étapes simples
             </h2>
-            <div className="text-sm sm:text-lg text-white/60 leading-tight mt-2">
+            <div className="text-sm sm:text-lg text-white/80 leading-tight mt-2">
               Préparer le TCF n'a jamais été aussi facile. En quelques minutes,
               créez votre compte, choisissez un plan adapté à vos besoins et
               commencez à progresser à votre rythme.
@@ -109,12 +109,12 @@ export function IndexScreen() {
             <dl className="grid grid-cols-1 gap-4 sm:gap-6 md:gap-8 w-full lg:grid-cols-3">
               {quickSteps.map((feature) => (
                 <Card key={feature.name}>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white">
+                  <dt className="text-lg sm:text-xl font-semibold text-white">
                     {feature.name}
-                  </h3>
-                  <h5 className="mt-2 flex flex-auto flex-col text-sm sm:text-base text-white/60 leading-snug">
+                  </dt>
+                  <dd className="mt-2 flex flex-auto flex-col text-sm sm:text-base text-white/80 leading-snug">
                     {feature.description}
-                  </h5>
+                  </dd>
                 </Card>
               ))}
             </dl>

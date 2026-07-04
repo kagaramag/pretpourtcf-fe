@@ -4,8 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Loading, Calendar } from "@/icons";
+import { Loading, Calendar } from "@/icons";
 import { blogService } from "@/services/blog";
 import { Blog } from "@/types";
 import { toast } from "sonner";
@@ -91,21 +90,9 @@ function PublicBlogScreenContent({
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">
             Blog
           </h1>
-          <p className="text-xl text-center text-white/80 max-w-2xl mx-auto">
+          <p className="text-xl text-center text-white/80 max-w-2xl mx-auto mb-2">
             Découvrez nos articles, et conseils.
           </p>
-        </div>
-        {/* Search */}
-        <div className="max-w-2xl mx-auto mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-600" />
-            <Input
-              placeholder="Rechercher des articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-10 text-lg"
-            />
-          </div>
         </div>
       </div>
 
@@ -142,11 +129,11 @@ function PublicBlogScreenContent({
                         />
                       </div>
                     )}
-                    <div className="p-6">
-                      <h2 className="text-xl font-bold mb-2 line-clamp-2">
+                    <div className="p-4">
+                      <h2 className="text-xl font-semibold mb-2 line-clamp-3">
                         {blog.title}
                       </h2>
-                      <p className="text-gray-600 mb-4 line-clamp-3">
+                      <p className="text-gray-600 mb-4 line-clamp-3 text-sm">
                         {blog.description}
                       </p>
                       <div className="flex items-center gap-4 text-sm text-gray-600">
