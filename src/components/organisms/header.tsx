@@ -57,7 +57,7 @@ export default function Header() {
   };
 
   return (
-    <div>
+    <div className="relative z-50">
       {/* {!isLoading && !isAuthenticated && (
         <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-[length:200%_200%] animate-gradient px-4 py-3 text-center text-white lg:text-md text-sm">
           Offre exclusive! -30% avec le code{" "}
