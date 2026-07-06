@@ -133,7 +133,14 @@ class ApiClient {
         };
 
         // Handle 401 errors — use shared refresh promise to avoid concurrent refresh calls
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // Skip refresh attempts for the refresh endpoint itself to avoid infinite loops
+        const requestUrl = originalRequest.url || "";
+        const isRefreshRequest = requestUrl.includes("/auth/refresh");
+        if (
+          error.response?.status === 401 &&
+          !originalRequest._retry &&
+          !isRefreshRequest
+        ) {
           originalRequest._retry = true;
 
           try {
