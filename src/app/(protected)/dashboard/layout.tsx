@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import DashboardLayout from "@/layouts/dashboard";
@@ -11,31 +11,22 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user, refreshUser } = useAuth();
-  const hasFetched = useRef(false);
+  const { user, isLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem("access_token");
-    if (!token) {
+    // Wait for auth context to finish initializing (it handles token refresh)
+    if (isLoading) return;
+
+    if (!isAuthenticated) {
       router.push("/login");
       return;
     }
 
-    if (!hasFetched.current) {
-      hasFetched.current = true;
-      refreshUser().catch((error) => {
-        console.error("Failed to fetch user profile:", error);
-      });
-    }
-  }, [router, refreshUser]);
-
-  // Redirect clients to account page
-  useEffect(() => {
-    if (user && user.role === "client") {
+    // Redirect clients to account page
+    if (user?.role === "client") {
       router.push("/compte");
     }
-  }, [user, router]);
+  }, [isLoading, isAuthenticated, user, router]);
 
   return <DashboardLayout>{children}</DashboardLayout>;
 }

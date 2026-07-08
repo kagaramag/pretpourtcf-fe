@@ -96,7 +96,7 @@ const outlineVariants: Record<ButtonVariant, string> = {
 const sizes: Record<ButtonSize, string> = {
   sm: "px-2 py-1 text-[11px] h-6",
   md: "lg:px-3.5 px-2 text-sm text-xs lg:h-8 h-6",
-  lg: "px-7 h-12 text-[15px]",
+  lg: "px-7 h-10 text-[15px]",
 };
 
 const iconOnlySizes: Record<ButtonSize, string> = {
